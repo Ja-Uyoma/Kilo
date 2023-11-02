@@ -24,9 +24,25 @@
 #include <cstdlib>
 #include <iostream>
 #include <unistd.h>
+#include <termios.h>
 
 int main()
 {
+    auto enableRawMode = [] {
+        termios canonicalSettings {};
+
+        // Store the current canonical mode terminal settings
+        ::tcgetattr(STDIN_FILENO, &canonicalSettings);
+
+        // Dsable echoing of input
+        canonicalSettings.c_lflag &= ~ECHO;
+
+        // Write these changes to the terminal handler for STDIN
+        ::tcsetattr(STDIN_FILENO, TCSAFLUSH, &canonicalSettings);
+    };
+
+    enableRawMode();
+
     for (char c {}; read(STDIN_FILENO, &c, 1) == 1 && c != 'q'; ) {
         continue;
     }
