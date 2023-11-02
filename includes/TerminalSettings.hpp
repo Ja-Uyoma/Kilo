@@ -42,6 +42,14 @@ namespace Kilo
      * @pre canonicalSettings must be a valid reference
     */
     void enableRawMode(termios& canonicalSettings);
+
+    /**
+     * @brief Disable raw mode by restoring the original canonical settings
+     * 
+     * @param[in] canonicalSettings The original settings of the terminal driver
+     * @pre canonicalSettings must be a valid reference
+    */
+    void disableRawMode(termios const& canonicalSettings);
 }
 
 #endif
