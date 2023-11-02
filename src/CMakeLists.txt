@@ -14,3 +14,8 @@ target_compile_options(kilo
     PRIVATE
         -Wall -Wextra -Werror -Wpedantic
 )
+
+target_compile_definitions(kilo
+    PRIVATE
+        $<IF:$<CONFIG:Debug>,DEBUG,"">
+)
