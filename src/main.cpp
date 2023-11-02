@@ -27,9 +27,7 @@
 
 int main()
 {
-    char c {};
-
-    while (read(STDIN_FILENO, &c, 1) == 1 && c != 'q') {    
+    for (char c {}; read(STDIN_FILENO, &c, 1) == 1 && c != 'q'; ) {
         continue;
     }
 
