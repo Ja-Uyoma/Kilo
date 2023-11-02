@@ -21,6 +21,8 @@
  * SOFTWARE.
  */
 
+#include "TerminalSettings.hpp"
+
 #include <cstdlib>
 #include <iostream>
 #include <unistd.h>
@@ -28,33 +30,18 @@
 
 int main()
 {
+    using Kilo::enableRawMode;
+    using Kilo::disableRawMode;
+
     termios canonicalSettings {};
 
-    auto enableRawMode = [&canonicalSettings] {
-        // Store the current canonical mode terminal settings
-        ::tcgetattr(STDIN_FILENO, &canonicalSettings);
-
-        // Copy the canonical settings to a variable which can be modified
-        termios temp = canonicalSettings;
-
-        // Disable echoing of input
-        temp.c_lflag &= ~ECHO;
-
-        // Write these settings to the terminal handler for STDIN
-        ::tcsetattr(STDIN_FILENO, TCSAFLUSH, &temp);
-    };
-
-    auto disableRawMode = [&canonicalSettings] {
-        ::tcsetattr(STDIN_FILENO, TCSAFLUSH, &canonicalSettings);
-    };
-
-    enableRawMode();
+    enableRawMode(canonicalSettings);
 
     for (char c {}; read(STDIN_FILENO, &c, 1) == 1 && c != 'q'; ) {
         continue;
     }
 
-    disableRawMode();
+    disableRawMode(canonicalSettings);
 
     return EXIT_SUCCESS;
 }
