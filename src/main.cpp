@@ -23,10 +23,15 @@
 
 #include <cstdlib>
 #include <iostream>
+#include <unistd.h>
 
 int main()
 {
-    std::cout << "Hello, world!\n";
+    char c {};
+
+    while (read(STDIN_FILENO, &c, 1) == 1) {    
+        continue;
+    }
 
     return EXIT_SUCCESS;
 }
