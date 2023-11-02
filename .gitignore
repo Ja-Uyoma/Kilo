@@ -1,1 +1,5 @@
+# Build output files location
 build
+
+# Compilation database file location
+.vscode
