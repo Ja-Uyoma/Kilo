@@ -25,5 +25,5 @@ target_compile_options(kilo
 
 target_compile_definitions(kilo
     PRIVATE
-        $<IF:$<CONFIG:Debug>,DEBUG,"">
+        $<IF:$<CONFIG:Debug>,DEBUG,>
 )
