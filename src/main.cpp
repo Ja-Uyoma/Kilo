@@ -28,16 +28,23 @@
 
 int main()
 {
-    auto enableRawMode = [] {
-        termios canonicalSettings {};
+    termios canonicalSettings {};
 
+    auto enableRawMode = [&canonicalSettings] {
         // Store the current canonical mode terminal settings
         ::tcgetattr(STDIN_FILENO, &canonicalSettings);
 
-        // Dsable echoing of input
-        canonicalSettings.c_lflag &= ~ECHO;
+        // Copy the canonical settings to a variable which can be modified
+        termios temp = canonicalSettings;
 
-        // Write these changes to the terminal handler for STDIN
+        // Disable echoing of input
+        temp.c_lflag &= ~ECHO;
+
+        // Write these settings to the terminal handler for STDIN
+        ::tcsetattr(STDIN_FILENO, TCSAFLUSH, &temp);
+    };
+
+    auto disableRawMode = [&canonicalSettings] {
         ::tcsetattr(STDIN_FILENO, TCSAFLUSH, &canonicalSettings);
     };
 
@@ -46,6 +53,8 @@ int main()
     for (char c {}; read(STDIN_FILENO, &c, 1) == 1 && c != 'q'; ) {
         continue;
     }
+
+    disableRawMode();
 
     return EXIT_SUCCESS;
 }
