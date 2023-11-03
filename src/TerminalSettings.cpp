@@ -49,7 +49,7 @@ namespace Kilo
         termios temp = canonicalSettings;
 
         // Modify the necessary settings
-        temp.c_lflag &= ~(ECHO | ICANON);
+        temp.c_lflag &= ~(ECHO | ICANON | ISIG);
 
         // Write the new settings to the terminal driver
         ::tcsetattr(STDIN_FILENO, TCSAFLUSH, &temp);
