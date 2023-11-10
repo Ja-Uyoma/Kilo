@@ -53,6 +53,8 @@ namespace Kilo
         temp.c_oflag &= ~OPOST;
         temp.c_cflag |= CS8;
         temp.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
+        temp.c_cc[VMIN] = 0;
+        temp.c_cc[VTIME] = 1;
 
         // Write the new settings to the terminal driver
         ::tcsetattr(STDIN_FILENO, TCSAFLUSH, &temp);
