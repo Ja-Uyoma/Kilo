@@ -49,7 +49,7 @@ namespace Kilo
         termios temp = canonicalSettings;
 
         // Modify the necessary settings
-        temp.c_iflag &= ~(IXON);
+        temp.c_iflag &= ~(ICRNL | IXON);
         temp.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
 
         // Write the new settings to the terminal driver
