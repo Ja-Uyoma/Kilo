@@ -50,6 +50,7 @@ namespace Kilo
 
         // Modify the necessary settings
         temp.c_iflag &= ~(ICRNL | IXON);
+        temp.c_oflag &= ~OPOST;
         temp.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
 
         // Write the new settings to the terminal driver
