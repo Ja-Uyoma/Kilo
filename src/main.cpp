@@ -41,7 +41,7 @@ int main()
     for (char c {}; read(STDIN_FILENO, &c, 1) == 1 && c != 'q'; ) {
     #ifdef DEBUG
         if (std::iscntrl(c)) {
-            std::clog << c << '\n';
+            std::clog << static_cast<int>(c) << '\n';
         }
         else {
             std::clog << static_cast<int>(c) << " (" << c << ")\n";
