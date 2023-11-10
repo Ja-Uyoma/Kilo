@@ -41,10 +41,10 @@ int main()
     for (char c {}; read(STDIN_FILENO, &c, 1) == 1 && c != 'q'; ) {
     #ifdef DEBUG
         if (std::iscntrl(c)) {
-            std::clog << static_cast<int>(c) << '\n';
+            std::clog << static_cast<int>(c) << "\r\n";
         }
         else {
-            std::clog << static_cast<int>(c) << " (" << c << ")\n";
+            std::clog << static_cast<int>(c) << " (" << c << ")\r\n";
         }
     #endif
 
