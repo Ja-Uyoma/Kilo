@@ -31,6 +31,8 @@
 #include "TerminalSettings.hpp"
 
 #include <unistd.h>
+#include <cerrno>
+#include <system_error>
 
 namespace Kilo
 {
@@ -43,7 +45,9 @@ namespace Kilo
     void enableRawMode(termios& canonicalSettings)
     {
         // Query the terminal driver and write its current settings into canonicalSettings
-        ::tcgetattr(STDIN_FILENO, &canonicalSettings);
+        if (errno = 0; ::tcgetattr(STDIN_FILENO, &canonicalSettings) == -1) {
+            throw std::system_error(errno, std::generic_category(), "Could not retrieve original terminal driver settings.");
+        }  
 
         // Copy the current terminal settings into another variable
         termios temp = canonicalSettings;
@@ -57,7 +61,9 @@ namespace Kilo
         temp.c_cc[VTIME] = 1;
 
         // Write the new settings to the terminal driver
-        ::tcsetattr(STDIN_FILENO, TCSAFLUSH, &temp);
+        if (errno = 0; ::tcsetattr(STDIN_FILENO, TCSAFLUSH, &temp) == -1) {
+            throw std::system_error(errno, std::generic_category(), "Could not set terminal driver to raw mode");
+        }
     }
 
     /**
@@ -68,6 +74,8 @@ namespace Kilo
     */
     void disableRawMode(termios const& canonicalSettings)
     {
-        ::tcsetattr(STDIN_FILENO, TCSAFLUSH, &canonicalSettings);
+        if (errno = 0; ::tcsetattr(STDIN_FILENO, TCSAFLUSH, &canonicalSettings) == -1) {
+            throw std::system_error(errno, std::generic_category(), "Could not restore terminal driver to normal mode");
+        }
     }
 }
