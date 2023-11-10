@@ -38,7 +38,10 @@ int main()
 
     enableRawMode(canonicalSettings);
 
-    for (char c {}; read(STDIN_FILENO, &c, 1) == 1 && c != 'q'; ) {
+    for ( ; ; ) {
+        char c {'\0'};
+        ::read(STDIN_FILENO, &c, 1);
+    
     #ifdef DEBUG
         if (std::iscntrl(c)) {
             std::clog << static_cast<int>(c) << "\r\n";
@@ -47,6 +50,10 @@ int main()
             std::clog << static_cast<int>(c) << " (" << c << ")\r\n";
         }
     #endif
+
+        if (c == 'q') {
+            break;
+        }
 
         continue;
     }
