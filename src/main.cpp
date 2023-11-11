@@ -38,7 +38,13 @@ int main()
 
     termios canonicalSettings {};
 
-    enableRawMode(canonicalSettings);
+    try {
+        enableRawMode(canonicalSettings);
+    }
+    catch (std::system_error const& err) {
+        std::cout << err.code() << " " << err.what() << '\n';
+        return EXIT_FAILURE;
+    }
 
     for ( ; ; ) {
         char c {'\0'};
