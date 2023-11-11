@@ -36,6 +36,21 @@
 
 namespace Kilo
 {
+    namespace
+    {
+        /**
+         * @brief Get the original terminal driver settings and write them to a struct
+         * @param[inout] settings Where the terminal driver settings are written to
+         * @throws std::system_error if we could not query the terminal driver
+        */
+        void getOriginalTerminalSettings(termios& settings)
+        {
+            if (errno = 0; ::tcgetattr(STDIN_FILENO, &settings) == -1) {
+                throw std::system_error(errno, std::generic_category(), "Could not retrieve original terminal driver settings");
+            }
+        }
+    }
+
     /**
      * @brief Enable raw mode by turning off some terminal flags
      * 
@@ -46,10 +61,7 @@ namespace Kilo
     */
     void enableRawMode(termios& canonicalSettings)
     {
-        // Query the terminal driver and write its current settings into canonicalSettings
-        if (errno = 0; ::tcgetattr(STDIN_FILENO, &canonicalSettings) == -1) {
-            throw std::system_error(errno, std::generic_category(), "Could not retrieve original terminal driver settings.");
-        }  
+        getOriginalTerminalSettings(canonicalSettings);  
 
         // Copy the current terminal settings into another variable
         termios temp = canonicalSettings;
