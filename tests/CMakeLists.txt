@@ -1,18 +1,18 @@
-add_executable(unit_tests)
+add_executable(kilo_tests)
 
 find_package(GTest REQUIRED)
 
-target_link_libraries(unit_tests
+target_link_libraries(kilo_tests
     PRIVATE
         gtest::gtest
 )
 
-target_include_directories(unit_tests
+target_include_directories(kilo_tests
     PRIVATE
         "${CMAKE_SOURCE_DIR}/includes"
 )
 
-target_sources(unit_tests
+target_sources(kilo_tests
     PUBLIC
         "${CMAKE_SOURCE_DIR}/includes/TerminalSettings.hpp"
     PRIVATE
@@ -20,12 +20,12 @@ target_sources(unit_tests
         "${CMAKE_SOURCE_DIR}/src/TerminalSettings.cpp"
 )
 
-target_compile_features(unit_tests
+target_compile_features(kilo_tests
     PRIVATE
         cxx_std_20
 )
 
-target_compile_options(unit_tests
+target_compile_options(kilo_tests
     PRIVATE
         -Wall -Wextra -Werror -Wpedantic
 )
