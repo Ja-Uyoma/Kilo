@@ -87,6 +87,21 @@ namespace Kilo
         temp.c_cc[VTIME] = 1;
 
         setNewTerminalSettings(temp);
+
+        // Verify that all of the changes were successfully made because
+        // ::tcsetattr returns successfully if at least one change was successful
+        auto verifyTerminalSettings = [&temp] {
+            return (temp.c_iflag & (BRKINT | ICRNL | INPCK | ISTRIP | IXON))
+                || (temp.c_oflag & OPOST)
+                || ((temp.c_cflag & CS8) != CS8)
+                || (temp.c_lflag & (ECHO | ICANON | IEXTEN | ISIG))
+                || (temp.c_cc[VMIN] != 0)
+                || (temp.c_cc[VTIME] != 1);
+        };
+
+        if (verifyTerminalSettings()) {
+            disableRawMode(canonicalSettings);
+        }
     }
 
     /**
