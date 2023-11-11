@@ -3,3 +3,6 @@ build
 
 # Compilation database file location
 .vscode
+
+# CMake user presets file
+CMakeUserPresets.json
