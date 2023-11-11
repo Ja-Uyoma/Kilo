@@ -49,6 +49,18 @@ namespace Kilo
                 throw std::system_error(errno, std::generic_category(), "Could not retrieve original terminal driver settings");
             }
         }
+
+        /**
+         * @brief Write new settings to the terminal driver
+         * @param[in] settings The struct containing the settings to be written
+         * @throws std::system_error if we could not write the new settings
+        */
+        void setNewTerminalSettings(termios const& settings)
+        {
+            if (errno = 0; ::tcsetattr(STDIN_FILENO, TCSAFLUSH, &settings) == -1) {
+                throw std::system_error(errno, std::generic_category(), "Could not set terminal driver to raw mode");
+            }
+        }
     }
 
     /**
@@ -74,10 +86,7 @@ namespace Kilo
         temp.c_cc[VMIN] = 0;
         temp.c_cc[VTIME] = 1;
 
-        // Write the new settings to the terminal driver
-        if (errno = 0; ::tcsetattr(STDIN_FILENO, TCSAFLUSH, &temp) == -1) {
-            throw std::system_error(errno, std::generic_category(), "Could not set terminal driver to raw mode");
-        }
+        setNewTerminalSettings(temp);
     }
 
     /**
