@@ -40,6 +40,8 @@ namespace Kilo
      * 
      * @param[in] canonicalSettings The original settings of the terminal driver
      * @pre canonicalSettings must be a valid reference
+     * @throws std::system_error if either querying the terminal driver for its current settings fails
+     * or if writing the modified settings fails.
     */
     void enableRawMode(termios& canonicalSettings);
 
@@ -48,6 +50,7 @@ namespace Kilo
      * 
      * @param[in] canonicalSettings The original settings of the terminal driver
      * @pre canonicalSettings must be a valid reference
+     * @throws std::system_error if restoring the terminal driver to normal mode fails
     */
     void disableRawMode(termios const& canonicalSettings);
 }
