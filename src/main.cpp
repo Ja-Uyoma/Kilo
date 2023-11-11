@@ -28,6 +28,8 @@
 #include <unistd.h>
 #include <termios.h>
 #include <cctype>
+#include <cerrno>
+#include <system_error>
 
 int main()
 {
@@ -40,7 +42,10 @@ int main()
 
     for ( ; ; ) {
         char c {'\0'};
-        ::read(STDIN_FILENO, &c, 1);
+
+        if (::read(STDIN_FILENO, &c, 1) == -1 && errno != EAGAIN) {
+            throw std::system_error(errno, std::generic_category());
+        }
     
     #ifdef DEBUG
         if (std::iscntrl(c)) {
