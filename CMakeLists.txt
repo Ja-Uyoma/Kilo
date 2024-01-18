@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.25)
 project(Kilo 
     VERSION 0.1.1
     LANGUAGES CXX
-    DESCRIPTION ""
+    DESCRIPTION "A minimalistic, modal, text editor"
 )
 
 enable_testing()
