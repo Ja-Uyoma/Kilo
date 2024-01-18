@@ -6,7 +6,7 @@ class KiloRecipe(ConanFile):
     generators = "CMakeToolchain", "CMakeDeps"
 
     def requirements(self):
-        self.requires("gtest/1.14.0")
+        self.requires("catch2/3.5.2")
         self.requires("ms-gsl/4.0.0")
 
     def layout(self):
