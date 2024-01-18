@@ -15,6 +15,8 @@ project(Kilo
     DESCRIPTION "A minimalistic, modal, text editor"
 )
 
+include(cmake/EnforceOutOfSourceBuilds.cmake)
+
 enable_testing()
 
 add_subdirectory(src)
