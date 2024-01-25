@@ -31,45 +31,47 @@
 #include <cerrno>
 #include <system_error>
 
+namespace Kilo
+{
+    void Main()
+    {
+        termios canonicalSettings {};
+        enableRawMode(canonicalSettings);
+
+        for ( ; ; ) {
+            char c {};
+
+            if (::read(STDIN_FILENO, &c, 1) == -1 && errno != EAGAIN) {
+                throw std::system_error(errno, std::generic_category());
+            }
+
+        #ifdef DEBUG
+            if (std::iscntrl(c)) {
+                std::clog << static_cast<int>(c) << "\r\n";
+            }
+            else {
+                std::clog << static_cast<int>(c) << " (" << c << ")\r\n";
+            }
+        #endif
+
+            if (c == 'q') {
+                break;
+            }
+        }
+
+        disableRawMode(canonicalSettings);
+    }
+}
+
 int main()
 {
-    using Kilo::enableRawMode;
-    using Kilo::disableRawMode;
-
-    termios canonicalSettings {};
-
     try {
-        enableRawMode(canonicalSettings);
+        Kilo::Main();
     }
     catch (std::system_error const& err) {
-        std::cout << err.code() << " " << err.what() << '\n';
+        std::cerr << err.code() << ": " << err.what() << '\n';
         return EXIT_FAILURE;
     }
-
-    for ( ; ; ) {
-        char c {'\0'};
-
-        if (::read(STDIN_FILENO, &c, 1) == -1 && errno != EAGAIN) {
-            throw std::system_error(errno, std::generic_category());
-        }
-    
-    #ifdef DEBUG
-        if (std::iscntrl(c)) {
-            std::clog << static_cast<int>(c) << "\r\n";
-        }
-        else {
-            std::clog << static_cast<int>(c) << " (" << c << ")\r\n";
-        }
-    #endif
-
-        if (c == 'q') {
-            break;
-        }
-
-        continue;
-    }
-
-    disableRawMode(canonicalSettings);
 
     return EXIT_SUCCESS;
 }
