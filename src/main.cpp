@@ -25,42 +25,12 @@
 
 #include <cstdlib>
 #include <iostream>
-#include <unistd.h>
-#include <termios.h>
-#include <cctype>
-#include <cerrno>
 #include <system_error>
 
+// Forward declaration to function Main()
 namespace Kilo
 {
-    void Main()
-    {
-        termios canonicalSettings {};
-        enableRawMode(canonicalSettings);
-
-        for ( ; ; ) {
-            char c {};
-
-            if (::read(STDIN_FILENO, &c, 1) == -1 && errno != EAGAIN) {
-                throw std::system_error(errno, std::generic_category());
-            }
-
-        #ifdef DEBUG
-            if (std::iscntrl(c)) {
-                std::clog << static_cast<int>(c) << "\r\n";
-            }
-            else {
-                std::clog << static_cast<int>(c) << " (" << c << ")\r\n";
-            }
-        #endif
-
-            if (c == 'q') {
-                break;
-            }
-        }
-
-        disableRawMode(canonicalSettings);
-    }
+    void Main();
 }
 
 int main()

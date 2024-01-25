@@ -14,6 +14,7 @@ target_sources(kilo
         "${CMAKE_SOURCE_DIR}/includes/TerminalSettings.hpp"
     PRIVATE
         main.cpp
+        Main.cpp
         TerminalSettings.cpp
 )
 
