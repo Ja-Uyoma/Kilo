@@ -20,7 +20,7 @@ namespace Kilo
 
     /// @brief Read a character from the terminal and respond in kind
     /// @throws std::system_error if we could not read a character from STDIN
-    void Main()
+    [[noreturn]] void Main()
     {
         // We need to call disableRawMode at program exit to reset the terminal to its canonical settings
         // We cannot register an atexit handler for this because atexit doesn't accept functions
