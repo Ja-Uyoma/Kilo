@@ -86,6 +86,8 @@ namespace Kilo
 
             switch (c) {
                 case ctrlKey('q'):
+                    ::write(STDOUT_FILENO, "\x1b[2J", 4);
+                    ::write(STDOUT_FILENO, "\x1b[H", 3);
                     std::exit(EXIT_SUCCESS);
                     break;
                 default:
