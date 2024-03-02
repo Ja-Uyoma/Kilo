@@ -34,12 +34,12 @@ namespace Kilo
 
             TerminalSettings()
             {
-                enableRawMode(m_settings);
+                Terminal::enableRawMode(m_settings);
             }
 
             ~TerminalSettings()
             {
-                disableRawMode(m_settings);
+                Terminal::disableRawMode(m_settings);
             }
 
             TerminalSettings(TerminalSettings const&) = delete;

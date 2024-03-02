@@ -33,7 +33,7 @@
 
 #include <termios.h>
 
-namespace Kilo
+namespace Kilo::Terminal
 {
     /**
      * @brief Enable raw mode by turning off some terminal flags

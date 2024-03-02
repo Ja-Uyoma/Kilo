@@ -34,7 +34,7 @@
 #include <cerrno>
 #include <system_error>
 
-namespace Kilo
+namespace Kilo::Terminal
 {
     namespace
     {
