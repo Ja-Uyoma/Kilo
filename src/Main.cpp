@@ -54,7 +54,7 @@ namespace Kilo
         {
             char c {};
 
-            for (long nread = ::read(STDIN_FILENO, &c, 1); nread != 1 ; ) {
+            for (long nread = 0; nread != 1; nread = ::read(STDIN_FILENO, &c, 1)) {
                 if (nread == -1 && errno != EAGAIN) {
                     throw std::system_error(errno, std::generic_category());
                 }
