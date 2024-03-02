@@ -1,4 +1,5 @@
 #include "TerminalSettings.hpp"
+#include "Editor.hpp"
 
 #include <termios.h>
 #include <unistd.h>
@@ -24,25 +25,8 @@ namespace Kilo
         termios canonicalSettings {};
         enableRawMode(canonicalSettings);
 
-        for ( ; ; ) {
-            char c {};
-
-            if (::read(STDIN_FILENO, &c, 1) == -1 && errno != EAGAIN) {
-                throw std::system_error(errno, std::generic_category());
-            }
-
-        #ifdef DEBUG
-            if (std::iscntrl(c)) {
-                std::clog << static_cast<int>(c) << "\r\n";
-            }
-            else {
-                std::clog << static_cast<int>(c) << " (" << c << ")\r\n";
-            }
-        #endif
-
-            if (c == ctrlKey('q')) {
-                break;
-            }
+        while (true) {
+            Editor::processKeypress();
         }
 
         disableRawMode(canonicalSettings);
