@@ -13,10 +13,12 @@ target_sources(kilo
     PUBLIC
         "${CMAKE_SOURCE_DIR}/includes/TerminalSettings.hpp"
         "${CMAKE_SOURCE_DIR}/includes/Editor.hpp"
+        "${CMAKE_SOURCE_DIR}/includes/Utilities.hpp"
     PRIVATE
         main.cpp
         Main.cpp
         TerminalSettings.cpp
+        Utilities.cpp
 )
 
 target_compile_features(kilo
