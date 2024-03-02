@@ -52,6 +52,7 @@ namespace Kilo
         static TerminalSettings settings {};
         
         while (true) {
+            Editor::refreshScreen();
             Editor::processKeypress();
         }
     }
@@ -90,6 +91,12 @@ namespace Kilo
                 default:
                     return;
             }
+        }
+
+        /// @brief Clear the screen
+        void refreshScreen()
+        {
+            ::write(STDOUT_FILENO, "\x1b[2J", 4);
         }
     }
 } // namespace Kilo
