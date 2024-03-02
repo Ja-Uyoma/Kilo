@@ -79,7 +79,7 @@ namespace Kilo
 
             switch (c) {
                 case ctrlKey('q'):
-                    std::exit(0);
+                    std::exit(EXIT_SUCCESS);
                     break;
                 default:
                     return;
