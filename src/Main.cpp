@@ -99,6 +99,16 @@ namespace Kilo
         void refreshScreen()
         {
             clearScreenAndRepositionCursor();
+            drawRows();
+            ::write(STDOUT_FILENO, "\x1b[H", 3);
+        }
+
+        /// @brief Draw each row of the buffer of text being edited, plus a tilde at the beginning
+        void drawRows() noexcept
+        {
+            for (int y = 0; y < 24; ++y) {
+                ::write(STDOUT_FILENO, "~\r\n", 3);
+            }
         }
     }
 } // namespace Kilo

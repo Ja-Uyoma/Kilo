@@ -12,4 +12,7 @@ namespace Kilo::Editor
 
     /// @brief Clear the screen and reposition the cursor to the top-left corner
     void refreshScreen();
+
+    /// @brief Draw each row of the buffer of text being edited, plus a tilde at the beginning
+    void drawRows() noexcept;
 }
