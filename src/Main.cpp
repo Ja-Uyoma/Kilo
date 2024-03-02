@@ -64,5 +64,18 @@ namespace Kilo
 
             return c;
         }
+
+        void processKeypress() noexcept(noexcept(readKey()))
+        {
+            char c = readKey();
+
+            switch (c) {
+                case ctrlKey('q'):
+                    std::exit(0);
+                    break;
+                default:
+                    return;
+            }
+        }
     }
 } // namespace Kilo
