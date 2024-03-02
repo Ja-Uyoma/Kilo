@@ -10,6 +10,6 @@ namespace Kilo::Editor
     /// @throws std::system_error if an error occured during read
     void processKeypress() noexcept(noexcept(readKey()));
 
-    /// @brief Clear the screen
+    /// @brief Clear the screen and reposition the cursor to the top-left corner
     void refreshScreen();
 }
