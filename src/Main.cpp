@@ -1,5 +1,6 @@
 #include "TerminalSettings.hpp"
 #include "Editor.hpp"
+#include "Utilities.hpp"
 
 #include <termios.h>
 #include <unistd.h>
@@ -86,8 +87,7 @@ namespace Kilo
 
             switch (c) {
                 case ctrlKey('q'):
-                    ::write(STDOUT_FILENO, "\x1b[2J", 4);
-                    ::write(STDOUT_FILENO, "\x1b[H", 3);
+                    clearScreenAndRepositionCursor();
                     std::exit(EXIT_SUCCESS);
                     break;
                 default:
@@ -98,8 +98,7 @@ namespace Kilo
         /// @brief Clear the screen and reposition the cursor to the top-left corner
         void refreshScreen()
         {
-            ::write(STDOUT_FILENO, "\x1b[2J", 4);
-            ::write(STDOUT_FILENO, "\x1b[H", 3);
+            clearScreenAndRepositionCursor();
         }
     }
 } // namespace Kilo

@@ -22,6 +22,7 @@
 */
 
 #include "TerminalSettings.hpp"
+#include "Utilities.hpp"
 
 #include <cstdlib>
 #include <iostream>
@@ -36,19 +37,15 @@ namespace Kilo
 
 int main()
 {
-    // Clear the screen and reposition the cursor to the top-left corner at exit
-    // This is added as a fallback in case an error occurs in the middle of rendering the screen
-    // We would otherwise have garbage and/or errors printed wherever the cursor happens to be at that point
-    auto const clearScreenAndRepositionCursor = [] { 
-        ::write(STDOUT_FILENO, "\x1b[2J", 4); 
-        ::write(STDOUT_FILENO, "\x1b[H", 3); 
-    };
-
     try {
         Kilo::Main();
     }
     catch (std::system_error const& err) {
-        clearScreenAndRepositionCursor();
+        // Clear the screen and reposition the cursor to the top-left corner at exit
+        // This is added as a fallback in case an error occurs in the middle of rendering the screen
+        // We would otherwise have garbage and/or errors printed wherever the cursor happens to be at that point
+        Kilo::clearScreenAndRepositionCursor();
+        
         std::cerr << err.code() << ": " << err.what() << '\n';
         return EXIT_FAILURE;
     }
