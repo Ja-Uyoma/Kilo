@@ -22,14 +22,38 @@ namespace Kilo
     /// @throws std::system_error if we could not read a character from STDIN
     void Main()
     {
-        termios canonicalSettings {};
-        enableRawMode(canonicalSettings);
+        // We need to call disableRawMode at program exit to reset the terminal to its canonical settings
+        // We cannot register an atexit handler for this because atexit doesn't accept functions
+        // that take parameters.
+        // Therefore, the solution is to use RAII with a static object whose resources must be cleaned up
+        // at program exit
+        class TerminalSettings
+        {
+        public:
+            termios m_settings {};
 
+            TerminalSettings()
+            {
+                enableRawMode(m_settings);
+            }
+
+            ~TerminalSettings()
+            {
+                disableRawMode(m_settings);
+            }
+
+            TerminalSettings(TerminalSettings const&) = delete;
+            TerminalSettings(TerminalSettings&&) = delete;
+
+            TerminalSettings& operator=(TerminalSettings const&) = delete;
+            TerminalSettings& operator=(TerminalSettings&&) = delete;
+        };
+
+        static TerminalSettings settings {};
+        
         while (true) {
             Editor::processKeypress();
         }
-
-        disableRawMode(canonicalSettings);
     }
 
     namespace Editor 
