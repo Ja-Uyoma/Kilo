@@ -10,12 +10,12 @@ namespace Kilo::Editor
 {
     EditorConfig::EditorConfig()
     {
-        
+        enableRawMode();
     }
 
     EditorConfig::~EditorConfig()
     {
-        
+        disableRawMode();
     }
 
     /// @brief Set the terminal in raw mode
