@@ -150,7 +150,7 @@ namespace Kilo::Terminal
         winsize ws;
 
         if (::ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == -1 || ws.ws_col == 0) {
-            return -1;
+            throw std::system_error(errno, std::generic_category(), "ioctl could not retrieve terminal window size.");
         }
         
         *cols = ws.ws_col;
