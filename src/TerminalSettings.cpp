@@ -33,6 +33,7 @@
 #include <unistd.h>
 #include <cerrno>
 #include <system_error>
+#include <sys/ioctl.h>
 
 namespace Kilo::Terminal
 {
@@ -136,5 +137,24 @@ namespace Kilo::Terminal
         }
 
         return c;
+    }
+
+    /**
+     * @brief Get the size of the terminal window
+     * @param[inout] rows The number of rows of the terminal window
+     * @param[inout] cols The number of columns of the terminal window
+     * @returns 0 on success, -1 on failure
+    */
+    int getWindowSize(int* const rows, int* const cols) noexcept
+    {
+        winsize ws;
+
+        if (::ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == -1 || ws.ws_col == 0) {
+            return -1;
+        }
+        
+        *cols = ws.ws_col;
+        *rows = ws.ws_row;
+        return 0;
     }
 }

@@ -60,6 +60,14 @@ namespace Kilo::Terminal
      * @throws std::system_error if an error occured during read
     */ 
     char readKey();
+
+    /**
+     * @brief Get the size of the terminal window
+     * @param[inout] rows The number of rows of the terminal window
+     * @param[inout] cols The number of columns of the terminal window
+     * @returns 0 on success, -1 on failure
+    */
+    int getWindowSize(int* const rows, int* const cols) noexcept;
 }
 
 #endif
