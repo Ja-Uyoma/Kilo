@@ -20,30 +20,8 @@ namespace Kilo
         // that take parameters.
         // Therefore, the solution is to use RAII with a static object whose resources must be cleaned up
         // at program exit
-        class TerminalSettings
-        {
-        public:
-            termios m_settings {};
-
-            explicit TerminalSettings(termios const& settings) : m_settings(settings)
-            {
-                Terminal::enableRawMode(m_settings);
-            }
-
-            ~TerminalSettings()
-            {
-                Terminal::disableRawMode(m_settings);
-            }
-
-            TerminalSettings(TerminalSettings const&) = delete;
-            TerminalSettings(TerminalSettings&&) = delete;
-
-            TerminalSettings& operator=(TerminalSettings const&) = delete;
-            TerminalSettings& operator=(TerminalSettings&&) = delete;
-        };
-
-        Editor::EditorConfig editorConfig;
-        static TerminalSettings settings(editorConfig.m_origTermios);
+        
+        static Editor::EditorConfig editorConfig;
         
         while (true) {
             Editor::refreshScreen();
