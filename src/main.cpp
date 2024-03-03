@@ -20,14 +20,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
 */
-
-#include "TerminalSettings.hpp"
 #include "Utilities.hpp"
 
 #include <cstdlib>
 #include <iostream>
 #include <system_error>
-#include <unistd.h>
 
 // Forward declaration to function Main()
 namespace Kilo
