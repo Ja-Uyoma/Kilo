@@ -5,13 +5,19 @@
 #include <system_error>
 #include <unistd.h>
 #include <cstdlib>
+#include <iostream>
 
 namespace Kilo::Editor 
 {
     EditorConfig::EditorConfig()
     {
-        Terminal::enableRawMode(m_origTermios);
-        Terminal::getWindowSize(&m_screenRows, &m_screenCols);
+        try {
+            Terminal::enableRawMode(m_origTermios);
+            Terminal::getWindowSize(&m_screenRows, &m_screenCols);
+        }
+        catch (std::system_error const& err) {
+            std::cerr << err.code() << ": " << err.what() << '\n';
+        }
     }
 
     EditorConfig::~EditorConfig()
