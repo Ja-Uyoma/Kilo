@@ -25,7 +25,7 @@ namespace Kilo
         public:
             termios m_settings {};
 
-            TerminalSettings()
+            explicit TerminalSettings(termios const& settings) : m_settings(settings)
             {
                 Terminal::enableRawMode(m_settings);
             }
@@ -42,7 +42,8 @@ namespace Kilo
             TerminalSettings& operator=(TerminalSettings&&) = delete;
         };
 
-        static TerminalSettings settings {};
+        Editor::EditorConfig editorConfig;
+        static TerminalSettings settings(editorConfig.m_origTermios);
         
         while (true) {
             Editor::refreshScreen();
