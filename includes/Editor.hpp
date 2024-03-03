@@ -1,5 +1,13 @@
+#include <termios.h>
+
 namespace Kilo::Editor
 {
+    class EditorConfig
+    {
+    public:
+        termios m_origTermios;
+    };
+
     /// @brief Read key input from stdin
     /// @return The character read
     /// @throws std::system_error if an error occured during read
