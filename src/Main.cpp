@@ -11,14 +11,6 @@
 
 namespace Kilo
 {
-    /// @brief Map characters to control keys
-    /// @param key The ASCII character to be mapped to a control key
-    /// @return A control key
-    constexpr unsigned ctrlKey(unsigned char key) noexcept
-    {
-        return key &= 0x1f;
-    }
-
     /// @brief Read a character from the terminal and respond in kind
     /// @throws std::system_error if we could not read a character from STDIN
     [[noreturn]] void Main()
