@@ -67,7 +67,7 @@ namespace Kilo::Terminal
      * @param[inout] cols The number of columns of the terminal window
      * @returns 0 on success, -1 on failure
     */
-    int getWindowSize(int* const rows, int* const cols) noexcept;
+    int getWindowSize(int* const rows, int* const cols);
 }
 
 #endif
