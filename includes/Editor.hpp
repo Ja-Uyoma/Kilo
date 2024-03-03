@@ -6,6 +6,12 @@ namespace Kilo::Editor
     {
     public:
         termios m_origTermios;
+
+        /// @brief Set the terminal in raw mode
+        void enableRawMode() &;
+
+        /// @brief Set the terminal in canonical mode
+        void disableRawMode() const&;
     };
 
     /// @brief Read key input from stdin

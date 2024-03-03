@@ -1,5 +1,6 @@
 #include "Editor.hpp"
 #include "Utilities.hpp"
+#include "TerminalSettings.hpp"
 
 #include <system_error>
 #include <unistd.h>
@@ -7,6 +8,18 @@
 
 namespace Kilo::Editor 
 {
+    /// @brief Set the terminal in raw mode
+    void EditorConfig::enableRawMode() &
+    {
+        Terminal::enableRawMode(m_origTermios);
+    }
+
+    /// @brief Set the terminal in canonical mode
+    void EditorConfig::disableRawMode() const& 
+    {
+        Terminal::disableRawMode(m_origTermios);
+    }
+    
     /// @brief Read key input from stdin
     /// @return The character read
     /// @throws std::system_error if an error occured during read
