@@ -65,7 +65,8 @@ namespace Kilo::Terminal
      * @brief Get the size of the terminal window
      * @param[inout] rows The number of rows of the terminal window
      * @param[inout] cols The number of columns of the terminal window
-     * @returns 0 on success, -1 on failure
+     * @throws std::system_error if the terminal window size could not be retrieved
+     * @returns 0 on success
     */
     int getWindowSize(int* const rows, int* const cols);
 }
