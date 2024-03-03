@@ -8,6 +8,16 @@
 
 namespace Kilo::Editor 
 {
+    EditorConfig::EditorConfig()
+    {
+        
+    }
+
+    EditorConfig::~EditorConfig()
+    {
+        
+    }
+
     /// @brief Set the terminal in raw mode
     void EditorConfig::enableRawMode() &
     {
