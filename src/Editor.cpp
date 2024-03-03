@@ -29,31 +29,13 @@ namespace Kilo::Editor
     {
         Terminal::disableRawMode(m_origTermios);
     }
-    
-    /// @brief Read key input from stdin
-    /// @return The character read
-    /// @throws std::system_error if an error occured during read
-    char readKey()
-    {
-        char c {};
-
-        for (long nread = 0; nread != 1; nread = ::read(STDIN_FILENO, &c, 1)) {
-            if (nread == -1 && errno != EAGAIN) {
-                throw std::system_error(errno, std::generic_category());
-            }
-
-            errno = 0;
-        }
-
-        return c;
-    }
 
     /// @brief Process the results from readKey
     /// @details This function is responsible for mapping keypresses to editor operations
     /// @throws std::system_error if an error occured during read
-    void processKeypress() noexcept(noexcept(readKey()))
+    void processKeypress()
     {
-        char c = readKey();
+        char c = Terminal::readKey();
 
         switch (c) {
             case ctrlKey('q'):

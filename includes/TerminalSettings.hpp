@@ -53,6 +53,13 @@ namespace Kilo::Terminal
      * @throws std::system_error if restoring the terminal driver to normal mode fails
     */
     void disableRawMode(termios const& canonicalSettings);
+
+    /** 
+     * @brief Read key input from stdin
+     * @return The character read
+     * @throws std::system_error if an error occured during read
+    */ 
+    char readKey();
 }
 
 #endif

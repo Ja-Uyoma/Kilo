@@ -117,4 +117,24 @@ namespace Kilo::Terminal
             throw std::system_error(errno, std::generic_category(), "Could not restore terminal driver to normal mode");
         }
     }
+
+    /** 
+     * @brief Read key input from stdin
+     * @return The character read
+     * @throws std::system_error if an error occured during read
+    */ 
+    char readKey()
+    {
+        char c {};
+
+        for (long nread = 0; nread != 1; nread = ::read(STDIN_FILENO, &c, 1)) {
+            if (nread == -1 && errno != EAGAIN) {
+                throw std::system_error(errno, std::generic_category());
+            }
+
+            errno = 0;
+        }
+
+        return c;
+    }
 }
