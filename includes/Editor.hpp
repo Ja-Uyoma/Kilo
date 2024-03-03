@@ -6,7 +6,6 @@ namespace Kilo::Editor
     {
     public:
         explicit EditorConfig();
-
         ~EditorConfig();
 
         EditorConfig(EditorConfig const&) = delete;
