@@ -5,6 +5,10 @@ namespace Kilo::Editor
     class EditorConfig
     {
     public:
+        termios m_origTermios;
+        int m_screenRows;
+        int m_screenCols;
+
         explicit EditorConfig();
         ~EditorConfig();
 
@@ -13,11 +17,6 @@ namespace Kilo::Editor
 
         EditorConfig(EditorConfig&&) noexcept = delete;
         EditorConfig operator=(EditorConfig&&) noexcept = delete;
-
-    private:
-        termios m_origTermios;
-        int m_screenRows;
-        int m_screenCols;
     };
 
     /// @brief Process the results from readKey
