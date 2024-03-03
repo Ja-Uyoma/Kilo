@@ -11,6 +11,7 @@ namespace Kilo::Editor
     EditorConfig::EditorConfig()
     {
         Terminal::enableRawMode(m_origTermios);
+        Terminal::getWindowSize(&m_screenRows, &m_screenCols);
     }
 
     EditorConfig::~EditorConfig()
