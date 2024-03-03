@@ -55,7 +55,7 @@ namespace Kilo::Editor
     /// @brief Draw each row of the buffer of text being edited, plus a tilde at the beginning
     void drawRows() noexcept
     {
-        for (int y = 0; y < 24; ++y) {
+        for (int y = 0; y < editorConfig.m_screenRows; ++y) {
             ::write(STDOUT_FILENO, "~\r\n", 3);
         }
     }
