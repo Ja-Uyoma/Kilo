@@ -19,6 +19,7 @@ target_sources(kilo
         Main.cpp
         TerminalSettings.cpp
         Utilities.cpp
+        Editor.cpp
 )
 
 target_compile_features(kilo
