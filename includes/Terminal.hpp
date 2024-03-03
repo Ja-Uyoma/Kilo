@@ -28,8 +28,8 @@
  * driver settings with regards to entering and exiting raw and/or canonical mode
 */
 
-#ifndef TERMINAL_SETTINGS_HPP
-#define TERMINAL_SETTINGS_HPP
+#ifndef TERMINAL_HPP
+#define TERMINAL_HPP
 
 #include <termios.h>
 
