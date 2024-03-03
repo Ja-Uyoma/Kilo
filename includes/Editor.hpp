@@ -5,8 +5,6 @@ namespace Kilo::Editor
     class EditorConfig
     {
     public:
-        termios m_origTermios;
-
         explicit EditorConfig();
 
         ~EditorConfig();
@@ -16,6 +14,9 @@ namespace Kilo::Editor
 
         EditorConfig(EditorConfig&&) noexcept = delete;
         EditorConfig operator=(EditorConfig&&) noexcept = delete;
+
+    private:
+        termios m_origTermios;
 
         /// @brief Set the terminal in raw mode
         void enableRawMode() &;
