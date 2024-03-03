@@ -10,22 +10,10 @@ namespace Kilo::Editor
 {
     EditorConfig::EditorConfig()
     {
-        enableRawMode();
-    }
-
-    EditorConfig::~EditorConfig()
-    {
-        disableRawMode();
-    }
-
-    /// @brief Set the terminal in raw mode
-    void EditorConfig::enableRawMode() &
-    {
         Terminal::enableRawMode(m_origTermios);
     }
 
-    /// @brief Set the terminal in canonical mode
-    void EditorConfig::disableRawMode() const& 
+    EditorConfig::~EditorConfig()
     {
         Terminal::disableRawMode(m_origTermios);
     }

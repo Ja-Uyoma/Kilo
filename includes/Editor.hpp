@@ -17,12 +17,6 @@ namespace Kilo::Editor
 
     private:
         termios m_origTermios;
-
-        /// @brief Set the terminal in raw mode
-        void enableRawMode() &;
-
-        /// @brief Set the terminal in canonical mode
-        void disableRawMode() const&;
     };
 
     /// @brief Process the results from readKey
