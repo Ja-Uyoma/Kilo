@@ -1,6 +1,6 @@
 #include "Editor.hpp"
 #include "Utilities.hpp"
-#include "TerminalSettings.hpp"
+#include "Terminal.hpp"
 
 #include <system_error>
 #include <unistd.h>

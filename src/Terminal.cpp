@@ -28,7 +28,7 @@
  * driver settings with regards to entering and exiting raw and/or canonical mode
 */
 
-#include "TerminalSettings.hpp"
+#include "Terminal.hpp"
 
 #include <unistd.h>
 #include <cerrno>

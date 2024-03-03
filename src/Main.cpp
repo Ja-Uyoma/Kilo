@@ -1,4 +1,4 @@
-#include "TerminalSettings.hpp"
+#include "Terminal.hpp"
 #include "Editor.hpp"
 #include "Utilities.hpp"
 
