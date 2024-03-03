@@ -16,6 +16,8 @@ namespace Kilo::Editor
 
     private:
         termios m_origTermios;
+        int m_screenRows;
+        int m_screenCols;
     };
 
     /// @brief Process the results from readKey
