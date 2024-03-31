@@ -69,6 +69,14 @@ namespace Kilo::Terminal
      * @returns 0 on success
     */
     int getWindowSize(int* const rows, int* const cols);
+
+    /**
+     * @brief Get the position of the cursor
+     * @param[inout] rows The number of rows of the terminal window
+     * @param[inout] cols The number of columns of the terminal window
+     * @returns The number of rows and columns of the terminal window, or -1 on failure
+    */
+    int getCursorPosition(int* rows, int* cols);
 }
 
 #endif

@@ -158,4 +158,53 @@ namespace Kilo::Terminal
         *rows = ws.ws_row;
         return 0;
     }
+
+    /**
+     * @brief Get the position of the cursor
+     * @param[inout] rows The number of rows of the terminal window
+     * @param[inout] cols The number of columns of the terminal window
+     * @returns The number of rows and columns of the terminal window, or -1 on failure
+    */
+    int getCursorPosition(int* rows, int* cols)
+    {
+        // Get the position of the cursor
+        if (::write(STDOUT_FILENO, "\x1b[6n", 4) != 4) {
+            return -1;
+        }
+
+        char buf[32] {};
+        unsigned i {};
+
+        while (i < sizeof(buf) - 1) {
+            // Read the reply from stdin and store it in a buffer
+            // We do this until we encounter the 'R' character
+            
+            if (::read(STDIN_FILENO, &buf[i], 1) != 1) {
+                break;
+            }
+
+            if (buf[i] == 'R') {
+                break;
+            }
+            
+            ++i;
+        }
+
+        // Assign the null-termination character to the the final byte of buf because
+        // C-strings should end with a zero byte
+        buf[i] = '\0';
+
+        // First make sure ::read responded with an escape sequence
+        if (buf[0] != '\x1b' || buf[1] != '[') {
+            return -1;
+        }
+
+        // At this point, we are passing a string of the form "35;76" to sscanf
+        // We tell it to parse the 2 integers separated by a ';' and write the value into the rows and cols variables
+        if (std::sscanf(&buf[2], "%d;%d", rows, cols) != 2) {
+            return -1;
+        }
+
+        return 0;
+    }
 }
