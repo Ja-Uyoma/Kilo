@@ -151,7 +151,12 @@ namespace Kilo::Terminal
         winsize ws;
 
         if (::ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == -1 || ws.ws_col == 0) {
-            throw std::system_error(errno, std::generic_category(), "ioctl could not retrieve terminal window size.");
+            // Move the cursor to the bottom-right of the screen
+            if (::write(STDOUT_FILENO, "\x1b[999C\x1b[999B", 12) != 12) {
+                return -1;
+            }
+
+            return getCursorPosition(rows, cols);
         }
         
         *cols = ws.ws_col;
