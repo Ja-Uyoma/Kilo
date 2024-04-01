@@ -141,11 +141,10 @@ namespace Kilo::Terminal
     }
 
     /**
-     * @brief Get the size of the terminal window
+     * @brief Get the size of the terminal window and write them to @param rows and @param cols
      * @param[inout] rows The number of rows of the terminal window
      * @param[inout] cols The number of columns of the terminal window
      * @throws std::system_error if the terminal window size could not be retrieved
-     * @returns 0 on success
     */
     void getWindowSize(int* const rows, int* const cols)
     {
@@ -165,10 +164,9 @@ namespace Kilo::Terminal
     }
 
     /**
-     * @brief Get the position of the cursor
+     * @brief Get the position of the cursor and write them to @param rows and @param cols
      * @param[inout] rows The number of rows of the terminal window
      * @param[inout] cols The number of columns of the terminal window
-     * @returns The number of rows and columns of the terminal window, or -1 on failure
     */
     void getCursorPosition(int* const rows, int* const cols)
     {
