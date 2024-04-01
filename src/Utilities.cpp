@@ -5,7 +5,7 @@
 #include <system_error>
 #include <cstring>
 
-namespace Kilo
+namespace Kilo::Utilities
 {
     /// @brief Clear the screen and reposition the cursor to the top-left corner
     void clearScreenAndRepositionCursor() noexcept

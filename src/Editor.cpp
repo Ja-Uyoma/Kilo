@@ -41,8 +41,8 @@ namespace Kilo::Editor
         char c = Terminal::readKey();
 
         switch (c) {
-            case ctrlKey('q'):
-                clearScreenAndRepositionCursor();
+            case Utilities::ctrlKey('q'):
+                Utilities::clearScreenAndRepositionCursor();
                 std::exit(EXIT_SUCCESS);
                 break;
             default:
@@ -53,7 +53,7 @@ namespace Kilo::Editor
     /// @brief Clear the screen and reposition the cursor to the top-left corner
     void refreshScreen()
     {
-        clearScreenAndRepositionCursor();
+        Utilities::clearScreenAndRepositionCursor();
         drawRows();
         ::write(STDOUT_FILENO, "\x1b[H", 3);
     }
