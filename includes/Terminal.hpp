@@ -76,7 +76,7 @@ namespace Kilo::Terminal
      * @param[inout] cols The number of columns of the terminal window
      * @returns The number of rows and columns of the terminal window, or -1 on failure
     */
-    void getCursorPosition(int* rows, int* cols);
+    void getCursorPosition(int* const rows, int* const cols);
 }
 
 #endif
