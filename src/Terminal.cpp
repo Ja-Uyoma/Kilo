@@ -147,7 +147,7 @@ namespace Kilo::Terminal
      * @throws std::system_error if the terminal window size could not be retrieved
      * @returns 0 on success
     */
-    int getWindowSize(int* const rows, int* const cols)
+    void getWindowSize(int* const rows, int* const cols)
     {
         winsize ws;
 
@@ -162,7 +162,6 @@ namespace Kilo::Terminal
         
         *cols = ws.ws_col;
         *rows = ws.ws_row;
-        return 0;
     }
 
     /**

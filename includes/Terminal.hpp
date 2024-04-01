@@ -68,7 +68,7 @@ namespace Kilo::Terminal
      * @throws std::system_error if the terminal window size could not be retrieved
      * @returns 0 on success
     */
-    int getWindowSize(int* const rows, int* const cols);
+    void getWindowSize(int* const rows, int* const cols);
 
     /**
      * @brief Get the position of the cursor
