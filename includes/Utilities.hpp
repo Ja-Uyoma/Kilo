@@ -22,5 +22,5 @@ namespace Kilo
      * @throws std::system_error in case of total write failure
     */
     [[nodiscard]]
-    long writeAll(int fd, void const* buf, std::size_t count);
+    long writeAll(int fd, void const* buf, long count);
 } // namespace Kilo
