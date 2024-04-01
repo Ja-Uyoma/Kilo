@@ -85,7 +85,11 @@ namespace Kilo::Editor
     void drawRows() noexcept
     {
         for (int y = 0; y < editorConfig.m_screenRows; ++y) {
-            ::write(STDOUT_FILENO, "~\r\n", 3);
+            ::write(STDOUT_FILENO, "~", 1);
+
+            if (y < editorConfig.m_screenRows - 1) {
+                ::write(STDOUT_FILENO, "\r\n", 2);
+            }
         }
     }
 }
