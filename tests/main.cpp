@@ -23,7 +23,6 @@
 
 #include <cstdint>
 
-#include <catch2/catch_test_macros.hpp>
 #include <gtest/gtest.h>
 
 constexpr std::uint32_t factorial(std::uint32_t number) noexcept
@@ -31,14 +30,8 @@ constexpr std::uint32_t factorial(std::uint32_t number) noexcept
     return number <= 1 ? number : factorial(number - 1) * number;
 }
 
-TEST_CASE("Factorials are computed", "[factorial]")
 TEST(FactorialTest, HandlesPositiveInput)
 {
-    REQUIRE(factorial(1) == 1);
-    REQUIRE(factorial(2) == 2);
-    REQUIRE(factorial(3) == 6);
-    REQUIRE(factorial(10) == 3'628'800);
-}
     EXPECT_EQ(factorial(1), 1);
     EXPECT_EQ(factorial(2), 2);
     EXPECT_EQ(factorial(3), 6);
