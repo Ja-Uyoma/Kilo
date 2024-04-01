@@ -157,7 +157,7 @@ namespace Kilo::Terminal
                 throw std::system_error(errno, std::system_category(), "Could not move the cursor to the bottom-right of the screen");
             }
 
-            return getCursorPosition(rows, cols);
+            getCursorPosition(rows, cols);
         }
         
         *cols = ws.ws_col;
@@ -171,7 +171,7 @@ namespace Kilo::Terminal
      * @param[inout] cols The number of columns of the terminal window
      * @returns The number of rows and columns of the terminal window, or -1 on failure
     */
-    int getCursorPosition(int* rows, int* cols)
+    void getCursorPosition(int* rows, int* cols)
     {
         // Get the position of the cursor
         if (::write(STDOUT_FILENO, "\x1b[6n", 4) != 4) {
@@ -210,7 +210,5 @@ namespace Kilo::Terminal
         if (std::sscanf(&buf[2], "%d;%d", rows, cols) != 2) {
             throw std::system_error(errno, std::system_category(), "Failed to write buffer data into rows and cols variables");
         }
-
-        return 0;
     }
 }
