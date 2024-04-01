@@ -36,7 +36,7 @@ namespace Kilo::Utilities
                     continue;
                 }
                 else {
-                    throw std::system_error(errno, std::generic_category(), std::strerror(errno));
+                    throw std::system_error(errno, std::system_category(), std::strerror(errno));
                 }
             }
 

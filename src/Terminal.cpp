@@ -34,6 +34,7 @@
 #include <cerrno>
 #include <system_error>
 #include <sys/ioctl.h>
+#include <cstring>
 
 namespace Kilo::Terminal
 {
@@ -47,7 +48,7 @@ namespace Kilo::Terminal
         void getOriginalTerminalSettings(termios& settings)
         {
             if (errno = 0; ::tcgetattr(STDIN_FILENO, &settings) == -1) {
-                throw std::system_error(errno, std::generic_category(), "Could not retrieve original terminal driver settings");
+                throw std::system_error(errno, std::system_category(), "Could not retrieve original terminal driver settings");
             }
         }
 
@@ -59,7 +60,7 @@ namespace Kilo::Terminal
         void setNewTerminalSettings(termios const& settings)
         {
             if (errno = 0; ::tcsetattr(STDIN_FILENO, TCSAFLUSH, &settings) == -1) {
-                throw std::system_error(errno, std::generic_category(), "Could not set terminal driver to raw mode");
+                throw std::system_error(errno, std::system_category(), "Could not set terminal driver to raw mode");
             }
         }
     }
@@ -115,7 +116,7 @@ namespace Kilo::Terminal
     void disableRawMode(termios const& canonicalSettings)
     {
         if (errno = 0; ::tcsetattr(STDIN_FILENO, TCSAFLUSH, &canonicalSettings) == -1) {
-            throw std::system_error(errno, std::generic_category(), "Could not restore terminal driver to normal mode");
+            throw std::system_error(errno, std::system_category(), "Could not restore terminal driver to normal mode");
         }
     }
 
@@ -130,7 +131,7 @@ namespace Kilo::Terminal
 
         for (long nread = 0; nread != 1; nread = ::read(STDIN_FILENO, &c, 1)) {
             if (nread == -1 && errno != EAGAIN) {
-                throw std::system_error(errno, std::generic_category());
+                throw std::system_error(errno, std::system_category());
             }
 
             errno = 0;
@@ -174,7 +175,7 @@ namespace Kilo::Terminal
     {
         // Get the position of the cursor
         if (::write(STDOUT_FILENO, "\x1b[6n", 4) != 4) {
-            return -1;
+            throw std::system_error(errno, std::system_category(), "Could not get cursor position");
         }
 
         char buf[32] {};
