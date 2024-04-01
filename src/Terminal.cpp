@@ -154,7 +154,7 @@ namespace Kilo::Terminal
         if (::ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == -1 || ws.ws_col == 0) {
             // Move the cursor to the bottom-right of the screen
             if (::write(STDOUT_FILENO, "\x1b[999C\x1b[999B", 12) != 12) {
-                return -1;
+                throw std::system_error(errno, std::system_category(), "Could not move the cursor to the bottom-right of the screen");
             }
 
             return getCursorPosition(rows, cols);
