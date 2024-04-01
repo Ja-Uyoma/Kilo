@@ -28,8 +28,8 @@
  * driver settings with regards to entering and exiting raw and/or canonical mode
 */
 
-#ifndef TERMINAL_SETTINGS_HPP
-#define TERMINAL_SETTINGS_HPP
+#ifndef TERMINAL_HPP
+#define TERMINAL_HPP
 
 #include <termios.h>
 
@@ -53,6 +53,30 @@ namespace Kilo::Terminal
      * @throws std::system_error if restoring the terminal driver to normal mode fails
     */
     void disableRawMode(termios const& canonicalSettings);
+
+    /** 
+     * @brief Read key input from stdin
+     * @return The character read
+     * @throws std::system_error if an error occured during read
+    */ 
+    char readKey();
+
+    /**
+     * @brief Get the size of the terminal window
+     * @param[inout] rows The number of rows of the terminal window
+     * @param[inout] cols The number of columns of the terminal window
+     * @throws std::system_error if the terminal window size could not be retrieved
+     * @returns 0 on success
+    */
+    void getWindowSize(int* const rows, int* const cols);
+
+    /**
+     * @brief Get the position of the cursor
+     * @param[inout] rows The number of rows of the terminal window
+     * @param[inout] cols The number of columns of the terminal window
+     * @returns The number of rows and columns of the terminal window, or -1 on failure
+    */
+    void getCursorPosition(int* const rows, int* const cols);
 }
 
 #endif

@@ -1,63 +1,48 @@
 #include "Editor.hpp"
 #include "Utilities.hpp"
-#include "TerminalSettings.hpp"
+#include "Terminal.hpp"
 
 #include <system_error>
 #include <unistd.h>
 #include <cstdlib>
+#include <iostream>
 
 namespace Kilo::Editor 
 {
     EditorConfig::EditorConfig()
     {
-        enableRawMode();
+        try {
+            Terminal::enableRawMode(m_origTermios);
+            Terminal::getWindowSize(&m_screenRows, &m_screenCols);
+        }
+        catch (std::system_error const& err) {
+            std::cerr << err.code() << ": " << err.what() << '\n';
+        }
     }
 
     EditorConfig::~EditorConfig()
     {
-        disableRawMode();
-    }
-
-    /// @brief Set the terminal in raw mode
-    void EditorConfig::enableRawMode() &
-    {
-        Terminal::enableRawMode(m_origTermios);
-    }
-
-    /// @brief Set the terminal in canonical mode
-    void EditorConfig::disableRawMode() const& 
-    {
+        // We need to call disableRawMode at program exit to reset the terminal to its canonical settings
+        // We cannot register an atexit handler for this because atexit doesn't accept functions
+        // that take parameters.
+        // Therefore, the solution is to use RAII with a static object whose resources must be cleaned up
+        // at program exit
+        
         Terminal::disableRawMode(m_origTermios);
     }
-    
-    /// @brief Read key input from stdin
-    /// @return The character read
-    /// @throws std::system_error if an error occured during read
-    char readKey()
-    {
-        char c {};
 
-        for (long nread = 0; nread != 1; nread = ::read(STDIN_FILENO, &c, 1)) {
-            if (nread == -1 && errno != EAGAIN) {
-                throw std::system_error(errno, std::generic_category());
-            }
-
-            errno = 0;
-        }
-
-        return c;
-    }
+    static const Editor::EditorConfig editorConfig;
 
     /// @brief Process the results from readKey
     /// @details This function is responsible for mapping keypresses to editor operations
     /// @throws std::system_error if an error occured during read
-    void processKeypress() noexcept(noexcept(readKey()))
+    void processKeypress()
     {
-        char c = readKey();
+        char c = Terminal::readKey();
 
         switch (c) {
-            case ctrlKey('q'):
-                clearScreenAndRepositionCursor();
+            case Utilities::ctrlKey('q'):
+                Utilities::clearScreenAndRepositionCursor();
                 std::exit(EXIT_SUCCESS);
                 break;
             default:
@@ -68,7 +53,7 @@ namespace Kilo::Editor
     /// @brief Clear the screen and reposition the cursor to the top-left corner
     void refreshScreen()
     {
-        clearScreenAndRepositionCursor();
+        Utilities::clearScreenAndRepositionCursor();
         drawRows();
         ::write(STDOUT_FILENO, "\x1b[H", 3);
     }
@@ -76,7 +61,7 @@ namespace Kilo::Editor
     /// @brief Draw each row of the buffer of text being edited, plus a tilde at the beginning
     void drawRows() noexcept
     {
-        for (int y = 0; y < 24; ++y) {
+        for (int y = 0; y < editorConfig.m_screenRows; ++y) {
             ::write(STDOUT_FILENO, "~\r\n", 3);
         }
     }

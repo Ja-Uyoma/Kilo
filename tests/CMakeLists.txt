@@ -14,10 +14,10 @@ target_include_directories(kilo_tests
 
 target_sources(kilo_tests
     PUBLIC
-        "${CMAKE_SOURCE_DIR}/includes/TerminalSettings.hpp"
+        "${CMAKE_SOURCE_DIR}/includes/Terminal.hpp"
     PRIVATE
         main.cpp
-        "${CMAKE_SOURCE_DIR}/src/TerminalSettings.cpp"
+        "${CMAKE_SOURCE_DIR}/src/Terminal.cpp"
 )
 
 target_compile_features(kilo_tests

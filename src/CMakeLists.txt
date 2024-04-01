@@ -11,13 +11,13 @@ target_include_directories(kilo
 
 target_sources(kilo
     PUBLIC
-        "${CMAKE_SOURCE_DIR}/includes/TerminalSettings.hpp"
+        "${CMAKE_SOURCE_DIR}/includes/Terminal.hpp"
         "${CMAKE_SOURCE_DIR}/includes/Editor.hpp"
         "${CMAKE_SOURCE_DIR}/includes/Utilities.hpp"
     PRIVATE
         main.cpp
         Main.cpp
-        TerminalSettings.cpp
+        Terminal.cpp
         Utilities.cpp
         Editor.cpp
 )
