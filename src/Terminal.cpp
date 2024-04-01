@@ -208,7 +208,7 @@ namespace Kilo::Terminal
         // At this point, we are passing a string of the form "35;76" to sscanf
         // We tell it to parse the 2 integers separated by a ';' and write the value into the rows and cols variables
         if (std::sscanf(&buf[2], "%d;%d", rows, cols) != 2) {
-            return -1;
+            throw std::system_error(errno, std::system_category(), "Failed to write buffer data into rows and cols variables");
         }
 
         return 0;
