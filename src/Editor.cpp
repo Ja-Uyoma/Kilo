@@ -74,7 +74,7 @@ namespace Kilo::Editor
     }
 
     /// @brief Clear the screen and reposition the cursor to the top-left corner
-    void refreshScreen()
+    void refreshScreen() noexcept
     {
         Utilities::clearScreenAndRepositionCursor();
         drawRows();
