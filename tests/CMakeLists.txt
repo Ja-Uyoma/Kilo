@@ -1,13 +1,11 @@
 add_executable(kilo_tests)
 
-find_package(Catch2 REQUIRED)
 find_package(GTest REQUIRED)
 
 target_link_libraries(kilo_tests
     PRIVATE
         GTest::gtest_main
         GTest::gmock_main
-        Catch2::Catch2WithMain
 )
 
 target_include_directories(kilo_tests
