@@ -79,12 +79,14 @@ namespace Kilo::Editor
     {
         AppendBuffer::AppendBuffer buffer {};
 
-        AppendBuffer::abAppend(buffer, "\x1b[2J", 4);
-        AppendBuffer::abAppend(buffer, "\x1b[H", 3);
+        AppendBuffer::abAppend(buffer, "\x1b[?25l", 6);    // hide the cursor when repainting
+        AppendBuffer::abAppend(buffer, "\x1b[2J", 4);    // clear the screen
+        AppendBuffer::abAppend(buffer, "\x1b[H", 3);    // reposition the cursor
         
         drawRows(buffer);
 
-        AppendBuffer::abAppend(buffer, "\x1b[H", 3);
+        AppendBuffer::abAppend(buffer, "\x1b[H", 3);    // reposition the cursor
+        AppendBuffer::abAppend(buffer, "\x1b[?25h", 6);    // show the cursor
 
         ::write(STDOUT_FILENO, buffer.c_str(), buffer.length());
     }
