@@ -6,3 +6,6 @@ build
 
 # CMake user presets file
 CMakeUserPresets.json
+
+# Ignore cached clangd files
+.cache
