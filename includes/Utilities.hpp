@@ -25,6 +25,9 @@
 
 namespace Kilo::Utilities
 {
+    /// @brief The version number of the application
+    inline constexpr char const* KILO_VERSION = "0.0.1";
+
     /// @brief Clear the screen and reposition the cursor to the top-left corner
     void clearScreenAndRepositionCursor() noexcept;
 
