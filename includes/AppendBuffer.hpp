@@ -9,9 +9,20 @@ namespace Kilo::AppendBuffer
     // we will do one big ::write() at the end to make sure the entire screen updates at once.
     // This is accomplished by the use of a buffer to which strings will be appended, and then
     // this buffer will be written out at the end.
-    struct AppendBuffer
+    
+    class AppendBuffer
     {
-        std::string buffer;
+    public:
+        /// @brief Append the given C-string to the buffer
+        /// @param[in] str The string to be appended to the buffer
+        /// @param[in] length The length of the string
+        constexpr void append(char const* str, std::size_t length)
+        {
+            m_buffer.append(str, length);
+        }
+
+    private:
+        std::string m_buffer;
     };
 }
 
