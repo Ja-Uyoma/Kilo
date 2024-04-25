@@ -16,8 +16,10 @@ target_include_directories(kilo_tests
 target_sources(kilo_tests
     PUBLIC
         "${CMAKE_SOURCE_DIR}/includes/Terminal.hpp"
+        "${CMAKE_SOURCE_DIR}/includes/AppendBuffer.hpp"
     PRIVATE
         main.cpp
+        AppendBuffer.test.cpp
         "${CMAKE_SOURCE_DIR}/src/Terminal.cpp"
 )
 
