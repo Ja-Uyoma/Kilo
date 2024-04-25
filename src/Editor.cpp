@@ -85,7 +85,6 @@ namespace Kilo::Editor
         drawRows(buffer);
 
         AppendBuffer::abAppend(buffer, "\x1b[H", 3);
-        // ::write(STDOUT_FILENO, "\x1b[H", 3);
 
         ::write(STDOUT_FILENO, buffer.c_str(), buffer.length());
     }
