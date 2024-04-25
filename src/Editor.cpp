@@ -26,6 +26,7 @@
 #include "Utilities.hpp"
 #include "Terminal.hpp"
 
+#include <cstdio>
 #include <system_error>
 #include <unistd.h>
 #include <cstdlib>
@@ -94,9 +95,43 @@ namespace Kilo::Editor
     void drawRows(AppendBuffer::AppendBuffer& buffer) noexcept
     {
         using AppendBuffer::abAppend;
+        using Utilities::KILO_VERSION;
 
         for (int y = 0; y < editorConfig.m_screenRows; ++y) {
-            abAppend(buffer, "~", 1);
+            if (y == editorConfig.m_screenRows / 3) {
+                char welcome[80] {};
+
+                // Interpolate KILO_VERSION into the welcome message
+                int welcomeLen = std::snprintf(welcome, sizeof(welcome), "Kilo editor -- version %s", KILO_VERSION);
+
+                // Truncate the length of the string in case the terminal is too small to fit the welcome message
+                if (welcomeLen > editorConfig.m_screenCols) {
+                    welcomeLen = editorConfig.m_screenCols;
+                }
+
+                // Center the string
+                // Divide the screen width by 2 and then subtract half the string's length from this value.
+                // This tells us how far from the left edge of the screen we should start printing the string.
+                // So, we fill that space with space characters, except for the first character, which should be a tilde
+
+                int padding = (editorConfig.m_screenCols - welcomeLen) / 2;
+
+                if (padding > 0) {
+                    abAppend(buffer, "~", 1);
+                    --padding;
+                }
+
+                while (padding > 0) {
+                    abAppend(buffer, " ", 1);
+                    --padding;
+                }
+
+                abAppend(buffer, welcome, welcomeLen);
+            }
+            else {
+                abAppend(buffer, "~", 1);
+            }
+
             abAppend(buffer, "\x1b[K", 3);
 
             if (y < editorConfig.m_screenRows - 1) {
