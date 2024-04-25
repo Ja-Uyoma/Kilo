@@ -93,12 +93,14 @@ namespace Kilo::Editor
     /// @brief Draw each row of the buffer of text being edited, plus a tilde at the beginning
     void drawRows(AppendBuffer::AppendBuffer& buffer) noexcept
     {
+        using AppendBuffer::abAppend;
+
         for (int y = 0; y < editorConfig.m_screenRows; ++y) {
-            AppendBuffer::abAppend(buffer, "~", 1);
-            AppendBuffer::abAppend(buffer, "\x1b[K", 3);
+            abAppend(buffer, "~", 1);
+            abAppend(buffer, "\x1b[K", 3);
 
             if (y < editorConfig.m_screenRows - 1) {
-                AppendBuffer::abAppend(buffer, "\r\n", 2);
+                abAppend(buffer, "\r\n", 2);
             }
         }
     }
