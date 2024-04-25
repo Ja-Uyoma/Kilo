@@ -22,6 +22,7 @@
 */
 
 #include "Editor.hpp"
+#include "AppendBuffer.hpp"
 #include "Utilities.hpp"
 #include "Terminal.hpp"
 
@@ -76,19 +77,27 @@ namespace Kilo::Editor
     /// @brief Clear the screen and reposition the cursor to the top-left corner
     void refreshScreen() noexcept
     {
-        Utilities::clearScreenAndRepositionCursor();
-        drawRows();
-        ::write(STDOUT_FILENO, "\x1b[H", 3);
+        AppendBuffer::AppendBuffer buffer {};
+
+        AppendBuffer::abAppend(buffer, "\x1b[2J", 4);
+        AppendBuffer::abAppend(buffer, "\x1b[H", 3);
+        
+        drawRows(buffer);
+
+        AppendBuffer::abAppend(buffer, "\x1b[H", 3);
+        // ::write(STDOUT_FILENO, "\x1b[H", 3);
+
+        ::write(STDOUT_FILENO, buffer.c_str(), buffer.length());
     }
 
     /// @brief Draw each row of the buffer of text being edited, plus a tilde at the beginning
-    void drawRows() noexcept
+    void drawRows(AppendBuffer::AppendBuffer& buffer) noexcept
     {
         for (int y = 0; y < editorConfig.m_screenRows; ++y) {
-            ::write(STDOUT_FILENO, "~", 1);
+            AppendBuffer::abAppend(buffer, "~", 1);
 
             if (y < editorConfig.m_screenRows - 1) {
-                ::write(STDOUT_FILENO, "\r\n", 2);
+                AppendBuffer::abAppend(buffer, "\r\n", 2);
             }
         }
     }

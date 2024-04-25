@@ -21,6 +21,8 @@
  * SOFTWARE.
 */
 
+#include "AppendBuffer.hpp"
+
 #include <termios.h>
 
 namespace Kilo::Editor
@@ -51,5 +53,5 @@ namespace Kilo::Editor
     void refreshScreen() noexcept;
 
     /// @brief Draw each row of the buffer of text being edited, plus a tilde at the beginning
-    void drawRows() noexcept;
+    void drawRows(AppendBuffer::AppendBuffer& buffer) noexcept;
 }
