@@ -33,7 +33,8 @@ namespace Kilo::Utilities
     /// @return A control key
     constexpr unsigned ctrlKey(unsigned char key) noexcept
     {
-        return key &= 0x1f;
+        key &= 0x1f;
+        return key;
     }
 
     /**
