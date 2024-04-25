@@ -21,6 +21,20 @@ namespace Kilo::AppendBuffer
             m_buffer.append(str, length);
         }
 
+        /// @brief Get the length of the buffer
+        /// @returns The length of the buffer
+        constexpr std::size_t length() const noexcept
+        {
+            return m_buffer.length();
+        }
+
+        /// @brief Get a  C-string representation of the buffer
+        /// @returns A constant C-string representation of the buffer
+        constexpr char const* c_str() const noexcept
+        {
+            return m_buffer.c_str();
+        }
+
     private:
         std::string m_buffer;
     };
