@@ -80,7 +80,6 @@ namespace Kilo::Editor
         AppendBuffer::AppendBuffer buffer {};
 
         AppendBuffer::abAppend(buffer, "\x1b[?25l", 6);    // hide the cursor when repainting
-        AppendBuffer::abAppend(buffer, "\x1b[2J", 4);    // clear the screen
         AppendBuffer::abAppend(buffer, "\x1b[H", 3);    // reposition the cursor
         
         drawRows(buffer);
@@ -96,6 +95,7 @@ namespace Kilo::Editor
     {
         for (int y = 0; y < editorConfig.m_screenRows; ++y) {
             AppendBuffer::abAppend(buffer, "~", 1);
+            AppendBuffer::abAppend(buffer, "\x1b[K", 3);
 
             if (y < editorConfig.m_screenRows - 1) {
                 AppendBuffer::abAppend(buffer, "\r\n", 2);
