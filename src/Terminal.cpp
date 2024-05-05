@@ -29,6 +29,7 @@
 */
 
 #include "Terminal.hpp"
+#include "Utilities.hpp"
 
 #include <unistd.h>
 #include <cerrno>
@@ -161,11 +162,13 @@ namespace Kilo::Terminal
             // If it isn't, we just return the escape character
 
             if (seq[0] == '[') {
+                using enum Kilo::Utilities::EditorKey;
+
                 switch (seq[1]) {
-                    case 'A': return 'w';
-                    case 'B': return 's';
-                    case 'C': return 'd';
-                    case 'D': return 'a';
+                    case 'A': return static_cast<char>(ArrowUp);
+                    case 'B': return static_cast<char>(ArrowDown);
+                    case 'C': return static_cast<char>(ArrowRight);
+                    case 'D': return static_cast<char>(ArrowLeft);
                 }
             }
 

@@ -67,14 +67,16 @@ namespace Kilo::Editor
         char c = Terminal::readKey();
 
         switch (c) {
+            using enum Kilo::Utilities::EditorKey;
+
             case Utilities::ctrlKey('q'):
                 Utilities::clearScreenAndRepositionCursor();
                 std::exit(EXIT_SUCCESS);
                 break;
-            case 'w':
-            case 's':
-            case 'a':
-            case 'd':
+            case static_cast<char>(ArrowUp):
+            case static_cast<char>(ArrowDown):
+            case static_cast<char>(ArrowLeft):
+            case static_cast<char>(ArrowRight):
                 moveCursor(c);
             default:
                 break;
