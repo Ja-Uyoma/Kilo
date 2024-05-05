@@ -31,6 +31,7 @@
 #include <unistd.h>
 #include <cstdlib>
 #include <iostream>
+#include <cstring>
 
 namespace Kilo::Editor 
 {
@@ -85,7 +86,13 @@ namespace Kilo::Editor
         
         drawRows(buffer);
 
-        AppendBuffer::abAppend(buffer, "\x1b[H", 3);    // reposition the cursor
+        char buf[32];
+
+        // Specify the exact position we want the cursor to move to
+        // We add 1 to cursorX and cursorY to convert from 0-indexed values to the 1-indexed values that the terminal uses
+        std::snprintf(buf, sizeof buf, "\x1b[%d;%dH", editorConfig.cursorX + 1, editorConfig.cursorY + 1);
+        
+        AppendBuffer::abAppend(buffer, buf, std::strlen(buf));
         AppendBuffer::abAppend(buffer, "\x1b[?25h", 6);    // show the cursor
 
         ::write(STDOUT_FILENO, buffer.c_str(), buffer.length());
