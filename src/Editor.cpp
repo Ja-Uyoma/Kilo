@@ -162,19 +162,31 @@ namespace Kilo::Editor
     void moveCursor(int key)
     {
         using enum Kilo::Utilities::EditorKey;
-        
+
         switch (key) {
             case static_cast<int>(ArrowLeft):
-                editorConfig.cursorX--;
+                if (editorConfig.cursorX != 0) {
+                    editorConfig.cursorX--;
+                }
+
                 break;
             case static_cast<int>(ArrowRight):
-                editorConfig.cursorX++;
+                if (editorConfig.cursorX != editorConfig.screenCols - 1) {
+                    editorConfig.cursorX++;
+                }
+
                 break;
             case static_cast<int>(ArrowUp):
-                editorConfig.cursorY--;
+                if (editorConfig.cursorY != 0) {
+                    editorConfig.cursorY--;
+                }
+
                 break;
             case static_cast<int>(ArrowDown):
-                editorConfig.cursorY++;
+                if (editorConfig.cursorY != editorConfig.screenRows - 1) {
+                    editorConfig.cursorY++;
+                }
+                
                 break;
             default:
                 break;
