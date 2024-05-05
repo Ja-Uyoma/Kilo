@@ -57,7 +57,7 @@ namespace Kilo::Editor
         Terminal::disableRawMode(origTermios);
     }
 
-    static const Editor::EditorConfig editorConfig;
+    static Editor::EditorConfig editorConfig;
 
     /// @brief Process the results from readKey
     /// @details This function is responsible for mapping keypresses to editor operations
