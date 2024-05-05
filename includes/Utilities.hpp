@@ -36,7 +36,9 @@ namespace Kilo::Utilities
         ArrowLeft = 1000,
         ArrowRight,
         ArrowUp,
-        ArrowDown
+        ArrowDown,
+        PageUp,
+        PageDown
     };
 
     /// @brief Clear the screen and reposition the cursor to the top-left corner
