@@ -73,6 +73,14 @@ namespace Kilo::Editor
                 Utilities::clearScreenAndRepositionCursor();
                 std::exit(EXIT_SUCCESS);
                 break;
+            case static_cast<int>(PageUp):
+            case static_cast<int>(PageDown):
+                {
+                    for (int i = editorConfig.screenRows; i > 0; i--) {
+                        moveCursor(c == static_cast<int>(PageUp) ? static_cast<int>(ArrowUp) : static_cast<int>(ArrowDown));
+                    }
+                }
+                break;
             case static_cast<int>(ArrowUp):
             case static_cast<int>(ArrowDown):
             case static_cast<int>(ArrowLeft):

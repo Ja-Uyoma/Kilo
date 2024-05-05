@@ -157,18 +157,37 @@ namespace Kilo::Terminal
                 return '\x1b';
             }
 
-            // Otherwise we look to see if the escape sequence is an arrow key escape sequence.
-            // If it is, we just return the corresponding [w, a, s, d] character for now.
-            // If it isn't, we just return the escape character
-
             if (seq[0] == '[') {
                 using enum Kilo::Utilities::EditorKey;
 
-                switch (seq[1]) {
-                    case 'A': return static_cast<int>(ArrowUp);
-                    case 'B': return static_cast<int>(ArrowDown);
-                    case 'C': return static_cast<int>(ArrowRight);
-                    case 'D': return static_cast<int>(ArrowLeft);
+                // If the byte after [ is a digit, we read another byte expecting it to be a ~.
+                // Then we test the digit byte to see if it's a 5 or 6.
+                // Page Up is sent as \x1b[5~, and Page Down is sent as \x1b[6~.
+
+                if (seq[1] >= '0' && seq[1] <= '9') {
+                    if (::read(STDIN_FILENO, &seq[2], 1) != 1) {
+                        return '\x1b';
+                    }
+
+                    if (seq[2] == '~') {
+                        switch (seq[1]) {
+                            case '5': return static_cast<int>(PageUp);
+                            case '6': return static_cast<int>(PageDown);
+                        }
+                    }
+                }
+
+                // Otherwise we look to see if the escape sequence is an arrow key escape sequence.
+                // If it is, we just return the corresponding [w, a, s, d] character for now.
+                // If it isn't, we just return the escape character
+                
+                else {
+                    switch (seq[1]) {
+                        case 'A': return static_cast<int>(ArrowUp);
+                        case 'B': return static_cast<int>(ArrowDown);
+                        case 'C': return static_cast<int>(ArrowRight);
+                        case 'D': return static_cast<int>(ArrowLeft);
+                    }
                 }
             }
 
