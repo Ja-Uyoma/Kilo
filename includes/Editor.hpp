@@ -33,6 +33,8 @@ namespace Kilo::Editor
         termios origTermios;
         int screenRows;
         int screenCols;
+        int cursorX {};    // The horizontal coordinate of the cursor (the column)
+        int cursorY {};    // The vertical coordinate of the cursor (the row)
 
         explicit EditorConfig();
         ~EditorConfig();
