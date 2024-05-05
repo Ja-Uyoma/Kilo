@@ -71,8 +71,13 @@ namespace Kilo::Editor
                 Utilities::clearScreenAndRepositionCursor();
                 std::exit(EXIT_SUCCESS);
                 break;
+            case 'w':
+            case 's':
+            case 'a':
+            case 'd':
+                moveCursor(c);
             default:
-                return;
+                break;
         }
     }
 
