@@ -137,7 +137,43 @@ namespace Kilo::Terminal
             errno = 0;
         }
 
-        return c;
+        // Pressing an arrow key sends multiple bytes as input to our program.
+        // These bytes are in the form of an escape sequence that starts with '\x1b', '[', followed
+        // by an 'A', 'B', 'C', or 'D', depending on which of the 4 arrow keys was pressed.
+        // We want to read escape sequences of this form as a single key press.
+
+        if (c == '\x1b') {
+            char seq[3] {};
+
+            // If we read an escape character, we immediately read 2 more bytes into the seq buffer.
+            // If either of these reads times out, then we assume the user just pressed the Escape key and return that.
+            
+            if (::read(STDIN_FILENO, &seq[0], 1) != 1) {
+                return '\x1b';
+            }
+
+            if (::read(STDIN_FILENO, &seq[1], 1) != 1) {
+                return '\x1b';
+            }
+
+            // Otherwise we look to see if the escape sequence is an arrow key escape sequence.
+            // If it is, we just return the corresponding [w, a, s, d] character for now.
+            // If it isn't, we just return the escape character
+
+            if (seq[0] == '[') {
+                switch (seq[1]) {
+                    case 'A': return 'w';
+                    case 'B': return 's';
+                    case 'C': return 'd';
+                    case 'D': return 'a';
+                }
+            }
+
+            return '\x1b';
+        }
+        else {
+            return c;
+        }
     }
 
     /**
