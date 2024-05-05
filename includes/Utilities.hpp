@@ -28,12 +28,15 @@ namespace Kilo::Utilities
     /// @brief The version number of the application
     inline constexpr char const* KILO_VERSION = "0.0.1";
 
-    enum class EditorKey : char
+    // We choose a representation for arrow keys that doesn't conflict with w, a, s, d.
+    // We give them a large integer value that is out of the range of a char, so that they don't
+    // conflict with ordinary keypresses.
+    enum class EditorKey : int
     {
-        ArrowLeft = 'a',
-        ArrowRight = 'd',
-        ArrowUp = 'w',
-        ArrowDown = 's'
+        ArrowLeft = 1000,
+        ArrowRight,
+        ArrowUp,
+        ArrowDown
     };
 
     /// @brief Clear the screen and reposition the cursor to the top-left corner

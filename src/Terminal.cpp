@@ -126,7 +126,7 @@ namespace Kilo::Terminal
      * @return The character read
      * @throws std::system_error if an error occured during read
     */ 
-    char readKey()
+    int readKey()
     {
         char c {};
 
@@ -165,10 +165,10 @@ namespace Kilo::Terminal
                 using enum Kilo::Utilities::EditorKey;
 
                 switch (seq[1]) {
-                    case 'A': return static_cast<char>(ArrowUp);
-                    case 'B': return static_cast<char>(ArrowDown);
-                    case 'C': return static_cast<char>(ArrowRight);
-                    case 'D': return static_cast<char>(ArrowLeft);
+                    case 'A': return static_cast<int>(ArrowUp);
+                    case 'B': return static_cast<int>(ArrowDown);
+                    case 'C': return static_cast<int>(ArrowRight);
+                    case 'D': return static_cast<int>(ArrowLeft);
                 }
             }
 

@@ -59,7 +59,7 @@ namespace Kilo::Terminal
      * @return The character read
      * @throws std::system_error if an error occured during read
     */ 
-    char readKey();
+    int readKey();
 
     /**
      * @brief Get the size of the terminal window and write them to @param rows and @param cols

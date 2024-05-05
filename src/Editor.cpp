@@ -64,7 +64,7 @@ namespace Kilo::Editor
     /// @throws std::system_error if an error occured during read
     void processKeypress()
     {
-        char c = Terminal::readKey();
+        int c = Terminal::readKey();
 
         switch (c) {
             using enum Kilo::Utilities::EditorKey;
@@ -73,10 +73,10 @@ namespace Kilo::Editor
                 Utilities::clearScreenAndRepositionCursor();
                 std::exit(EXIT_SUCCESS);
                 break;
-            case static_cast<char>(ArrowUp):
-            case static_cast<char>(ArrowDown):
-            case static_cast<char>(ArrowLeft):
-            case static_cast<char>(ArrowRight):
+            case static_cast<int>(ArrowUp):
+            case static_cast<int>(ArrowDown):
+            case static_cast<int>(ArrowLeft):
+            case static_cast<int>(ArrowRight):
                 moveCursor(c);
             default:
                 break;
@@ -159,19 +159,21 @@ namespace Kilo::Editor
      *
      * @param key The character representing the direction to move the cursor in
      */
-    void moveCursor(char key)
+    void moveCursor(int key)
     {
+        using enum Kilo::Utilities::EditorKey;
+        
         switch (key) {
-            case 'a':
+            case static_cast<int>(ArrowLeft):
                 editorConfig.cursorX--;
                 break;
-            case 'd':
+            case static_cast<int>(ArrowRight):
                 editorConfig.cursorX++;
                 break;
-            case 'w':
+            case static_cast<int>(ArrowUp):
                 editorConfig.cursorY--;
                 break;
-            case 's':
+            case static_cast<int>(ArrowDown):
                 editorConfig.cursorY++;
                 break;
             default:

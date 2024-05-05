@@ -62,5 +62,5 @@ namespace Kilo::Editor
      * 
      * @param key The character representing the direction to move the cursor in
      */
-    void moveCursor(char key);
+    void moveCursor(int key);
 }
