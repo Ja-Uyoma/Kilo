@@ -37,6 +37,8 @@ namespace Kilo::Utilities
         ArrowRight,
         ArrowUp,
         ArrowDown,
+        Home,
+        End,
         PageUp,
         PageDown
     };
