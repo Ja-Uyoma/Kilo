@@ -30,9 +30,9 @@ namespace Kilo::Editor
     class EditorConfig
     {
     public:
-        termios m_origTermios;
-        int m_screenRows;
-        int m_screenCols;
+        termios origTermios;
+        int screenRows;
+        int screenCols;
 
         explicit EditorConfig();
         ~EditorConfig();

@@ -37,8 +37,8 @@ namespace Kilo::Editor
     EditorConfig::EditorConfig()
     {
         try {
-            Terminal::enableRawMode(m_origTermios);
-            Terminal::getWindowSize(&m_screenRows, &m_screenCols);
+            Terminal::enableRawMode(origTermios);
+            Terminal::getWindowSize(&screenRows, &screenCols);
         }
         catch (std::system_error const& err) {
             std::cerr << err.code() << ": " << err.what() << '\n';
@@ -53,7 +53,7 @@ namespace Kilo::Editor
         // Therefore, the solution is to use RAII with a static object whose resources must be cleaned up
         // at program exit
         
-        Terminal::disableRawMode(m_origTermios);
+        Terminal::disableRawMode(origTermios);
     }
 
     static const Editor::EditorConfig editorConfig;
@@ -97,16 +97,16 @@ namespace Kilo::Editor
         using AppendBuffer::abAppend;
         using Utilities::KILO_VERSION;
 
-        for (int y = 0; y < editorConfig.m_screenRows; ++y) {
-            if (y == editorConfig.m_screenRows / 3) {
+        for (int y = 0; y < editorConfig.screenRows; ++y) {
+            if (y == editorConfig.screenRows / 3) {
                 char welcome[80] {};
 
                 // Interpolate KILO_VERSION into the welcome message
                 int welcomeLen = std::snprintf(welcome, sizeof(welcome), "Kilo editor -- version %s", KILO_VERSION);
 
                 // Truncate the length of the string in case the terminal is too small to fit the welcome message
-                if (welcomeLen > editorConfig.m_screenCols) {
-                    welcomeLen = editorConfig.m_screenCols;
+                if (welcomeLen > editorConfig.screenCols) {
+                    welcomeLen = editorConfig.screenCols;
                 }
 
                 // Center the string
@@ -114,7 +114,7 @@ namespace Kilo::Editor
                 // This tells us how far from the left edge of the screen we should start printing the string.
                 // So, we fill that space with space characters, except for the first character, which should be a tilde
 
-                int padding = (editorConfig.m_screenCols - welcomeLen) / 2;
+                int padding = (editorConfig.screenCols - welcomeLen) / 2;
 
                 if (padding > 0) {
                     abAppend(buffer, "~", 1);
@@ -134,7 +134,7 @@ namespace Kilo::Editor
 
             abAppend(buffer, "\x1b[K", 3);
 
-            if (y < editorConfig.m_screenRows - 1) {
+            if (y < editorConfig.screenRows - 1) {
                 abAppend(buffer, "\r\n", 2);
             }
         }
