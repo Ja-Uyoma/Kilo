@@ -161,8 +161,10 @@ namespace Kilo::Terminal
                 using enum Kilo::Utilities::EditorKey;
 
                 // If the byte after [ is a digit, we read another byte expecting it to be a ~.
-                // Then we test the digit byte to see if it's a 5 or 6.
+                // Then we test the digit byte to see if it's a 1, 4, 5, 6, 7, or 8.
                 // Page Up is sent as \x1b[5~, and Page Down is sent as \x1b[6~.
+                // Home could be sent as \x1b[1~, \x1b[7~, \x1b[H, or \x1b[OH
+                // End could be sent as \x1b[4~, \x1b[8~, \x1b[F, or \x1b[OF.
 
                 if (seq[1] >= '0' && seq[1] <= '9') {
                     if (::read(STDIN_FILENO, &seq[2], 1) != 1) {
@@ -171,23 +173,37 @@ namespace Kilo::Terminal
 
                     if (seq[2] == '~') {
                         switch (seq[1]) {
+                            case '1': return static_cast<int>(Home);
+                            case '4': return static_cast<int>(End);
                             case '5': return static_cast<int>(PageUp);
                             case '6': return static_cast<int>(PageDown);
+                            case '7': return static_cast<int>(Home);
+                            case '8': return static_cast<int>(End);
                         }
                     }
                 }
 
-                // Otherwise we look to see if the escape sequence is an arrow key escape sequence.
+                // Otherwise we look to see if the escape sequence is an arrow key or Home or End escape sequence.
                 // If it is, we just return the corresponding [w, a, s, d] character for now.
                 // If it isn't, we just return the escape character
-                
+
                 else {
                     switch (seq[1]) {
                         case 'A': return static_cast<int>(ArrowUp);
                         case 'B': return static_cast<int>(ArrowDown);
                         case 'C': return static_cast<int>(ArrowRight);
                         case 'D': return static_cast<int>(ArrowLeft);
+                        case 'H': return static_cast<int>(Home);
+                        case 'F': return static_cast<int>(End);
                     }
+                }
+            }
+            else if (seq[0] == 'O') {
+                using enum Kilo::Utilities::EditorKey;
+                
+                switch (seq[1]) {
+                    case 'H': return static_cast<int>(Home);
+                    case 'F': return static_cast<int>(End);
                 }
             }
 
