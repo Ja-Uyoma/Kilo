@@ -146,4 +146,29 @@ namespace Kilo::Editor
             }
         }
     }
+
+    /**
+     * @brief Move the cursor in accordance with the key pressed
+     *
+     * @param key The character representing the direction to move the cursor in
+     */
+    void moveCursor(char key)
+    {
+        switch (key) {
+            case 'a':
+                editorConfig.cursorX--;
+                break;
+            case 'd':
+                editorConfig.cursorX++;
+                break;
+            case 'w':
+                editorConfig.cursorY--;
+                break;
+            case 's':
+                editorConfig.cursorY++;
+                break;
+            default:
+                break;
+        }
+    }
 }

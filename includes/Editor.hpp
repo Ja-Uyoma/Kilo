@@ -56,4 +56,11 @@ namespace Kilo::Editor
 
     /// @brief Draw each row of the buffer of text being edited, plus a tilde at the beginning
     void drawRows(AppendBuffer::AppendBuffer& buffer) noexcept;
+
+    /**
+     * @brief Move the cursor in accordance with the key pressed
+     * 
+     * @param key The character representing the direction to move the cursor in
+     */
+    void moveCursor(char key);
 }
