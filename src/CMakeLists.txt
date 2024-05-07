@@ -14,12 +14,14 @@ target_sources(kilo
         "${CMAKE_SOURCE_DIR}/includes/Terminal.hpp"
         "${CMAKE_SOURCE_DIR}/includes/Editor.hpp"
         "${CMAKE_SOURCE_DIR}/includes/Utilities.hpp"
+        "${CMAKE_SOURCE_DIR}/includes/EditorConfig.hpp"
     PRIVATE
         main.cpp
         Main.cpp
         Terminal.cpp
         Utilities.cpp
         Editor.cpp
+        EditorConfig.cpp
 )
 
 target_compile_features(kilo
