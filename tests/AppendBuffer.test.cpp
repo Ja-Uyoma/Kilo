@@ -1,32 +1,56 @@
+/** 
+ * MIT License
+ * Copyright (c) 2023 Jimmy Givans
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 #include "AppendBuffer.hpp"
 
 #include <cstring>
 #include <gtest/gtest.h>
 
-using namespace Kilo::AppendBuffer;
-
-TEST(AppendBufferTest, IsEmptyWhenCreated)
+namespace Kilo::AppendBuffer
 {
-    AppendBuffer buffer;
+    TEST(AppendBufferTest, IsEmptyWhenCreated)
+    {
+        AppendBuffer buffer;
 
-    ASSERT_EQ(buffer.length(), 0);
-}
+        ASSERT_EQ(buffer.length(), 0);
+    }
 
-TEST(AppendBufferTest, ItsSizeIncreasesByTheLengthOfTheAppendedString)
-{
-    AppendBuffer buffer;
-    char const* str = "Hello, World!";
-    buffer.append(str, std::strlen(str));
+    TEST(AppendBufferTest, ItsSizeIncreasesByTheLengthOfTheAppendedString)
+    {
+        AppendBuffer buffer;
+        char const* str = "Hello, World!";
+        buffer.append(str, std::strlen(str));
 
-    ASSERT_EQ(buffer.length(), 13);
-}
+        ASSERT_EQ(buffer.length(), 13);
+    }
 
-TEST(AppendBufferTest, c_strReturnsACStringRepresentationOfTheContentsOfTheBuffer)
-{
-    AppendBuffer buffer;
-    char const* str = "The quick brown fox jumped over the lazy dog";
+    TEST(AppendBufferTest, c_strReturnsACStringRepresentationOfTheContentsOfTheBuffer)
+    {
+        AppendBuffer buffer;
+        char const* str = "The quick brown fox jumped over the lazy dog";
 
-    buffer.append(str, std::strlen(str));
-    
-    ASSERT_STREQ(buffer.c_str(), str);
+        buffer.append(str, std::strlen(str));
+        
+        ASSERT_STREQ(buffer.c_str(), str);
+    }
 }
