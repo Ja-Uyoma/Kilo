@@ -60,6 +60,13 @@ namespace Kilo::Terminal
         */
         void setNewTerminalSettings(termios& term)
         {
+            term.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
+            term.c_oflag &= ~OPOST;
+            term.c_cflag |= CS8;
+            term.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
+            term.c_cc[VMIN] = 0;
+            term.c_cc[VTIME] = 1;
+
             if (errno = 0; ::tcsetattr(STDIN_FILENO, TCSAFLUSH, &term) == -1) {
                 throw std::system_error(errno, std::system_category(), "Could not set terminal driver to raw mode");
             }
@@ -80,14 +87,6 @@ namespace Kilo::Terminal
 
         // Copy the current terminal settings into another variable
         termios temp = canonicalSettings;
-
-        // Modify the necessary settings
-        temp.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
-        temp.c_oflag &= ~OPOST;
-        temp.c_cflag |= CS8;
-        temp.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
-        temp.c_cc[VMIN] = 0;
-        temp.c_cc[VTIME] = 1;
 
         setNewTerminalSettings(temp);
 
