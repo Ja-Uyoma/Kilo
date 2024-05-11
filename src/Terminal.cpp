@@ -108,10 +108,6 @@ namespace Kilo::Terminal
         termios temp = canonicalSettings;
 
         setNewTerminalSettings(temp);
-
-        if (ascertainNonCanonicalMode(temp)) {
-            disableRawMode(canonicalSettings);
-        }
     }
 
     /**
