@@ -19,7 +19,6 @@ target_sources(tests
         "${CMAKE_SOURCE_DIR}/includes/AppendBuffer.hpp"
     PRIVATE
         AppendBuffer.test.cpp
-        "${CMAKE_SOURCE_DIR}/src/Terminal.cpp"
 )
 
 target_compile_features(tests
