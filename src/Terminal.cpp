@@ -55,12 +55,12 @@ namespace Kilo::Terminal
 
         /**
          * @brief Write new settings to the terminal driver
-         * @param[in] settings The struct containing the settings to be written
+         * @param[in] term The struct containing the settings to be written
          * @throws std::system_error if we could not write the new settings
         */
-        void setNewTerminalSettings(termios const& settings)
+        void setNewTerminalSettings(termios& term)
         {
-            if (errno = 0; ::tcsetattr(STDIN_FILENO, TCSAFLUSH, &settings) == -1) {
+            if (errno = 0; ::tcsetattr(STDIN_FILENO, TCSAFLUSH, &term) == -1) {
                 throw std::system_error(errno, std::system_category(), "Could not set terminal driver to raw mode");
             }
         }
