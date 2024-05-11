@@ -3,6 +3,8 @@
 
 #include <termios.h>
 
+#include <string>
+
 namespace Kilo::Editor
 {
     class EditorConfig
@@ -13,6 +15,8 @@ namespace Kilo::Editor
         int screenCols;
         int cursorX {};    // The horizontal coordinate of the cursor (the column)
         int cursorY {};    // The vertical coordinate of the cursor (the row)
+        std::string row;
+        int numrows {};
 
         explicit EditorConfig();
         ~EditorConfig();
