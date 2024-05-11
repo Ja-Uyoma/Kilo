@@ -54,6 +54,16 @@ namespace Kilo::Terminal
     */
     void disableRawMode(termios const& canonicalSettings);
 
+    /**
+    * @brief Verifies that all changes to the terminal driver were made successfully.
+    *
+    * @details This is necessary because tcsetattr returns successfully it at least one change was successful.
+    * @param term The terminal driver
+    * @return true If all changes were made successfully
+    * @return false If at least one change was unsuccessful
+    */
+    bool ascertainNonCanonicalMode(termios const& term) noexcept;
+
     /** 
      * @brief Read key input from stdin
      * @return The character read

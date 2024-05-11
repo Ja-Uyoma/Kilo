@@ -71,25 +71,6 @@ namespace Kilo::Terminal
                 throw std::system_error(errno, std::system_category(), "Could not set terminal driver to raw mode");
             }
         }
-
-        /**
-         * @brief Verifies that all changes to the terminal driver were made successfully.
-         *
-         * @details This is necessary because tcsetattr returns successfully it at least one change was successful.
-         * @param term The terminal driver
-         * @return true If all changes were made successfully
-         * @return false If at least one change was unsuccessful
-         */
-        [[maybe_unused]]
-        bool ascertainNonCanonicalMode(termios const& term) noexcept
-        {
-            return (term.c_iflag & (BRKINT | ICRNL | INPCK | ISTRIP | IXON))
-                || (term.c_oflag & OPOST)
-                || ((term.c_cflag & CS8) != CS8)
-                || (term.c_lflag & (ECHO | ICANON | IEXTEN | ISIG))
-                || (term.c_cc[VMIN] != 0)
-                || (term.c_cc[VTIME] != 1);
-        }
     }
 
     /**
@@ -122,6 +103,24 @@ namespace Kilo::Terminal
         if (errno = 0; ::tcsetattr(STDIN_FILENO, TCSAFLUSH, &canonicalSettings) == -1) {
             throw std::system_error(errno, std::system_category(), "Could not restore terminal driver to normal mode");
         }
+    }
+
+    /**
+    * @brief Verifies that all changes to the terminal driver were made successfully.
+    *
+    * @details This is necessary because tcsetattr returns successfully it at least one change was successful.
+    * @param term The terminal driver
+    * @return true If all changes were made successfully
+    * @return false If at least one change was unsuccessful
+    */
+    bool ascertainNonCanonicalMode(termios const& term) noexcept
+    {
+        return (term.c_iflag & (BRKINT | ICRNL | INPCK | ISTRIP | IXON))
+            || (term.c_oflag & OPOST)
+            || ((term.c_cflag & CS8) != CS8)
+            || (term.c_lflag & (ECHO | ICANON | IEXTEN | ISIG))
+            || (term.c_cc[VMIN] != 0)
+            || (term.c_cc[VTIME] != 1);
     }
 
     /** 
