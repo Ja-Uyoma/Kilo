@@ -28,29 +28,30 @@
 
 namespace Kilo::AppendBuffer
 {
-    TEST(AppendBufferTest, IsEmptyWhenCreated)
+    class AppendBufferTest : public ::testing::Test
     {
-        AppendBuffer buffer;
+    public:
+        AppendBuffer buf;
+    };
 
-        ASSERT_EQ(buffer.length(), 0);
+    TEST_F(AppendBufferTest, IsEmptyWhenCreated)
+    {
+        ASSERT_EQ(buf.length(), 0);
     }
 
-    TEST(AppendBufferTest, ItsSizeIncreasesByTheLengthOfTheAppendedString)
+    TEST_F(AppendBufferTest, ItsSizeIncreasesByTheLengthOfTheAppendedString)
     {
-        AppendBuffer buffer;
         char const* str = "Hello, World!";
-        buffer.append(str, std::strlen(str));
+        buf.append(str, std::strlen(str));
 
-        ASSERT_EQ(buffer.length(), 13);
+        ASSERT_EQ(buf.length(), 13);
     }
 
-    TEST(AppendBufferTest, c_strReturnsACStringRepresentationOfTheContentsOfTheBuffer)
+    TEST_F(AppendBufferTest, c_strReturnsACStringRepresentationOfTheContentsOfTheBuffer)
     {
-        AppendBuffer buffer;
         char const* str = "The quick brown fox jumped over the lazy dog";
-
-        buffer.append(str, std::strlen(str));
+        buf.append(str, std::strlen(str));
         
-        ASSERT_STREQ(buffer.c_str(), str);
+        ASSERT_STREQ(buf.c_str(), str);
     }
 }
