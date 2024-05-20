@@ -21,6 +21,16 @@ namespace Kilo::AppendBuffer
             m_buffer.append(str, length);
         }
 
+        /**
+         * @brief Append the given string to the string buffer
+         * 
+         * @param[in] str The string to be appended to the string buffer
+         */
+        constexpr void append(std::string const& str)
+        {
+            m_buffer.append(str);
+        }
+
         /// @brief Get the length of the buffer
         /// @returns The length of the buffer
         constexpr std::size_t length() const noexcept
@@ -46,6 +56,11 @@ namespace Kilo::AppendBuffer
     constexpr void abAppend(AppendBuffer& buffer, char const* str, std::size_t length)
     {
         buffer.append(str, length);
+    }
+
+    constexpr void abAppend(AppendBuffer& buffer, std::string const& str)
+    {
+        buffer.append(str);
     }
 }
 
