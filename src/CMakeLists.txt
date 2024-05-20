@@ -17,7 +17,6 @@ target_sources(kilo
         "${PROJECT_SOURCE_DIR}/includes/EditorConfig.hpp"
     PRIVATE
         main.cpp
-        Main.cpp
         Terminal.cpp
         Utilities.cpp
         Editor.cpp
