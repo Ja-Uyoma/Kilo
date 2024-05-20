@@ -21,21 +21,19 @@
  * SOFTWARE.
 */
 #include "Utilities.hpp"
+#include "Editor.hpp"
 
 #include <cstdlib>
 #include <iostream>
 #include <system_error>
 
-// Forward declaration to function Main()
-namespace Kilo
-{
-    void Main();
-}
-
 int main()
 {
     try {
-        Kilo::Main();
+        while (true) {
+            Kilo::Editor::refreshScreen();
+            Kilo::Editor::processKeypress();
+        }
     }
     catch (std::system_error const& err) {
         // Clear the screen and reposition the cursor to the top-left corner at exit
