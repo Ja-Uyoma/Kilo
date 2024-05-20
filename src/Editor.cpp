@@ -34,7 +34,7 @@
 
 namespace Kilo::Editor 
 {
-    static Editor::EditorConfig editorConfig;
+    static EditorConfig editorConfig;
 
     /// @brief Process the results from readKey
     /// @details This function is responsible for mapping keypresses to editor operations
