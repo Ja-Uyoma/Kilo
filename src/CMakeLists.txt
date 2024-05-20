@@ -6,15 +6,15 @@ target_link_libraries(kilo Microsoft.GSL::GSL)
 
 target_include_directories(kilo
     PRIVATE
-        "${CMAKE_SOURCE_DIR}/includes"
+        "${PROJECT_SOURCE_DIR}/includes"
 )
 
 target_sources(kilo
     PUBLIC
-        "${CMAKE_SOURCE_DIR}/includes/Terminal.hpp"
-        "${CMAKE_SOURCE_DIR}/includes/Editor.hpp"
-        "${CMAKE_SOURCE_DIR}/includes/Utilities.hpp"
-        "${CMAKE_SOURCE_DIR}/includes/EditorConfig.hpp"
+        "${PROJECT_SOURCE_DIR}/includes/Terminal.hpp"
+        "${PROJECT_SOURCE_DIR}/includes/Editor.hpp"
+        "${PROJECT_SOURCE_DIR}/includes/Utilities.hpp"
+        "${PROJECT_SOURCE_DIR}/includes/EditorConfig.hpp"
     PRIVATE
         main.cpp
         Main.cpp

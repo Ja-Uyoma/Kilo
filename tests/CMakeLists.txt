@@ -10,17 +10,17 @@ target_link_libraries(tests
 
 target_include_directories(tests
     PRIVATE
-        "${CMAKE_SOURCE_DIR}/includes"
+        "${PROJECT_SOURCE_DIR}/includes"
 )
 
 target_sources(tests
     PUBLIC
-        "${CMAKE_SOURCE_DIR}/includes/Terminal.hpp"
-        "${CMAKE_SOURCE_DIR}/includes/AppendBuffer.hpp"
+        "${PROJECT_SOURCE_DIR}/includes/Terminal.hpp"
+        "${PROJECT_SOURCE_DIR}/includes/AppendBuffer.hpp"
     PRIVATE
         AppendBuffer.test.cpp
         Terminal.test.cpp
-        "${CMAKE_SOURCE_DIR}/src/Terminal.cpp"
+        "${PROJECT_SOURCE_DIR}/src/Terminal.cpp"
 )
 
 target_compile_features(tests
