@@ -21,16 +21,7 @@
  * SOFTWARE.
 */
 
-#include "Terminal.hpp"
 #include "Editor.hpp"
-#include "Utilities.hpp"
-
-#include <termios.h>
-#include <unistd.h>
-#include <cerrno>
-#include <system_error>
-#include <iostream>
-#include <cctype>
 
 namespace Kilo
 {
