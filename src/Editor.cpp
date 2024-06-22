@@ -36,9 +36,6 @@ namespace Kilo::Editor
 {
     static EditorConfig editorConfig;
 
-    /// @brief Process the results from readKey
-    /// @details This function is responsible for mapping keypresses to editor operations
-    /// @throws std::system_error if an error occured during read
     void processKeypress()
     {
         int c = Terminal::readKey();
@@ -74,7 +71,6 @@ namespace Kilo::Editor
         }
     }
 
-    /// @brief Clear the screen and reposition the cursor to the top-left corner
     void refreshScreen() noexcept
     {
         AppendBuffer::AppendBuffer buffer {};
@@ -96,7 +92,6 @@ namespace Kilo::Editor
         ::write(STDOUT_FILENO, buffer.c_str(), buffer.length());
     }
 
-    /// @brief Draw each row of the buffer of text being edited, plus a tilde at the beginning
     void drawRows(AppendBuffer::AppendBuffer& buffer) noexcept
     {
         using AppendBuffer::abAppend;
@@ -161,11 +156,6 @@ namespace Kilo::Editor
         }
     }
 
-    /**
-     * @brief Move the cursor in accordance with the key pressed
-     *
-     * @param key The character representing the direction to move the cursor in
-     */
     void moveCursor(int key)
     {
         using enum Kilo::Utilities::EditorKey;

@@ -73,14 +73,6 @@ namespace Kilo::Terminal
         }
     }
 
-    /**
-     * @brief Enable raw mode by turning off some terminal flags
-     * 
-     * @param[in] canonicalSettings The original settings of the terminal driver
-     * @pre canonicalSettings must be a valid reference
-     * @throws std::system_error if either querying the terminal driver for its current settings fails
-     * or if writing the modified settings fails.
-    */
     void enableRawMode(termios& canonicalSettings)
     {
         getOriginalTerminalSettings(canonicalSettings);  
@@ -91,13 +83,6 @@ namespace Kilo::Terminal
         setNewTerminalSettings(temp);
     }
 
-    /**
-     * @brief Disable raw mode by restoring the original canonical settings
-     * 
-     * @param[in] canonicalSettings The original settings of the terminal driver
-     * @pre canonicalSettings must be a valid reference
-     * @throws std::system_error if restoring the terminal driver to normal mode fails
-    */
     void disableRawMode(termios const& canonicalSettings)
     {
         if (errno = 0; ::tcsetattr(STDIN_FILENO, TCSAFLUSH, &canonicalSettings) == -1) {
@@ -105,14 +90,6 @@ namespace Kilo::Terminal
         }
     }
 
-    /**
-    * @brief Verifies that all changes to the terminal driver were made successfully.
-    *
-    * @details This is necessary because tcsetattr returns successfully it at least one change was successful.
-    * @param term The terminal driver
-    * @return true If all changes were made successfully
-    * @return false If at least one change was unsuccessful
-    */
     bool ascertainNonCanonicalMode(termios const& term) noexcept
     {
         return (term.c_iflag & (BRKINT | ICRNL | INPCK | ISTRIP | IXON))
@@ -123,11 +100,6 @@ namespace Kilo::Terminal
             || (term.c_cc[VTIME] != 1);
     }
 
-    /** 
-     * @brief Read key input from stdin
-     * @return The character read
-     * @throws std::system_error if an error occured during read
-    */ 
     int readKey()
     {
         char c {};
@@ -218,12 +190,6 @@ namespace Kilo::Terminal
         }
     }
 
-    /**
-     * @brief Get the size of the terminal window and write them to @param rows and @param cols
-     * @param[inout] rows The number of rows of the terminal window
-     * @param[inout] cols The number of columns of the terminal window
-     * @throws std::system_error if the terminal window size could not be retrieved
-    */
     void getWindowSize(int* const rows, int* const cols)
     {
         winsize ws;
@@ -241,11 +207,6 @@ namespace Kilo::Terminal
         *rows = ws.ws_row;
     }
 
-    /**
-     * @brief Get the position of the cursor and write them to @param rows and @param cols
-     * @param[inout] rows The number of rows of the terminal window
-     * @param[inout] cols The number of columns of the terminal window
-    */
     void getCursorPosition(int* const rows, int* const cols)
     {
         // Get the position of the cursor
