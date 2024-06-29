@@ -27,27 +27,40 @@
 #include <iostream>
 #include <system_error>
 
+/**
+ * @brief Handles the processing of keypresses and repainting the screen on every refresh
+ * 
+ */
+[[noreturn]]
+void Main() noexcept
+{
+    using Kilo::Editor::refreshScreen;
+    using Kilo::Editor::processKeypress;
+    using Kilo::Utilities::clearScreenAndRepositionCursor;
+
+    while (true) {
+        try {
+            refreshScreen();
+            processKeypress();
+        }
+        catch (std::system_error const& e) {
+            /*
+             * Clear the screen and reset the cursor as a fallback in case an error occurs in the middle of rendering the screen.
+             * We would otherwise have garbage and/or errors printed wherever the cursor happens to be.
+            */
+            clearScreenAndRepositionCursor();
+            std::cerr << e.code() << ": " << e.what() << '\n';    
+        }
+    }
+}
+
 int main(int argc, char const* argv[])
 {
     if (argc >= 2) {
         Kilo::Editor::open(argv[1]);
     }
     else {
-        try {
-            while (true) {
-                Kilo::Editor::refreshScreen();
-                Kilo::Editor::processKeypress();
-            }
-        }
-        catch (std::system_error const& err) {
-            // Clear the screen and reposition the cursor to the top-left corner at exit
-            // This is added as a fallback in case an error occurs in the middle of rendering the screen
-            // We would otherwise have garbage and/or errors printed wherever the cursor happens to be at that point
-            Kilo::Utilities::clearScreenAndRepositionCursor();
-            
-            std::cerr << err.code() << ": " << err.what() << '\n';
-            return EXIT_FAILURE;
-        }
+        Main();
     }
 
     return EXIT_SUCCESS;
