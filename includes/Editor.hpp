@@ -23,6 +23,8 @@
 
 #include "AppendBuffer.hpp"
 
+#include <filesystem>
+
 namespace Kilo::Editor
 {
     /// @brief Process the results from readKey
@@ -42,4 +44,11 @@ namespace Kilo::Editor
      * @param key The character representing the direction to move the cursor in
      */
     void moveCursor(int key);
+
+    /**
+     * @brief Open a file for reading and write its contents to the EditorConfig instance's row member variable
+     * 
+     * @param[in] path The path to the file to be opened for reading
+     */
+    void open(std::filesystem::path const& path);
 }

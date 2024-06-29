@@ -28,9 +28,12 @@
 #include "Terminal.hpp"
 
 #include <cstdio>
+#include <iostream>
+#include <stdexcept>
 #include <unistd.h>
 #include <cstdlib>
 #include <cstring>
+#include <fstream>
 
 namespace Kilo::Editor 
 {
@@ -188,5 +191,27 @@ namespace Kilo::Editor
             default:
                 break;
         }
+    }
+
+    void open(std::filesystem::path const& path)
+    {
+        // Try to open the file for reading
+        // If the operation fails we return from this function for now
+
+        std::ifstream infile(path);
+
+        if (!infile) {
+            return;
+        }
+
+        // Create a string and write to it a line from the just-opened file
+
+        std::string line;
+        std::getline(infile, line);
+
+        // Swap the contents of the line string and row string
+
+        editorConfig.row.swap(line);
+        editorConfig.numrows = 1;
     }
 }

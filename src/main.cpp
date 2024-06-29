@@ -27,22 +27,27 @@
 #include <iostream>
 #include <system_error>
 
-int main()
+int main(int argc, char const* argv[])
 {
-    try {
-        while (true) {
-            Kilo::Editor::refreshScreen();
-            Kilo::Editor::processKeypress();
-        }
+    if (argc >= 2) {
+        Kilo::Editor::open(argv[1]);
     }
-    catch (std::system_error const& err) {
-        // Clear the screen and reposition the cursor to the top-left corner at exit
-        // This is added as a fallback in case an error occurs in the middle of rendering the screen
-        // We would otherwise have garbage and/or errors printed wherever the cursor happens to be at that point
-        Kilo::Utilities::clearScreenAndRepositionCursor();
-        
-        std::cerr << err.code() << ": " << err.what() << '\n';
-        return EXIT_FAILURE;
+    else {
+        try {
+            while (true) {
+                Kilo::Editor::refreshScreen();
+                Kilo::Editor::processKeypress();
+            }
+        }
+        catch (std::system_error const& err) {
+            // Clear the screen and reposition the cursor to the top-left corner at exit
+            // This is added as a fallback in case an error occurs in the middle of rendering the screen
+            // We would otherwise have garbage and/or errors printed wherever the cursor happens to be at that point
+            Kilo::Utilities::clearScreenAndRepositionCursor();
+            
+            std::cerr << err.code() << ": " << err.what() << '\n';
+            return EXIT_FAILURE;
+        }
     }
 
     return EXIT_SUCCESS;
