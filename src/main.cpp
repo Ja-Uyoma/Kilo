@@ -58,8 +58,8 @@ int main(int argc, char const* argv[])
 {
     using Kilo::Editor::open;
 
-    if (argc >= 2) {
-        open(argv[1]);
+    if (argc >= 2 && !open(argv[1])) {
+        return EXIT_FAILURE;
     }
     
     Main();

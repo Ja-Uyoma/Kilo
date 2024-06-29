@@ -49,6 +49,7 @@ namespace Kilo::Editor
      * @brief Open a file for reading and write its contents to the EditorConfig instance's row member variable
      * 
      * @param[in] path The path to the file to be opened for reading
+     * @return True if the file was opened successfully and false otherwise
      */
-    void open(std::filesystem::path const& path);
+    bool open(std::filesystem::path const& path);
 }

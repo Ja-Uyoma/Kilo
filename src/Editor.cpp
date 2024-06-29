@@ -29,7 +29,6 @@
 
 #include <cstdio>
 #include <iostream>
-#include <stdexcept>
 #include <unistd.h>
 #include <cstdlib>
 #include <cstring>
@@ -193,15 +192,14 @@ namespace Kilo::Editor
         }
     }
 
-    void open(std::filesystem::path const& path)
+    bool open(std::filesystem::path const& path)
     {
-        // Try to open the file for reading
-        // If the operation fails we return from this function for now
+        // TODO: rewrite the error handling logic to match the approach used in rest of the application
 
         std::ifstream infile(path);
 
         if (!infile) {
-            return;
+            return false;
         }
 
         // Create a string and write to it a line from the just-opened file
@@ -213,5 +211,7 @@ namespace Kilo::Editor
 
         editorConfig.row.swap(line);
         editorConfig.numrows = 1;
+
+        return true;
     }
 }
