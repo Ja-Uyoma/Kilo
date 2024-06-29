@@ -29,6 +29,7 @@
 
 #include <cstdio>
 #include <iostream>
+#include <string>
 #include <unistd.h>
 #include <cstdlib>
 #include <cstring>
@@ -141,13 +142,13 @@ namespace Kilo::Editor
                 }
             }
             else {
-                auto len = std::ssize(editorConfig.row);
+                auto len = std::ssize(editorConfig.row[y]);
                 
                 if (len > editorConfig.screenCols) {
                     len = editorConfig.screenCols;
                 }
 
-                abAppend(buffer, editorConfig.row.substr(0, len));
+                abAppend(buffer, editorConfig.row[y].substr(0, len));
             }
 
             abAppend(buffer, "\x1b[K", 3);
@@ -202,15 +203,12 @@ namespace Kilo::Editor
             return false;
         }
 
-        // Create a string and write to it a line from the just-opened file
-
         std::string line;
-        std::getline(infile, line);
 
-        // Swap the contents of the line string and row string
-
-        editorConfig.row.swap(line);
-        editorConfig.numrows = 1;
+        while (std::getline(infile, line)){
+            editorConfig.row.push_back(line);
+            editorConfig.numrows++;
+        }
 
         return true;
     }
