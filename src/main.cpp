@@ -61,9 +61,8 @@ int main(int argc, char const* argv[])
     if (argc >= 2) {
         open(argv[1]);
     }
-    else {
-        Main();
-    }
-
+    
+    Main();
+    
     return EXIT_SUCCESS;
 }
