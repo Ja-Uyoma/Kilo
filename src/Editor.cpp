@@ -102,7 +102,7 @@ namespace Kilo::Editor
 
         for (int y = 0; y < editorConfig.screenRows; ++y) {
             if (y >= editorConfig.numrows) {
-                if (y == editorConfig.screenRows / 3) {
+                if (editorConfig.numrows == 0 && y == editorConfig.screenRows / 3) {
                     char welcome[80] {};
 
                     // Interpolate KILO_VERSION into the welcome message
