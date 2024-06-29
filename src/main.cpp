@@ -56,8 +56,10 @@ void Main() noexcept
 
 int main(int argc, char const* argv[])
 {
+    using Kilo::Editor::open;
+
     if (argc >= 2) {
-        Kilo::Editor::open(argv[1]);
+        open(argv[1]);
     }
     else {
         Main();
