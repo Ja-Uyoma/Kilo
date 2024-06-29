@@ -76,6 +76,8 @@ namespace Kilo::Editor
 
     void refreshScreen() noexcept
     {
+        scroll();
+
         AppendBuffer::AppendBuffer buffer {};
 
         AppendBuffer::abAppend(buffer, "\x1b[?25l", 6);    // hide the cursor when repainting
@@ -87,7 +89,7 @@ namespace Kilo::Editor
 
         // Specify the exact position we want the cursor to move to
         // We add 1 to cursorX and cursorY to convert from 0-indexed values to the 1-indexed values that the terminal uses
-        std::snprintf(buf, sizeof buf, "\x1b[%d;%dH", editorConfig.cursorY + 1, editorConfig.cursorX + 1);
+        std::snprintf(buf, sizeof buf, "\x1b[%d;%dH", (editorConfig.cursorY - editorConfig.rowoff) + 1, editorConfig.cursorX + 1);
         
         AppendBuffer::abAppend(buffer, buf, std::strlen(buf));
         AppendBuffer::abAppend(buffer, "\x1b[?25h", 6);    // show the cursor
@@ -101,7 +103,7 @@ namespace Kilo::Editor
         using Utilities::KILO_VERSION;
 
         for (int y = 0; y < editorConfig.screenRows; ++y) {
-            if (y >= editorConfig.numrows) {
+            if (int filerow = y + editorConfig.rowoff; filerow >= editorConfig.numrows) {
                 if (editorConfig.numrows == 0 && y == editorConfig.screenRows / 3) {
                     char welcome[80] {};
 
@@ -142,13 +144,13 @@ namespace Kilo::Editor
                 }
             }
             else {
-                auto len = std::ssize(editorConfig.row[y]);
+                auto len = std::ssize(editorConfig.row[filerow]);
                 
                 if (len > editorConfig.screenCols) {
                     len = editorConfig.screenCols;
                 }
 
-                abAppend(buffer, editorConfig.row[y].substr(0, len));
+                abAppend(buffer, editorConfig.row[filerow].substr(0, len));
             }
 
             abAppend(buffer, "\x1b[K", 3);
@@ -183,7 +185,7 @@ namespace Kilo::Editor
 
                 break;
             case static_cast<int>(ArrowDown):
-                if (editorConfig.cursorY != editorConfig.screenRows - 1) {
+                if (editorConfig.cursorY != editorConfig.numrows) {
                     editorConfig.cursorY++;
                 }
                 
@@ -211,5 +213,21 @@ namespace Kilo::Editor
         }
 
         return true;
+    }
+
+    void scroll()
+    {
+        /*
+         * Check if the cursor has moved outside of the visible window.
+         * If so, adjust editorConfig.rowoff so that the cursor is just inside the visible window
+        */
+
+        if (editorConfig.cursorY < editorConfig.rowoff) {
+            editorConfig.rowoff = editorConfig.cursorY;
+        }
+
+        if (editorConfig.cursorY >= editorConfig.rowoff + editorConfig.screenRows) {
+            editorConfig.rowoff = editorConfig.cursorY - editorConfig.screenRows + 1;
+        }
     }
 }

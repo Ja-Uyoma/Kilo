@@ -18,6 +18,7 @@ namespace Kilo::Editor
         int cursorY {};    // The vertical coordinate of the cursor (the row)
         std::vector<std::string> row;
         int numrows {1};
+        int rowoff {};
 
         explicit EditorConfig();
         ~EditorConfig();

@@ -52,4 +52,10 @@ namespace Kilo::Editor
      * @return True if the file was opened successfully and false otherwise
      */
     bool open(std::filesystem::path const& path);
+
+    /**
+     * @brief Position the cursor within the visible window
+     * 
+     */
+    void scroll();
 }
