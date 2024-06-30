@@ -19,6 +19,7 @@ namespace Kilo::Editor
         std::vector<std::string> row;
         int numrows {};
         int rowoff {};
+        int coloff {};
 
         explicit EditorConfig();
         ~EditorConfig();

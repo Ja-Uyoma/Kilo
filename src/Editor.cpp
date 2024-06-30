@@ -89,7 +89,7 @@ namespace Kilo::Editor
 
         // Specify the exact position we want the cursor to move to
         // We add 1 to cursorX and cursorY to convert from 0-indexed values to the 1-indexed values that the terminal uses
-        std::snprintf(buf, sizeof buf, "\x1b[%d;%dH", (editorConfig.cursorY - editorConfig.rowoff) + 1, editorConfig.cursorX + 1);
+        std::snprintf(buf, sizeof buf, "\x1b[%d;%dH", (editorConfig.cursorY - editorConfig.rowoff) + 1, (editorConfig.cursorX + editorConfig.coloff) + 1);
         
         AppendBuffer::abAppend(buffer, buf, std::strlen(buf));
         AppendBuffer::abAppend(buffer, "\x1b[?25h", 6);    // show the cursor
@@ -144,13 +144,17 @@ namespace Kilo::Editor
                 }
             }
             else {
-                auto len = std::ssize(editorConfig.row[filerow]);
+                auto len = std::ssize(editorConfig.row[filerow]) - editorConfig.coloff;
+
+                if (len < 0) {
+                    len = 0;
+                }
                 
                 if (len > editorConfig.screenCols) {
                     len = editorConfig.screenCols;
                 }
 
-                abAppend(buffer, editorConfig.row[filerow].substr(0, len));
+                abAppend(buffer, editorConfig.row[filerow]);
             }
 
             abAppend(buffer, "\x1b[K", 3);
@@ -173,10 +177,7 @@ namespace Kilo::Editor
 
                 break;
             case static_cast<int>(ArrowRight):
-                if (editorConfig.cursorX != editorConfig.screenCols - 1) {
-                    editorConfig.cursorX++;
-                }
-
+                editorConfig.cursorX++;
                 break;
             case static_cast<int>(ArrowUp):
                 if (editorConfig.cursorY != 0) {
@@ -219,7 +220,7 @@ namespace Kilo::Editor
     {
         /*
          * Check if the cursor has moved outside of the visible window.
-         * If so, adjust editorConfig.rowoff so that the cursor is just inside the visible window
+         * If so, adjust editorConfig.rowoff and/or editorConfig.coloff so that the cursor is just inside the visible window
         */
 
         if (editorConfig.cursorY < editorConfig.rowoff) {
@@ -228,6 +229,14 @@ namespace Kilo::Editor
 
         if (editorConfig.cursorY >= editorConfig.rowoff + editorConfig.screenRows) {
             editorConfig.rowoff = editorConfig.cursorY - editorConfig.screenRows + 1;
+        }
+
+        if (editorConfig.cursorX < editorConfig.coloff) {
+            editorConfig.coloff = editorConfig.cursorX;
+        }
+
+        if (editorConfig.cursorX >= editorConfig.coloff + editorConfig.screenCols) {
+            editorConfig.coloff = editorConfig.cursorX - editorConfig.screenCols + 1;
         }
     }
 }
