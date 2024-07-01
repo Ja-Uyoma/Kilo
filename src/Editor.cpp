@@ -28,7 +28,9 @@
 #include "Terminal.hpp"
 
 #include <cstdio>
+#include <functional>
 #include <iostream>
+#include <optional>
 #include <string>
 #include <unistd.h>
 #include <cstdlib>
@@ -183,6 +185,14 @@ namespace Kilo::Editor
     {
         using enum Kilo::Utilities::EditorKey;
 
+        std::optional<std::string> currRow = std::invoke([] () -> std::optional<std::string> {
+            if (editorConfig.cursorY >= editorConfig.numrows) {
+                return std::nullopt;
+            }
+
+            return std::make_optional(editorConfig.row[editorConfig.cursorY]);
+        });
+
         switch (key) {
             case static_cast<int>(ArrowLeft):
                 if (editorConfig.cursorX != 0) {
@@ -191,7 +201,10 @@ namespace Kilo::Editor
 
                 break;
             case static_cast<int>(ArrowRight):
-                editorConfig.cursorX++;
+                if (currRow.has_value() && editorConfig.cursorX < std::ssize(*currRow)) {
+                    editorConfig.cursorX++;
+                }
+
                 break;
             case static_cast<int>(ArrowUp):
                 if (editorConfig.cursorY != 0) {
@@ -200,7 +213,7 @@ namespace Kilo::Editor
 
                 break;
             case static_cast<int>(ArrowDown):
-                if (editorConfig.cursorY != editorConfig.numrows) {
+                if (editorConfig.cursorY < editorConfig.numrows) {
                     editorConfig.cursorY++;
                 }
                 
