@@ -36,6 +36,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <fstream>
+#include <utility>
 
 namespace Kilo::Editor 
 {
@@ -208,7 +209,10 @@ namespace Kilo::Editor
                 if (currRow.has_value() && editorConfig.cursorX < std::ssize(*currRow)) {
                     editorConfig.cursorX++;
                 }
-
+                else if (currRow && std::cmp_equal(editorConfig.cursorX, currRow->size())) {
+                    editorConfig.cursorY++;
+                    editorConfig.cursorX = 0;
+                }
                 break;
             case static_cast<int>(ArrowUp):
                 if (editorConfig.cursorY != 0) {
