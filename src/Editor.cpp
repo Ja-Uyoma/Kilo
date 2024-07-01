@@ -221,6 +221,20 @@ namespace Kilo::Editor
             default:
                 break;
         }
+
+        currRow = std::invoke([]() -> std::optional<std::string> {
+            if (editorConfig.cursorY >= editorConfig.numrows) {
+                return std::nullopt;
+            }
+
+            return std::make_optional(editorConfig.row[editorConfig.cursorY]);
+        });
+
+        int rowlen = currRow ? currRow->length() : 0;
+
+        if (editorConfig.cursorX > rowlen) {
+            editorConfig.cursorX = rowlen;
+        }
     }
 
     bool open(std::filesystem::path const& path)
