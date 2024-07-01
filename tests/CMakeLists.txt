@@ -16,7 +16,7 @@ target_include_directories(tests
 target_sources(tests
     PUBLIC
         "${PROJECT_SOURCE_DIR}/includes/Terminal.hpp"
-        "${PROJECT_SOURCE_DIR}/includes/AppendBuffer.hpp"
+        "${PROJECT_SOURCE_DIR}/includes/WriteBuffer.hpp"
     PRIVATE
         AppendBuffer.test.cpp
         Terminal.test.cpp

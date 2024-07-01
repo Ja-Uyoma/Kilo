@@ -21,36 +21,36 @@
  * SOFTWARE.
  */
 
-#include "AppendBuffer.hpp"
+#include "WriteBuffer.hpp"
 
 #include <cstring>
 #include <gtest/gtest.h>
 
-namespace Kilo::AppendBuffer
+namespace Kilo
 {
     class AppendBufferTest : public ::testing::Test
     {
     public:
-        AppendBuffer buf;
+        WriteBuffer buf;
     };
 
     TEST_F(AppendBufferTest, IsEmptyWhenCreated)
     {
-        ASSERT_EQ(buf.length(), 0);
+        ASSERT_EQ(buf.size(), 0);
     }
 
     TEST_F(AppendBufferTest, ItsSizeIncreasesByTheLengthOfTheAppendedString)
     {
         char const* str = "Hello, World!";
-        buf.append(str, std::strlen(str));
+        buf.write(str, std::strlen(str));
 
-        ASSERT_EQ(buf.length(), 13);
+        ASSERT_EQ(buf.size(), 13);
     }
 
     TEST_F(AppendBufferTest, c_strReturnsACStringRepresentationOfTheContentsOfTheBuffer)
     {
         char const* str = "The quick brown fox jumped over the lazy dog";
-        buf.append(str, std::strlen(str));
+        buf.write(str, std::strlen(str));
         
         ASSERT_STREQ(buf.c_str(), str);
     }
