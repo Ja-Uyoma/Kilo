@@ -18,7 +18,7 @@ target_sources(tests
         "${PROJECT_SOURCE_DIR}/includes/Terminal.hpp"
         "${PROJECT_SOURCE_DIR}/includes/WriteBuffer.hpp"
     PRIVATE
-        AppendBuffer.test.cpp
+        WriteBuffer.test.cpp
         Terminal.test.cpp
         "${PROJECT_SOURCE_DIR}/src/Terminal.cpp"
 )
