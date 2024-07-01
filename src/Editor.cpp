@@ -156,6 +156,7 @@ namespace Kilo::Editor
                     len = editorConfig.screenCols;
                 }
 
+                // TODO: use coloff as an index into the chars of each row of text
                 buffer.write(editorConfig.row[filerow]);
             }
 
