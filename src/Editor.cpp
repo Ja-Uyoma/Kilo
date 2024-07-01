@@ -23,7 +23,7 @@
 
 #include "Editor.hpp"
 #include "EditorConfig.hpp"
-#include "AppendBuffer.hpp"
+#include "WriteBuffer.hpp"
 #include "Utilities.hpp"
 #include "Terminal.hpp"
 

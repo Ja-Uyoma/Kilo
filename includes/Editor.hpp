@@ -21,7 +21,7 @@
  * SOFTWARE.
 */
 
-#include "AppendBuffer.hpp"
+#include "WriteBuffer.hpp"
 
 #include <filesystem>
 

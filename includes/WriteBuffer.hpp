@@ -1,5 +1,5 @@
-#ifndef APPEND_BUFFER_HPP
-#define APPEND_BUFFER_HPP
+#ifndef WRITE_BUFFER_HPP
+#define WRITE_BUFFER_HPP
 
 #include <string>
 
