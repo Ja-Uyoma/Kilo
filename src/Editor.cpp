@@ -76,12 +76,14 @@ namespace Kilo::Editor
 
     void refreshScreen() noexcept
     {
+        using namespace std::string_literals;
+
         scroll();
 
         AppendBuffer::AppendBuffer buffer {};
 
-        buffer.write("\x1b[?25l", 6);    // hide the cursor when repainting
-        buffer.write("\x1b[H", 3);    // reposition the cursor
+        buffer.write("\x1b[?25l"s);    // hide the cursor when repainting
+        buffer.write("\x1b[H"s);    // reposition the cursor
         
         drawRows(buffer);
 
@@ -92,7 +94,7 @@ namespace Kilo::Editor
         std::snprintf(buf, sizeof buf, "\x1b[%d;%dH", (editorConfig.cursorY - editorConfig.rowoff) + 1, (editorConfig.cursorX + editorConfig.coloff) + 1);
         
         buffer.write(buf, std::strlen(buf));
-        buffer.write("\x1b[?25h", 6);    // show the cursor
+        buffer.write("\x1b[?25h"s);    // show the cursor
 
         ::write(STDOUT_FILENO, buffer.c_str(), buffer.length());
     }
@@ -100,6 +102,7 @@ namespace Kilo::Editor
     void drawRows(AppendBuffer::AppendBuffer& buffer) noexcept
     {
         using Utilities::KILO_VERSION;
+        using namespace std::string_literals;
 
         for (int y = 0; y < editorConfig.screenRows; ++y) {
             if (int filerow = y + editorConfig.rowoff; filerow >= editorConfig.numrows) {
@@ -127,19 +130,19 @@ namespace Kilo::Editor
                     int padding = (editorConfig.screenCols - welcomeLen) / 2;
 
                     if (padding > 0) {
-                        buffer.write("~", 1);
+                        buffer.write("~"s);
                         padding--;
                     }
 
                     while (padding > 0) {
-                        buffer.write(" ", 1);
+                        buffer.write(" "s);
                         padding--;
                     }
 
                     buffer.write(welcome, welcomeLen);
                 }
                 else {
-                    buffer.write("~", 1);
+                    buffer.write("~"s);
                 }
             }
             else {
@@ -156,10 +159,10 @@ namespace Kilo::Editor
                 buffer.write(editorConfig.row[filerow]);
             }
 
-            buffer.write("\x1b[K", 3);
+            buffer.write("\x1b[K"s);
 
             if (y < editorConfig.screenRows - 1) {
-                buffer.write("\r\n", 2);
+                buffer.write("\r\n"s);
             }
         }
     }
