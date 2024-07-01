@@ -28,18 +28,18 @@
 
 namespace Kilo
 {
-    class AppendBufferTest : public ::testing::Test
+    class WriteBufferTest : public ::testing::Test
     {
     public:
         WriteBuffer buf;
     };
 
-    TEST_F(AppendBufferTest, IsEmptyWhenCreated)
+    TEST_F(WriteBufferTest, IsEmptyWhenCreated)
     {
         ASSERT_EQ(buf.size(), 0);
     }
 
-    TEST_F(AppendBufferTest, ItsSizeIncreasesByTheLengthOfTheAppendedString)
+    TEST_F(WriteBufferTest, ItsSizeIncreasesByTheLengthOfTheAppendedString)
     {
         char const* str = "Hello, World!";
         buf.write(str, std::strlen(str));
@@ -47,7 +47,7 @@ namespace Kilo
         ASSERT_EQ(buf.size(), 13);
     }
 
-    TEST_F(AppendBufferTest, c_strReturnsACStringRepresentationOfTheContentsOfTheBuffer)
+    TEST_F(WriteBufferTest, c_strReturnsACStringRepresentationOfTheContentsOfTheBuffer)
     {
         char const* str = "The quick brown fox jumped over the lazy dog";
         buf.write(str, std::strlen(str));
