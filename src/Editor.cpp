@@ -206,7 +206,7 @@ namespace Kilo::Editor
 
                 break;
             case static_cast<int>(ArrowRight):
-                if (currRow.has_value() && editorConfig.cursorX < std::ssize(*currRow)) {
+                if (currRow && std::cmp_less(editorConfig.cursorX, currRow->size())) {
                     editorConfig.cursorX++;
                 }
                 else if (currRow && std::cmp_equal(editorConfig.cursorX, currRow->size())) {
