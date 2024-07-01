@@ -99,7 +99,6 @@ namespace Kilo::Editor
 
     void drawRows(AppendBuffer::AppendBuffer& buffer) noexcept
     {
-        using AppendBuffer::abAppend;
         using Utilities::KILO_VERSION;
 
         for (int y = 0; y < editorConfig.screenRows; ++y) {

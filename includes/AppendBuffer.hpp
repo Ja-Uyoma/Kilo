@@ -48,20 +48,6 @@ namespace Kilo::AppendBuffer
     private:
         std::string m_buffer;
     };
-
-    /// @brief Append the given C-string to the buffer
-    /// @param[in] buffer The buffer to be appended to
-    /// @param[in] str The string to be appended to the buffer
-    /// @param[in] length The length of the string
-    constexpr void abAppend(AppendBuffer& buffer, char const* str, std::size_t length)
-    {
-        buffer.write(str, length);
-    }
-
-    constexpr void abAppend(AppendBuffer& buffer, std::string const& str)
-    {
-        buffer.write(str);
-    }
 }
 
 #endif
