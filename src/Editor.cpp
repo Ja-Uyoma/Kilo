@@ -80,8 +80,8 @@ namespace Kilo::Editor
 
         AppendBuffer::AppendBuffer buffer {};
 
-        buffer.append("\x1b[?25l", 6);    // hide the cursor when repainting
-        buffer.append("\x1b[H", 3);    // reposition the cursor
+        buffer.write("\x1b[?25l", 6);    // hide the cursor when repainting
+        buffer.write("\x1b[H", 3);    // reposition the cursor
         
         drawRows(buffer);
 
@@ -91,8 +91,8 @@ namespace Kilo::Editor
         // We add 1 to cursorX and cursorY to convert from 0-indexed values to the 1-indexed values that the terminal uses
         std::snprintf(buf, sizeof buf, "\x1b[%d;%dH", (editorConfig.cursorY - editorConfig.rowoff) + 1, (editorConfig.cursorX + editorConfig.coloff) + 1);
         
-        buffer.append(buf, std::strlen(buf));
-        buffer.append("\x1b[?25h", 6);    // show the cursor
+        buffer.write(buf, std::strlen(buf));
+        buffer.write("\x1b[?25h", 6);    // show the cursor
 
         ::write(STDOUT_FILENO, buffer.c_str(), buffer.length());
     }
@@ -128,19 +128,19 @@ namespace Kilo::Editor
                     int padding = (editorConfig.screenCols - welcomeLen) / 2;
 
                     if (padding > 0) {
-                        buffer.append("~", 1);
+                        buffer.write("~", 1);
                         padding--;
                     }
 
                     while (padding > 0) {
-                        buffer.append(" ", 1);
+                        buffer.write(" ", 1);
                         padding--;
                     }
 
-                    buffer.append(welcome, welcomeLen);
+                    buffer.write(welcome, welcomeLen);
                 }
                 else {
-                    buffer.append("~", 1);
+                    buffer.write("~", 1);
                 }
             }
             else {
@@ -154,13 +154,13 @@ namespace Kilo::Editor
                     len = editorConfig.screenCols;
                 }
 
-                buffer.append(editorConfig.row[filerow]);
+                buffer.write(editorConfig.row[filerow]);
             }
 
-            buffer.append("\x1b[K", 3);
+            buffer.write("\x1b[K", 3);
 
             if (y < editorConfig.screenRows - 1) {
-                buffer.append("\r\n", 2);
+                buffer.write("\r\n", 2);
             }
         }
     }
