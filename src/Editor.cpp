@@ -91,7 +91,7 @@ namespace Kilo::Editor
 
         // Specify the exact position we want the cursor to move to
         // We add 1 to cursorX and cursorY to convert from 0-indexed values to the 1-indexed values that the terminal uses
-        std::snprintf(buf, sizeof buf, "\x1b[%d;%dH", (editorConfig.cursorY - editorConfig.rowoff) + 1, (editorConfig.cursorX + editorConfig.coloff) + 1);
+        std::snprintf(buf, sizeof buf, "\x1b[%d;%dH", (editorConfig.cursorY - editorConfig.rowoff) + 1, (editorConfig.cursorX - editorConfig.coloff) + 1);
         
         buffer.write(buf, std::strlen(buf));
         buffer.write("\x1b[?25h"s);    // show the cursor
