@@ -39,6 +39,49 @@ namespace Kilo::Editor
 {
     static EditorConfig editorConfig;
 
+    namespace
+    {
+        void displayWelcomeMessage(WriteBuffer& buffer)
+        {
+            using namespace std::string_literals;
+            using namespace Kilo::Utilities;
+
+            char welcome[80] {};
+
+            // Interpolate KILO_VERSION into the welcome message
+            int welcomeLen = std::snprintf(
+                welcome,
+                sizeof welcome,
+                "Kilo editor -- version %s",
+                KILO_VERSION
+            );
+
+            // Truncate the length of the string in case the terminal is too small to fit the welcome message
+            if (welcomeLen > editorConfig.screenCols) {
+                welcomeLen = editorConfig.screenCols;
+            }
+
+            // Center the string
+            // Divide the screen width by 2 and then subtract half the string's length from this value.
+            // This tells us how far from the left edge of the screen we should start printing the string.
+            // So, we fill that space with space characters, except for the first character, which should be a tilde
+
+            int padding = (editorConfig.screenCols - welcomeLen) / 2;
+
+            if (padding > 0) {
+                buffer.write("~"s);
+                padding--;
+            }
+
+            while (padding > 0) {
+                buffer.write(" "s);
+                padding--;
+            }
+
+            buffer.write(welcome, welcomeLen);
+        }
+    }
+
     void processKeypress()
     {
         int c = Terminal::readKey();
@@ -107,39 +150,7 @@ namespace Kilo::Editor
         for (int y = 0; y < editorConfig.screenRows; ++y) {
             if (int filerow = y + editorConfig.rowoff; filerow >= editorConfig.numrows) {
                 if (editorConfig.numrows == 0 && y == editorConfig.screenRows / 3) {
-                    char welcome[80] {};
-
-                    // Interpolate KILO_VERSION into the welcome message
-                    int welcomeLen = std::snprintf(
-                        welcome,
-                        sizeof welcome,
-                        "Kilo editor -- version %s",
-                        KILO_VERSION
-                    );
-
-                    // Truncate the length of the string in case the terminal is too small to fit the welcome message
-                    if (welcomeLen > editorConfig.screenCols) {
-                        welcomeLen = editorConfig.screenCols;
-                    }
-
-                    // Center the string
-                    // Divide the screen width by 2 and then subtract half the string's length from this value.
-                    // This tells us how far from the left edge of the screen we should start printing the string.
-                    // So, we fill that space with space characters, except for the first character, which should be a tilde
-
-                    int padding = (editorConfig.screenCols - welcomeLen) / 2;
-
-                    if (padding > 0) {
-                        buffer.write("~"s);
-                        padding--;
-                    }
-
-                    while (padding > 0) {
-                        buffer.write(" "s);
-                        padding--;
-                    }
-
-                    buffer.write(welcome, welcomeLen);
+                    displayWelcomeMessage(buffer);
                 }
                 else {
                     buffer.write("~"s);
