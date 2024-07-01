@@ -33,9 +33,9 @@ namespace Kilo
             m_buffer.append(str);
         }
 
-        /// @brief Get the length of the buffer
-        /// @returns The length of the buffer
-        constexpr std::size_t length() const noexcept
+        /// @brief Get the size of the buffer
+        /// @returns The size of the buffer
+        constexpr std::size_t size() const noexcept
         {
             return m_buffer.length();
         }

@@ -96,7 +96,7 @@ namespace Kilo::Editor
         buffer.write(buf, std::strlen(buf));
         buffer.write("\x1b[?25h"s);    // show the cursor
 
-        ::write(STDOUT_FILENO, buffer.c_str(), buffer.length());
+        ::write(STDOUT_FILENO, buffer.c_str(), buffer.size());
     }
 
     void drawRows(WriteBuffer& buffer) noexcept
