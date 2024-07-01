@@ -21,8 +21,6 @@
  * SOFTWARE.
  */
 
-#include <cstddef>
-
 namespace Kilo::Utilities {
 /// @brief The version number of the application
 inline constexpr char const* KILO_VERSION = "0.0.1";
