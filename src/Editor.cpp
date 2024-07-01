@@ -84,13 +84,14 @@ namespace Kilo::Editor
 
     void processKeypress()
     {
+        using namespace Kilo::Utilities;
+        using enum Kilo::Utilities::EditorKey;
+
         int c = Terminal::readKey();
 
         switch (c) {
-            using enum Kilo::Utilities::EditorKey;
-
-            case Utilities::ctrlKey('q'):
-                Utilities::clearScreenAndRepositionCursor();
+            case ctrlKey('q'):
+                clearScreenAndRepositionCursor();
                 std::exit(EXIT_SUCCESS);
                 break;
             case static_cast<int>(Home):
