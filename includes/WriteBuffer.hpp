@@ -13,6 +13,8 @@ namespace Kilo
     class WriteBuffer
     {
     public:
+        explicit constexpr WriteBuffer() noexcept = default;
+    
         /// @brief Append the given C-string to the buffer
         /// @param[in] str The string to be appended to the buffer
         /// @param[in] length The length of the string

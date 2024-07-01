@@ -80,7 +80,7 @@ namespace Kilo::Editor
 
         scroll();
 
-        WriteBuffer buffer {};
+        WriteBuffer buffer;
 
         buffer.write("\x1b[?25l"s);    // hide the cursor when repainting
         buffer.write("\x1b[H"s);    // reposition the cursor
