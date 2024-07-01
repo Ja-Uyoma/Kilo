@@ -3,7 +3,7 @@
 
 #include <string>
 
-namespace Kilo::AppendBuffer
+namespace Kilo
 {
     // In order to avoid making multiple ::write() calls anytime we need to refresh the screen,
     // we will do one big ::write() at the end to make sure the entire screen updates at once.
