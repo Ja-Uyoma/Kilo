@@ -201,7 +201,7 @@ namespace Kilo::Editor
                 }
                 else if (editorConfig.cursorY > 0) {
                     editorConfig.cursorY--;
-                    editorConfig.cursorX = editorConfig.row[editorConfig.cursorY].size();
+                    editorConfig.cursorX = std::ssize(editorConfig.row[editorConfig.cursorY]);
                 }
 
                 break;
