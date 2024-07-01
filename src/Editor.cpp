@@ -147,7 +147,7 @@ namespace Kilo::Editor
         using Utilities::KILO_VERSION;
         using namespace std::string_literals;
 
-        for (int y = 0; y < editorConfig.screenRows; ++y) {
+        for (int y = 0; y < editorConfig.screenRows; y++) {
             if (int filerow = y + editorConfig.rowoff; filerow >= editorConfig.numrows) {
                 if (editorConfig.numrows == 0 && y == editorConfig.screenRows / 3) {
                     displayWelcomeMessage(buffer);
