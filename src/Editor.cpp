@@ -198,6 +198,10 @@ namespace Kilo::Editor
                 if (editorConfig.cursorX != 0) {
                     editorConfig.cursorX--;
                 }
+                else if (editorConfig.cursorY > 0) {
+                    editorConfig.cursorY--;
+                    editorConfig.cursorX = editorConfig.row[editorConfig.cursorY].size();
+                }
 
                 break;
             case static_cast<int>(ArrowRight):
