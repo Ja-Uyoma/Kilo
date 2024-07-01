@@ -144,7 +144,6 @@ namespace Kilo::Editor
 
     void drawRows(WriteBuffer& buffer) noexcept
     {
-        using Utilities::KILO_VERSION;
         using namespace std::string_literals;
 
         for (int y = 0; y < editorConfig.screenRows; y++) {
