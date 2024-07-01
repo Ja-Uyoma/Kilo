@@ -10,7 +10,7 @@ namespace Kilo
     // This is accomplished by the use of a buffer to which strings will be appended, and then
     // this buffer will be written out at the end.
     
-    class AppendBuffer
+    class WriteBuffer
     {
     public:
         /// @brief Append the given C-string to the buffer

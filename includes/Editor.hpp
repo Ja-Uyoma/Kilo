@@ -36,7 +36,7 @@ namespace Kilo::Editor
     void refreshScreen() noexcept;
 
     /// @brief Draw each row of the buffer of text being edited, plus a tilde at the beginning
-    void drawRows(AppendBuffer& buffer) noexcept;
+    void drawRows(WriteBuffer& buffer) noexcept;
 
     /**
      * @brief Move the cursor in accordance with the key pressed

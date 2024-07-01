@@ -80,7 +80,7 @@ namespace Kilo::Editor
 
         scroll();
 
-        AppendBuffer buffer {};
+        WriteBuffer buffer {};
 
         buffer.write("\x1b[?25l"s);    // hide the cursor when repainting
         buffer.write("\x1b[H"s);    // reposition the cursor
@@ -99,7 +99,7 @@ namespace Kilo::Editor
         ::write(STDOUT_FILENO, buffer.c_str(), buffer.length());
     }
 
-    void drawRows(AppendBuffer& buffer) noexcept
+    void drawRows(WriteBuffer& buffer) noexcept
     {
         using Utilities::KILO_VERSION;
         using namespace std::string_literals;
