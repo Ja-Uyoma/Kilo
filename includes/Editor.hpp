@@ -58,5 +58,5 @@ bool open(std::filesystem::path const& path);
  * @brief Position the cursor within the visible window
  *
  */
-void scroll();
+void scroll() noexcept;
 }   // namespace Kilo::Editor

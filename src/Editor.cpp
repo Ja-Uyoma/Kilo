@@ -257,7 +257,7 @@ bool open(std::filesystem::path const& path)
   return true;
 }
 
-void scroll()
+void scroll() noexcept
 {
   /*
    * Check if the cursor has moved outside of the visible window.
