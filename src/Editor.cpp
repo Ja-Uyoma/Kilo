@@ -153,7 +153,7 @@ void drawRows(WriteBuffer& buffer) noexcept
       }
     }
     else {
-      auto len = std::ssize(editorConfig.row[filerow]) - editorConfig.coloff;
+      auto len = std::ssize(editorConfig.render[filerow]) - editorConfig.coloff;
 
       if (len < 0) {
         len = 0;
@@ -164,7 +164,7 @@ void drawRows(WriteBuffer& buffer) noexcept
       }
 
       // TODO: use coloff as an index into the chars of each row of text
-      buffer.write(editorConfig.row[filerow]);
+      buffer.write(editorConfig.render[filerow]);
     }
 
     buffer.write("\x1b[K"s);
