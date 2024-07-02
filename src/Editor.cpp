@@ -255,9 +255,7 @@ bool open(std::filesystem::path const& path)
     editorConfig.numrows++;
   }
 
-  for (std::size_t i {}; i < editorConfig.row.size(); i++) {
-    updateRow(editorConfig.row[i], editorConfig.render[i]);
-  }
+  editorConfig.render = editorConfig.row;
 
   return true;
 }
