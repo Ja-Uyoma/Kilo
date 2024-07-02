@@ -23,6 +23,7 @@
 
 #include "WriteBuffer.hpp"
 #include <filesystem>
+#include <string_view>
 
 namespace Kilo::Editor {
 /// @brief Process the results from readKey
@@ -59,4 +60,11 @@ bool open(std::filesystem::path const& path);
  *
  */
 void scroll() noexcept;
+
+/**
+ * @brief Copies the contents of the source string into the destination string
+ * @param[in] row The source string
+ * @param[in] render The destination string
+ */
+void updateRow(std::string_view row, std::string& render);
 }   // namespace Kilo::Editor

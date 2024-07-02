@@ -35,6 +35,7 @@
 #include <iostream>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <unistd.h>
 #include <utility>
 
@@ -280,5 +281,10 @@ void scroll() noexcept
   if (editorConfig.cursorX >= editorConfig.coloff + editorConfig.screenCols) {
     editorConfig.coloff = editorConfig.cursorX - editorConfig.screenCols + 1;
   }
+}
+
+void updateRow(std::string_view row, std::string& render)
+{
+  render.assign(row);
 }
 }   // namespace Kilo::Editor
