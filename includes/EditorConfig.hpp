@@ -13,8 +13,6 @@ class EditorConfig
 {
 public:
   termios origTermios;
-  int screenRows;
-  int screenCols;
   std::vector<std::string> row;
   std::vector<std::string> render;
   int numrows {};
