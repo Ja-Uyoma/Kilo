@@ -18,11 +18,13 @@ target_sources(tests
         "${PROJECT_SOURCE_DIR}/includes/Terminal.hpp"
         "${PROJECT_SOURCE_DIR}/includes/WriteBuffer.hpp"
         "${PROJECT_SOURCE_DIR}/includes/Cursor.hpp"
+        "${PROJECT_SOURCE_DIR}/includes/Offset.hpp"
     PRIVATE
         WriteBuffer.test.cpp
         Terminal.test.cpp
         "${PROJECT_SOURCE_DIR}/src/Terminal.cpp"
         Cursor.test.cpp
+        Offset.test.cpp
 )
 
 target_compile_features(tests
