@@ -55,8 +55,8 @@ void displayWelcomeMessage(WriteBuffer& buffer)
 
   // Truncate the length of the string in case the terminal is too small to fit
   // the welcome message
-  if (welcomeLen > editorConfig.screenCols) {
-    welcomeLen = editorConfig.screenCols;
+  if (welcomeLen > editorConfig.window.cols) {
+    welcomeLen = editorConfig.window.cols;
   }
 
   // Center the string
@@ -65,7 +65,7 @@ void displayWelcomeMessage(WriteBuffer& buffer)
   // should start printing the string. So, we fill that space with space
   // characters, except for the first character, which should be a tilde
 
-  int padding = (editorConfig.screenCols - welcomeLen) / 2;
+  int padding = (editorConfig.window.cols - welcomeLen) / 2;
 
   if (padding > 0) {
     buffer.write("~"s);
@@ -94,10 +94,10 @@ void processKeypress()
     std::exit(EXIT_SUCCESS);
     break;
   case static_cast<int>(Home):     editorConfig.cursor.x = 0; break;
-  case static_cast<int>(End):      editorConfig.cursor.x = editorConfig.screenCols - 1; break;
+  case static_cast<int>(End):      editorConfig.cursor.x = editorConfig.window.cols - 1; break;
   case static_cast<int>(PageUp):
   case static_cast<int>(PageDown): {
-    for (int i = editorConfig.screenRows; i > 0; i--) {
+    for (int i = editorConfig.window.rows; i > 0; i--) {
       moveCursor(c == static_cast<int>(PageUp) ? static_cast<int>(ArrowUp) : static_cast<int>(ArrowDown));
     }
   } break;
@@ -143,9 +143,9 @@ void drawRows(WriteBuffer& buffer) noexcept
 {
   using namespace std::string_literals;
 
-  for (int y = 0; y < editorConfig.screenRows; y++) {
+  for (int y = 0; y < editorConfig.window.rows; y++) {
     if (int filerow = y + editorConfig.off.row; filerow >= editorConfig.numrows) {
-      if (editorConfig.numrows == 0 && y == editorConfig.screenRows / 3) {
+      if (editorConfig.numrows == 0 && y == editorConfig.window.rows / 3) {
         displayWelcomeMessage(buffer);
       }
       else {
@@ -159,8 +159,8 @@ void drawRows(WriteBuffer& buffer) noexcept
         len = 0;
       }
 
-      if (len > editorConfig.screenCols) {
-        len = editorConfig.screenCols;
+      if (len > editorConfig.window.cols) {
+        len = editorConfig.window.cols;
       }
 
       // TODO: use off.col as an index into the chars of each row of text
@@ -169,7 +169,7 @@ void drawRows(WriteBuffer& buffer) noexcept
 
     buffer.write("\x1b[K"s);
 
-    if (y < editorConfig.screenRows - 1) {
+    if (y < editorConfig.window.rows - 1) {
       buffer.write("\r\n"s);
     }
   }
@@ -272,16 +272,16 @@ void scroll() noexcept
     editorConfig.off.row = editorConfig.cursor.y;
   }
 
-  if (editorConfig.cursor.y >= editorConfig.off.row + editorConfig.screenRows) {
-    editorConfig.off.row = editorConfig.cursor.y - editorConfig.screenRows + 1;
+  if (editorConfig.cursor.y >= editorConfig.off.row + editorConfig.window.rows) {
+    editorConfig.off.row = editorConfig.cursor.y - editorConfig.window.rows + 1;
   }
 
   if (editorConfig.cursor.x < editorConfig.off.col) {
     editorConfig.off.col = editorConfig.cursor.x;
   }
 
-  if (editorConfig.cursor.x >= editorConfig.off.col + editorConfig.screenCols) {
-    editorConfig.off.col = editorConfig.cursor.x - editorConfig.screenCols + 1;
+  if (editorConfig.cursor.x >= editorConfig.off.col + editorConfig.window.cols) {
+    editorConfig.off.col = editorConfig.cursor.x - editorConfig.window.cols + 1;
   }
 }
 

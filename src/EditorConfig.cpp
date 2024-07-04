@@ -9,7 +9,7 @@ EditorConfig::EditorConfig()
 {
   try {
     Terminal::enableRawMode(origTermios);
-    Terminal::getWindowSize(&screenRows, &screenCols);
+    Terminal::getWindowSize(&window.rows, &window.cols);
   }
   catch (std::system_error const& err) {
     std::cerr << err.code() << ": " << err.what() << '\n';
