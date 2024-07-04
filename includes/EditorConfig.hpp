@@ -13,8 +13,6 @@ public:
   termios origTermios;
   int screenRows;
   int screenCols;
-  int cursorX {};   // The horizontal coordinate of the cursor (the column)
-  int cursorY {};   // The vertical coordinate of the cursor (the row)
   std::vector<std::string> row;
   std::vector<std::string> render;
   int numrows {};
