@@ -1,6 +1,7 @@
 #ifndef EDITOR_CONFIG_HPP
 #define EDITOR_CONFIG_HPP
 
+#include "Cursor.hpp"
 #include <string>
 #include <termios.h>
 #include <vector>
@@ -19,6 +20,7 @@ public:
   int numrows {};
   int rowoff {};
   int coloff {};
+  Cursor cursor {};
 
   explicit EditorConfig();
   ~EditorConfig();
