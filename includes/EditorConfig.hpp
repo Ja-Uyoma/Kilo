@@ -3,6 +3,7 @@
 
 #include "Cursor.hpp"
 #include "Offset.hpp"
+#include "Window.hpp"
 #include <string>
 #include <termios.h>
 #include <vector>
@@ -19,6 +20,7 @@ public:
   int numrows {};
   Cursor cursor {};
   Offset off {};
+  Window window {};
 
   explicit EditorConfig();
   ~EditorConfig();
