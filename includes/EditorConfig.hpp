@@ -17,8 +17,6 @@ public:
   std::vector<std::string> row;
   std::vector<std::string> render;
   int numrows {};
-  int rowoff {};
-  int coloff {};
   Cursor cursor {};
   Offset off {};
 
