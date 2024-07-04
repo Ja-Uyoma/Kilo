@@ -130,8 +130,8 @@ void refreshScreen() noexcept
   std::snprintf(buf,
                 sizeof buf,
                 "\x1b[%d;%dH",
-                (editorConfig.cursor.y - editorConfig.rowoff) + 1,
-                (editorConfig.cursor.x - editorConfig.coloff) + 1);
+                (editorConfig.cursor.y - editorConfig.off.row) + 1,
+                (editorConfig.cursor.x - editorConfig.off.col) + 1);
 
   buffer.write(buf, std::strlen(buf));
   buffer.write("\x1b[?25h"s);   // show the cursor
@@ -144,7 +144,7 @@ void drawRows(WriteBuffer& buffer) noexcept
   using namespace std::string_literals;
 
   for (int y = 0; y < editorConfig.screenRows; y++) {
-    if (int filerow = y + editorConfig.rowoff; filerow >= editorConfig.numrows) {
+    if (int filerow = y + editorConfig.off.row; filerow >= editorConfig.numrows) {
       if (editorConfig.numrows == 0 && y == editorConfig.screenRows / 3) {
         displayWelcomeMessage(buffer);
       }
@@ -153,7 +153,7 @@ void drawRows(WriteBuffer& buffer) noexcept
       }
     }
     else {
-      auto len = std::ssize(editorConfig.render[filerow]) - editorConfig.coloff;
+      auto len = std::ssize(editorConfig.render[filerow]) - editorConfig.off.col;
 
       if (len < 0) {
         len = 0;
@@ -163,7 +163,7 @@ void drawRows(WriteBuffer& buffer) noexcept
         len = editorConfig.screenCols;
       }
 
-      // TODO: use coloff as an index into the chars of each row of text
+      // TODO: use off.col as an index into the chars of each row of text
       buffer.write(editorConfig.render[filerow]);
     }
 
@@ -264,24 +264,24 @@ void scroll() noexcept
 {
   /*
    * Check if the cursor has moved outside of the visible window.
-   * If so, adjust editorConfig.rowoff and/or editorConfig.coloff so that the
+   * If so, adjust editorConfig.off.row and/or editorConfig.off.col so that the
    * cursor is just inside the visible window
    */
 
-  if (editorConfig.cursor.y < editorConfig.rowoff) {
-    editorConfig.rowoff = editorConfig.cursor.y;
+  if (editorConfig.cursor.y < editorConfig.off.row) {
+    editorConfig.off.row = editorConfig.cursor.y;
   }
 
-  if (editorConfig.cursor.y >= editorConfig.rowoff + editorConfig.screenRows) {
-    editorConfig.rowoff = editorConfig.cursor.y - editorConfig.screenRows + 1;
+  if (editorConfig.cursor.y >= editorConfig.off.row + editorConfig.screenRows) {
+    editorConfig.off.row = editorConfig.cursor.y - editorConfig.screenRows + 1;
   }
 
-  if (editorConfig.cursor.x < editorConfig.coloff) {
-    editorConfig.coloff = editorConfig.cursor.x;
+  if (editorConfig.cursor.x < editorConfig.off.col) {
+    editorConfig.off.col = editorConfig.cursor.x;
   }
 
-  if (editorConfig.cursor.x >= editorConfig.coloff + editorConfig.screenCols) {
-    editorConfig.coloff = editorConfig.cursor.x - editorConfig.screenCols + 1;
+  if (editorConfig.cursor.x >= editorConfig.off.col + editorConfig.screenCols) {
+    editorConfig.off.col = editorConfig.cursor.x - editorConfig.screenCols + 1;
   }
 }
 
