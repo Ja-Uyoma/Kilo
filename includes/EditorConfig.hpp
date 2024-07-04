@@ -2,6 +2,7 @@
 #define EDITOR_CONFIG_HPP
 
 #include "Cursor.hpp"
+#include "Offset.hpp"
 #include <string>
 #include <termios.h>
 #include <vector>
@@ -19,6 +20,7 @@ public:
   int rowoff {};
   int coloff {};
   Cursor cursor {};
+  Offset off {};
 
   explicit EditorConfig();
   ~EditorConfig();
