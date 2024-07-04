@@ -93,8 +93,8 @@ void processKeypress()
     clearScreenAndRepositionCursor();
     std::exit(EXIT_SUCCESS);
     break;
-  case static_cast<int>(Home):     editorConfig.cursorX = 0; break;
-  case static_cast<int>(End):      editorConfig.cursorX = editorConfig.screenCols - 1; break;
+  case static_cast<int>(Home):     editorConfig.cursor.x = 0; break;
+  case static_cast<int>(End):      editorConfig.cursor.x = editorConfig.screenCols - 1; break;
   case static_cast<int>(PageUp):
   case static_cast<int>(PageDown): {
     for (int i = editorConfig.screenRows; i > 0; i--) {
@@ -125,13 +125,13 @@ void refreshScreen() noexcept
   char buf[32];
 
   // Specify the exact position we want the cursor to move to
-  // We add 1 to cursorX and cursorY to convert from 0-indexed values to the
+  // We add 1 to cursor.x and cursor.y to convert from 0-indexed values to the
   // 1-indexed values that the terminal uses
   std::snprintf(buf,
                 sizeof buf,
                 "\x1b[%d;%dH",
-                (editorConfig.cursorY - editorConfig.rowoff) + 1,
-                (editorConfig.cursorX - editorConfig.coloff) + 1);
+                (editorConfig.cursor.y - editorConfig.rowoff) + 1,
+                (editorConfig.cursor.x - editorConfig.coloff) + 1);
 
   buffer.write(buf, std::strlen(buf));
   buffer.write("\x1b[?25h"s);   // show the cursor
@@ -180,42 +180,42 @@ void moveCursor(int key)
   using enum Kilo::Utilities::EditorKey;
 
   std::optional<std::string> currRow = std::invoke([]() -> std::optional<std::string> {
-    if (editorConfig.cursorY >= editorConfig.numrows) {
+    if (editorConfig.cursor.y >= editorConfig.numrows) {
       return std::nullopt;
     }
 
-    return std::make_optional(editorConfig.row[editorConfig.cursorY]);
+    return std::make_optional(editorConfig.row[editorConfig.cursor.y]);
   });
 
   switch (key) {
   case static_cast<int>(ArrowLeft):
-    if (editorConfig.cursorX != 0) {
-      editorConfig.cursorX--;
+    if (editorConfig.cursor.x != 0) {
+      editorConfig.cursor.x--;
     }
-    else if (editorConfig.cursorY > 0) {
-      editorConfig.cursorY--;
-      editorConfig.cursorX = std::ssize(editorConfig.row[editorConfig.cursorY]);
+    else if (editorConfig.cursor.y > 0) {
+      editorConfig.cursor.y--;
+      editorConfig.cursor.x = std::ssize(editorConfig.row[editorConfig.cursor.y]);
     }
 
     break;
   case static_cast<int>(ArrowRight):
-    if (currRow && std::cmp_less(editorConfig.cursorX, currRow->size())) {
-      editorConfig.cursorX++;
+    if (currRow && std::cmp_less(editorConfig.cursor.x, currRow->size())) {
+      editorConfig.cursor.x++;
     }
-    else if (currRow && std::cmp_equal(editorConfig.cursorX, currRow->size())) {
-      editorConfig.cursorY++;
-      editorConfig.cursorX = 0;
+    else if (currRow && std::cmp_equal(editorConfig.cursor.x, currRow->size())) {
+      editorConfig.cursor.y++;
+      editorConfig.cursor.x = 0;
     }
     break;
   case static_cast<int>(ArrowUp):
-    if (editorConfig.cursorY != 0) {
-      editorConfig.cursorY--;
+    if (editorConfig.cursor.y != 0) {
+      editorConfig.cursor.y--;
     }
 
     break;
   case static_cast<int>(ArrowDown):
-    if (editorConfig.cursorY < editorConfig.numrows) {
-      editorConfig.cursorY++;
+    if (editorConfig.cursor.y < editorConfig.numrows) {
+      editorConfig.cursor.y++;
     }
 
     break;
@@ -223,17 +223,17 @@ void moveCursor(int key)
   }
 
   currRow = std::invoke([]() -> std::optional<std::string> {
-    if (editorConfig.cursorY >= editorConfig.numrows) {
+    if (editorConfig.cursor.y >= editorConfig.numrows) {
       return std::nullopt;
     }
 
-    return std::make_optional(editorConfig.row[editorConfig.cursorY]);
+    return std::make_optional(editorConfig.row[editorConfig.cursor.y]);
   });
 
   int rowlen = currRow ? currRow->length() : 0;
 
-  if (editorConfig.cursorX > rowlen) {
-    editorConfig.cursorX = rowlen;
+  if (editorConfig.cursor.x > rowlen) {
+    editorConfig.cursor.x = rowlen;
   }
 }
 
@@ -268,20 +268,20 @@ void scroll() noexcept
    * cursor is just inside the visible window
    */
 
-  if (editorConfig.cursorY < editorConfig.rowoff) {
-    editorConfig.rowoff = editorConfig.cursorY;
+  if (editorConfig.cursor.y < editorConfig.rowoff) {
+    editorConfig.rowoff = editorConfig.cursor.y;
   }
 
-  if (editorConfig.cursorY >= editorConfig.rowoff + editorConfig.screenRows) {
-    editorConfig.rowoff = editorConfig.cursorY - editorConfig.screenRows + 1;
+  if (editorConfig.cursor.y >= editorConfig.rowoff + editorConfig.screenRows) {
+    editorConfig.rowoff = editorConfig.cursor.y - editorConfig.screenRows + 1;
   }
 
-  if (editorConfig.cursorX < editorConfig.coloff) {
-    editorConfig.coloff = editorConfig.cursorX;
+  if (editorConfig.cursor.x < editorConfig.coloff) {
+    editorConfig.coloff = editorConfig.cursor.x;
   }
 
-  if (editorConfig.cursorX >= editorConfig.coloff + editorConfig.screenCols) {
-    editorConfig.coloff = editorConfig.cursorX - editorConfig.screenCols + 1;
+  if (editorConfig.cursor.x >= editorConfig.coloff + editorConfig.screenCols) {
+    editorConfig.coloff = editorConfig.cursor.x - editorConfig.screenCols + 1;
   }
 }
 
