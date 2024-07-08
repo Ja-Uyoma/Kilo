@@ -287,6 +287,5 @@ void scroll() noexcept
 
 void updateRow(std::string_view row, std::string& render)
 {
-  render.assign(row);
 }
 }   // namespace Kilo::Editor
