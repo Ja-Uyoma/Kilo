@@ -8,6 +8,7 @@ class KiloRecipe(ConanFile):
     def requirements(self):
         self.requires("ms-gsl/4.0.0")
         self.requires("gtest/1.14.0")
+        self.requires("fmt/11.0.1")
 
     def layout(self):
         cmake_layout(self)

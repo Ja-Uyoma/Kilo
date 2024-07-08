@@ -1,8 +1,9 @@
 add_executable(kilo)
 
 find_package(Microsoft.GSL REQUIRED)
+find_package(fmt REQUIRED)
 
-target_link_libraries(kilo Microsoft.GSL::GSL)
+target_link_libraries(kilo Microsoft.GSL::GSL fmt::fmt)
 
 target_include_directories(kilo
     PRIVATE
