@@ -290,5 +290,23 @@ void updateRow(std::string_view row, std::string& render)
 {
   [[maybe_unused]]
   auto tabs = std::ranges::count_if(row, [](unsigned char c) { return c == '\t'; });
+
+  int idx {};
+
+  for (std::size_t j {}; j < row.length(); j++) {
+    if (row[j] == '\t') {
+      render[idx] = ' ';
+      idx++;
+
+      while (idx % 8 != 0) {
+        render[idx] = ' ';
+        idx++;
+      }
+    }
+    else {
+      render[idx] = row[j];
+      idx++;
+    }
+  }
 }
 }   // namespace Kilo::Editor
