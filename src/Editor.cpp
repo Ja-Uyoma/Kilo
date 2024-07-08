@@ -27,6 +27,7 @@
 #include "Terminal.hpp"
 #include "Utilities.hpp"
 #include "WriteBuffer.hpp"
+#include <algorithm>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -287,5 +288,7 @@ void scroll() noexcept
 
 void updateRow(std::string_view row, std::string& render)
 {
+  [[maybe_unused]]
+  auto tabs = std::ranges::count_if(row, [](unsigned char c) { return c == '\t'; });
 }
 }   // namespace Kilo::Editor
