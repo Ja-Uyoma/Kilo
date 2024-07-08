@@ -288,6 +288,8 @@ void scroll() noexcept
 
 void updateRow(std::string_view row, std::string& render)
 {
+  using Utilities::KILO_TAB_STOP;
+
   [[maybe_unused]]
   auto tabs = std::ranges::count_if(row, [](unsigned char c) { return c == '\t'; });
 
@@ -298,7 +300,7 @@ void updateRow(std::string_view row, std::string& render)
       render[idx] = ' ';
       idx++;
 
-      while (idx % 8 != 0) {
+      while (idx % KILO_TAB_STOP != 0) {
         render[idx] = ' ';
         idx++;
       }
