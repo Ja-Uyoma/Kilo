@@ -19,6 +19,7 @@ public:
   Cursor cursor {};
   Offset off {};
   Window window {};
+  int rx {};
 
   explicit EditorConfig();
   ~EditorConfig();
