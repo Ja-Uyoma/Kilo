@@ -164,8 +164,7 @@ void drawRows(WriteBuffer& buffer) noexcept
         len = editorConfig.window.cols;
       }
 
-      // TODO: use off.col as an index into the chars of each row of text
-      buffer.write(editorConfig.render[filerow]);
+      buffer.write(&editorConfig.render[filerow][editorConfig.off.col], len);
     }
 
     buffer.write("\x1b[K"s);
