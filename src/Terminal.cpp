@@ -32,6 +32,7 @@
 #include "Terminal.hpp"
 
 #include "Utilities.hpp"
+#include <array>
 #include <cerrno>
 #include <cstring>
 #include <sys/ioctl.h>
@@ -118,7 +119,7 @@ int readKey()
   // single key press.
 
   if (c == '\x1b') {
-    char seq[3] {};
+    std::array<char, 3> seq {};
 
     // If we read an escape character, we immediately read 2 more bytes into the
     // seq buffer. If either of these reads times out, then we assume the user
@@ -218,7 +219,7 @@ void getCursorPosition(int* const rows, int* const cols)
     throw std::system_error(errno, std::system_category(), "Could not get cursor position");
   }
 
-  char buf[32] {};
+  std::array<char, 32> buf {};
   unsigned i {};
 
   while (i < sizeof(buf) - 1) {
