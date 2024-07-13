@@ -48,7 +48,8 @@ namespace {
 void getOriginalTerminalSettings(termios& settings)
 {
   if (errno = 0; ::tcgetattr(STDIN_FILENO, &settings) == -1) {
-    throw std::system_error(errno, std::system_category(), "Could not retrieve original terminal driver settings");
+    throw std::system_error(
+      errno, std::system_category(), "Could not retrieve original terminal driver settings");
   }
 }
 
@@ -67,7 +68,8 @@ void setNewTerminalSettings(termios& term)
   term.c_cc[VTIME] = 1;
 
   if (errno = 0; ::tcsetattr(STDIN_FILENO, TCSAFLUSH, &term) == -1) {
-    throw std::system_error(errno, std::system_category(), "Could not set terminal driver to raw mode");
+    throw std::system_error(
+      errno, std::system_category(), "Could not set terminal driver to raw mode");
   }
 }
 }   // namespace
@@ -85,15 +87,16 @@ void enableRawMode(termios& canonicalSettings)
 void disableRawMode(termios const& canonicalSettings)
 {
   if (errno = 0; ::tcsetattr(STDIN_FILENO, TCSAFLUSH, &canonicalSettings) == -1) {
-    throw std::system_error(errno, std::system_category(), "Could not restore terminal driver to normal mode");
+    throw std::system_error(
+      errno, std::system_category(), "Could not restore terminal driver to normal mode");
   }
 }
 
 bool ascertainNonCanonicalMode(termios const& term) noexcept
 {
   return (term.c_iflag & (BRKINT | ICRNL | INPCK | ISTRIP | IXON)) || (term.c_oflag & OPOST)
-      || ((term.c_cflag & CS8) != CS8) || (term.c_lflag & (ECHO | ICANON | IEXTEN | ISIG)) || (term.c_cc[VMIN] != 0)
-      || (term.c_cc[VTIME] != 1);
+      || ((term.c_cflag & CS8) != CS8) || (term.c_lflag & (ECHO | ICANON | IEXTEN | ISIG))
+      || (term.c_cc[VMIN] != 0) || (term.c_cc[VTIME] != 1);
 }
 
 int readKey()
@@ -196,8 +199,9 @@ void getWindowSize(int* const rows, int* const cols)
   if (::ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == -1 || ws.ws_col == 0) {
     // Move the cursor to the bottom-right of the screen
     if (::write(STDOUT_FILENO, "\x1b[999C\x1b[999B", 12) != 12) {
-      throw std::system_error(
-        errno, std::system_category(), "Could not move the cursor to the bottom-right of the screen");
+      throw std::system_error(errno,
+                              std::system_category(),
+                              "Could not move the cursor to the bottom-right of the screen");
     }
 
     getCursorPosition(rows, cols);
@@ -247,7 +251,8 @@ void getCursorPosition(int* const rows, int* const cols)
   // We tell it to parse the 2 integers separated by a ';' and write the value
   // into the rows and cols variables
   if (std::sscanf(&buf[2], "%d;%d", rows, cols) != 2) {
-    throw std::system_error(errno, std::system_category(), "Failed to write buffer data into rows and cols variables");
+    throw std::system_error(
+      errno, std::system_category(), "Failed to write buffer data into rows and cols variables");
   }
 }
 }   // namespace Kilo::Terminal

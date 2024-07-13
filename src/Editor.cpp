@@ -52,7 +52,8 @@ void displayWelcomeMessage(WriteBuffer& buffer)
   char welcome[80] {};
 
   // Interpolate KILO_VERSION into the welcome message
-  int welcomeLen = std::snprintf(welcome, sizeof welcome, "Kilo editor -- version %s", KILO_VERSION);
+  int welcomeLen =
+    std::snprintf(welcome, sizeof welcome, "Kilo editor -- version %s", KILO_VERSION);
 
   // Truncate the length of the string in case the terminal is too small to fit
   // the welcome message
@@ -99,7 +100,8 @@ void processKeypress()
     case static_cast<int>(PageUp):
     case static_cast<int>(PageDown): {
       for (int i = editorConfig.window.rows; i > 0; i--) {
-        moveCursor(c == static_cast<int>(PageUp) ? static_cast<int>(ArrowUp) : static_cast<int>(ArrowDown));
+        moveCursor(c == static_cast<int>(PageUp) ? static_cast<int>(ArrowUp)
+                                                 : static_cast<int>(ArrowDown));
       }
     } break;
     case static_cast<int>(ArrowUp):
