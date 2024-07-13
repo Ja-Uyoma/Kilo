@@ -94,7 +94,7 @@ IncludeCategories:
     SortPriority: 1
 IndentAccessModifiers: false
 IndentCaseBlocks: false
-IndentCaseLabels: false
+IndentCaseLabels: true
 IndentExternBlock: Indent
 IndentGotoLabels: false
 IndentPPDirectives: BeforeHash

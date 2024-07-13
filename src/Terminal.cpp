@@ -146,13 +146,13 @@ int readKey()
 
         if (seq[2] == '~') {
           switch (seq[1]) {
-          case '1': return static_cast<int>(Home);
-          case '3': return static_cast<int>(Delete);
-          case '4': return static_cast<int>(End);
-          case '5': return static_cast<int>(PageUp);
-          case '6': return static_cast<int>(PageDown);
-          case '7': return static_cast<int>(Home);
-          case '8': return static_cast<int>(End);
+            case '1': return static_cast<int>(Home);
+            case '3': return static_cast<int>(Delete);
+            case '4': return static_cast<int>(End);
+            case '5': return static_cast<int>(PageUp);
+            case '6': return static_cast<int>(PageDown);
+            case '7': return static_cast<int>(Home);
+            case '8': return static_cast<int>(End);
           }
         }
       }
@@ -164,12 +164,12 @@ int readKey()
 
       else {
         switch (seq[1]) {
-        case 'A': return static_cast<int>(ArrowUp);
-        case 'B': return static_cast<int>(ArrowDown);
-        case 'C': return static_cast<int>(ArrowRight);
-        case 'D': return static_cast<int>(ArrowLeft);
-        case 'H': return static_cast<int>(Home);
-        case 'F': return static_cast<int>(End);
+          case 'A': return static_cast<int>(ArrowUp);
+          case 'B': return static_cast<int>(ArrowDown);
+          case 'C': return static_cast<int>(ArrowRight);
+          case 'D': return static_cast<int>(ArrowLeft);
+          case 'H': return static_cast<int>(Home);
+          case 'F': return static_cast<int>(End);
         }
       }
     }
@@ -177,8 +177,8 @@ int readKey()
       using enum Kilo::Utilities::EditorKey;
 
       switch (seq[1]) {
-      case 'H': return static_cast<int>(Home);
-      case 'F': return static_cast<int>(End);
+        case 'H': return static_cast<int>(Home);
+        case 'F': return static_cast<int>(End);
       }
     }
 

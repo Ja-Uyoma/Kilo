@@ -90,23 +90,23 @@ void processKeypress()
   int c = Terminal::readKey();
 
   switch (c) {
-  case ctrlKey('q'):
-    clearScreenAndRepositionCursor();
-    std::exit(EXIT_SUCCESS);
-    break;
-  case static_cast<int>(Home):     editorConfig.cursor.x = 0; break;
-  case static_cast<int>(End):      editorConfig.cursor.x = editorConfig.window.cols - 1; break;
-  case static_cast<int>(PageUp):
-  case static_cast<int>(PageDown): {
-    for (int i = editorConfig.window.rows; i > 0; i--) {
-      moveCursor(c == static_cast<int>(PageUp) ? static_cast<int>(ArrowUp) : static_cast<int>(ArrowDown));
-    }
-  } break;
-  case static_cast<int>(ArrowUp):
-  case static_cast<int>(ArrowDown):
-  case static_cast<int>(ArrowLeft):
-  case static_cast<int>(ArrowRight): moveCursor(c);
-  default:                           break;
+    case ctrlKey('q'):
+      clearScreenAndRepositionCursor();
+      std::exit(EXIT_SUCCESS);
+      break;
+    case static_cast<int>(Home):     editorConfig.cursor.x = 0; break;
+    case static_cast<int>(End):      editorConfig.cursor.x = editorConfig.window.cols - 1; break;
+    case static_cast<int>(PageUp):
+    case static_cast<int>(PageDown): {
+      for (int i = editorConfig.window.rows; i > 0; i--) {
+        moveCursor(c == static_cast<int>(PageUp) ? static_cast<int>(ArrowUp) : static_cast<int>(ArrowDown));
+      }
+    } break;
+    case static_cast<int>(ArrowUp):
+    case static_cast<int>(ArrowDown):
+    case static_cast<int>(ArrowLeft):
+    case static_cast<int>(ArrowRight): moveCursor(c);
+    default:                           break;
   }
 }
 
@@ -188,38 +188,38 @@ void moveCursor(int key)
   });
 
   switch (key) {
-  case static_cast<int>(ArrowLeft):
-    if (editorConfig.cursor.x != 0) {
-      editorConfig.cursor.x--;
-    }
-    else if (editorConfig.cursor.y > 0) {
-      editorConfig.cursor.y--;
-      editorConfig.cursor.x = std::ssize(editorConfig.row[editorConfig.cursor.y]);
-    }
+    case static_cast<int>(ArrowLeft):
+      if (editorConfig.cursor.x != 0) {
+        editorConfig.cursor.x--;
+      }
+      else if (editorConfig.cursor.y > 0) {
+        editorConfig.cursor.y--;
+        editorConfig.cursor.x = std::ssize(editorConfig.row[editorConfig.cursor.y]);
+      }
 
-    break;
-  case static_cast<int>(ArrowRight):
-    if (currRow && std::cmp_less(editorConfig.cursor.x, currRow->size())) {
-      editorConfig.cursor.x++;
-    }
-    else if (currRow && std::cmp_equal(editorConfig.cursor.x, currRow->size())) {
-      editorConfig.cursor.y++;
-      editorConfig.cursor.x = 0;
-    }
-    break;
-  case static_cast<int>(ArrowUp):
-    if (editorConfig.cursor.y != 0) {
-      editorConfig.cursor.y--;
-    }
+      break;
+    case static_cast<int>(ArrowRight):
+      if (currRow && std::cmp_less(editorConfig.cursor.x, currRow->size())) {
+        editorConfig.cursor.x++;
+      }
+      else if (currRow && std::cmp_equal(editorConfig.cursor.x, currRow->size())) {
+        editorConfig.cursor.y++;
+        editorConfig.cursor.x = 0;
+      }
+      break;
+    case static_cast<int>(ArrowUp):
+      if (editorConfig.cursor.y != 0) {
+        editorConfig.cursor.y--;
+      }
 
-    break;
-  case static_cast<int>(ArrowDown):
-    if (editorConfig.cursor.y < editorConfig.numrows) {
-      editorConfig.cursor.y++;
-    }
+      break;
+    case static_cast<int>(ArrowDown):
+      if (editorConfig.cursor.y < editorConfig.numrows) {
+        editorConfig.cursor.y++;
+      }
 
-    break;
-  default: break;
+      break;
+    default: break;
   }
 
   currRow = std::invoke([]() -> std::optional<std::string> {
