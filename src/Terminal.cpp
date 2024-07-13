@@ -222,7 +222,7 @@ void getCursorPosition(int* const rows, int* const cols)
   std::array<char, 32> buf {};
   unsigned i {};
 
-  while (i < sizeof(buf) - 1) {
+  while (i < buf.size() - 1) {
     // Read the reply from stdin and store it in a buffer
     // We do this until we encounter the 'R' character
 
