@@ -59,7 +59,7 @@ void getOriginalTerminalSettings(termios& settings)
  * @param[in] term The struct containing the settings to be written
  * @throws std::system_error if we could not write the new settings
  */
-void setNewTerminalSettings(termios& term)
+void setRawModeSettings(termios& term)
 {
   term.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
   term.c_oflag &= ~OPOST;
@@ -82,7 +82,7 @@ void enableRawMode(termios& canonicalSettings)
   // Copy the current terminal settings into another variable
   termios temp = canonicalSettings;
 
-  setNewTerminalSettings(temp);
+  setRawModeSettings(temp);
 }
 
 void disableRawMode(termios const& canonicalSettings)
