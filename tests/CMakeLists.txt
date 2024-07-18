@@ -20,6 +20,7 @@ target_sources(tests
         "${PROJECT_SOURCE_DIR}/includes/Cursor.hpp"
         "${PROJECT_SOURCE_DIR}/includes/Offset.hpp"
         "${PROJECT_SOURCE_DIR}/includes/Window.hpp"
+        "${PROJECT_SOURCE_DIR}/includes/TerminalState.hpp"
     PRIVATE
         WriteBuffer.test.cpp
         Terminal.test.cpp
@@ -27,6 +28,8 @@ target_sources(tests
         Cursor.test.cpp
         Offset.test.cpp
         Window.test.cpp
+        "${PROJECT_SOURCE_DIR}/src/TerminalState.cpp"
+        TerminalState.test.cpp
 )
 
 target_compile_features(tests
