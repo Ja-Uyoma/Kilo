@@ -31,6 +31,10 @@ namespace Kilo {
 class TerminalState
 {
 public:
+  /**
+   * @brief Construct a new Terminal State object
+   *
+   */
   explicit TerminalState();
 
 private:
