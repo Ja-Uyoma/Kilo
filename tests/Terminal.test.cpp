@@ -27,6 +27,7 @@
 #include <system_error>
 
 namespace Kilo::Terminal {
+
 class TerminalMode : public ::testing::Test
 {
 public:
@@ -50,4 +51,5 @@ TEST_F(TerminalMode, enableRawModeSetsTheTerminalDriverToNonCanonicalMode)
 
   ASSERT_TRUE(ascertainNonCanonicalMode(term));
 }
+
 }   // namespace Kilo::Terminal
