@@ -21,6 +21,9 @@
  * SOFTWARE.
  */
 
+#ifndef UTILITIES_HPP
+#define UTILITIES_HPP
+
 namespace Kilo::Utilities {
 /// @brief The version number of the application
 inline constexpr char const* KILO_VERSION = "0.0.1";
@@ -69,3 +72,5 @@ constexpr unsigned ctrlKey(unsigned char key) noexcept
  */
 [[nodiscard]] long writeAll(int fd, void const* buf, long count);
 }   // namespace Kilo::Utilities
+
+#endif

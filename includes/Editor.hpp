@@ -21,6 +21,9 @@
  * SOFTWARE.
  */
 
+#ifndef EDITOR_HPP
+#define EDITOR_HPP
+
 #include "WriteBuffer.hpp"
 #include <filesystem>
 #include <string_view>
@@ -68,3 +71,5 @@ void scroll() noexcept;
  */
 void updateRow(std::string_view row, std::string& render);
 }   // namespace Kilo::Editor
+
+#endif
