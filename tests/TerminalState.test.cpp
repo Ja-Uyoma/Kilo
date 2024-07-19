@@ -42,6 +42,15 @@ TEST(Terminal, getTerminalDriverSettingsSucceedsWhenGivenAValidFileDescriptor)
   ASSERT_NO_THROW(getTerminalDriverSettings(0, buf));
 }
 
+TEST(Terminal, ttyRawFailsWhenGivenAnInvalidFileDescriptor)
+{
+  termios buf;
+  termios copy;
+
+  getTerminalDriverSettings(STDIN_FILENO, buf);
+  ASSERT_THROW(ttyRaw(-1, buf, copy), std::system_error);
+}
+
 TEST(TerminalState, EachInstanceIsWellFormed)
 {
   ASSERT_NO_THROW(TerminalState tstate {});
