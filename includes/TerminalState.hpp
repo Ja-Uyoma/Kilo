@@ -38,6 +38,12 @@ public:
   explicit TerminalState();
 
   /**
+   * @brief Set the terminal driver to raw (or non-canonical) mode
+   *
+   */
+  void setRawMode() &;
+
+  /**
    * @brief Set the terminal driver to canonical mode
    *
    */
@@ -45,6 +51,7 @@ public:
 
 private:
   termios m_termios {};
+  termios m_copy {};
 };
 
 }   // namespace Kilo
