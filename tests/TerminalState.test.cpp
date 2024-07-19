@@ -51,6 +51,26 @@ TEST(Terminal, ttyRawFailsWhenGivenAnInvalidFileDescriptor)
   ASSERT_THROW(ttyRaw(-1, buf, copy), std::system_error);
 }
 
+TEST(Terminal, ttyResetFailsWhenGivenAnInvalidFileDescriptor)
+{
+  termios buf;
+  int fd = -1;
+
+  getTerminalDriverSettings(STDIN_FILENO, buf);
+
+  ASSERT_THROW(ttyReset(fd, buf), std::system_error);
+}
+
+TEST(Terminal, ttyResetSucceedsWhenGivenAValidFileDescriptor)
+{
+  termios buf;
+  int fd = STDIN_FILENO;
+
+  getTerminalDriverSettings(fd, buf);
+
+  ASSERT_NO_THROW(ttyReset(fd, buf));
+}
+
 TEST(TerminalState, EachInstanceIsWellFormed)
 {
   ASSERT_NO_THROW(TerminalState tstate {});
