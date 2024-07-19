@@ -72,6 +72,15 @@ private:
  */
 void getTerminalDriverSettings(int fd, termios& buf);
 
+/**
+ * @brief Set the terminal driver in raw mode
+ *
+ * @param fd The terminal driver's file descriptor
+ * @param buf The buffer to which the terminal driver's settings are to be written
+ * @param copy A copy of the settings stored in buf in case we need to roll back
+ */
+void ttyRaw(int fd, termios const& buf, termios& copy);
+
 }   // namespace Kilo
 
 #endif

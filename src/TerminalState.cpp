@@ -125,4 +125,61 @@ void getTerminalDriverSettings(int fd, termios& buf)
   }
 }
 
+void ttyRaw(int fd, termios const& buf, termios& copy)
+{
+  copy = buf;
+
+  /*
+   * No SIGINT on BREAK, CR-to-NL off, input parity check off, don't strip 8th bit on input, output
+   * flow control off
+   */
+  copy.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
+
+  /* Output processing off */
+  copy.c_oflag &= ~OPOST;
+
+  /* Set 8 bits per char */
+  copy.c_cflag |= CS8;
+
+  /* Echo off, canonical mode off, extended input processing off, signal chars off */
+  copy.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
+
+  /* Read 1 byte at a time */
+  copy.c_cc[VMIN] = 0;
+
+  /* No timer */
+  copy.c_cc[VTIME] = 1;
+
+  if (errno = 0; tcsetattr(fd, TCSAFLUSH, &copy) == -1) {
+    throw std::system_error(
+      errno, std::system_category(), "Failed to set terminal driver to raw mode");
+  }
+
+  /*
+   * Verify that the changes stuck since tcsetattr can return 0 on partial success
+   */
+
+  if (errno = 0; tcgetattr(fd, &copy) == -1) {
+    tcsetattr(fd, TCSAFLUSH, &buf);
+    throw std::system_error(
+      errno, std::system_category(), "Error while writing terminal driver settings to buffer");
+  }
+
+  auto const verify = [&copy] {
+    return (copy.c_iflag & (BRKINT | ICRNL | INPCK | ISTRIP | IXON)) || (copy.c_oflag & OPOST)
+        || ((copy.c_cflag & CS8) != CS8) || (copy.c_lflag & (ECHO | ICANON | IEXTEN | ISIG))
+        || (copy.c_cc[VMIN] != 0) || (copy.c_cc[VTIME] != 1);
+  };
+
+  /*
+   * Only some of the changes stuck. Restore the original settings
+   */
+
+  if (verify()) {
+    tcsetattr(fd, TCSAFLUSH, &buf);
+    throw std::system_error(
+      EINVAL, std::system_category(), "Setting driver to raw mode only partially successful");
+  }
+}
+
 }   // namespace Kilo
