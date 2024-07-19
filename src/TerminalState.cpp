@@ -120,4 +120,12 @@ void TerminalState::reset() const&
   m_state = ttystate::Reset;
 }
 
+void getTerminalDriverSettings(int fd, termios& buf)
+{
+  if (errno = 0; tcgetattr(fd, &buf) == -1) {
+    throw std::system_error(
+      errno, std::system_category(), "Could not retrieve terminal driver settings");
+  }
+}
+
 }   // namespace Kilo

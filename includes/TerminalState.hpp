@@ -61,6 +61,14 @@ private:
   mutable ttystate m_state {ttystate::Reset};
 };
 
+/**
+ * @brief Query fd and write its settings to buf
+ *
+ * @param fd The file descriptor to be queried
+ * @param buf Where the settings are written to
+ */
+void getTerminalDriverSettings(int fd, termios& buf);
+
 }   // namespace Kilo
 
 #endif
