@@ -89,6 +89,15 @@ TEST(TerminalState, EachInstanceIsWellFormed)
   ASSERT_NO_THROW(TerminalState tstate {});
 }
 
+TEST(TerminalState, SetRawModePutsTheTerminalDriverInRawMode)
+{
+  TerminalState state {};
+
+  auto cleanup = gsl::finally([&state] { state.reset(); });
+
+  ASSERT_NO_THROW(state.setRawMode());
+}
+
 TEST(TerminalState, ResetRestoresTerminalSettingsToCanonicalMode)
 {
   TerminalState tstate {};
