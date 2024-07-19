@@ -32,4 +32,11 @@ TEST(TerminalState, EachInstanceIsWellFormed)
   ASSERT_NO_THROW(TerminalState tstate {});
 }
 
+TEST(TerminalState, ResetRestoresTerminalSettingsToCanonicalMode)
+{
+  TerminalState tstate {};
+
+  ASSERT_NO_THROW(tstate.reset());
+}
+
 }   // namespace Kilo
