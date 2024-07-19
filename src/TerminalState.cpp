@@ -37,4 +37,12 @@ TerminalState::TerminalState()
   }
 }
 
+void TerminalState::reset() const&
+{
+  if (errno = 0; tcsetattr(STDIN_FILENO, TCSAFLUSH, &m_termios) == -1) {
+    throw std::system_error(
+      errno, std::system_category(), "Failed to reset terminal driver to canonical mode");
+  }
+}
+
 }   // namespace Kilo

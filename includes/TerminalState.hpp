@@ -37,6 +37,12 @@ public:
    */
   explicit TerminalState();
 
+  /**
+   * @brief Set the terminal driver to canonical mode
+   *
+   */
+  void reset() const&;
+
 private:
   termios m_termios {};
 };
