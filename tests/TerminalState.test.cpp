@@ -101,6 +101,7 @@ TEST(TerminalState, SetRawModePutsTheTerminalDriverInRawMode)
 TEST(TerminalState, ResetRestoresTerminalSettingsToCanonicalMode)
 {
   TerminalState tstate {};
+  tstate.setRawMode();
 
   ASSERT_NO_THROW(tstate.reset());
 }
