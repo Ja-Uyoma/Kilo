@@ -36,38 +36,6 @@
 
 namespace Kilo::Terminal {
 /**
- * @brief Enable raw mode by turning off some terminal flags
- *
- * @param[in] canonicalSettings The original settings of the terminal driver
- * @pre canonicalSettings must be a valid reference
- * @throws std::system_error if either querying the terminal driver for its
- * current settings fails or if writing the modified settings fails.
- */
-void enableRawMode(termios& canonicalSettings);
-
-/**
- * @brief Disable raw mode by restoring the original canonical settings
- *
- * @param[in] canonicalSettings The original settings of the terminal driver
- * @pre canonicalSettings must be a valid reference
- * @throws std::system_error if restoring the terminal driver to normal mode
- * fails
- */
-void disableRawMode(termios const& canonicalSettings);
-
-/**
- * @brief Verifies that all changes to the terminal driver were made
- * successfully.
- *
- * @details This is necessary because tcsetattr returns successfully it at least
- * one change was successful.
- * @param term The terminal driver
- * @return true If all changes were made successfully
- * @return false If at least one change was unsuccessful
- */
-bool ascertainNonCanonicalMode(termios const& term) noexcept;
-
-/**
  * @brief Read key input from stdin
  * @return The character read
  * @throws std::system_error if an error occured during read

@@ -40,65 +40,6 @@
 #include <unistd.h>
 
 namespace Kilo::Terminal {
-namespace {
-/**
- * @brief Get the original terminal driver settings and write them to a struct
- * @param[inout] settings Where the terminal driver settings are written to
- * @throws std::system_error if we could not query the terminal driver
- */
-void getOriginalTerminalSettings(termios& settings)
-{
-  if (errno = 0; ::tcgetattr(STDIN_FILENO, &settings) == -1) {
-    throw std::system_error(
-      errno, std::system_category(), "Could not retrieve original terminal driver settings");
-  }
-}
-
-/**
- * @brief Write new settings to the terminal driver
- * @param[in] term The struct containing the settings to be written
- * @throws std::system_error if we could not write the new settings
- */
-void setRawModeSettings(termios& term)
-{
-  term.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
-  term.c_oflag &= ~OPOST;
-  term.c_cflag |= CS8;
-  term.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
-  term.c_cc[VMIN] = 0;
-  term.c_cc[VTIME] = 1;
-
-  if (errno = 0; ::tcsetattr(STDIN_FILENO, TCSAFLUSH, &term) == -1) {
-    throw std::system_error(
-      errno, std::system_category(), "Could not set terminal driver to raw mode");
-  }
-}
-}   // namespace
-
-void enableRawMode(termios& canonicalSettings)
-{
-  getOriginalTerminalSettings(canonicalSettings);
-
-  // Copy the current terminal settings into another variable
-  termios temp = canonicalSettings;
-
-  setRawModeSettings(temp);
-}
-
-void disableRawMode(termios const& canonicalSettings)
-{
-  if (errno = 0; ::tcsetattr(STDIN_FILENO, TCSAFLUSH, &canonicalSettings) == -1) {
-    throw std::system_error(
-      errno, std::system_category(), "Could not restore terminal driver to normal mode");
-  }
-}
-
-bool ascertainNonCanonicalMode(termios const& term) noexcept
-{
-  return (term.c_iflag & (BRKINT | ICRNL | INPCK | ISTRIP | IXON)) || (term.c_oflag & OPOST)
-      || ((term.c_cflag & CS8) != CS8) || (term.c_lflag & (ECHO | ICANON | IEXTEN | ISIG))
-      || (term.c_cc[VMIN] != 0) || (term.c_cc[VTIME] != 1);
-}
 
 int readKey()
 {

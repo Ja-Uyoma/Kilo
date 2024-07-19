@@ -17,7 +17,6 @@ target_include_directories(tests
 
 target_sources(tests
     PUBLIC
-        "${PROJECT_SOURCE_DIR}/includes/Terminal.hpp"
         "${PROJECT_SOURCE_DIR}/includes/WriteBuffer.hpp"
         "${PROJECT_SOURCE_DIR}/includes/Cursor.hpp"
         "${PROJECT_SOURCE_DIR}/includes/Offset.hpp"
@@ -25,8 +24,6 @@ target_sources(tests
         "${PROJECT_SOURCE_DIR}/includes/TerminalState.hpp"
     PRIVATE
         WriteBuffer.test.cpp
-        Terminal.test.cpp
-        "${PROJECT_SOURCE_DIR}/src/Terminal.cpp"
         Cursor.test.cpp
         Offset.test.cpp
         Window.test.cpp
