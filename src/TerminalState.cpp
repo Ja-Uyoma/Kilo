@@ -33,10 +33,7 @@ namespace Kilo {
 
 TerminalState::TerminalState()
 {
-  if (errno = 0; tcgetattr(STDIN_FILENO, &m_termios) == -1) {
-    throw std::system_error(
-      errno, std::system_category(), "Could not retrieve terminal driver settings");
-  }
+  getTerminalDriverSettings(STDIN_FILENO, m_termios);
 }
 
 void TerminalState::setRawMode() &
