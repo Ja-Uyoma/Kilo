@@ -81,6 +81,14 @@ void getTerminalDriverSettings(int fd, termios& buf);
  */
 void ttyRaw(int fd, termios const& buf, termios& copy);
 
+/**
+ * @brief Set the terminal driver in canonical mode
+ *
+ * @param fd The terminal driver's file descriptor
+ * @param buf The buffer from which the desired settings are to be read from
+ */
+void ttyReset(int fd, termios const& buf);
+
 }   // namespace Kilo
 
 #endif

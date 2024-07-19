@@ -128,4 +128,12 @@ void ttyRaw(int fd, termios const& buf, termios& copy)
   }
 }
 
+void ttyReset(int fd, termios const& buf)
+{
+  if (errno = 0; tcsetattr(fd, TCSAFLUSH, &buf) == -1) {
+    throw std::system_error(
+      errno, std::system_category(), "Failed to reset terminal driver to canonical mode");
+  }
+}
+
 }   // namespace Kilo
