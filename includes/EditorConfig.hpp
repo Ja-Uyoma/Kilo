@@ -3,16 +3,16 @@
 
 #include "Cursor.hpp"
 #include "Offset.hpp"
+#include "TerminalState.hpp"
 #include "Window.hpp"
 #include <string>
-#include <termios.h>
 #include <vector>
 
 namespace Kilo::Editor {
 class EditorConfig
 {
 public:
-  termios origTermios;
+  TerminalState state {};
   std::vector<std::string> row;
   std::vector<std::string> render;
   int numrows {};
