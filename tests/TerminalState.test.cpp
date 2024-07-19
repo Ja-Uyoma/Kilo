@@ -23,6 +23,7 @@
 
 #include "TerminalState.hpp"
 
+#include <gsl/util>
 #include <gtest/gtest.h>
 #include <system_error>
 
@@ -49,6 +50,18 @@ TEST(Terminal, ttyRawFailsWhenGivenAnInvalidFileDescriptor)
 
   getTerminalDriverSettings(STDIN_FILENO, buf);
   ASSERT_THROW(ttyRaw(-1, buf, copy), std::system_error);
+}
+
+TEST(Terminal, ttyRawSucceedsWhenGivenAValidFileDescriptor)
+{
+  termios buf;
+  termios copy;
+  int fd = STDIN_FILENO;
+
+  getTerminalDriverSettings(fd, buf);
+  auto const cleanup = gsl::finally([&fd, &buf] { ttyReset(fd, buf); });
+
+  ASSERT_NO_THROW(ttyRaw(fd, buf, copy));
 }
 
 TEST(Terminal, ttyResetFailsWhenGivenAnInvalidFileDescriptor)
