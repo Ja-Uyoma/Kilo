@@ -33,6 +33,7 @@ class TerminalState
 public:
   /**
    * @brief Construct a new Terminal State object
+   * @throws std::system_error An exception describing what went wrong
    *
    */
   explicit TerminalState();
@@ -66,6 +67,8 @@ private:
  *
  * @param fd The file descriptor to be queried
  * @param buf Where the settings are written to
+ * @details Actually a wrapper around tcgetattr
+ * @throw std::system_error In case querying the file descriptor failed
  */
 void getTerminalDriverSettings(int fd, termios& buf);
 
