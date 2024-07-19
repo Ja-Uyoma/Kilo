@@ -50,8 +50,15 @@ public:
   void reset() const&;
 
 private:
+  enum class ttystate
+  {
+    Raw,
+    Reset
+  };
+
   termios m_termios {};
   termios m_copy {};
+  mutable ttystate m_state {ttystate::Reset};
 };
 
 }   // namespace Kilo
