@@ -29,21 +29,21 @@
 
 namespace Kilo {
 
-TEST(Terminal, getTerminalDriverSettingsFailsWhenGivenAnInvalidFileDescriptor)
+TEST(TerminalState, getTerminalDriverSettingsFailsWhenGivenAnInvalidFileDescriptor)
 {
   termios buf;
 
   ASSERT_THROW(getTerminalDriverSettings(-1, buf), std::system_error);
 }
 
-TEST(Terminal, getTerminalDriverSettingsSucceedsWhenGivenAValidFileDescriptor)
+TEST(TerminalState, getTerminalDriverSettingsSucceedsWhenGivenAValidFileDescriptor)
 {
   termios buf;
 
   ASSERT_NO_THROW(getTerminalDriverSettings(0, buf));
 }
 
-TEST(Terminal, ttyRawFailsWhenGivenAnInvalidFileDescriptor)
+TEST(TerminalState, ttyRawFailsWhenGivenAnInvalidFileDescriptor)
 {
   termios buf;
   termios copy;
@@ -52,7 +52,7 @@ TEST(Terminal, ttyRawFailsWhenGivenAnInvalidFileDescriptor)
   ASSERT_THROW(ttyRaw(-1, buf, copy), std::system_error);
 }
 
-TEST(Terminal, ttyRawSucceedsWhenGivenAValidFileDescriptor)
+TEST(TerminalState, ttyRawSucceedsWhenGivenAValidFileDescriptor)
 {
   termios buf;
   termios copy;
@@ -64,7 +64,7 @@ TEST(Terminal, ttyRawSucceedsWhenGivenAValidFileDescriptor)
   ASSERT_NO_THROW(ttyRaw(fd, buf, copy));
 }
 
-TEST(Terminal, ttyResetFailsWhenGivenAnInvalidFileDescriptor)
+TEST(TerminalState, ttyResetFailsWhenGivenAnInvalidFileDescriptor)
 {
   termios buf;
   int fd = -1;
@@ -74,7 +74,7 @@ TEST(Terminal, ttyResetFailsWhenGivenAnInvalidFileDescriptor)
   ASSERT_THROW(ttyReset(fd, buf), std::system_error);
 }
 
-TEST(Terminal, ttyResetSucceedsWhenGivenAValidFileDescriptor)
+TEST(TerminalState, ttyResetSucceedsWhenGivenAValidFileDescriptor)
 {
   termios buf;
   int fd = STDIN_FILENO;
