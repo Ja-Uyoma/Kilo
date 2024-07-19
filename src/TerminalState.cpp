@@ -54,12 +54,7 @@ void TerminalState::reset() const&
   }
 
   assert(m_state == ttystate::Raw && "Terminal driver currently in raw mode");
-
-  if (errno = 0; tcsetattr(STDIN_FILENO, TCSAFLUSH, &m_termios) == -1) {
-    throw std::system_error(
-      errno, std::system_category(), "Failed to reset terminal driver to canonical mode");
-  }
-
+  ttyReset(STDIN_FILENO, m_termios);
   m_state = ttystate::Reset;
 }
 
