@@ -24,8 +24,23 @@
 #include "TerminalState.hpp"
 
 #include <gtest/gtest.h>
+#include <system_error>
 
 namespace Kilo {
+
+TEST(Terminal, getTerminalDriverSettingsFailsWhenGivenAnInvalidFileDescriptor)
+{
+  termios buf;
+
+  ASSERT_THROW(getTerminalDriverSettings(-1, buf), std::system_error);
+}
+
+TEST(Terminal, getTerminalDriverSettingsSucceedsWhenGivenAValidFileDescriptor)
+{
+  termios buf;
+
+  ASSERT_NO_THROW(getTerminalDriverSettings(0, buf));
+}
 
 TEST(TerminalState, EachInstanceIsWellFormed)
 {
