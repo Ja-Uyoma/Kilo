@@ -23,6 +23,7 @@
 
 #include "TerminalState.hpp"
 
+#include <cassert>
 #include <cerrno>
 #include <system_error>
 #include <termios.h>
@@ -40,6 +41,12 @@ TerminalState::TerminalState()
 
 void TerminalState::setRawMode() &
 {
+  if (m_state == ttystate::Raw) {
+    return;
+  }
+
+  assert(m_state == ttystate::Reset && "Terminal driver currently in canonical mode");
+
   m_copy = m_termios;
 
   /*
@@ -93,14 +100,24 @@ void TerminalState::setRawMode() &
     throw std::system_error(
       EINVAL, std::system_category(), "Setting driver to raw mode only partially successful");
   }
+
+  m_state = ttystate::Raw;
 }
 
 void TerminalState::reset() const&
 {
+  if (m_state == ttystate::Reset) {
+    return;
+  }
+
+  assert(m_state == ttystate::Raw && "Terminal driver currently in raw mode");
+
   if (errno = 0; tcsetattr(STDIN_FILENO, TCSAFLUSH, &m_termios) == -1) {
     throw std::system_error(
       errno, std::system_category(), "Failed to reset terminal driver to canonical mode");
   }
+
+  m_state = ttystate::Reset;
 }
 
 }   // namespace Kilo
