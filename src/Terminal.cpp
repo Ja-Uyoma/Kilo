@@ -21,14 +21,6 @@
  * SOFTWARE.
  */
 
-/************************************************************************************/
-
-/**
- * This file contains the definitions of functions used to manipulate the
- * terminal driver settings with regards to entering and exiting raw and/or
- * canonical mode
- */
-
 #include "Terminal.hpp"
 
 #include "Utilities.hpp"

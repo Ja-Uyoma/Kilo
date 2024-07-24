@@ -21,14 +21,6 @@
  * SOFTWARE.
  */
 
-/************************************************************************************/
-
-/**
- * This file contains the declarations of functions used to manipulate the
- * terminal driver settings with regards to entering and exiting raw and/or
- * canonical mode
- */
-
 #ifndef TERMINAL_HPP
 #define TERMINAL_HPP
 
