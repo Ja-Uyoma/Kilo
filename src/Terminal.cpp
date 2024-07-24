@@ -26,7 +26,9 @@
 #include "Utilities.hpp"
 #include <array>
 #include <cerrno>
+#include <cstddef>
 #include <cstring>
+#include <functional>
 #include <sys/ioctl.h>
 #include <system_error>
 #include <unistd.h>
@@ -145,6 +147,27 @@ void getWindowSize(int* const rows, int* const cols)
   *rows = ws.ws_row;
 }
 
+void writeCursorPositionToBuffer(std::array<char, 32>& buf) noexcept
+{
+  /*
+   * Read the reply from stdin and store it in a buffer
+   * We do this until we encounter a 'R' character
+   */
+
+  for (std::size_t i {}; i < buf.size() - 1; i++) {
+    if (::read(STDIN_FILENO, &buf[i], 1) != 1 or buf[i] == 'R') {
+      break;
+    }
+  }
+
+  /*
+   * Assign the null-termination character to the the final byte of buf because
+   * C-strings should end with a zero byte
+   */
+
+  buf.back() = '\0';
+}
+
 void getCursorPosition(int* const rows, int* const cols)
 {
   // Get the position of the cursor
@@ -153,26 +176,8 @@ void getCursorPosition(int* const rows, int* const cols)
   }
 
   std::array<char, 32> buf {};
-  unsigned i {};
 
-  while (i < buf.size() - 1) {
-    // Read the reply from stdin and store it in a buffer
-    // We do this until we encounter the 'R' character
-
-    if (::read(STDIN_FILENO, &buf[i], 1) != 1) {
-      break;
-    }
-
-    if (buf[i] == 'R') {
-      break;
-    }
-
-    ++i;
-  }
-
-  // Assign the null-termination character to the the final byte of buf because
-  // C-strings should end with a zero byte
-  buf[i] = '\0';
+  writeCursorPositionToBuffer(buf);
 
   // First make sure ::read responded with an escape sequence
   if (buf[0] != '\x1b' || buf[1] != '[') {
