@@ -192,8 +192,8 @@ void getCursorPosition(int* const rows, int* const cols)
   // First make sure ::read responded with an escape sequence
   if (buf[0] != '\x1b' || buf[1] != '[') {
     throw std::system_error(std::make_error_code(std::errc::invalid_argument),
-                            "The buffer contains an invalid argument where aan "
-                            "espace sequence was expected.");
+                            "An invalid argument was encountered where an "
+                            "escape sequence was expected.");
   }
 
   // At this point, we are passing a string of the form "35;76" to sscanf
