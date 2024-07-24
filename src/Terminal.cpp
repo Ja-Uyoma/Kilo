@@ -28,7 +28,6 @@
 #include <cerrno>
 #include <cstddef>
 #include <cstring>
-#include <functional>
 #include <sys/ioctl.h>
 #include <system_error>
 #include <unistd.h>
