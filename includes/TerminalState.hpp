@@ -48,7 +48,7 @@ public:
    * @brief Set the terminal driver to canonical mode
    *
    */
-  void reset() const&;
+  void reset() &;
 
 private:
   enum class ttystate
@@ -59,7 +59,7 @@ private:
 
   termios m_termios {};
   termios m_copy {};
-  mutable ttystate m_state {ttystate::Reset};
+  ttystate m_state {ttystate::Reset};
 };
 
 /**

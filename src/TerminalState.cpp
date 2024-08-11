@@ -47,7 +47,7 @@ void TerminalState::setRawMode() &
   m_state = ttystate::Raw;
 }
 
-void TerminalState::reset() const&
+void TerminalState::reset() &
 {
   if (m_state == ttystate::Reset) {
     return;
