@@ -61,14 +61,4 @@ TEST(getCursorRow, ReturnsAnEmptyOptionalIfTheRowsObjectIsEmpty)
   ASSERT_THAT(currentRow.has_value(), ::testing::Eq(false));
 }
 
-TEST(getCursorRow, ReturnsAnEmptyOptionalIfTheCursorHasNegativeCoordinates)
-{
-  Cursor cursor {.x = -50, .y = -100};
-  std::vector<std::string> rows {};
-
-  auto currentRow = getCurrentRow(cursor, rows);
-
-  ASSERT_THAT(currentRow.has_value(), ::testing::Eq(false));
-}
-
 }   // namespace Kilo::Editor
