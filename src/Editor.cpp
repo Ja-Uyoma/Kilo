@@ -178,11 +178,9 @@ void drawRows(WriteBuffer& buffer) noexcept
 
 void moveCursor(Utilities::EditorKey key)
 {
-
-  auto currRow = getCurrentRow(editorConfig.cursor, editorConfig.row);
   moveCursor(editorConfig.cursor, key, editorConfig.row);
 
-  currRow = getCurrentRow(editorConfig.cursor, editorConfig.row);
+  auto currRow = getCurrentRow(editorConfig.cursor, editorConfig.row);
 
   int rowlen = currRow ? currRow->length() : 0;
 
