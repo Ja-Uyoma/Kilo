@@ -182,40 +182,7 @@ void moveCursor(Utilities::EditorKey key)
 
   auto currRow = getCurrentRow(editorConfig.cursor, editorConfig.row);
 
-  switch (key) {
-    case static_cast<int>(ArrowLeft):
-      if (editorConfig.cursor.x != 0) {
-        editorConfig.cursor.x--;
-      }
-      else if (editorConfig.cursor.y > 0) {
-        editorConfig.cursor.y--;
-        editorConfig.cursor.x = std::ssize(editorConfig.row[editorConfig.cursor.y]);
-      }
-
-      break;
-    case static_cast<int>(ArrowRight):
-      if (currRow && std::cmp_less(editorConfig.cursor.x, currRow->size())) {
-        editorConfig.cursor.x++;
-      }
-      else if (currRow && std::cmp_equal(editorConfig.cursor.x, currRow->size())) {
-        editorConfig.cursor.y++;
-        editorConfig.cursor.x = 0;
-      }
-      break;
-    case static_cast<int>(ArrowUp):
-      if (editorConfig.cursor.y != 0) {
-        editorConfig.cursor.y--;
-      }
-
-      break;
-    case static_cast<int>(ArrowDown):
-      if (editorConfig.cursor.y < editorConfig.numrows) {
-        editorConfig.cursor.y++;
-      }
-
-      break;
-    default: break;
-  }
+  moveCursor(editorConfig.cursor, key, editorConfig.row);
 
   currRow = getCurrentRow(editorConfig.cursor, editorConfig.row);
 
