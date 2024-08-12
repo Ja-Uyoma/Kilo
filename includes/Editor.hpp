@@ -24,9 +24,13 @@
 #ifndef EDITOR_HPP
 #define EDITOR_HPP
 
+#include "Cursor.hpp"
 #include "WriteBuffer.hpp"
 #include <filesystem>
+#include <optional>
 #include <string_view>
+#include <utility>
+#include <vector>
 
 namespace Kilo::Editor {
 /// @brief Process the results from readKey
@@ -57,6 +61,26 @@ void moveCursor(int key);
  * @return True if the file was opened successfully and false otherwise
  */
 bool open(std::filesystem::path const& path);
+
+/**
+ * @brief Get the current row at which the cursor is located
+ *
+ * @param cursor The cursor object
+ * @param rows The rows of text of the document in memory
+ * @return std::optional<std::string> The current row at which the cursor is located
+ */
+constexpr std::optional<std::string> getCurrentRow(Cursor const& cursor,
+                                                   std::vector<std::string> const& rows) noexcept
+{
+  {
+    if (std::cmp_greater_equal(cursor.y, rows.size())) {
+      return std::nullopt;
+    }
+    else {
+      return std::make_optional(rows[cursor.y]);
+    }
+  }
+}
 
 /**
  * @brief Position the cursor within the visible window
