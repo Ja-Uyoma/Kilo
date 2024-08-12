@@ -176,7 +176,7 @@ void drawRows(WriteBuffer& buffer) noexcept
   }
 }
 
-void moveCursor(Utilities::EditorKey key)
+void moveCursor(Utilities::EditorKey key) noexcept
 {
   moveCursor(editorConfig.cursor, key, editorConfig.row);
 
