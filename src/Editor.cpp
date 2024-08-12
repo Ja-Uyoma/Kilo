@@ -178,10 +178,8 @@ void drawRows(WriteBuffer& buffer) noexcept
 
 void moveCursor(Utilities::EditorKey key)
 {
-  using enum Kilo::Utilities::EditorKey;
 
   auto currRow = getCurrentRow(editorConfig.cursor, editorConfig.row);
-
   moveCursor(editorConfig.cursor, key, editorConfig.row);
 
   currRow = getCurrentRow(editorConfig.cursor, editorConfig.row);
