@@ -26,6 +26,7 @@
 
 #include "Cursor.hpp"
 #include "WriteBuffer.hpp"
+#include <cassert>
 #include <filesystem>
 #include <optional>
 #include <string_view>
@@ -72,12 +73,16 @@ bool open(std::filesystem::path const& path);
 constexpr std::optional<std::string> getCurrentRow(Cursor const& cursor,
                                                    std::vector<std::string> const& rows) noexcept
 {
-  {
-    if (std::cmp_greater_equal(cursor.y, rows.size())) {
-      return std::nullopt;
-    }
-    else {
-      return std::make_optional(rows[cursor.y]);
+  assert(cursor.x >= 0 and cursor.y >= 0);
+
+  if (std::cmp_greater_equal(cursor.y, rows.size())) {
+    return std::nullopt;
+  }
+  else {
+    return std::make_optional(rows[cursor.y]);
+  }
+}
+
     }
   }
 }
