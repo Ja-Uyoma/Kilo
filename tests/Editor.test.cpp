@@ -24,6 +24,8 @@
 #include "Editor.hpp"
 
 #include "Cursor.hpp"
+#include "Utilities.hpp"
+#include <cstring>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <string>
@@ -59,6 +61,127 @@ TEST(getCurrentRow, ReturnsAnEmptyOptionalIfTheRowsObjectIsEmpty)
   auto currentRow = getCurrentRow(cursor, rows);
 
   ASSERT_THAT(currentRow.has_value(), ::testing::Eq(false));
+}
+
+TEST(moveCursor, ArrowLeftMovesTheCursorLeftOneByPosition)
+{
+  using Utilities::EditorKey;
+  using enum EditorKey;
+
+  Cursor cursor {.x = 1, .y = 0};
+  EditorKey key {ArrowLeft};
+  std::vector<std::string> document({"The quick brown fox", "jumped over the lazy dog"});
+
+  moveCursor(cursor, key, document);
+
+  ASSERT_THAT(cursor.x, ::testing::Eq(0));
+}
+
+TEST(moveCursor, ArrowLeftMovesTheCursorToTheEndOfTheLine)
+{
+  using Utilities::EditorKey;
+  using enum EditorKey;
+
+  Cursor cursor {.x = 0, .y = 1};
+  EditorKey key = ArrowLeft;
+  std::vector<std::string> document({"The quick brown fox", "jumped over the lazy dog"});
+
+  moveCursor(cursor, key, document);
+
+  ASSERT_THAT(cursor.x, ::testing::Eq(std::strlen("The quick brown fox")));
+  ASSERT_THAT(cursor.y, ::testing::Eq(0));
+}
+
+TEST(moveCursor, ArrowRightMovesTheCursorRightByOnePosition)
+{
+  using Utilities::EditorKey;
+  using enum EditorKey;
+
+  Cursor cursor {.x = 2, .y = 1};
+  EditorKey key = ArrowRight;
+  std::vector<std::string> document({"The quick brown fox", "jumped over the lazy dog"});
+
+  moveCursor(cursor, key, document);
+
+  ASSERT_THAT(cursor.x, ::testing::Eq(3));
+  ASSERT_THAT(cursor.y, ::testing::Eq(1));
+}
+
+TEST(moveCursor, ArrowRightMovesTheCursorToTheNextLine)
+{
+  using Utilities::EditorKey;
+  using enum EditorKey;
+
+  Cursor cursor;
+  cursor.x = std::strlen("jumped over the lazy dog");
+  cursor.y = 1;
+  EditorKey key = ArrowRight;
+  std::vector<std::string> document({"The quick brown fox", "jumped over the lazy dog"});
+
+  moveCursor(cursor, key, document);
+
+  ASSERT_THAT(cursor.x, ::testing::Eq(0));
+  ASSERT_THAT(cursor.y, ::testing::Eq(2));
+}
+
+TEST(moveCursor, ArrowUpMovesTheCursorUpByOnePosition)
+{
+  using Utilities::EditorKey;
+  using enum EditorKey;
+
+  Cursor cursor {.x = 2, .y = 4};
+  EditorKey key = ArrowUp;
+  std::vector<std::string> document({"The quick brown fox", "jumped over the lazy dog"});
+
+  moveCursor(cursor, key, document);
+
+  ASSERT_THAT(cursor.x, ::testing::Eq(2));
+  ASSERT_THAT(cursor.y, ::testing::Eq(3));
+}
+
+TEST(moveCursor, ArrowUpIsANoOpIfTheCursorIsAtTheTopOfTheDocument)
+{
+  using Utilities::EditorKey;
+  using enum EditorKey;
+
+  Cursor cursor {.x = 2, .y = 0};
+  EditorKey key = ArrowUp;
+  std::vector<std::string> document({"The quick brown fox", "jumped over the lazy dog"});
+
+  moveCursor(cursor, key, document);
+
+  ASSERT_THAT(cursor.x, ::testing::Eq(2));
+  ASSERT_THAT(cursor.y, ::testing::Eq(0));
+}
+
+TEST(moveCursor, ArrowDownMovesTheCursorDownByOnePosition)
+{
+  using Utilities::EditorKey;
+  using enum EditorKey;
+
+  Cursor cursor {.x = 2, .y = 1};
+  EditorKey key = ArrowDown;
+  std::vector<std::string> document({"The quick brown fox", "jumped over the lazy dog"});
+
+  moveCursor(cursor, key, document);
+
+  ASSERT_THAT(cursor.x, ::testing::Eq(2));
+  ASSERT_THAT(cursor.y, ::testing::Eq(2));
+}
+
+TEST(moveCursor, ArrowDownIsANoOpIfTheCursorIsAtTheBottomOfTheDocument)
+{
+  using Utilities::EditorKey;
+  using enum EditorKey;
+
+  Cursor cursor {.x = 2, .y = 2};
+  EditorKey key = ArrowDown;
+  std::vector<std::string> document({"The quick brown fox", "jumped over the lazy dog"});
+
+  moveCursor(cursor, key, document);
+
+  ASSERT_THAT(cursor.x, ::testing::Eq(2));
+  ASSERT_THAT(cursor.y, ::testing::Eq(2));
 }
 
 }   // namespace Kilo::Editor
