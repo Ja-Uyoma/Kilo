@@ -181,13 +181,7 @@ void moveCursor(int key)
 {
   using enum Kilo::Utilities::EditorKey;
 
-  std::optional<std::string> currRow = std::invoke([]() -> std::optional<std::string> {
-    if (editorConfig.cursor.y >= editorConfig.numrows) {
-      return std::nullopt;
-    }
-
-    return std::make_optional(editorConfig.row[editorConfig.cursor.y]);
-  });
+  auto currRow = getCurrentRow(editorConfig.cursor, editorConfig.row);
 
   switch (key) {
     case static_cast<int>(ArrowLeft):
@@ -224,13 +218,7 @@ void moveCursor(int key)
     default: break;
   }
 
-  currRow = std::invoke([]() -> std::optional<std::string> {
-    if (editorConfig.cursor.y >= editorConfig.numrows) {
-      return std::nullopt;
-    }
-
-    return std::make_optional(editorConfig.row[editorConfig.cursor.y]);
-  });
+  currRow = getCurrentRow(editorConfig.cursor, editorConfig.row);
 
   int rowlen = currRow ? currRow->length() : 0;
 
