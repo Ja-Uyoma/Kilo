@@ -53,7 +53,7 @@ void drawRows(WriteBuffer& buffer) noexcept;
  *
  * @param key The character representing the direction to move the cursor in
  */
-void moveCursor(int key);
+void moveCursor(Utilities::EditorKey key);
 
 /**
  * @brief Open a file for reading and write its contents to the EditorConfig

@@ -100,14 +100,13 @@ void processKeypress()
     case static_cast<int>(PageUp):
     case static_cast<int>(PageDown): {
       for (int i = editorConfig.window.rows; i > 0; i--) {
-        moveCursor(c == static_cast<int>(PageUp) ? static_cast<int>(ArrowUp)
-                                                 : static_cast<int>(ArrowDown));
+        moveCursor(c == static_cast<int>(PageUp) ? ArrowUp : ArrowDown);
       }
     } break;
     case static_cast<int>(ArrowUp):
     case static_cast<int>(ArrowDown):
     case static_cast<int>(ArrowLeft):
-    case static_cast<int>(ArrowRight): moveCursor(c);
+    case static_cast<int>(ArrowRight): moveCursor(static_cast<EditorKey>(c));
     default:                           break;
   }
 }
@@ -177,7 +176,7 @@ void drawRows(WriteBuffer& buffer) noexcept
   }
 }
 
-void moveCursor(int key)
+void moveCursor(Utilities::EditorKey key)
 {
   using enum Kilo::Utilities::EditorKey;
 
