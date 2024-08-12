@@ -25,6 +25,7 @@
 #define EDITOR_HPP
 
 #include "Cursor.hpp"
+#include "Utilities.hpp"
 #include "WriteBuffer.hpp"
 #include <cassert>
 #include <filesystem>
@@ -83,7 +84,52 @@ constexpr std::optional<std::string> getCurrentRow(Cursor const& cursor,
   }
 }
 
+/**
+ * @brief Move cursor in document according to the key pressed
+ *
+ * @param cursor The cursor to be moved
+ * @param keyPressed The key press determining how the cursor is to be moved
+ * @param document The document within which the cursor is located
+ */
+constexpr void moveCursor(Cursor& cursor,
+                          Utilities::EditorKey const& keyPressed,
+                          std::vector<std::string> const& document) noexcept
+{
+  switch (keyPressed) {
+    using enum Utilities::EditorKey;
+
+    case ArrowLeft:
+      if (cursor.x != 0) {
+        cursor.x--;
+      }
+      else if (cursor.y > 0) {
+        cursor.y--;
+        cursor.x = (int)document[cursor.y].size();
+      }
+      break;
+    case ArrowRight: {
+      auto currentRow = Editor::getCurrentRow(cursor, document);
+
+      if (currentRow && std::cmp_less(cursor.x, currentRow->size())) {
+        cursor.x++;
+      }
+      else if (currentRow && std::cmp_equal(cursor.x, currentRow->size())) {
+        cursor.y++;
+        cursor.x = 0;
+      }
+      break;
     }
+    case ArrowUp:
+      if (cursor.y != 0) {
+        cursor.y--;
+      }
+      break;
+    case ArrowDown:
+      if (std::cmp_less(cursor.y, document.size())) {
+        cursor.y++;
+      }
+      break;
+    default: return;
   }
 }
 
