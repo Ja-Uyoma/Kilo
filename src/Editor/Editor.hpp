@@ -159,6 +159,15 @@ namespace Kilo::editor::detail {
  */
 std::string createWelcomeMessage(std::string_view versionString) noexcept;
 
+/**
+ * @brief Resizes the message string to be equal to the window width if it exceeds it
+ *
+ * @param message The message string to be resized
+ * @param windowWidth The unit determining how much the string should be resized
+ * @pre windowWidth must be >= 0
+ */
+void resizeWelcomeMessage(std::string& message, int windowWidth) noexcept;
+
 void displayWelcomeMessage(WriteBuffer& buffer);
 
 }   // namespace Kilo::editor::detail

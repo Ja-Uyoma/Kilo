@@ -239,6 +239,21 @@ std::string createWelcomeMessage(std::string_view versionString) noexcept
   return fmt::format("Kilo editor -- version {}", versionString);
 }
 
+/**
+ * @brief Resizes the message string to be equal to the window width if it exceeds it
+ *
+ * @param message The message string to be resized
+ * @param windowWidth The unit determining how much the string should be resized
+ */
+void resizeWelcomeMessage(std::string& message, int windowWidth) noexcept
+{
+  assert(windowWidth >= 0 and "Window width cannot be less than zero");
+
+  if (std::cmp_greater(message.length(), windowWidth)) {
+    message.resize(windowWidth);
+  }
+}
+
 void displayWelcomeMessage(WriteBuffer& buffer)
 {
   using namespace std::string_literals;
