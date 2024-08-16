@@ -11,7 +11,7 @@ target_include_directories(kilo
 )
 
 target_sources(kilo
-    PUBLIC
+    PRIVATE
         "${PROJECT_SOURCE_DIR}/src/Cursor/Cursor.hpp"
         "${PROJECT_SOURCE_DIR}/src/Cursor/Cursor.cpp"
 
@@ -38,7 +38,7 @@ target_sources(kilo
 
         "${PROJECT_SOURCE_DIR}/src/WriteBuffer/WriteBuffer.hpp"
         "${PROJECT_SOURCE_DIR}/src/WriteBuffer/WriteBuffer.cpp"
-    PRIVATE
+    
         main.cpp
 )
 
