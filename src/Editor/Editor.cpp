@@ -32,13 +32,11 @@
 #include <cstdlib>
 #include <cstring>
 #include <fstream>
-#include <functional>
 #include <iostream>
 #include <optional>
 #include <string>
 #include <string_view>
 #include <unistd.h>
-#include <utility>
 
 namespace Kilo::Editor {
 static EditorConfig editorConfig;
