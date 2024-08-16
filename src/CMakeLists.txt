@@ -19,14 +19,14 @@ target_sources(kilo
         "${PROJECT_SOURCE_DIR}/src/Window/Window.hpp"
         "${PROJECT_SOURCE_DIR}/src/Editor/Editor.hpp"
         "${PROJECT_SOURCE_DIR}/src/Utilities/Utilities.hpp"
-        "${PROJECT_SOURCE_DIR}/includes/EditorConfig.hpp"
+        "${PROJECT_SOURCE_DIR}/src/EditorConfig/EditorConfig.hpp"
     PRIVATE
         main.cpp
         "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.cpp"
         "${PROJECT_SOURCE_DIR}/src/TerminalState/TerminalState.cpp"
         "${PROJECT_SOURCE_DIR}/src/Utilities/Utilities.cpp"
         "${PROJECT_SOURCE_DIR}/src/Editor/Editor.cpp"
-        EditorConfig.cpp
+        "${PROJECT_SOURCE_DIR}/src/EditorConfig/EditorConfig.cpp"
 )
 
 target_compile_features(kilo
