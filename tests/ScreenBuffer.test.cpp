@@ -28,18 +28,18 @@
 
 namespace Kilo::editor {
 
-class WriteBufferTest : public ::testing::Test
+class ScreenBufferTest : public ::testing::Test
 {
 public:
   ScreenBuffer buf;
 };
 
-TEST_F(WriteBufferTest, IsEmptyWhenCreated)
+TEST_F(ScreenBufferTest, IsEmptyWhenCreated)
 {
   ASSERT_EQ(buf.size(), 0);
 }
 
-TEST_F(WriteBufferTest, ItsSizeIncreasesByTheLengthOfTheAppendedString)
+TEST_F(ScreenBufferTest, ItsSizeIncreasesByTheLengthOfTheAppendedString)
 {
   char const* str = "Hello, World!";
   buf.write(str, std::strlen(str));
@@ -47,7 +47,7 @@ TEST_F(WriteBufferTest, ItsSizeIncreasesByTheLengthOfTheAppendedString)
   ASSERT_EQ(buf.size(), 13);
 }
 
-TEST_F(WriteBufferTest, c_strReturnsACStringRepresentationOfTheContentsOfTheBuffer)
+TEST_F(ScreenBufferTest, c_strReturnsACStringRepresentationOfTheContentsOfTheBuffer)
 {
   char const* str = "The quick brown fox jumped over the lazy dog";
   buf.write(str, std::strlen(str));
