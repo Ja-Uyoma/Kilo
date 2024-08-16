@@ -18,13 +18,13 @@ target_sources(kilo
         "${PROJECT_SOURCE_DIR}/src/Cursor/Cursor.hpp"
         "${PROJECT_SOURCE_DIR}/src/Window/Window.hpp"
         "${PROJECT_SOURCE_DIR}/includes/Editor.hpp"
-        "${PROJECT_SOURCE_DIR}/includes/Utilities.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Utilities/Utilities.hpp"
         "${PROJECT_SOURCE_DIR}/includes/EditorConfig.hpp"
     PRIVATE
         main.cpp
         "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.cpp"
         "${PROJECT_SOURCE_DIR}/src/TerminalState/TerminalState.cpp"
-        Utilities.cpp
+        "${PROJECT_SOURCE_DIR}/src/Utilities/Utilities.cpp"
         Editor.cpp
         EditorConfig.cpp
 )

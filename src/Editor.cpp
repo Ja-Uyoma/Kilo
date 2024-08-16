@@ -25,7 +25,7 @@
 
 #include "EditorConfig.hpp"
 #include "Terminal/Terminal.hpp"
-#include "Utilities.hpp"
+#include "Utilities/Utilities.hpp"
 #include "WriteBuffer.hpp"
 #include <algorithm>
 #include <cstdio>

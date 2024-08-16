@@ -23,7 +23,7 @@
 
 #include "Terminal.hpp"
 
-#include "Utilities.hpp"
+#include "Utilities/Utilities.hpp"
 #include <array>
 #include <cerrno>
 #include <cstddef>

@@ -25,7 +25,7 @@
 #define EDITOR_HPP
 
 #include "Cursor/Cursor.hpp"
-#include "Utilities.hpp"
+#include "Utilities/Utilities.hpp"
 #include "WriteBuffer.hpp"
 #include <cassert>
 #include <filesystem>
