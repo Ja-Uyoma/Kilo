@@ -2,12 +2,14 @@ add_executable(tests)
 
 find_package(GTest REQUIRED)
 find_package(Microsoft.GSL REQUIRED)
+find_package(fmt REQUIRED)
 
 target_link_libraries(tests
     PRIVATE
         GTest::gtest_main
         GTest::gmock_main
         Microsoft.GSL::GSL
+        fmt::fmt
 )
 
 target_include_directories(tests
