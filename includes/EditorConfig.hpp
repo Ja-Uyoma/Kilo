@@ -1,12 +1,12 @@
 #ifndef EDITOR_CONFIG_HPP
 #define EDITOR_CONFIG_HPP
 
-#include "Cursor.hpp"
+#include "Cursor/Cursor.hpp"
 #include "Offset.hpp"
+#include "TerminalState/TerminalState.hpp"
 #include "Window.hpp"
 #include <string>
 #include <vector>
-#include "TerminalState/TerminalState.hpp"
 
 namespace Kilo::Editor {
 class EditorConfig

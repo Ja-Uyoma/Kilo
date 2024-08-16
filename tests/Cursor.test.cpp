@@ -1,4 +1,4 @@
-#include "Cursor.hpp"
+#include "Cursor/Cursor.hpp"
 
 #include <gtest/gtest.h>
 

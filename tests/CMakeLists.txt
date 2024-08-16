@@ -19,7 +19,7 @@ target_include_directories(tests
 target_sources(tests
     PUBLIC
         "${PROJECT_SOURCE_DIR}/includes/WriteBuffer.hpp"
-        "${PROJECT_SOURCE_DIR}/includes/Cursor.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Cursor/Cursor.hpp"
         "${PROJECT_SOURCE_DIR}/includes/Offset.hpp"
         "${PROJECT_SOURCE_DIR}/includes/Window.hpp"
         "${PROJECT_SOURCE_DIR}/src/TerminalState/TerminalState.hpp"
@@ -31,6 +31,7 @@ target_sources(tests
         Offset.test.cpp
         Window.test.cpp
         "${PROJECT_SOURCE_DIR}/src/TerminalState/TerminalState.cpp"
+        "${PROJECT_SOURCE_DIR}/src/Cursor/Cursor.cpp"
         TerminalState.test.cpp
         Editor.test.cpp
 )

@@ -23,7 +23,7 @@
 
 #include "Editor.hpp"
 
-#include "Cursor.hpp"
+#include "Cursor/Cursor.hpp"
 #include "Utilities.hpp"
 #include <cstring>
 #include <gmock/gmock.h>
