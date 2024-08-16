@@ -20,7 +20,7 @@ target_sources(tests
     PUBLIC
         "${PROJECT_SOURCE_DIR}/includes/WriteBuffer.hpp"
         "${PROJECT_SOURCE_DIR}/src/Cursor/Cursor.hpp"
-        "${PROJECT_SOURCE_DIR}/includes/Offset.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Offset/Offset.hpp"
         "${PROJECT_SOURCE_DIR}/includes/Window.hpp"
         "${PROJECT_SOURCE_DIR}/src/TerminalState/TerminalState.hpp"
         "${PROJECT_SOURCE_DIR}/includes/Editor.hpp"
@@ -34,6 +34,7 @@ target_sources(tests
         "${PROJECT_SOURCE_DIR}/src/Cursor/Cursor.cpp"
         TerminalState.test.cpp
         Editor.test.cpp
+        "${PROJECT_SOURCE_DIR}/src/Offset/Offset.cpp"
 )
 
 target_compile_features(tests

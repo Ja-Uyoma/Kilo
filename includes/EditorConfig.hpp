@@ -2,7 +2,7 @@
 #define EDITOR_CONFIG_HPP
 
 #include "Cursor/Cursor.hpp"
-#include "Offset.hpp"
+#include "Offset/Offset.hpp"
 #include "TerminalState/TerminalState.hpp"
 #include "Window.hpp"
 #include <string>
