@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-#include "WriteBuffer/ScreenBuffer.hpp"
+#include "ScreenBuffer/ScreenBuffer.hpp"
 #include <cstring>
 #include <gtest/gtest.h>
 

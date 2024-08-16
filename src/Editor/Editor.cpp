@@ -24,9 +24,9 @@
 #include "Editor.hpp"
 
 #include "EditorConfig/EditorConfig.hpp"
+#include "ScreenBuffer/ScreenBuffer.hpp"
 #include "Terminal/Terminal.hpp"
 #include "Utilities/Utilities.hpp"
-#include "WriteBuffer/ScreenBuffer.hpp"
 #include <algorithm>
 #include <cstdio>
 #include <cstdlib>
