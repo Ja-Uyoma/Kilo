@@ -7,7 +7,6 @@ target_link_libraries(kilo Microsoft.GSL::GSL fmt::fmt)
 
 target_include_directories(kilo
     PRIVATE
-        "${PROJECT_SOURCE_DIR}/includes"
         "${PROJECT_SOURCE_DIR}/src"
 )
 

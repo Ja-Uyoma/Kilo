@@ -12,7 +12,6 @@ target_link_libraries(tests
 
 target_include_directories(tests
     PRIVATE
-        "${PROJECT_SOURCE_DIR}/includes"
         "${PROJECT_SOURCE_DIR}/src"
 )
 
