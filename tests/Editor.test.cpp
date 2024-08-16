@@ -65,7 +65,7 @@ TEST(getCurrentRow, ReturnsAnEmptyOptionalIfTheRowsObjectIsEmpty)
 
 TEST(moveCursor, ArrowLeftMovesTheCursorLeftOneByPosition)
 {
-  using Utilities::EditorKey;
+  using utilities::EditorKey;
   using enum EditorKey;
 
   cursor::Cursor cursor {.x = 1, .y = 0};
@@ -79,7 +79,7 @@ TEST(moveCursor, ArrowLeftMovesTheCursorLeftOneByPosition)
 
 TEST(moveCursor, ArrowLeftMovesTheCursorToTheEndOfTheLine)
 {
-  using Utilities::EditorKey;
+  using utilities::EditorKey;
   using enum EditorKey;
 
   cursor::Cursor cursor {.x = 0, .y = 1};
@@ -94,7 +94,7 @@ TEST(moveCursor, ArrowLeftMovesTheCursorToTheEndOfTheLine)
 
 TEST(moveCursor, ArrowRightMovesTheCursorRightByOnePosition)
 {
-  using Utilities::EditorKey;
+  using utilities::EditorKey;
   using enum EditorKey;
 
   cursor::Cursor cursor {.x = 2, .y = 1};
@@ -109,7 +109,7 @@ TEST(moveCursor, ArrowRightMovesTheCursorRightByOnePosition)
 
 TEST(moveCursor, ArrowRightMovesTheCursorToTheNextLine)
 {
-  using Utilities::EditorKey;
+  using utilities::EditorKey;
   using enum EditorKey;
 
   cursor::Cursor cursor;
@@ -126,7 +126,7 @@ TEST(moveCursor, ArrowRightMovesTheCursorToTheNextLine)
 
 TEST(moveCursor, ArrowUpMovesTheCursorUpByOnePosition)
 {
-  using Utilities::EditorKey;
+  using utilities::EditorKey;
   using enum EditorKey;
 
   cursor::Cursor cursor {.x = 2, .y = 4};
@@ -141,7 +141,7 @@ TEST(moveCursor, ArrowUpMovesTheCursorUpByOnePosition)
 
 TEST(moveCursor, ArrowUpIsANoOpIfTheCursorIsAtTheTopOfTheDocument)
 {
-  using Utilities::EditorKey;
+  using utilities::EditorKey;
   using enum EditorKey;
 
   cursor::Cursor cursor {.x = 2, .y = 0};
@@ -156,7 +156,7 @@ TEST(moveCursor, ArrowUpIsANoOpIfTheCursorIsAtTheTopOfTheDocument)
 
 TEST(moveCursor, ArrowDownMovesTheCursorDownByOnePosition)
 {
-  using Utilities::EditorKey;
+  using utilities::EditorKey;
   using enum EditorKey;
 
   cursor::Cursor cursor {.x = 2, .y = 1};
@@ -171,7 +171,7 @@ TEST(moveCursor, ArrowDownMovesTheCursorDownByOnePosition)
 
 TEST(moveCursor, ArrowDownIsANoOpIfTheCursorIsAtTheBottomOfTheDocument)
 {
-  using Utilities::EditorKey;
+  using utilities::EditorKey;
   using enum EditorKey;
 
   cursor::Cursor cursor {.x = 2, .y = 2};

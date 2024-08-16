@@ -35,7 +35,7 @@
 {
   using Kilo::editor::processKeypress;
   using Kilo::editor::refreshScreen;
-  using Kilo::Utilities::clearScreenAndRepositionCursor;
+  using Kilo::utilities::clearScreenAndRepositionCursor;
 
   while (true) {
     try {

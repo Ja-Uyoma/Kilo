@@ -54,7 +54,7 @@ void drawRows(WriteBuffer& buffer) noexcept;
  *
  * @param key The character representing the direction to move the cursor in
  */
-void moveCursor(Utilities::EditorKey key) noexcept;
+void moveCursor(utilities::EditorKey key) noexcept;
 
 /**
  * @brief Open a file for reading and write its contents to the EditorConfig
@@ -93,11 +93,11 @@ constexpr std::optional<std::string> getCurrentRow(cursor::Cursor const& cursor,
  * @param document The document within which the cursor is located
  */
 constexpr void moveCursor(cursor::Cursor& cursor,
-                          Utilities::EditorKey const& keyPressed,
+                          utilities::EditorKey const& keyPressed,
                           std::vector<std::string> const& document) noexcept
 {
   switch (keyPressed) {
-    using enum Utilities::EditorKey;
+    using enum utilities::EditorKey;
 
     case ArrowLeft:
       if (cursor.x != 0) {

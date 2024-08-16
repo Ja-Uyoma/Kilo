@@ -28,7 +28,7 @@
 #include <system_error>
 #include <unistd.h>
 
-namespace Kilo::Utilities {
+namespace Kilo::utilities {
 void clearScreenAndRepositionCursor() noexcept
 {
   {
@@ -65,4 +65,4 @@ void clearScreenAndRepositionCursor() noexcept
 
   return totalWritten;
 }
-}   // namespace Kilo::Utilities
+}   // namespace Kilo::utilities

@@ -46,7 +46,7 @@ namespace detail {
 void displayWelcomeMessage(WriteBuffer& buffer)
 {
   using namespace std::string_literals;
-  using namespace Kilo::Utilities;
+  using namespace Kilo::utilities;
 
   char welcome[80] {};
 
@@ -85,8 +85,8 @@ void displayWelcomeMessage(WriteBuffer& buffer)
 
 void processKeypress()
 {
-  using namespace Kilo::Utilities;
-  using enum Kilo::Utilities::EditorKey;
+  using namespace Kilo::utilities;
+  using enum Kilo::utilities::EditorKey;
 
   int c = terminal::readKey();
 
@@ -176,7 +176,7 @@ void drawRows(WriteBuffer& buffer) noexcept
   }
 }
 
-void moveCursor(Utilities::EditorKey key) noexcept
+void moveCursor(utilities::EditorKey key) noexcept
 {
   moveCursor(editorConfig.cursor, key, editorConfig.row);
 
@@ -241,7 +241,7 @@ void scroll() noexcept
 
 void updateRow(std::string_view row, std::string& render)
 {
-  using Utilities::KILO_TAB_STOP;
+  using utilities::KILO_TAB_STOP;
 
   [[maybe_unused]]
   auto tabs = std::ranges::count_if(row, [](unsigned char c) { return c == '\t'; });
