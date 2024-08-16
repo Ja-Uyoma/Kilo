@@ -24,7 +24,7 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
-namespace Kilo {
+namespace Kilo::window {
 
 class Window
 {
@@ -33,6 +33,6 @@ public:
   int cols {};
 };
 
-}   // namespace Kilo
+}   // namespace Kilo::window
 
 #endif

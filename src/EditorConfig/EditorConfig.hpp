@@ -18,7 +18,7 @@ public:
   int numrows {};
   cursor::Cursor cursor {};
   offset::Offset off {};
-  Window window {};
+  window::Window window {};
   int rx {};
 
   explicit EditorConfig();
