@@ -12,7 +12,7 @@ namespace Kilo::editor {
 class EditorConfig
 {
 public:
-  TerminalState state {};
+  terminal::TerminalState state {};
   std::vector<std::string> row;
   std::vector<std::string> render;
   int numrows {};
