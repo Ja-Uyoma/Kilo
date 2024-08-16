@@ -195,6 +195,17 @@ TEST(createWelcomeMessage, CreatesAWelcomeMessageContainingTheVersionString)
   ASSERT_THAT(msg, ::testing::Eq("Kilo editor -- version 0.0.1"));
 }
 
+TEST(resizeWelcomeMessage, ResizesTheWelcomeMessageToFitInTheWindow)
+{
+  std::string msg {"One must imagine Sisyphus happy"};
+  int width = 5;
+
+  resizeWelcomeMessage(msg, width);
+
+  ASSERT_THAT(msg.length(), ::testing::Eq(width));
+  ASSERT_THAT(msg, ::testing::Eq("One m"));
+}
+
 }   // namespace detail
 
 }   // namespace Kilo::editor
