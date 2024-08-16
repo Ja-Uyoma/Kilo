@@ -47,7 +47,7 @@ void refreshScreen() noexcept;
 
 /// @brief Draw each row of the buffer of text being edited, plus a tilde at the
 /// beginning
-void drawRows(WriteBuffer& buffer) noexcept;
+void drawRows(ScreenBuffer& buffer) noexcept;
 
 /**
  * @brief Move the cursor in accordance with the key pressed
@@ -167,7 +167,7 @@ std::string createWelcomeMessage(std::string_view versionString) noexcept;
  */
 void resizeWelcomeMessage(std::string& message, int windowWidth) noexcept;
 
-void displayWelcomeMessage(WriteBuffer& buffer);
+void displayWelcomeMessage(ScreenBuffer& buffer);
 
 }   // namespace Kilo::editor::detail
 

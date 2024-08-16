@@ -22,6 +22,7 @@
  */
 
 #include "ScreenBuffer/ScreenBuffer.hpp"
+
 #include <cstring>
 #include <gtest/gtest.h>
 
@@ -30,7 +31,7 @@ namespace Kilo::editor {
 class WriteBufferTest : public ::testing::Test
 {
 public:
-  WriteBuffer buf;
+  ScreenBuffer buf;
 };
 
 TEST_F(WriteBufferTest, IsEmptyWhenCreated)

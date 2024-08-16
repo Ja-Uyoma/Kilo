@@ -77,7 +77,7 @@ void refreshScreen() noexcept
 
   scroll();
 
-  WriteBuffer buffer;
+  ScreenBuffer buffer;
 
   buffer.write("\x1b[?25l"s);   // hide the cursor when repainting
   buffer.write("\x1b[H"s);      // reposition the cursor
@@ -101,7 +101,7 @@ void refreshScreen() noexcept
   ::write(STDOUT_FILENO, buffer.c_str(), buffer.size());
 }
 
-void drawRows(WriteBuffer& buffer) noexcept
+void drawRows(ScreenBuffer& buffer) noexcept
 {
   using namespace std::string_literals;
 
@@ -254,7 +254,7 @@ void resizeWelcomeMessage(std::string& message, int windowWidth) noexcept
   }
 }
 
-void displayWelcomeMessage(WriteBuffer& buffer)
+void displayWelcomeMessage(ScreenBuffer& buffer)
 {
   using namespace std::string_literals;
   using namespace Kilo::utilities;

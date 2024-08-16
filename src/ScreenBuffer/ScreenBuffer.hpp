@@ -10,10 +10,10 @@ namespace Kilo::editor {
 // strings will be appended, and then this buffer will be written out at the
 // end.
 
-class WriteBuffer
+class ScreenBuffer
 {
 public:
-  explicit constexpr WriteBuffer() noexcept = default;
+  explicit constexpr ScreenBuffer() noexcept = default;
 
   /// @brief Append the given C-string to the buffer
   /// @param[in] str The string to be appended to the buffer
