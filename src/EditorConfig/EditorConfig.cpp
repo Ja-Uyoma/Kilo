@@ -4,7 +4,7 @@
 #include <iostream>
 #include <system_error>
 
-namespace Kilo::Editor {
+namespace Kilo::editor {
 EditorConfig::EditorConfig()
 {
   try {
@@ -27,4 +27,4 @@ EditorConfig::~EditorConfig()
 
   state.reset();
 }
-}   // namespace Kilo::Editor
+}   // namespace Kilo::editor

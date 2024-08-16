@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-namespace Kilo::Editor {
+namespace Kilo::editor {
 class EditorConfig
 {
 public:
@@ -30,6 +30,6 @@ public:
   EditorConfig(EditorConfig&&) noexcept = delete;
   EditorConfig operator=(EditorConfig&&) noexcept = delete;
 };
-}   // namespace Kilo::Editor
+}   // namespace Kilo::editor
 
 #endif

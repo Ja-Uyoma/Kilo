@@ -34,7 +34,7 @@
 #include <utility>
 #include <vector>
 
-namespace Kilo::Editor {
+namespace Kilo::editor {
 
 /// @brief Process the results from readKey
 /// @details This function is responsible for mapping keypresses to editor
@@ -109,7 +109,7 @@ constexpr void moveCursor(cursor::Cursor& cursor,
       }
       break;
     case ArrowRight: {
-      auto currentRow = Editor::getCurrentRow(cursor, document);
+      auto currentRow = editor::getCurrentRow(cursor, document);
 
       if (currentRow && std::cmp_less(cursor.x, currentRow->size())) {
         cursor.x++;
@@ -146,7 +146,7 @@ void scroll() noexcept;
  * @param[in] render The destination string
  */
 void updateRow(std::string_view row, std::string& render);
-}   // namespace Kilo::Editor
+}   // namespace Kilo::editor
 
 namespace Kilo::Editor::detail {
 

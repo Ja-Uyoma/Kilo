@@ -38,7 +38,7 @@
 #include <string_view>
 #include <unistd.h>
 
-namespace Kilo::Editor {
+namespace Kilo::editor {
 static EditorConfig editorConfig;
 
 namespace detail {
@@ -264,4 +264,4 @@ void updateRow(std::string_view row, std::string& render)
     }
   }
 }
-}   // namespace Kilo::Editor
+}   // namespace Kilo::editor

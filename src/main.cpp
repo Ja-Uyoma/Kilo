@@ -33,8 +33,8 @@
  */
 [[noreturn]] void Main() noexcept
 {
-  using Kilo::Editor::processKeypress;
-  using Kilo::Editor::refreshScreen;
+  using Kilo::editor::processKeypress;
+  using Kilo::editor::refreshScreen;
   using Kilo::Utilities::clearScreenAndRepositionCursor;
 
   while (true) {
@@ -56,7 +56,7 @@
 
 int main(int argc, char const* argv[])
 {
-  using Kilo::Editor::open;
+  using Kilo::editor::open;
 
   if (argc >= 2 && !open(argv[1])) {
     return EXIT_FAILURE;

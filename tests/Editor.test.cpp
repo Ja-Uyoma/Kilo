@@ -31,7 +31,7 @@
 #include <string>
 #include <vector>
 
-namespace Kilo::Editor {
+namespace Kilo::editor {
 
 TEST(getCurrentRow, ReturnsTheCurrentRowOnWhichTheCursorIsLocated)
 {
@@ -184,4 +184,4 @@ TEST(moveCursor, ArrowDownIsANoOpIfTheCursorIsAtTheBottomOfTheDocument)
   ASSERT_THAT(cursor.y, ::testing::Eq(2));
 }
 
-}   // namespace Kilo::Editor
+}   // namespace Kilo::editor
