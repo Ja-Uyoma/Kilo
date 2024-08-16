@@ -184,4 +184,17 @@ TEST(moveCursor, ArrowDownIsANoOpIfTheCursorIsAtTheBottomOfTheDocument)
   ASSERT_THAT(cursor.y, ::testing::Eq(2));
 }
 
+namespace detail {
+
+TEST(createWelcomeMessage, CreatesAWelcomeMessageContainingTheVersionString)
+{
+  std::string_view version {"0.0.1"};
+
+  auto msg = createWelcomeMessage(version);
+
+  ASSERT_THAT(msg, ::testing::Eq("Kilo editor -- version 0.0.1"));
+}
+
+}   // namespace detail
+
 }   // namespace Kilo::editor
