@@ -41,7 +41,8 @@
 namespace Kilo::Editor {
 static EditorConfig editorConfig;
 
-namespace {
+namespace detail {
+
 void displayWelcomeMessage(WriteBuffer& buffer)
 {
   using namespace std::string_literals;
@@ -79,7 +80,8 @@ void displayWelcomeMessage(WriteBuffer& buffer)
 
   buffer.write(welcome, welcomeLen);
 }
-}   // namespace
+
+}   // namespace detail
 
 void processKeypress()
 {
@@ -146,7 +148,7 @@ void drawRows(WriteBuffer& buffer) noexcept
   for (int y = 0; y < editorConfig.window.rows; y++) {
     if (int filerow = y + editorConfig.off.row; filerow >= editorConfig.numrows) {
       if (editorConfig.numrows == 0 && y == editorConfig.window.rows / 3) {
-        displayWelcomeMessage(buffer);
+        detail::displayWelcomeMessage(buffer);
       }
       else {
         buffer.write("~"s);
