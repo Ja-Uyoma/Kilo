@@ -18,7 +18,7 @@ target_include_directories(tests
 
 target_sources(tests
     PUBLIC
-        "${PROJECT_SOURCE_DIR}/includes/WriteBuffer.hpp"
+        "${PROJECT_SOURCE_DIR}/src/WriteBuffer/WriteBuffer.hpp"
         "${PROJECT_SOURCE_DIR}/src/Cursor/Cursor.hpp"
         "${PROJECT_SOURCE_DIR}/src/Offset/Offset.hpp"
         "${PROJECT_SOURCE_DIR}/src/Window/Window.hpp"

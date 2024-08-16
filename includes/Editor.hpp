@@ -26,7 +26,7 @@
 
 #include "Cursor/Cursor.hpp"
 #include "Utilities/Utilities.hpp"
-#include "WriteBuffer.hpp"
+#include "WriteBuffer/WriteBuffer.hpp"
 #include <cassert>
 #include <filesystem>
 #include <optional>
