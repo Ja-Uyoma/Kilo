@@ -16,6 +16,7 @@ target_sources(kilo
         "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.hpp"
         "${PROJECT_SOURCE_DIR}/src/TerminalState/TerminalState.hpp"
         "${PROJECT_SOURCE_DIR}/src/Cursor/Cursor.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Window/Window.hpp"
         "${PROJECT_SOURCE_DIR}/includes/Editor.hpp"
         "${PROJECT_SOURCE_DIR}/includes/Utilities.hpp"
         "${PROJECT_SOURCE_DIR}/includes/EditorConfig.hpp"

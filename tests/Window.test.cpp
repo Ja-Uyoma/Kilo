@@ -1,4 +1,4 @@
-#include "Window.hpp"
+#include "Window/Window.hpp"
 
 #include <gtest/gtest.h>
 

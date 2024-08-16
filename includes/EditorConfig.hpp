@@ -4,7 +4,7 @@
 #include "Cursor/Cursor.hpp"
 #include "Offset/Offset.hpp"
 #include "TerminalState/TerminalState.hpp"
-#include "Window.hpp"
+#include "Window/Window.hpp"
 #include <string>
 #include <vector>
 
