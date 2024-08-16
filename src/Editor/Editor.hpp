@@ -26,6 +26,7 @@
 
 #include "Cursor/Cursor.hpp"
 #include "Utilities/Utilities.hpp"
+#include "Window/Window.hpp"
 #include "WriteBuffer/WriteBuffer.hpp"
 #include <cassert>
 #include <filesystem>
@@ -150,8 +151,16 @@ void updateRow(std::string_view row, std::string& render);
 
 namespace Kilo::editor::detail {
 
+/**
+ * @brief Create a welcome message by interpolating two strings
+ *
+ * @param versionString The version of the application
+ * @return std::string The welcome message
+ */
+std::string createWelcomeMessage(std::string_view versionString) noexcept;
+
 void displayWelcomeMessage(WriteBuffer& buffer);
 
-}
+}   // namespace Kilo::editor::detail
 
 #endif

@@ -31,12 +31,14 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <fmt/format.h>
 #include <fstream>
 #include <iostream>
 #include <optional>
 #include <string>
 #include <string_view>
 #include <unistd.h>
+#include <utility>
 
 namespace Kilo::editor {
 static EditorConfig editorConfig;
@@ -225,6 +227,17 @@ void updateRow(std::string_view row, std::string& render)
 }   // namespace Kilo::editor
 
 namespace Kilo::editor::detail {
+
+/**
+ * @brief Create a welcome message by interpolating two strings
+ *
+ * @param versionString The version of the application
+ * @return std::string The welcome message
+ */
+std::string createWelcomeMessage(std::string_view versionString) noexcept
+{
+  return fmt::format("Kilo editor -- version {}", versionString);
+}
 
 void displayWelcomeMessage(WriteBuffer& buffer)
 {
