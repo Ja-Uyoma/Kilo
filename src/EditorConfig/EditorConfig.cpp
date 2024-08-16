@@ -1,14 +1,14 @@
 #include "EditorConfig.hpp"
 
-#include "Terminal.hpp"
+#include "Terminal/Terminal.hpp"
 #include <iostream>
 #include <system_error>
 
-namespace Kilo::Editor {
+namespace Kilo::editor {
 EditorConfig::EditorConfig()
 {
   try {
-    Terminal::getWindowSize(&window.rows, &window.cols);
+    terminal::getWindowSize(&window.rows, &window.cols);
     state.setRawMode();
   }
   catch (std::system_error const& err) {
@@ -27,4 +27,4 @@ EditorConfig::~EditorConfig()
 
   state.reset();
 }
-}   // namespace Kilo::Editor
+}   // namespace Kilo::editor

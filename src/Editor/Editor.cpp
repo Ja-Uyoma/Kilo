@@ -23,72 +23,30 @@
 
 #include "Editor.hpp"
 
-#include "EditorConfig.hpp"
-#include "Terminal.hpp"
-#include "Utilities.hpp"
-#include "WriteBuffer.hpp"
+#include "EditorConfig/EditorConfig.hpp"
+#include "Terminal/Terminal.hpp"
+#include "Utilities/Utilities.hpp"
+#include "WriteBuffer/WriteBuffer.hpp"
 #include <algorithm>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <fstream>
-#include <functional>
 #include <iostream>
 #include <optional>
 #include <string>
 #include <string_view>
 #include <unistd.h>
-#include <utility>
 
-namespace Kilo::Editor {
+namespace Kilo::editor {
 static EditorConfig editorConfig;
-
-namespace {
-void displayWelcomeMessage(WriteBuffer& buffer)
-{
-  using namespace std::string_literals;
-  using namespace Kilo::Utilities;
-
-  char welcome[80] {};
-
-  // Interpolate KILO_VERSION into the welcome message
-  int welcomeLen =
-    std::snprintf(welcome, sizeof welcome, "Kilo editor -- version %s", KILO_VERSION);
-
-  // Truncate the length of the string in case the terminal is too small to fit
-  // the welcome message
-  if (welcomeLen > editorConfig.window.cols) {
-    welcomeLen = editorConfig.window.cols;
-  }
-
-  // Center the string
-  // Divide the screen width by 2 and then subtract half the string's length
-  // from this value. This tells us how far from the left edge of the screen we
-  // should start printing the string. So, we fill that space with space
-  // characters, except for the first character, which should be a tilde
-
-  int padding = (editorConfig.window.cols - welcomeLen) / 2;
-
-  if (padding > 0) {
-    buffer.write("~"s);
-    padding--;
-  }
-
-  while (padding > 0) {
-    buffer.write(" "s);
-    padding--;
-  }
-
-  buffer.write(welcome, welcomeLen);
-}
-}   // namespace
 
 void processKeypress()
 {
-  using namespace Kilo::Utilities;
-  using enum Kilo::Utilities::EditorKey;
+  using namespace Kilo::utilities;
+  using enum Kilo::utilities::EditorKey;
 
-  int c = Terminal::readKey();
+  int c = terminal::readKey();
 
   switch (c) {
     case ctrlKey('q'):
@@ -148,7 +106,7 @@ void drawRows(WriteBuffer& buffer) noexcept
   for (int y = 0; y < editorConfig.window.rows; y++) {
     if (int filerow = y + editorConfig.off.row; filerow >= editorConfig.numrows) {
       if (editorConfig.numrows == 0 && y == editorConfig.window.rows / 3) {
-        displayWelcomeMessage(buffer);
+        detail::displayWelcomeMessage(buffer);
       }
       else {
         buffer.write("~"s);
@@ -176,7 +134,7 @@ void drawRows(WriteBuffer& buffer) noexcept
   }
 }
 
-void moveCursor(Utilities::EditorKey key) noexcept
+void moveCursor(utilities::EditorKey key) noexcept
 {
   moveCursor(editorConfig.cursor, key, editorConfig.row);
 
@@ -241,7 +199,7 @@ void scroll() noexcept
 
 void updateRow(std::string_view row, std::string& render)
 {
-  using Utilities::KILO_TAB_STOP;
+  using utilities::KILO_TAB_STOP;
 
   [[maybe_unused]]
   auto tabs = std::ranges::count_if(row, [](unsigned char c) { return c == '\t'; });
@@ -264,4 +222,46 @@ void updateRow(std::string_view row, std::string& render)
     }
   }
 }
-}   // namespace Kilo::Editor
+}   // namespace Kilo::editor
+
+namespace Kilo::editor::detail {
+
+void displayWelcomeMessage(WriteBuffer& buffer)
+{
+  using namespace std::string_literals;
+  using namespace Kilo::utilities;
+
+  char welcome[80] {};
+
+  // Interpolate KILO_VERSION into the welcome message
+  int welcomeLen =
+    std::snprintf(welcome, sizeof welcome, "Kilo editor -- version %s", KILO_VERSION);
+
+  // Truncate the length of the string in case the terminal is too small to fit
+  // the welcome message
+  if (welcomeLen > editorConfig.window.cols) {
+    welcomeLen = editorConfig.window.cols;
+  }
+
+  // Center the string
+  // Divide the screen width by 2 and then subtract half the string's length
+  // from this value. This tells us how far from the left edge of the screen we
+  // should start printing the string. So, we fill that space with space
+  // characters, except for the first character, which should be a tilde
+
+  int padding = (editorConfig.window.cols - welcomeLen) / 2;
+
+  if (padding > 0) {
+    buffer.write("~"s);
+    padding--;
+  }
+
+  while (padding > 0) {
+    buffer.write(" "s);
+    padding--;
+  }
+
+  buffer.write(welcome, welcomeLen);
+}
+
+}   // namespace Kilo::editor::detail

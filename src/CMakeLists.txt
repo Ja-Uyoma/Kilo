@@ -7,23 +7,39 @@ target_link_libraries(kilo Microsoft.GSL::GSL fmt::fmt)
 
 target_include_directories(kilo
     PRIVATE
-        "${PROJECT_SOURCE_DIR}/includes"
+        "${PROJECT_SOURCE_DIR}/src"
 )
 
 target_sources(kilo
-    PUBLIC
-        "${PROJECT_SOURCE_DIR}/includes/Terminal.hpp"
-        "${PROJECT_SOURCE_DIR}/includes/Editor.hpp"
-        "${PROJECT_SOURCE_DIR}/includes/Utilities.hpp"
-        "${PROJECT_SOURCE_DIR}/includes/EditorConfig.hpp"
-        "${PROJECT_SOURCE_DIR}/includes/TerminalState.hpp"
     PRIVATE
+        "${PROJECT_SOURCE_DIR}/src/Cursor/Cursor.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Cursor/Cursor.cpp"
+
+        "${PROJECT_SOURCE_DIR}/src/Editor/Editor.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Editor/Editor.cpp"
+        
+        "${PROJECT_SOURCE_DIR}/src/EditorConfig/EditorConfig.hpp"
+        "${PROJECT_SOURCE_DIR}/src/EditorConfig/EditorConfig.cpp"
+
+        "${PROJECT_SOURCE_DIR}/src/Offset/Offset.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Offset/Offset.cpp"
+
+        "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.cpp"
+
+        "${PROJECT_SOURCE_DIR}/src/TerminalState/TerminalState.hpp"
+        "${PROJECT_SOURCE_DIR}/src/TerminalState/TerminalState.cpp"
+
+        "${PROJECT_SOURCE_DIR}/src/Utilities/Utilities.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Utilities/Utilities.cpp"
+        
+        "${PROJECT_SOURCE_DIR}/src/Window/Window.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Window/Window.cpp"
+
+        "${PROJECT_SOURCE_DIR}/src/WriteBuffer/WriteBuffer.hpp"
+        "${PROJECT_SOURCE_DIR}/src/WriteBuffer/WriteBuffer.cpp"
+    
         main.cpp
-        Terminal.cpp
-        Utilities.cpp
-        Editor.cpp
-        EditorConfig.cpp
-        TerminalState.cpp
 )
 
 target_compile_features(kilo

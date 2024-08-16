@@ -20,8 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "Editor.hpp"
-#include "Utilities.hpp"
+#include "Editor/Editor.hpp"
+#include "Utilities/Utilities.hpp"
 #include <cstdlib>
 #include <iostream>
 #include <system_error>
@@ -33,9 +33,9 @@
  */
 [[noreturn]] void Main() noexcept
 {
-  using Kilo::Editor::processKeypress;
-  using Kilo::Editor::refreshScreen;
-  using Kilo::Utilities::clearScreenAndRepositionCursor;
+  using Kilo::editor::processKeypress;
+  using Kilo::editor::refreshScreen;
+  using Kilo::utilities::clearScreenAndRepositionCursor;
 
   while (true) {
     try {
@@ -56,7 +56,7 @@
 
 int main(int argc, char const* argv[])
 {
-  using Kilo::Editor::open;
+  using Kilo::editor::open;
 
   if (argc >= 2 && !open(argv[1])) {
     return EXIT_FAILURE;

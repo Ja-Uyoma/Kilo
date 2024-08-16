@@ -1,8 +1,8 @@
-#include "Offset.hpp"
+#include "Offset/Offset.hpp"
 
 #include <gtest/gtest.h>
 
-namespace Kilo {
+namespace Kilo::offset {
 
 TEST(Offset, MembersAreInitializedToZeroByDefault)
 {
@@ -12,4 +12,4 @@ TEST(Offset, MembersAreInitializedToZeroByDefault)
   ASSERT_EQ(off.col, 0);
 }
 
-}   // namespace Kilo
+}   // namespace Kilo::offset

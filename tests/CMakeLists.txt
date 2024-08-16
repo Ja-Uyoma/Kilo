@@ -12,26 +12,35 @@ target_link_libraries(tests
 
 target_include_directories(tests
     PRIVATE
-        "${PROJECT_SOURCE_DIR}/includes"
+        "${PROJECT_SOURCE_DIR}/src"
 )
 
 target_sources(tests
-    PUBLIC
-        "${PROJECT_SOURCE_DIR}/includes/WriteBuffer.hpp"
-        "${PROJECT_SOURCE_DIR}/includes/Cursor.hpp"
-        "${PROJECT_SOURCE_DIR}/includes/Offset.hpp"
-        "${PROJECT_SOURCE_DIR}/includes/Window.hpp"
-        "${PROJECT_SOURCE_DIR}/includes/TerminalState.hpp"
-        "${PROJECT_SOURCE_DIR}/includes/Editor.hpp"
-        "${PROJECT_SOURCE_DIR}/includes/Terminal.hpp"
     PRIVATE
-        WriteBuffer.test.cpp
+        "${PROJECT_SOURCE_DIR}/src/Cursor/Cursor.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Cursor/Cursor.cpp"
         Cursor.test.cpp
-        Offset.test.cpp
-        Window.test.cpp
-        "${PROJECT_SOURCE_DIR}/src/TerminalState.cpp"
-        TerminalState.test.cpp
+
+        "${PROJECT_SOURCE_DIR}/src/Editor/Editor.hpp"
         Editor.test.cpp
+
+        "${PROJECT_SOURCE_DIR}/src/Offset/Offset.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Offset/Offset.cpp"
+        Offset.test.cpp
+
+        "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.hpp"
+
+        "${PROJECT_SOURCE_DIR}/src/TerminalState/TerminalState.hpp"
+        "${PROJECT_SOURCE_DIR}/src/TerminalState/TerminalState.cpp"
+        TerminalState.test.cpp
+
+        "${PROJECT_SOURCE_DIR}/src/WriteBuffer/WriteBuffer.hpp"
+        "${PROJECT_SOURCE_DIR}/src/WriteBuffer/WriteBuffer.cpp"
+        WriteBuffer.test.cpp
+        
+        "${PROJECT_SOURCE_DIR}/src/Window/Window.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Window/Window.cpp"
+        Window.test.cpp
 )
 
 target_compile_features(tests

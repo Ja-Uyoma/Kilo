@@ -21,35 +21,48 @@
  * SOFTWARE.
  */
 
-#ifndef TERMINAL_HPP
-#define TERMINAL_HPP
+#include "Utilities.hpp"
 
-#include <termios.h>
+#include <cerrno>
+#include <cstring>
+#include <system_error>
+#include <unistd.h>
 
-namespace Kilo::Terminal {
-/**
- * @brief Read key input from stdin
- * @return The character read
- * @throws std::system_error if an error occured during read
- */
-int readKey();
+namespace Kilo::utilities {
+void clearScreenAndRepositionCursor() noexcept
+{
+  {
+    [[maybe_unused]] auto&& rv = ::write(STDOUT_FILENO, "\x1b[2J", 4);
+  }
+  {
+    [[maybe_unused]] auto&& rv = ::write(STDOUT_FILENO, "\x1b[H", 3);
+  }
+}
 
-/**
- * @brief Get the size of the terminal window and write them to @param rows and
- * @param cols
- * @param[inout] rows The number of rows of the terminal window
- * @param[inout] cols The number of columns of the terminal window
- * @throws std::system_error if the terminal window size could not be retrieved
- */
-void getWindowSize(int* const rows, int* const cols);
+[[nodiscard]] long writeAll(int fd, void const* buf, long count)
+{
+  long totalWritten {};
+  auto const* ptr = static_cast<char const*>(buf);
 
-/**
- * @brief Get the position of the cursor and write them to @param rows and
- * @param cols
- * @param[inout] rows The number of rows of the terminal window
- * @param[inout] cols The number of columns of the terminal window
- */
-void getCursorPosition(int* const rows, int* const cols);
-}   // namespace Kilo::Terminal
+  while (totalWritten < count) {
+    long written = ::write(fd, ptr + totalWritten, count - totalWritten);
 
-#endif
+    if (written == -1) {
+      if (errno == EINTR || errno == EAGAIN) {
+        continue;
+      }
+      else {
+        throw std::system_error(errno, std::system_category(), std::strerror(errno));
+      }
+    }
+
+    if (written == 0) {
+      break;
+    }
+
+    totalWritten += written;
+  }
+
+  return totalWritten;
+}
+}   // namespace Kilo::utilities

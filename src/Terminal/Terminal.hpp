@@ -21,18 +21,35 @@
  * SOFTWARE.
  */
 
-#ifndef WINDOW_HPP
-#define WINDOW_HPP
+#ifndef TERMINAL_HPP
+#define TERMINAL_HPP
 
-namespace Kilo {
+#include <termios.h>
 
-class Window
-{
-public:
-  int rows {};
-  int cols {};
-};
+namespace Kilo::terminal {
+/**
+ * @brief Read key input from stdin
+ * @return The character read
+ * @throws std::system_error if an error occured during read
+ */
+int readKey();
 
-}   // namespace Kilo
+/**
+ * @brief Get the size of the terminal window and write them to @param rows and
+ * @param cols
+ * @param[inout] rows The number of rows of the terminal window
+ * @param[inout] cols The number of columns of the terminal window
+ * @throws std::system_error if the terminal window size could not be retrieved
+ */
+void getWindowSize(int* const rows, int* const cols);
+
+/**
+ * @brief Get the position of the cursor and write them to @param rows and
+ * @param cols
+ * @param[inout] rows The number of rows of the terminal window
+ * @param[inout] cols The number of columns of the terminal window
+ */
+void getCursorPosition(int* const rows, int* const cols);
+}   // namespace Kilo::terminal
 
 #endif

@@ -1,8 +1,8 @@
-#include "Cursor.hpp"
+#include "Cursor/Cursor.hpp"
 
 #include <gtest/gtest.h>
 
-namespace Kilo {
+namespace Kilo::cursor {
 
 TEST(Cursor, MembersAreInitializedToZeroByDefault)
 {
@@ -12,4 +12,4 @@ TEST(Cursor, MembersAreInitializedToZeroByDefault)
   ASSERT_EQ(c.y, 0);
 }
 
-}   // namespace Kilo
+}   // namespace Kilo::cursor

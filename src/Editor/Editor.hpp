@@ -24,9 +24,9 @@
 #ifndef EDITOR_HPP
 #define EDITOR_HPP
 
-#include "Cursor.hpp"
-#include "Utilities.hpp"
-#include "WriteBuffer.hpp"
+#include "Cursor/Cursor.hpp"
+#include "Utilities/Utilities.hpp"
+#include "WriteBuffer/WriteBuffer.hpp"
 #include <cassert>
 #include <filesystem>
 #include <optional>
@@ -34,7 +34,8 @@
 #include <utility>
 #include <vector>
 
-namespace Kilo::Editor {
+namespace Kilo::editor {
+
 /// @brief Process the results from readKey
 /// @details This function is responsible for mapping keypresses to editor
 /// operations
@@ -53,7 +54,7 @@ void drawRows(WriteBuffer& buffer) noexcept;
  *
  * @param key The character representing the direction to move the cursor in
  */
-void moveCursor(Utilities::EditorKey key) noexcept;
+void moveCursor(utilities::EditorKey key) noexcept;
 
 /**
  * @brief Open a file for reading and write its contents to the EditorConfig
@@ -71,7 +72,7 @@ bool open(std::filesystem::path const& path);
  * @param rows The rows of text of the document in memory
  * @return std::optional<std::string> The current row at which the cursor is located
  */
-constexpr std::optional<std::string> getCurrentRow(Cursor const& cursor,
+constexpr std::optional<std::string> getCurrentRow(cursor::Cursor const& cursor,
                                                    std::vector<std::string> const& rows) noexcept
 {
   assert(cursor.x >= 0 and cursor.y >= 0);
@@ -91,12 +92,12 @@ constexpr std::optional<std::string> getCurrentRow(Cursor const& cursor,
  * @param keyPressed The key press determining how the cursor is to be moved
  * @param document The document within which the cursor is located
  */
-constexpr void moveCursor(Cursor& cursor,
-                          Utilities::EditorKey const& keyPressed,
+constexpr void moveCursor(cursor::Cursor& cursor,
+                          utilities::EditorKey const& keyPressed,
                           std::vector<std::string> const& document) noexcept
 {
   switch (keyPressed) {
-    using enum Utilities::EditorKey;
+    using enum utilities::EditorKey;
 
     case ArrowLeft:
       if (cursor.x != 0) {
@@ -108,7 +109,7 @@ constexpr void moveCursor(Cursor& cursor,
       }
       break;
     case ArrowRight: {
-      auto currentRow = Editor::getCurrentRow(cursor, document);
+      auto currentRow = editor::getCurrentRow(cursor, document);
 
       if (currentRow && std::cmp_less(cursor.x, currentRow->size())) {
         cursor.x++;
@@ -145,6 +146,12 @@ void scroll() noexcept;
  * @param[in] render The destination string
  */
 void updateRow(std::string_view row, std::string& render);
-}   // namespace Kilo::Editor
+}   // namespace Kilo::editor
+
+namespace Kilo::editor::detail {
+
+void displayWelcomeMessage(WriteBuffer& buffer);
+
+}
 
 #endif

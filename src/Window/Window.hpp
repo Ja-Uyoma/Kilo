@@ -21,48 +21,18 @@
  * SOFTWARE.
  */
 
-#include "Utilities.hpp"
+#ifndef WINDOW_HPP
+#define WINDOW_HPP
 
-#include <cerrno>
-#include <cstring>
-#include <system_error>
-#include <unistd.h>
+namespace Kilo::window {
 
-namespace Kilo::Utilities {
-void clearScreenAndRepositionCursor() noexcept
+class Window
 {
-  {
-    [[maybe_unused]] auto&& rv = ::write(STDOUT_FILENO, "\x1b[2J", 4);
-  }
-  {
-    [[maybe_unused]] auto&& rv = ::write(STDOUT_FILENO, "\x1b[H", 3);
-  }
-}
+public:
+  int rows {};
+  int cols {};
+};
 
-[[nodiscard]] long writeAll(int fd, void const* buf, long count)
-{
-  long totalWritten {};
-  auto const* ptr = static_cast<char const*>(buf);
+}   // namespace Kilo::window
 
-  while (totalWritten < count) {
-    long written = ::write(fd, ptr + totalWritten, count - totalWritten);
-
-    if (written == -1) {
-      if (errno == EINTR || errno == EAGAIN) {
-        continue;
-      }
-      else {
-        throw std::system_error(errno, std::system_category(), std::strerror(errno));
-      }
-    }
-
-    if (written == 0) {
-      break;
-    }
-
-    totalWritten += written;
-  }
-
-  return totalWritten;
-}
-}   // namespace Kilo::Utilities
+#endif

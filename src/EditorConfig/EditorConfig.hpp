@@ -1,24 +1,24 @@
 #ifndef EDITOR_CONFIG_HPP
 #define EDITOR_CONFIG_HPP
 
-#include "Cursor.hpp"
-#include "Offset.hpp"
-#include "TerminalState.hpp"
-#include "Window.hpp"
+#include "Cursor/Cursor.hpp"
+#include "Offset/Offset.hpp"
+#include "TerminalState/TerminalState.hpp"
+#include "Window/Window.hpp"
 #include <string>
 #include <vector>
 
-namespace Kilo::Editor {
+namespace Kilo::editor {
 class EditorConfig
 {
 public:
-  TerminalState state {};
+  terminal::TerminalState state {};
   std::vector<std::string> row;
   std::vector<std::string> render;
   int numrows {};
-  Cursor cursor {};
-  Offset off {};
-  Window window {};
+  cursor::Cursor cursor {};
+  offset::Offset off {};
+  window::Window window {};
   int rx {};
 
   explicit EditorConfig();
@@ -30,6 +30,6 @@ public:
   EditorConfig(EditorConfig&&) noexcept = delete;
   EditorConfig operator=(EditorConfig&&) noexcept = delete;
 };
-}   // namespace Kilo::Editor
+}   // namespace Kilo::editor
 
 #endif

@@ -21,13 +21,13 @@
  * SOFTWARE.
  */
 
-#include "TerminalState.hpp"
+#include "TerminalState/TerminalState.hpp"
 
 #include <gsl/util>
 #include <gtest/gtest.h>
 #include <system_error>
 
-namespace Kilo {
+namespace Kilo::terminal {
 
 TEST(TerminalState, getTerminalDriverSettingsFailsWhenGivenAnInvalidFileDescriptor)
 {
@@ -106,4 +106,4 @@ TEST(TerminalState, ResetRestoresTerminalSettingsToCanonicalMode)
   ASSERT_NO_THROW(tstate.reset());
 }
 
-}   // namespace Kilo
+}   // namespace Kilo::terminal

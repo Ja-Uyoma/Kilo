@@ -23,7 +23,7 @@
 
 #include "Terminal.hpp"
 
-#include "Utilities.hpp"
+#include "Utilities/Utilities.hpp"
 #include <array>
 #include <cerrno>
 #include <cstddef>
@@ -32,7 +32,7 @@
 #include <system_error>
 #include <unistd.h>
 
-namespace Kilo::Terminal {
+namespace Kilo::terminal {
 
 int handleEscapeSequences() noexcept
 {
@@ -53,7 +53,7 @@ int handleEscapeSequences() noexcept
   }
 
   if (seq[0] == '[') {
-    using enum Kilo::Utilities::EditorKey;
+    using enum Kilo::utilities::EditorKey;
 
     /*
      * If the byte after [ is a digit, we read another byte expecting it to be
@@ -101,7 +101,7 @@ int handleEscapeSequences() noexcept
     }
   }
   else if (seq[0] == 'O') {
-    using enum Kilo::Utilities::EditorKey;
+    using enum Kilo::utilities::EditorKey;
 
     switch (seq[1]) {
       case 'H': return static_cast<int>(Home);
@@ -204,4 +204,4 @@ void getCursorPosition(int* const rows, int* const cols)
       errno, std::system_category(), "Failed to write buffer data into rows and cols variables");
   }
 }
-}   // namespace Kilo::Terminal
+}   // namespace Kilo::terminal

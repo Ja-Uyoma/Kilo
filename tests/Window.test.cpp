@@ -1,8 +1,8 @@
-#include "Window.hpp"
+#include "Window/Window.hpp"
 
 #include <gtest/gtest.h>
 
-namespace Kilo {
+namespace Kilo::window {
 
 TEST(Window, MembersAreInitializedToZeroByDefault)
 {
@@ -12,4 +12,4 @@ TEST(Window, MembersAreInitializedToZeroByDefault)
   ASSERT_EQ(window.cols, 0);
 }
 
-}   // namespace Kilo
+}   // namespace Kilo::window

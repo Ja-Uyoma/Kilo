@@ -21,12 +21,13 @@
  * SOFTWARE.
  */
 
-#include "WriteBuffer.hpp"
+#include "WriteBuffer/WriteBuffer.hpp"
 
 #include <cstring>
 #include <gtest/gtest.h>
 
-namespace Kilo {
+namespace Kilo::editor {
+
 class WriteBufferTest : public ::testing::Test
 {
 public:
@@ -53,4 +54,5 @@ TEST_F(WriteBufferTest, c_strReturnsACStringRepresentationOfTheContentsOfTheBuff
 
   ASSERT_STREQ(buf.c_str(), str);
 }
-}   // namespace Kilo
+
+}   // namespace Kilo::editor
