@@ -36,8 +36,8 @@ target_sources(kilo
         "${PROJECT_SOURCE_DIR}/src/Window/Window.hpp"
         "${PROJECT_SOURCE_DIR}/src/Window/Window.cpp"
 
-        "${PROJECT_SOURCE_DIR}/src/WriteBuffer/WriteBuffer.hpp"
-        "${PROJECT_SOURCE_DIR}/src/WriteBuffer/WriteBuffer.cpp"
+        "${PROJECT_SOURCE_DIR}/src/WriteBuffer/ScreenBuffer.hpp"
+        "${PROJECT_SOURCE_DIR}/src/WriteBuffer/ScreenBuffer.cpp"
     
         main.cpp
 )

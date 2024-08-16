@@ -26,7 +26,7 @@
 #include "EditorConfig/EditorConfig.hpp"
 #include "Terminal/Terminal.hpp"
 #include "Utilities/Utilities.hpp"
-#include "WriteBuffer/WriteBuffer.hpp"
+#include "WriteBuffer/ScreenBuffer.hpp"
 #include <algorithm>
 #include <cstdio>
 #include <cstdlib>
@@ -262,8 +262,7 @@ void displayWelcomeMessage(WriteBuffer& buffer)
   char welcome[80] {};
 
   // Interpolate KILO_VERSION into the welcome message
-  int welcomeLen =
-    std::snprintf(welcome, sizeof welcome, "Kilo editor -- version %s", KILO_VERSION);
+  int welcomeLen = std::snprintf(welcome, sizeof welcome, "Kilo editor -- version %s", KILO_VERSION);
 
   // Truncate the length of the string in case the terminal is too small to fit
   // the welcome message
