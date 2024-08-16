@@ -12,14 +12,14 @@ target_include_directories(kilo
 
 target_sources(kilo
     PUBLIC
-        "${PROJECT_SOURCE_DIR}/includes/Terminal.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.hpp"
         "${PROJECT_SOURCE_DIR}/includes/Editor.hpp"
         "${PROJECT_SOURCE_DIR}/includes/Utilities.hpp"
         "${PROJECT_SOURCE_DIR}/includes/EditorConfig.hpp"
         "${PROJECT_SOURCE_DIR}/includes/TerminalState.hpp"
     PRIVATE
         main.cpp
-        Terminal.cpp
+        "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.cpp"
         Utilities.cpp
         Editor.cpp
         EditorConfig.cpp
