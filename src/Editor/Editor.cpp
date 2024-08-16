@@ -41,48 +41,6 @@
 namespace Kilo::editor {
 static EditorConfig editorConfig;
 
-namespace detail {
-
-void displayWelcomeMessage(WriteBuffer& buffer)
-{
-  using namespace std::string_literals;
-  using namespace Kilo::utilities;
-
-  char welcome[80] {};
-
-  // Interpolate KILO_VERSION into the welcome message
-  int welcomeLen =
-    std::snprintf(welcome, sizeof welcome, "Kilo editor -- version %s", KILO_VERSION);
-
-  // Truncate the length of the string in case the terminal is too small to fit
-  // the welcome message
-  if (welcomeLen > editorConfig.window.cols) {
-    welcomeLen = editorConfig.window.cols;
-  }
-
-  // Center the string
-  // Divide the screen width by 2 and then subtract half the string's length
-  // from this value. This tells us how far from the left edge of the screen we
-  // should start printing the string. So, we fill that space with space
-  // characters, except for the first character, which should be a tilde
-
-  int padding = (editorConfig.window.cols - welcomeLen) / 2;
-
-  if (padding > 0) {
-    buffer.write("~"s);
-    padding--;
-  }
-
-  while (padding > 0) {
-    buffer.write(" "s);
-    padding--;
-  }
-
-  buffer.write(welcome, welcomeLen);
-}
-
-}   // namespace detail
-
 void processKeypress()
 {
   using namespace Kilo::utilities;
@@ -265,3 +223,45 @@ void updateRow(std::string_view row, std::string& render)
   }
 }
 }   // namespace Kilo::editor
+
+namespace Kilo::editor::detail {
+
+void displayWelcomeMessage(WriteBuffer& buffer)
+{
+  using namespace std::string_literals;
+  using namespace Kilo::utilities;
+
+  char welcome[80] {};
+
+  // Interpolate KILO_VERSION into the welcome message
+  int welcomeLen =
+    std::snprintf(welcome, sizeof welcome, "Kilo editor -- version %s", KILO_VERSION);
+
+  // Truncate the length of the string in case the terminal is too small to fit
+  // the welcome message
+  if (welcomeLen > editorConfig.window.cols) {
+    welcomeLen = editorConfig.window.cols;
+  }
+
+  // Center the string
+  // Divide the screen width by 2 and then subtract half the string's length
+  // from this value. This tells us how far from the left edge of the screen we
+  // should start printing the string. So, we fill that space with space
+  // characters, except for the first character, which should be a tilde
+
+  int padding = (editorConfig.window.cols - welcomeLen) / 2;
+
+  if (padding > 0) {
+    buffer.write("~"s);
+    padding--;
+  }
+
+  while (padding > 0) {
+    buffer.write(" "s);
+    padding--;
+  }
+
+  buffer.write(welcome, welcomeLen);
+}
+
+}   // namespace Kilo::editor::detail
