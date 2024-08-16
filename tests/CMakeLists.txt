@@ -23,7 +23,7 @@ target_sources(tests
         "${PROJECT_SOURCE_DIR}/src/Offset/Offset.hpp"
         "${PROJECT_SOURCE_DIR}/src/Window/Window.hpp"
         "${PROJECT_SOURCE_DIR}/src/TerminalState/TerminalState.hpp"
-        "${PROJECT_SOURCE_DIR}/includes/Editor.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Editor/Editor.hpp"
         "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.hpp"
     PRIVATE
         WriteBuffer.test.cpp

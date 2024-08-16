@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-#include "Editor.hpp"
+#include "Editor/Editor.hpp"
 
 #include "Cursor/Cursor.hpp"
 #include "Utilities/Utilities.hpp"

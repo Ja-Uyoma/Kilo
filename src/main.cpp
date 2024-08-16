@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "Editor.hpp"
+#include "Editor/Editor.hpp"
 #include "Utilities/Utilities.hpp"
 #include <cstdlib>
 #include <iostream>
