@@ -88,7 +88,7 @@ void processKeypress()
   using namespace Kilo::Utilities;
   using enum Kilo::Utilities::EditorKey;
 
-  int c = Terminal::readKey();
+  int c = terminal::readKey();
 
   switch (c) {
     case ctrlKey('q'):

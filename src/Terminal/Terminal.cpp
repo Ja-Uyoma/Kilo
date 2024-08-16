@@ -32,7 +32,7 @@
 #include <system_error>
 #include <unistd.h>
 
-namespace Kilo::Terminal {
+namespace Kilo::terminal {
 
 int handleEscapeSequences() noexcept
 {
@@ -204,4 +204,4 @@ void getCursorPosition(int* const rows, int* const cols)
       errno, std::system_category(), "Failed to write buffer data into rows and cols variables");
   }
 }
-}   // namespace Kilo::Terminal
+}   // namespace Kilo::terminal
