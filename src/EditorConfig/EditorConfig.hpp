@@ -17,7 +17,7 @@ public:
   std::vector<std::string> render;
   int numrows {};
   cursor::Cursor cursor {};
-  Offset off {};
+  offset::Offset off {};
   Window window {};
   int rx {};
 
