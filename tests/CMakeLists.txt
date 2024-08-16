@@ -16,7 +16,7 @@ target_include_directories(tests
 )
 
 target_sources(tests
-    PUBLIC
+    PRIVATE
         "${PROJECT_SOURCE_DIR}/src/Cursor/Cursor.hpp"
         "${PROJECT_SOURCE_DIR}/src/Cursor/Cursor.cpp"
         Cursor.test.cpp
