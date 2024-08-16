@@ -13,6 +13,7 @@ target_link_libraries(tests
 target_include_directories(tests
     PRIVATE
         "${PROJECT_SOURCE_DIR}/includes"
+        "${PROJECT_SOURCE_DIR}/src"
 )
 
 target_sources(tests
@@ -21,7 +22,7 @@ target_sources(tests
         "${PROJECT_SOURCE_DIR}/includes/Cursor.hpp"
         "${PROJECT_SOURCE_DIR}/includes/Offset.hpp"
         "${PROJECT_SOURCE_DIR}/includes/Window.hpp"
-        "${PROJECT_SOURCE_DIR}/includes/TerminalState.hpp"
+        "${PROJECT_SOURCE_DIR}/src/TerminalState/TerminalState.hpp"
         "${PROJECT_SOURCE_DIR}/includes/Editor.hpp"
         "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.hpp"
     PRIVATE
@@ -29,7 +30,7 @@ target_sources(tests
         Cursor.test.cpp
         Offset.test.cpp
         Window.test.cpp
-        "${PROJECT_SOURCE_DIR}/src/TerminalState.cpp"
+        "${PROJECT_SOURCE_DIR}/src/TerminalState/TerminalState.cpp"
         TerminalState.test.cpp
         Editor.test.cpp
 )

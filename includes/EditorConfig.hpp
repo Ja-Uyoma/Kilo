@@ -3,10 +3,10 @@
 
 #include "Cursor.hpp"
 #include "Offset.hpp"
-#include "TerminalState.hpp"
 #include "Window.hpp"
 #include <string>
 #include <vector>
+#include "TerminalState/TerminalState.hpp"
 
 namespace Kilo::Editor {
 class EditorConfig
