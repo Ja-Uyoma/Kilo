@@ -72,7 +72,7 @@ bool open(std::filesystem::path const& path);
  * @param rows The rows of text of the document in memory
  * @return std::optional<std::string> The current row at which the cursor is located
  */
-constexpr std::optional<std::string> getCurrentRow(Cursor const& cursor,
+constexpr std::optional<std::string> getCurrentRow(cursor::Cursor const& cursor,
                                                    std::vector<std::string> const& rows) noexcept
 {
   assert(cursor.x >= 0 and cursor.y >= 0);
@@ -92,7 +92,7 @@ constexpr std::optional<std::string> getCurrentRow(Cursor const& cursor,
  * @param keyPressed The key press determining how the cursor is to be moved
  * @param document The document within which the cursor is located
  */
-constexpr void moveCursor(Cursor& cursor,
+constexpr void moveCursor(cursor::Cursor& cursor,
                           Utilities::EditorKey const& keyPressed,
                           std::vector<std::string> const& document) noexcept
 {

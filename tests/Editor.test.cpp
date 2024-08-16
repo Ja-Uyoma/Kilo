@@ -35,7 +35,7 @@ namespace Kilo::Editor {
 
 TEST(getCurrentRow, ReturnsTheCurrentRowOnWhichTheCursorIsLocated)
 {
-  Cursor cursor {.x = 0, .y = 0};
+  cursor::Cursor cursor {.x = 0, .y = 0};
   std::vector<std::string> rows({"The quick brown fox", "jumped over the lazy dog"});
 
   auto currentRow = getCurrentRow(cursor, rows);
@@ -45,7 +45,7 @@ TEST(getCurrentRow, ReturnsTheCurrentRowOnWhichTheCursorIsLocated)
 
 TEST(getCurrentRow, ReturnsAnEmptyOptionalIfTheCursorIsOutOfBounds)
 {
-  Cursor cursor {.x = 0, .y = 4};
+  cursor::Cursor cursor {.x = 0, .y = 4};
   std::vector<std::string> rows({"The quick brown fox", "jumped over the lazy dog"});
 
   auto currentRow = getCurrentRow(cursor, rows);
@@ -55,7 +55,7 @@ TEST(getCurrentRow, ReturnsAnEmptyOptionalIfTheCursorIsOutOfBounds)
 
 TEST(getCurrentRow, ReturnsAnEmptyOptionalIfTheRowsObjectIsEmpty)
 {
-  Cursor cursor {.x = 0, .y = 4};
+  cursor::Cursor cursor {.x = 0, .y = 4};
   std::vector<std::string> rows {};
 
   auto currentRow = getCurrentRow(cursor, rows);
@@ -68,7 +68,7 @@ TEST(moveCursor, ArrowLeftMovesTheCursorLeftOneByPosition)
   using Utilities::EditorKey;
   using enum EditorKey;
 
-  Cursor cursor {.x = 1, .y = 0};
+  cursor::Cursor cursor {.x = 1, .y = 0};
   EditorKey key {ArrowLeft};
   std::vector<std::string> document({"The quick brown fox", "jumped over the lazy dog"});
 
@@ -82,7 +82,7 @@ TEST(moveCursor, ArrowLeftMovesTheCursorToTheEndOfTheLine)
   using Utilities::EditorKey;
   using enum EditorKey;
 
-  Cursor cursor {.x = 0, .y = 1};
+  cursor::Cursor cursor {.x = 0, .y = 1};
   EditorKey key = ArrowLeft;
   std::vector<std::string> document({"The quick brown fox", "jumped over the lazy dog"});
 
@@ -97,7 +97,7 @@ TEST(moveCursor, ArrowRightMovesTheCursorRightByOnePosition)
   using Utilities::EditorKey;
   using enum EditorKey;
 
-  Cursor cursor {.x = 2, .y = 1};
+  cursor::Cursor cursor {.x = 2, .y = 1};
   EditorKey key = ArrowRight;
   std::vector<std::string> document({"The quick brown fox", "jumped over the lazy dog"});
 
@@ -112,7 +112,7 @@ TEST(moveCursor, ArrowRightMovesTheCursorToTheNextLine)
   using Utilities::EditorKey;
   using enum EditorKey;
 
-  Cursor cursor;
+  cursor::Cursor cursor;
   cursor.x = std::strlen("jumped over the lazy dog");
   cursor.y = 1;
   EditorKey key = ArrowRight;
@@ -129,7 +129,7 @@ TEST(moveCursor, ArrowUpMovesTheCursorUpByOnePosition)
   using Utilities::EditorKey;
   using enum EditorKey;
 
-  Cursor cursor {.x = 2, .y = 4};
+  cursor::Cursor cursor {.x = 2, .y = 4};
   EditorKey key = ArrowUp;
   std::vector<std::string> document({"The quick brown fox", "jumped over the lazy dog"});
 
@@ -144,7 +144,7 @@ TEST(moveCursor, ArrowUpIsANoOpIfTheCursorIsAtTheTopOfTheDocument)
   using Utilities::EditorKey;
   using enum EditorKey;
 
-  Cursor cursor {.x = 2, .y = 0};
+  cursor::Cursor cursor {.x = 2, .y = 0};
   EditorKey key = ArrowUp;
   std::vector<std::string> document({"The quick brown fox", "jumped over the lazy dog"});
 
@@ -159,7 +159,7 @@ TEST(moveCursor, ArrowDownMovesTheCursorDownByOnePosition)
   using Utilities::EditorKey;
   using enum EditorKey;
 
-  Cursor cursor {.x = 2, .y = 1};
+  cursor::Cursor cursor {.x = 2, .y = 1};
   EditorKey key = ArrowDown;
   std::vector<std::string> document({"The quick brown fox", "jumped over the lazy dog"});
 
@@ -174,7 +174,7 @@ TEST(moveCursor, ArrowDownIsANoOpIfTheCursorIsAtTheBottomOfTheDocument)
   using Utilities::EditorKey;
   using enum EditorKey;
 
-  Cursor cursor {.x = 2, .y = 2};
+  cursor::Cursor cursor {.x = 2, .y = 2};
   EditorKey key = ArrowDown;
   std::vector<std::string> document({"The quick brown fox", "jumped over the lazy dog"});
 

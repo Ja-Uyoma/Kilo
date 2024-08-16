@@ -16,7 +16,7 @@ public:
   std::vector<std::string> row;
   std::vector<std::string> render;
   int numrows {};
-  Cursor cursor {};
+  cursor::Cursor cursor {};
   Offset off {};
   Window window {};
   int rx {};
