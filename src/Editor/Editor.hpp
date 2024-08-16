@@ -35,6 +35,7 @@
 #include <vector>
 
 namespace Kilo::Editor {
+
 /// @brief Process the results from readKey
 /// @details This function is responsible for mapping keypresses to editor
 /// operations
@@ -146,5 +147,11 @@ void scroll() noexcept;
  */
 void updateRow(std::string_view row, std::string& render);
 }   // namespace Kilo::Editor
+
+namespace Kilo::Editor::detail {
+
+void displayWelcomeMessage(WriteBuffer& buffer);
+
+}
 
 #endif
