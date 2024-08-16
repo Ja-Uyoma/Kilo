@@ -148,7 +148,7 @@ void scroll() noexcept;
 void updateRow(std::string_view row, std::string& render);
 }   // namespace Kilo::editor
 
-namespace Kilo::Editor::detail {
+namespace Kilo::editor::detail {
 
 void displayWelcomeMessage(WriteBuffer& buffer);
 
