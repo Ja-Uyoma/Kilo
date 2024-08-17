@@ -206,6 +206,16 @@ TEST(resizeWelcomeMessage, ResizesTheWelcomeMessageToFitInTheWindow)
   ASSERT_THAT(msg, ::testing::Eq("One m"));
 }
 
+TEST(getPadding, GetsThePaddingBetweenTheEdgesOfTheWindowAndTheWelcomeMessage)
+{
+  int const windowWidth = 100;
+  std::size_t const msgLength = 25;
+
+  auto const padding = getPadding(windowWidth, msgLength);
+
+  ASSERT_THAT(padding, ::testing::Eq(37));
+}
+
 }   // namespace detail
 
 }   // namespace Kilo::editor
