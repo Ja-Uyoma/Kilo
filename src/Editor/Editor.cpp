@@ -261,7 +261,7 @@ void resizeWelcomeMessage(std::string& message, int windowWidth) noexcept
  * @param padding The number of characters to be written to the screen buffer
  * @param buf The screen buffer being written to
  */
-void writePaddingToScreenBuffer(std::size_t padding, ScreenBuffer& buf)
+void writePaddingToScreenBuffer(long padding, ScreenBuffer& buf)
 {
   if (padding > 0) {
     buf.write("~");

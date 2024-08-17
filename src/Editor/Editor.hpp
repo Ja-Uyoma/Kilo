@@ -175,7 +175,7 @@ void resizeWelcomeMessage(std::string& message, int windowWidth) noexcept;
  * @param msgLength The length of the welcome message
  * @return constexpr std::size_t The padding between the left edge of the screen and the welcome message
  */
-constexpr std::size_t getPadding(int windowWidth, std::size_t msgLength) noexcept
+constexpr long getPadding(int windowWidth, std::size_t msgLength) noexcept
 {
   assert(windowWidth >= 0 and "Window width cannot be negative");
 
@@ -188,7 +188,7 @@ constexpr std::size_t getPadding(int windowWidth, std::size_t msgLength) noexcep
  * @param padding The number of characters to be written to the screen buffer
  * @param buf The screen buffer being written to
  */
-void writePaddingToScreenBuffer(std::size_t padding, ScreenBuffer& buf);
+void writePaddingToScreenBuffer(long padding, ScreenBuffer& buf);
 
 /**
  * @brief Write the welcome message to the screen buffer
