@@ -137,7 +137,7 @@ void moveCursor(utilities::EditorKey key) noexcept
 {
   moveCursor(editorConfig.cursor, key, editorConfig.row);
 
-  auto currRow = getCurrentRow(editorConfig.cursor, editorConfig.row);
+  auto currRow = detail::getCurrentRow(editorConfig.cursor, editorConfig.row);
 
   int rowlen = currRow ? currRow->length() : 0;
 

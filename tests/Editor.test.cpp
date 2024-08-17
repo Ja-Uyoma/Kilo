@@ -40,7 +40,7 @@ TEST(getCurrentRow, ReturnsTheCurrentRowOnWhichTheCursorIsLocated)
   cursor::Cursor cursor {.x = 0, .y = 0};
   std::vector<std::string> rows({"The quick brown fox", "jumped over the lazy dog"});
 
-  auto currentRow = getCurrentRow(cursor, rows);
+  auto currentRow = detail::getCurrentRow(cursor, rows);
 
   ASSERT_THAT(currentRow.has_value(), ::testing::Eq(true));
 }
@@ -50,7 +50,7 @@ TEST(getCurrentRow, ReturnsAnEmptyOptionalIfTheCursorIsOutOfBounds)
   cursor::Cursor cursor {.x = 0, .y = 4};
   std::vector<std::string> rows({"The quick brown fox", "jumped over the lazy dog"});
 
-  auto currentRow = getCurrentRow(cursor, rows);
+  auto currentRow = detail::getCurrentRow(cursor, rows);
 
   ASSERT_THAT(currentRow.has_value(), ::testing::Eq(false));
 }
@@ -60,7 +60,7 @@ TEST(getCurrentRow, ReturnsAnEmptyOptionalIfTheRowsObjectIsEmpty)
   cursor::Cursor cursor {.x = 0, .y = 4};
   std::vector<std::string> rows {};
 
-  auto currentRow = getCurrentRow(cursor, rows);
+  auto currentRow = detail::getCurrentRow(cursor, rows);
 
   ASSERT_THAT(currentRow.has_value(), ::testing::Eq(false));
 }

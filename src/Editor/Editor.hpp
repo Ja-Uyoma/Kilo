@@ -35,6 +35,13 @@
 #include <utility>
 #include <vector>
 
+namespace Kilo::editor::detail {
+
+constexpr std::optional<std::string> getCurrentRow(cursor::Cursor const& cursor,
+                                                   std::vector<std::string> const& rows) noexcept;
+
+}
+
 namespace Kilo::editor {
 
 /// @brief Process the results from readKey
@@ -67,26 +74,6 @@ void moveCursor(utilities::EditorKey key) noexcept;
 bool open(std::filesystem::path const& path);
 
 /**
- * @brief Get the current row at which the cursor is located
- *
- * @param cursor The cursor object
- * @param rows The rows of text of the document in memory
- * @return std::optional<std::string> The current row at which the cursor is located
- */
-constexpr std::optional<std::string> getCurrentRow(cursor::Cursor const& cursor,
-                                                   std::vector<std::string> const& rows) noexcept
-{
-  assert(cursor.x >= 0 and cursor.y >= 0);
-
-  if (std::cmp_greater_equal(cursor.y, rows.size())) {
-    return std::nullopt;
-  }
-  else {
-    return std::make_optional(rows[cursor.y]);
-  }
-}
-
-/**
  * @brief Move cursor in document according to the key pressed
  *
  * @param cursor The cursor to be moved
@@ -110,7 +97,7 @@ constexpr void moveCursor(cursor::Cursor& cursor,
       }
       break;
     case ArrowRight: {
-      auto currentRow = editor::getCurrentRow(cursor, document);
+      auto currentRow = detail::getCurrentRow(cursor, document);
 
       if (currentRow && std::cmp_less(cursor.x, currentRow->size())) {
         cursor.x++;
@@ -206,6 +193,26 @@ void writePaddingToScreenBuffer(long padding, ScreenBuffer& buf);
  * @param buffer The buffer to which the message is written before being displayed
  */
 void printWelcomeMessage(int windowWidth, ScreenBuffer& buffer);
+
+/**
+ * @brief Get the current row at which the cursor is located
+ *
+ * @param cursor The cursor object
+ * @param rows The rows of text of the document in memory
+ * @return std::optional<std::string> The current row at which the cursor is located
+ */
+constexpr std::optional<std::string> getCurrentRow(cursor::Cursor const& cursor,
+                                                   std::vector<std::string> const& rows) noexcept
+{
+  assert(cursor.x >= 0 and cursor.y >= 0);
+
+  if (std::cmp_greater_equal(cursor.y, rows.size())) {
+    return std::nullopt;
+  }
+  else {
+    return std::make_optional(rows[cursor.y]);
+  }
+}
 
 }   // namespace Kilo::editor::detail
 
