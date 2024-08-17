@@ -227,6 +227,20 @@ TEST(writePaddingToScreenBuffer, WritesPadCharactersToTheScreenBuffer)
   ASSERT_THAT(buf.size(), ::testing::Eq(padding));
 }
 
+TEST(printWelcomeMessage, PrintsTheCorrectMessageCentred)
+{
+  int const width {50};
+  ScreenBuffer buf {};
+
+  printWelcomeMessage(width, buf);
+
+  std::string const msg {"Kilo editor -- version 0.0.1"};
+  auto padding = getPadding(width, msg.length());
+  std::string output = "~" + std::string(padding - 1, ' ') + msg;
+
+  ASSERT_THAT(buf.c_str(), ::testing::Eq(output));
+}
+
 }   // namespace detail
 
 }   // namespace Kilo::editor
