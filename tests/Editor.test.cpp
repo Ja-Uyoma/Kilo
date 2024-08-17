@@ -24,6 +24,7 @@
 #include "Editor/Editor.hpp"
 
 #include "Cursor/Cursor.hpp"
+#include "ScreenBuffer/ScreenBuffer.hpp"
 #include "Utilities/Utilities.hpp"
 #include <cstring>
 #include <gmock/gmock.h>
@@ -214,6 +215,16 @@ TEST(getPadding, GetsThePaddingBetweenTheEdgesOfTheWindowAndTheWelcomeMessage)
   auto const padding = getPadding(windowWidth, msgLength);
 
   ASSERT_THAT(padding, ::testing::Eq(37));
+}
+
+TEST(writePaddingToScreenBuffer, WritesPadCharactersToTheScreenBuffer)
+{
+  std::size_t const padding = 10;
+  ScreenBuffer buf {};
+
+  writePaddingToScreenBuffer(padding, buf);
+
+  ASSERT_THAT(buf.size(), ::testing::Eq(padding));
 }
 
 }   // namespace detail
