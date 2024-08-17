@@ -24,6 +24,7 @@
 #include "Editor/Editor.hpp"
 
 #include "Cursor/Cursor.hpp"
+#include "Offset/Offset.hpp"
 #include "ScreenBuffer/ScreenBuffer.hpp"
 #include "Utilities/Utilities.hpp"
 #include <cstring>
@@ -186,6 +187,16 @@ TEST(moveCursor, ArrowDownIsANoOpIfTheCursorIsAtTheBottomOfTheDocument)
 }
 
 namespace detail {
+
+TEST(setExactPositionToMoveCursorTo, ReturnsAStringContainingThePositionToMoveTheCursorTo)
+{
+  cursor::Cursor c {15, 15};
+  offset::Offset off {10, 10};
+
+  auto pos = setExactPositionToMoveCursorTo(c, off);
+
+  ASSERT_THAT(pos, ::testing::Eq("\x1b[6;6H"));
+}
 
 TEST(createWelcomeMessage, CreatesAWelcomeMessageContainingTheVersionString)
 {
