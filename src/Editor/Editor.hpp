@@ -25,6 +25,7 @@
 #define EDITOR_HPP
 
 #include "Cursor/Cursor.hpp"
+#include "Offset/Offset.hpp"
 #include "ScreenBuffer/ScreenBuffer.hpp"
 #include "Utilities/Utilities.hpp"
 #include <cassert>
@@ -149,6 +150,15 @@ void updateRow(std::string_view row, std::string& render);
 }   // namespace Kilo::editor
 
 namespace Kilo::editor::detail {
+
+/**
+ * @brief Specify the exact position we want the cursor to move to
+ *
+ * @param cursor The current position of the cursor
+ * @param offset The offset from the terminal window to the currently-open document
+ * @return std::string
+ */
+std::string setExactPositionToMoveCursorTo(cursor::Cursor const& cursor, offset::Offset const& offset);
 
 /**
  * @brief Create a welcome message by interpolating two strings
