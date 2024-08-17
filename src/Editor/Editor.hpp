@@ -27,7 +27,6 @@
 #include "Cursor/Cursor.hpp"
 #include "ScreenBuffer/ScreenBuffer.hpp"
 #include "Utilities/Utilities.hpp"
-#include "Window/Window.hpp"
 #include <cassert>
 #include <filesystem>
 #include <optional>
