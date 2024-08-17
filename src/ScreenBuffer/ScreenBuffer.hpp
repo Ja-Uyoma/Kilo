@@ -2,6 +2,7 @@
 #define WRITE_BUFFER_HPP
 
 #include <string>
+#include <string_view>
 
 namespace Kilo::editor {
 // In order to avoid making multiple ::write() calls anytime we need to refresh
@@ -28,7 +29,7 @@ public:
    *
    * @param[in] str The string to be appended to the string buffer
    */
-  constexpr void write(std::string const& str)
+  constexpr void write(std::string_view str)
   {
     m_buffer.append(str);
   }
