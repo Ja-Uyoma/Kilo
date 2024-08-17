@@ -35,13 +35,6 @@
 #include <utility>
 #include <vector>
 
-namespace Kilo::editor::detail {
-
-constexpr std::optional<std::string> getCurrentRow(cursor::Cursor const& cursor,
-                                                   std::vector<std::string> const& rows) noexcept;
-
-}
-
 namespace Kilo::editor {
 
 /// @brief Process the results from readKey
