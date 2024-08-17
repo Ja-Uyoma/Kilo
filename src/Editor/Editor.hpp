@@ -27,6 +27,7 @@
 #include "Cursor/Cursor.hpp"
 #include "ScreenBuffer/ScreenBuffer.hpp"
 #include "Utilities/Utilities.hpp"
+#include "Window/Window.hpp"
 #include <cassert>
 #include <filesystem>
 #include <optional>
@@ -189,7 +190,7 @@ constexpr std::size_t getPadding(int windowWidth, std::size_t msgLength) noexcep
  */
 void writePaddingToScreenBuffer(std::size_t padding, ScreenBuffer& buf);
 
-void displayWelcomeMessage(ScreenBuffer& buffer);
+void displayWelcomeMessage(window::Window const& window, ScreenBuffer& buffer);
 
 }   // namespace Kilo::editor::detail
 

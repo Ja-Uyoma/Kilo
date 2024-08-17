@@ -27,6 +27,7 @@
 #include "ScreenBuffer/ScreenBuffer.hpp"
 #include "Terminal/Terminal.hpp"
 #include "Utilities/Utilities.hpp"
+#include "Window/Window.hpp"
 #include <algorithm>
 #include <cstdio>
 #include <cstdlib>
@@ -108,7 +109,7 @@ void drawRows(ScreenBuffer& buffer) noexcept
   for (int y = 0; y < editorConfig.window.rows; y++) {
     if (int filerow = y + editorConfig.off.row; filerow >= editorConfig.numrows) {
       if (editorConfig.numrows == 0 && y == editorConfig.window.rows / 3) {
-        detail::displayWelcomeMessage(buffer);
+        detail::displayWelcomeMessage(editorConfig.window, buffer);
       }
       else {
         buffer.write("~"s);
@@ -256,7 +257,7 @@ void resizeWelcomeMessage(std::string& message, int windowWidth) noexcept
 
 /**
  * @brief Write padding characters to the screen buffer
- * 
+ *
  * @param padding The number of characters to be written to the screen buffer
  * @param buf The screen buffer being written to
  */
@@ -273,41 +274,24 @@ void writePaddingToScreenBuffer(std::size_t padding, ScreenBuffer& buf)
   }
 }
 
-void displayWelcomeMessage(ScreenBuffer& buffer)
+void displayWelcomeMessage(window::Window const& window, ScreenBuffer& buffer)
 {
-  using namespace std::string_literals;
-  using namespace Kilo::utilities;
+  auto msg = createWelcomeMessage(utilities::KILO_VERSION);
+  resizeWelcomeMessage(msg, window.cols);
 
-  char welcome[80] {};
+  /*
+   * Center the string
+   * Divide the screen width by 2 and then subtract half the string's length
+   * from this value. This tells us how far from the left edge of the screen we
+   * should start printing the string. So, we fill that space with space
+   * characters, except for the first character, which should be a tilde
+   */
 
-  // Interpolate KILO_VERSION into the welcome message
-  int welcomeLen = std::snprintf(welcome, sizeof welcome, "Kilo editor -- version %s", KILO_VERSION);
+  auto padding = getPadding(window.cols, msg.length());
 
-  // Truncate the length of the string in case the terminal is too small to fit
-  // the welcome message
-  if (welcomeLen > editorConfig.window.cols) {
-    welcomeLen = editorConfig.window.cols;
-  }
+  writePaddingToScreenBuffer(padding, buffer);
 
-  // Center the string
-  // Divide the screen width by 2 and then subtract half the string's length
-  // from this value. This tells us how far from the left edge of the screen we
-  // should start printing the string. So, we fill that space with space
-  // characters, except for the first character, which should be a tilde
-
-  int padding = (editorConfig.window.cols - welcomeLen) / 2;
-
-  if (padding > 0) {
-    buffer.write("~"s);
-    padding--;
-  }
-
-  while (padding > 0) {
-    buffer.write(" "s);
-    padding--;
-  }
-
-  buffer.write(welcome, welcomeLen);
+  buffer.write(msg);
 }
 
 }   // namespace Kilo::editor::detail
