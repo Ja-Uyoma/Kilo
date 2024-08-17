@@ -241,6 +241,19 @@ TEST(printWelcomeMessage, PrintsTheCorrectMessageCentred)
   ASSERT_THAT(buf.c_str(), ::testing::Eq(output));
 }
 
+TEST(printWelcomeMessage, TruncatesTheMessageIfItsTooLong)
+{
+  int const width {25};
+  ScreenBuffer buf {};
+
+  printWelcomeMessage(width, buf);
+
+  std::string const msg {"Kilo editor -- version 0.0.1"};
+  std::string const truncatedMsg = msg.substr(0, width);
+
+  ASSERT_THAT(buf.c_str(), ::testing::Eq(truncatedMsg));
+}
+
 }   // namespace detail
 
 }   // namespace Kilo::editor
