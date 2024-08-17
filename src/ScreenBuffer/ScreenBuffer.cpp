@@ -22,3 +22,22 @@
  */
 
 #include "ScreenBuffer.hpp"
+
+#include <cerrno>
+#include <system_error>
+#include <unistd.h>
+
+namespace Kilo::editor {
+
+/**
+ * @brief Flush the buffer by writing its contents to stdout
+ * @throws std::system_error If the write to stdout failed
+ */
+void ScreenBuffer::flush() const
+{
+  if (errno = 0; ::write(STDOUT_FILENO, m_buffer.c_str(), size()) == -1) {
+    throw std::system_error(errno, std::generic_category(), "Could not flush buffer to stdout");
+  }
+}
+
+}   // namespace Kilo::editor

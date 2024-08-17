@@ -73,6 +73,12 @@ public:
     return m_buffer.c_str();
   }
 
+  /**
+   * @brief Flush the buffer by writing its contents to stdout
+   * @throws std::system_error If the write to stdout failed
+   */
+  void flush() const;
+
 private:
   std::string m_buffer;
 };
