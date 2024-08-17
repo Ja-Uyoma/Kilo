@@ -181,6 +181,14 @@ constexpr std::size_t getPadding(int windowWidth, std::size_t msgLength) noexcep
   return (windowWidth - msgLength) / 2;
 }
 
+/**
+ * @brief Write padding characters to the screen buffer
+ *
+ * @param padding The number of characters to be written to the screen buffer
+ * @param buf The screen buffer being written to
+ */
+void writePaddingToScreenBuffer(std::size_t padding, ScreenBuffer& buf);
+
 void displayWelcomeMessage(ScreenBuffer& buffer);
 
 }   // namespace Kilo::editor::detail
