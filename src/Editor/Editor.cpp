@@ -93,9 +93,7 @@ void refreshScreen() noexcept
 
   auto const cursorPos = detail::setExactPositionToMoveCursorTo(editorConfig.cursor, editorConfig.off);
 
-  buffer.write(cursorPos).write(EscapeSequences::ShowTheCursor);
-
-  ::write(STDOUT_FILENO, buffer.c_str(), buffer.size());
+  buffer.write(cursorPos).write(EscapeSequences::ShowTheCursor).flush();
 }
 
 void drawRows(ScreenBuffer& buffer) noexcept
