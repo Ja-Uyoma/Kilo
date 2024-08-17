@@ -83,8 +83,11 @@ void refreshScreen() noexcept
 
   ScreenBuffer buffer;
 
-  buffer.write(EscapeSequences::HideCursorWhenRepainting);   // hide the cursor when repainting
-  buffer.write(EscapeSequences::MoveCursorToHomePosition);   // reposition the cursor
+  /*
+   * Hide the cursor when painting and then move it to the home position
+   */
+
+  buffer.write(EscapeSequences::HideCursorWhenRepainting).write(EscapeSequences::MoveCursorToHomePosition);
 
   drawRows(buffer);
 
@@ -99,8 +102,7 @@ void refreshScreen() noexcept
                 (editorConfig.cursor.y - editorConfig.off.row) + 1,
                 (editorConfig.cursor.x - editorConfig.off.col) + 1);
 
-  buffer.write(buf, std::strlen(buf));
-  buffer.write(EscapeSequences::ShowTheCursor);   // show the cursor
+  buffer.write(buf, std::strlen(buf)).write(EscapeSequences::ShowTheCursor);   // show the cursor
 
   ::write(STDOUT_FILENO, buffer.c_str(), buffer.size());
 }
