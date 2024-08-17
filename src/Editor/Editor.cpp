@@ -23,6 +23,7 @@
 
 #include "Editor.hpp"
 
+#include "Constants.hpp"
 #include "Cursor/Cursor.hpp"
 #include "EditorConfig/EditorConfig.hpp"
 #include "Offset/Offset.hpp"
@@ -82,8 +83,8 @@ void refreshScreen() noexcept
 
   ScreenBuffer buffer;
 
-  buffer.write("\x1b[?25l"s);   // hide the cursor when repainting
-  buffer.write("\x1b[H"s);      // reposition the cursor
+  buffer.write(EscapeSequences::HideCursorWhenRepainting);   // hide the cursor when repainting
+  buffer.write(EscapeSequences::MoveCursorToHomePosition);   // reposition the cursor
 
   drawRows(buffer);
 
@@ -99,7 +100,7 @@ void refreshScreen() noexcept
                 (editorConfig.cursor.x - editorConfig.off.col) + 1);
 
   buffer.write(buf, std::strlen(buf));
-  buffer.write("\x1b[?25h"s);   // show the cursor
+  buffer.write(EscapeSequences::ShowTheCursor);   // show the cursor
 
   ::write(STDOUT_FILENO, buffer.c_str(), buffer.size());
 }
@@ -131,7 +132,7 @@ void drawRows(ScreenBuffer& buffer) noexcept
       buffer.write(&editorConfig.render[filerow][editorConfig.off.col], len);
     }
 
-    buffer.write("\x1b[K"s);
+    buffer.write(EscapeSequences::ErasePartOfLineToTheRightOfCursor);
 
     if (y < editorConfig.window.rows - 1) {
       buffer.write("\r\n"s);
