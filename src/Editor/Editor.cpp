@@ -274,6 +274,12 @@ void writePaddingToScreenBuffer(std::size_t padding, ScreenBuffer& buf)
   }
 }
 
+/**
+ * @brief Write the welcome message to the screen buffer
+ *
+ * @param windowWidth The width of the window in which the message is to be displayed
+ * @param buffer The buffer to which the message is written before being displayed
+ */
 void printWelcomeMessage(int windowWidth, ScreenBuffer& buffer)
 {
   auto msg = createWelcomeMessage(utilities::KILO_VERSION);
