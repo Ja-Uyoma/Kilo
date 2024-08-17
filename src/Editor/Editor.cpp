@@ -91,18 +91,9 @@ void refreshScreen() noexcept
 
   drawRows(buffer);
 
-  char buf[32];
+  auto const cursorPos = detail::setExactPositionToMoveCursorTo(editorConfig.cursor, editorConfig.off);
 
-  // Specify the exact position we want the cursor to move to
-  // We add 1 to cursor.x and cursor.y to convert from 0-indexed values to the
-  // 1-indexed values that the terminal uses
-  std::snprintf(buf,
-                sizeof buf,
-                "\x1b[%d;%dH",
-                (editorConfig.cursor.y - editorConfig.off.row) + 1,
-                (editorConfig.cursor.x - editorConfig.off.col) + 1);
-
-  buffer.write(buf, std::strlen(buf)).write(EscapeSequences::ShowTheCursor);   // show the cursor
+  buffer.write(cursorPos).write(EscapeSequences::ShowTheCursor);   // show the cursor
 
   ::write(STDOUT_FILENO, buffer.c_str(), buffer.size());
 }
