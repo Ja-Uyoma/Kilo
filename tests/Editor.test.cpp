@@ -74,7 +74,7 @@ TEST(moveCursor, ArrowLeftMovesTheCursorLeftOneByPosition)
   EditorKey key {ArrowLeft};
   std::vector<std::string> document({"The quick brown fox", "jumped over the lazy dog"});
 
-  moveCursor(cursor, key, document);
+  detail::moveCursor(cursor, key, document);
 
   ASSERT_THAT(cursor.x, ::testing::Eq(0));
 }
@@ -88,7 +88,7 @@ TEST(moveCursor, ArrowLeftMovesTheCursorToTheEndOfTheLine)
   EditorKey key = ArrowLeft;
   std::vector<std::string> document({"The quick brown fox", "jumped over the lazy dog"});
 
-  moveCursor(cursor, key, document);
+  detail::moveCursor(cursor, key, document);
 
   ASSERT_THAT(cursor.x, ::testing::Eq(std::strlen("The quick brown fox")));
   ASSERT_THAT(cursor.y, ::testing::Eq(0));
@@ -103,7 +103,7 @@ TEST(moveCursor, ArrowRightMovesTheCursorRightByOnePosition)
   EditorKey key = ArrowRight;
   std::vector<std::string> document({"The quick brown fox", "jumped over the lazy dog"});
 
-  moveCursor(cursor, key, document);
+  detail::moveCursor(cursor, key, document);
 
   ASSERT_THAT(cursor.x, ::testing::Eq(3));
   ASSERT_THAT(cursor.y, ::testing::Eq(1));
@@ -120,7 +120,7 @@ TEST(moveCursor, ArrowRightMovesTheCursorToTheNextLine)
   EditorKey key = ArrowRight;
   std::vector<std::string> document({"The quick brown fox", "jumped over the lazy dog"});
 
-  moveCursor(cursor, key, document);
+  detail::moveCursor(cursor, key, document);
 
   ASSERT_THAT(cursor.x, ::testing::Eq(0));
   ASSERT_THAT(cursor.y, ::testing::Eq(2));
@@ -135,7 +135,7 @@ TEST(moveCursor, ArrowUpMovesTheCursorUpByOnePosition)
   EditorKey key = ArrowUp;
   std::vector<std::string> document({"The quick brown fox", "jumped over the lazy dog"});
 
-  moveCursor(cursor, key, document);
+  detail::moveCursor(cursor, key, document);
 
   ASSERT_THAT(cursor.x, ::testing::Eq(2));
   ASSERT_THAT(cursor.y, ::testing::Eq(3));
@@ -150,7 +150,7 @@ TEST(moveCursor, ArrowUpIsANoOpIfTheCursorIsAtTheTopOfTheDocument)
   EditorKey key = ArrowUp;
   std::vector<std::string> document({"The quick brown fox", "jumped over the lazy dog"});
 
-  moveCursor(cursor, key, document);
+  detail::moveCursor(cursor, key, document);
 
   ASSERT_THAT(cursor.x, ::testing::Eq(2));
   ASSERT_THAT(cursor.y, ::testing::Eq(0));
@@ -165,7 +165,7 @@ TEST(moveCursor, ArrowDownMovesTheCursorDownByOnePosition)
   EditorKey key = ArrowDown;
   std::vector<std::string> document({"The quick brown fox", "jumped over the lazy dog"});
 
-  moveCursor(cursor, key, document);
+  detail::moveCursor(cursor, key, document);
 
   ASSERT_THAT(cursor.x, ::testing::Eq(2));
   ASSERT_THAT(cursor.y, ::testing::Eq(2));
@@ -180,7 +180,7 @@ TEST(moveCursor, ArrowDownIsANoOpIfTheCursorIsAtTheBottomOfTheDocument)
   EditorKey key = ArrowDown;
   std::vector<std::string> document({"The quick brown fox", "jumped over the lazy dog"});
 
-  moveCursor(cursor, key, document);
+  detail::moveCursor(cursor, key, document);
 
   ASSERT_THAT(cursor.x, ::testing::Eq(2));
   ASSERT_THAT(cursor.y, ::testing::Eq(2));

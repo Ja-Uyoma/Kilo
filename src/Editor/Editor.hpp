@@ -74,55 +74,6 @@ void moveCursor(utilities::EditorKey key) noexcept;
 bool open(std::filesystem::path const& path);
 
 /**
- * @brief Move cursor in document according to the key pressed
- *
- * @param cursor The cursor to be moved
- * @param keyPressed The key press determining how the cursor is to be moved
- * @param document The document within which the cursor is located
- */
-constexpr void moveCursor(cursor::Cursor& cursor,
-                          utilities::EditorKey const& keyPressed,
-                          std::vector<std::string> const& document) noexcept
-{
-  switch (keyPressed) {
-    using enum utilities::EditorKey;
-
-    case ArrowLeft:
-      if (cursor.x != 0) {
-        cursor.x--;
-      }
-      else if (cursor.y > 0) {
-        cursor.y--;
-        cursor.x = (int)document[cursor.y].size();
-      }
-      break;
-    case ArrowRight: {
-      auto currentRow = detail::getCurrentRow(cursor, document);
-
-      if (currentRow && std::cmp_less(cursor.x, currentRow->size())) {
-        cursor.x++;
-      }
-      else if (currentRow && std::cmp_equal(cursor.x, currentRow->size())) {
-        cursor.y++;
-        cursor.x = 0;
-      }
-      break;
-    }
-    case ArrowUp:
-      if (cursor.y != 0) {
-        cursor.y--;
-      }
-      break;
-    case ArrowDown:
-      if (std::cmp_less(cursor.y, document.size())) {
-        cursor.y++;
-      }
-      break;
-    default: return;
-  }
-}
-
-/**
  * @brief Position the cursor within the visible window
  *
  */
@@ -211,6 +162,55 @@ constexpr std::optional<std::string> getCurrentRow(cursor::Cursor const& cursor,
   }
   else {
     return std::make_optional(rows[cursor.y]);
+  }
+}
+
+/**
+ * @brief Move cursor in document according to the key pressed
+ *
+ * @param cursor The cursor to be moved
+ * @param keyPressed The key press determining how the cursor is to be moved
+ * @param document The document within which the cursor is located
+ */
+constexpr void moveCursor(cursor::Cursor& cursor,
+                          utilities::EditorKey const& keyPressed,
+                          std::vector<std::string> const& document) noexcept
+{
+  switch (keyPressed) {
+    using enum utilities::EditorKey;
+
+    case ArrowLeft:
+      if (cursor.x != 0) {
+        cursor.x--;
+      }
+      else if (cursor.y > 0) {
+        cursor.y--;
+        cursor.x = (int)document[cursor.y].size();
+      }
+      break;
+    case ArrowRight: {
+      auto currentRow = detail::getCurrentRow(cursor, document);
+
+      if (currentRow && std::cmp_less(cursor.x, currentRow->size())) {
+        cursor.x++;
+      }
+      else if (currentRow && std::cmp_equal(cursor.x, currentRow->size())) {
+        cursor.y++;
+        cursor.x = 0;
+      }
+      break;
+    }
+    case ArrowUp:
+      if (cursor.y != 0) {
+        cursor.y--;
+      }
+      break;
+    case ArrowDown:
+      if (std::cmp_less(cursor.y, document.size())) {
+        cursor.y++;
+      }
+      break;
+    default: return;
   }
 }
 

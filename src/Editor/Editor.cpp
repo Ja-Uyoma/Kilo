@@ -135,7 +135,7 @@ void drawRows(ScreenBuffer& buffer) noexcept
 
 void moveCursor(utilities::EditorKey key) noexcept
 {
-  moveCursor(editorConfig.cursor, key, editorConfig.row);
+  detail::moveCursor(editorConfig.cursor, key, editorConfig.row);
 
   auto currRow = detail::getCurrentRow(editorConfig.cursor, editorConfig.row);
 
