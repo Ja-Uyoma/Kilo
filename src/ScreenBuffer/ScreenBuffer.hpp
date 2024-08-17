@@ -19,9 +19,10 @@ public:
   /// @brief Append the given C-string to the buffer
   /// @param[in] str The string to be appended to the buffer
   /// @param[in] length The length of the string
-  constexpr void write(char const* str, std::size_t length)
+  constexpr ScreenBuffer& write(char const* str, std::size_t length)
   {
     m_buffer.append(str, length);
+    return *this;
   }
 
   /**
@@ -29,9 +30,10 @@ public:
    *
    * @param[in] str The string to be appended to the string buffer
    */
-  constexpr void write(std::string_view str)
+  constexpr ScreenBuffer& write(std::string_view str)
   {
     m_buffer.append(str);
+    return *this;
   }
 
   /// @brief Get the size of the buffer
