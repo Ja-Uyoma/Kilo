@@ -35,6 +35,8 @@
 
 namespace Kilo::editor {
 
+namespace detail {
+
 TEST(getCurrentRow, ReturnsTheCurrentRowOnWhichTheCursorIsLocated)
 {
   cursor::Cursor cursor {.x = 0, .y = 0};
@@ -185,8 +187,6 @@ TEST(moveCursorHelper, ArrowDownIsANoOpIfTheCursorIsAtTheBottomOfTheDocument)
   ASSERT_THAT(cursor.x, ::testing::Eq(2));
   ASSERT_THAT(cursor.y, ::testing::Eq(2));
 }
-
-namespace detail {
 
 TEST(setExactPositionToMoveCursorTo, ReturnsAStringContainingThePositionToMoveTheCursorTo)
 {
