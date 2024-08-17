@@ -167,6 +167,20 @@ std::string createWelcomeMessage(std::string_view versionString) noexcept;
  */
 void resizeWelcomeMessage(std::string& message, int windowWidth) noexcept;
 
+/**
+ * @brief Determine how far from the left edge of the screen we should start printing the welcome message
+ *
+ * @param windowWidth The width of the window
+ * @param msgLength The length of the welcome message
+ * @return constexpr std::size_t The padding between the left edge of the screen and the welcome message
+ */
+constexpr std::size_t getPadding(int windowWidth, std::size_t msgLength) noexcept
+{
+  assert(windowWidth >= 0 and "Window width cannot be negative");
+
+  return (windowWidth - msgLength) / 2;
+}
+
 void displayWelcomeMessage(ScreenBuffer& buffer);
 
 }   // namespace Kilo::editor::detail
