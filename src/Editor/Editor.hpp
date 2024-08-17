@@ -165,9 +165,9 @@ constexpr std::optional<std::string> getCurrentRow(cursor::Cursor const& cursor,
  * @param keyPressed The key press determining how the cursor is to be moved
  * @param document The document within which the cursor is located
  */
-constexpr void moveCursor(cursor::Cursor& cursor,
-                          utilities::EditorKey const& keyPressed,
-                          std::vector<std::string> const& document) noexcept
+constexpr void moveCursorHelper(cursor::Cursor& cursor,
+                                utilities::EditorKey const& keyPressed,
+                                std::vector<std::string> const& document) noexcept
 {
   switch (keyPressed) {
     using enum utilities::EditorKey;

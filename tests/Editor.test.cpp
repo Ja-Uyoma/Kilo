@@ -65,7 +65,7 @@ TEST(getCurrentRow, ReturnsAnEmptyOptionalIfTheRowsObjectIsEmpty)
   ASSERT_THAT(currentRow.has_value(), ::testing::Eq(false));
 }
 
-TEST(moveCursor, ArrowLeftMovesTheCursorLeftOneByPosition)
+TEST(moveCursorHelper, ArrowLeftMovesTheCursorLeftOneByPosition)
 {
   using utilities::EditorKey;
   using enum EditorKey;
@@ -74,12 +74,12 @@ TEST(moveCursor, ArrowLeftMovesTheCursorLeftOneByPosition)
   EditorKey key {ArrowLeft};
   std::vector<std::string> document({"The quick brown fox", "jumped over the lazy dog"});
 
-  detail::moveCursor(cursor, key, document);
+  detail::moveCursorHelper(cursor, key, document);
 
   ASSERT_THAT(cursor.x, ::testing::Eq(0));
 }
 
-TEST(moveCursor, ArrowLeftMovesTheCursorToTheEndOfTheLine)
+TEST(moveCursorHelper, ArrowLeftMovesTheCursorToTheEndOfTheLine)
 {
   using utilities::EditorKey;
   using enum EditorKey;
@@ -88,13 +88,13 @@ TEST(moveCursor, ArrowLeftMovesTheCursorToTheEndOfTheLine)
   EditorKey key = ArrowLeft;
   std::vector<std::string> document({"The quick brown fox", "jumped over the lazy dog"});
 
-  detail::moveCursor(cursor, key, document);
+  detail::moveCursorHelper(cursor, key, document);
 
   ASSERT_THAT(cursor.x, ::testing::Eq(std::strlen("The quick brown fox")));
   ASSERT_THAT(cursor.y, ::testing::Eq(0));
 }
 
-TEST(moveCursor, ArrowRightMovesTheCursorRightByOnePosition)
+TEST(moveCursorHelper, ArrowRightMovesTheCursorRightByOnePosition)
 {
   using utilities::EditorKey;
   using enum EditorKey;
@@ -103,13 +103,13 @@ TEST(moveCursor, ArrowRightMovesTheCursorRightByOnePosition)
   EditorKey key = ArrowRight;
   std::vector<std::string> document({"The quick brown fox", "jumped over the lazy dog"});
 
-  detail::moveCursor(cursor, key, document);
+  detail::moveCursorHelper(cursor, key, document);
 
   ASSERT_THAT(cursor.x, ::testing::Eq(3));
   ASSERT_THAT(cursor.y, ::testing::Eq(1));
 }
 
-TEST(moveCursor, ArrowRightMovesTheCursorToTheNextLine)
+TEST(moveCursorHelper, ArrowRightMovesTheCursorToTheNextLine)
 {
   using utilities::EditorKey;
   using enum EditorKey;
@@ -120,13 +120,13 @@ TEST(moveCursor, ArrowRightMovesTheCursorToTheNextLine)
   EditorKey key = ArrowRight;
   std::vector<std::string> document({"The quick brown fox", "jumped over the lazy dog"});
 
-  detail::moveCursor(cursor, key, document);
+  detail::moveCursorHelper(cursor, key, document);
 
   ASSERT_THAT(cursor.x, ::testing::Eq(0));
   ASSERT_THAT(cursor.y, ::testing::Eq(2));
 }
 
-TEST(moveCursor, ArrowUpMovesTheCursorUpByOnePosition)
+TEST(moveCursorHelper, ArrowUpMovesTheCursorUpByOnePosition)
 {
   using utilities::EditorKey;
   using enum EditorKey;
@@ -135,13 +135,13 @@ TEST(moveCursor, ArrowUpMovesTheCursorUpByOnePosition)
   EditorKey key = ArrowUp;
   std::vector<std::string> document({"The quick brown fox", "jumped over the lazy dog"});
 
-  detail::moveCursor(cursor, key, document);
+  detail::moveCursorHelper(cursor, key, document);
 
   ASSERT_THAT(cursor.x, ::testing::Eq(2));
   ASSERT_THAT(cursor.y, ::testing::Eq(3));
 }
 
-TEST(moveCursor, ArrowUpIsANoOpIfTheCursorIsAtTheTopOfTheDocument)
+TEST(moveCursorHelper, ArrowUpIsANoOpIfTheCursorIsAtTheTopOfTheDocument)
 {
   using utilities::EditorKey;
   using enum EditorKey;
@@ -150,13 +150,13 @@ TEST(moveCursor, ArrowUpIsANoOpIfTheCursorIsAtTheTopOfTheDocument)
   EditorKey key = ArrowUp;
   std::vector<std::string> document({"The quick brown fox", "jumped over the lazy dog"});
 
-  detail::moveCursor(cursor, key, document);
+  detail::moveCursorHelper(cursor, key, document);
 
   ASSERT_THAT(cursor.x, ::testing::Eq(2));
   ASSERT_THAT(cursor.y, ::testing::Eq(0));
 }
 
-TEST(moveCursor, ArrowDownMovesTheCursorDownByOnePosition)
+TEST(moveCursorHelper, ArrowDownMovesTheCursorDownByOnePosition)
 {
   using utilities::EditorKey;
   using enum EditorKey;
@@ -165,13 +165,13 @@ TEST(moveCursor, ArrowDownMovesTheCursorDownByOnePosition)
   EditorKey key = ArrowDown;
   std::vector<std::string> document({"The quick brown fox", "jumped over the lazy dog"});
 
-  detail::moveCursor(cursor, key, document);
+  detail::moveCursorHelper(cursor, key, document);
 
   ASSERT_THAT(cursor.x, ::testing::Eq(2));
   ASSERT_THAT(cursor.y, ::testing::Eq(2));
 }
 
-TEST(moveCursor, ArrowDownIsANoOpIfTheCursorIsAtTheBottomOfTheDocument)
+TEST(moveCursorHelper, ArrowDownIsANoOpIfTheCursorIsAtTheBottomOfTheDocument)
 {
   using utilities::EditorKey;
   using enum EditorKey;
@@ -180,7 +180,7 @@ TEST(moveCursor, ArrowDownIsANoOpIfTheCursorIsAtTheBottomOfTheDocument)
   EditorKey key = ArrowDown;
   std::vector<std::string> document({"The quick brown fox", "jumped over the lazy dog"});
 
-  detail::moveCursor(cursor, key, document);
+  detail::moveCursorHelper(cursor, key, document);
 
   ASSERT_THAT(cursor.x, ::testing::Eq(2));
   ASSERT_THAT(cursor.y, ::testing::Eq(2));
