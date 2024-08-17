@@ -190,7 +190,7 @@ constexpr std::size_t getPadding(int windowWidth, std::size_t msgLength) noexcep
  */
 void writePaddingToScreenBuffer(std::size_t padding, ScreenBuffer& buf);
 
-void displayWelcomeMessage(window::Window const& window, ScreenBuffer& buffer);
+void printWelcomeMessage(window::Window const& window, ScreenBuffer& buffer);
 
 }   // namespace Kilo::editor::detail
 

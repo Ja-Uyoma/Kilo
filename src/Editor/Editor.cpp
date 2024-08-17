@@ -109,7 +109,7 @@ void drawRows(ScreenBuffer& buffer) noexcept
   for (int y = 0; y < editorConfig.window.rows; y++) {
     if (int filerow = y + editorConfig.off.row; filerow >= editorConfig.numrows) {
       if (editorConfig.numrows == 0 && y == editorConfig.window.rows / 3) {
-        detail::displayWelcomeMessage(editorConfig.window, buffer);
+        detail::printWelcomeMessage(editorConfig.window, buffer);
       }
       else {
         buffer.write("~"s);
@@ -274,7 +274,7 @@ void writePaddingToScreenBuffer(std::size_t padding, ScreenBuffer& buf)
   }
 }
 
-void displayWelcomeMessage(window::Window const& window, ScreenBuffer& buffer)
+void printWelcomeMessage(window::Window const& window, ScreenBuffer& buffer)
 {
   auto msg = createWelcomeMessage(utilities::KILO_VERSION);
   resizeWelcomeMessage(msg, window.cols);
