@@ -26,7 +26,6 @@
 
 #include "Cursor.hpp"
 #include "Offset.hpp"
-#include "ScreenBuffer/ScreenBuffer.hpp"
 #include "Utilities/Utilities.hpp"
 #include "Window/Window.hpp"
 #include <cassert>
@@ -37,6 +36,11 @@
 #include <vector>
 
 namespace Kilo::editor {
+
+/*
+ * Forward declaration to the ScreenBuffer class
+ */
+class ScreenBuffer;
 
 /**
  * @brief Performs an action depending on the key pressed
