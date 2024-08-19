@@ -203,7 +203,8 @@ constexpr void moveCursorHelper(cursor::Cursor& cursor,
         cursor.y++;
       }
       break;
-    default: return;
+    default:
+      return;
   }
 }
 

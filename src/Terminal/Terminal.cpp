@@ -71,13 +71,20 @@ int handleEscapeSequences() noexcept
 
       if (seq[2] == '~') {
         switch (seq[1]) {
-          case '1': return static_cast<int>(Home);
-          case '3': return static_cast<int>(Delete);
-          case '4': return static_cast<int>(End);
-          case '5': return static_cast<int>(PageUp);
-          case '6': return static_cast<int>(PageDown);
-          case '7': return static_cast<int>(Home);
-          case '8': return static_cast<int>(End);
+          case '1':
+            return static_cast<int>(Home);
+          case '3':
+            return static_cast<int>(Delete);
+          case '4':
+            return static_cast<int>(End);
+          case '5':
+            return static_cast<int>(PageUp);
+          case '6':
+            return static_cast<int>(PageDown);
+          case '7':
+            return static_cast<int>(Home);
+          case '8':
+            return static_cast<int>(End);
         }
       }
     }
@@ -91,12 +98,18 @@ int handleEscapeSequences() noexcept
 
     else {
       switch (seq[1]) {
-        case 'A': return static_cast<int>(ArrowUp);
-        case 'B': return static_cast<int>(ArrowDown);
-        case 'C': return static_cast<int>(ArrowRight);
-        case 'D': return static_cast<int>(ArrowLeft);
-        case 'H': return static_cast<int>(Home);
-        case 'F': return static_cast<int>(End);
+        case 'A':
+          return static_cast<int>(ArrowUp);
+        case 'B':
+          return static_cast<int>(ArrowDown);
+        case 'C':
+          return static_cast<int>(ArrowRight);
+        case 'D':
+          return static_cast<int>(ArrowLeft);
+        case 'H':
+          return static_cast<int>(Home);
+        case 'F':
+          return static_cast<int>(End);
       }
     }
   }
@@ -104,8 +117,10 @@ int handleEscapeSequences() noexcept
     using enum Kilo::utilities::EditorKey;
 
     switch (seq[1]) {
-      case 'H': return static_cast<int>(Home);
-      case 'F': return static_cast<int>(End);
+      case 'H':
+        return static_cast<int>(Home);
+      case 'F':
+        return static_cast<int>(End);
     }
   }
 
@@ -145,9 +160,8 @@ void getWindowSize(int* const rows, int* const cols)
   if (::ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == -1 || ws.ws_col == 0) {
     // Move the cursor to the bottom-right of the screen
     if (::write(STDOUT_FILENO, "\x1b[999C\x1b[999B", 12) != 12) {
-      throw std::system_error(errno,
-                              std::system_category(),
-                              "Could not move the cursor to the bottom-right of the screen");
+      throw std::system_error(
+        errno, std::system_category(), "Could not move the cursor to the bottom-right of the screen");
     }
 
     getCursorPosition(rows, cols);
@@ -200,8 +214,7 @@ void getCursorPosition(int* const rows, int* const cols)
   // We tell it to parse the 2 integers separated by a ';' and write the value
   // into the rows and cols variables
   if (std::sscanf(&buf[2], "%d;%d", rows, cols) != 2) {
-    throw std::system_error(
-      errno, std::system_category(), "Failed to write buffer data into rows and cols variables");
+    throw std::system_error(errno, std::system_category(), "Failed to write buffer data into rows and cols variables");
   }
 }
 }   // namespace Kilo::terminal

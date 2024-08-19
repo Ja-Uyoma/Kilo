@@ -55,9 +55,15 @@ void processKeypress()
   int c = terminal::readKey();
 
   switch (c) {
-    case ctrlKey('q'):               clearScreenAndRepositionCursor(); std::exit(EXIT_SUCCESS);
-    case static_cast<int>(Home):     editorConfig.cursor.x = 0; break;
-    case static_cast<int>(End):      editorConfig.cursor.x = editorConfig.window.cols - 1; break;
+    case ctrlKey('q'):
+      clearScreenAndRepositionCursor();
+      std::exit(EXIT_SUCCESS);
+    case static_cast<int>(Home):
+      editorConfig.cursor.x = 0;
+      break;
+    case static_cast<int>(End):
+      editorConfig.cursor.x = editorConfig.window.cols - 1;
+      break;
     case static_cast<int>(PageUp):
     case static_cast<int>(PageDown): {
       for (int i = editorConfig.window.rows; i > 0; i--) {
@@ -67,8 +73,11 @@ void processKeypress()
     case static_cast<int>(ArrowUp):
     case static_cast<int>(ArrowDown):
     case static_cast<int>(ArrowLeft):
-    case static_cast<int>(ArrowRight): moveCursor(static_cast<EditorKey>(c)); break;
-    default:                           break;
+    case static_cast<int>(ArrowRight):
+      moveCursor(static_cast<EditorKey>(c));
+      break;
+    default:
+      break;
   }
 }
 
