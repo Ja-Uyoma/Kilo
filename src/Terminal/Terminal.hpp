@@ -45,6 +45,12 @@ int readKey();
  */
 void getWindowSize(int* const rows, int* const cols);
 
+namespace detail {
+
+int handleEscapeSequences() noexcept;
+
+void writeCursorPositionToBuffer(std::array<char, 32>& buf) noexcept;
+
 /**
  * @brief Get the position of the cursor and write them to @param rows and
  * @param cols
@@ -52,12 +58,6 @@ void getWindowSize(int* const rows, int* const cols);
  * @param[inout] cols The number of columns of the terminal window
  */
 void getCursorPosition(int* const rows, int* const cols);
-
-namespace detail {
-
-int handleEscapeSequences() noexcept;
-
-void writeCursorPositionToBuffer(std::array<char, 32>& buf) noexcept;
 
 }   // namespace detail
 
