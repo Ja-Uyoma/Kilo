@@ -27,6 +27,7 @@
 #include "Offset/Offset.hpp"
 #include "ScreenBuffer/ScreenBuffer.hpp"
 #include "Utilities/Utilities.hpp"
+#include "Window/Window.hpp"
 #include <cstring>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -34,6 +35,15 @@
 #include <vector>
 
 namespace Kilo::editor {
+
+TEST(processKeypress, TerminatesTheProgramIfQIsPressed)
+{
+  auto key = utilities::ctrlKey('q');
+  cursor::Cursor cursor;
+  window::Window window;
+
+  ASSERT_EXIT(processKeypress(key, cursor, window), ::testing::ExitedWithCode(0), ::testing::Eq(""));
+}
 
 namespace detail {
 
