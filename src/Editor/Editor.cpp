@@ -354,4 +354,49 @@ void printWelcomeMessage(int windowWidth, ScreenBuffer& buffer)
   buffer.write(msg);
 }
 
+/**
+ * @brief Perform an editor operation depending on the key pressed
+ *
+ * @param[in] keyPressed The key pressed by the user
+ */
+void processKeypressHelper(unsigned const keyPressed) noexcept
+{
+  using utilities::clearScreenAndRepositionCursor;
+  using utilities::ctrlKey;
+
+  if (keyPressed == ctrlKey('q')) {
+    clearScreenAndRepositionCursor();
+    std::exit(EXIT_SUCCESS);
+  }
+}
+
+/**
+ * @brief Perform an editor operation depending on the key pressed
+ *
+ * @param[in] keyPressed The key pressed by the user
+ * @param[in] cursor The position of the cursor in the terminal window
+ * @param[in] window The terminal window
+ */
+void processKeypressHelper(utilities::EditorKey keyPressed,
+                           cursor::Cursor& cursor,
+                           window::Window const& window) noexcept
+{
+  using enum utilities::EditorKey;
+
+  if (keyPressed == Home) {
+    cursor.x = 0;
+  }
+  else if (keyPressed == End) {
+    cursor.x = window.cols - 1;
+  }
+  else if (keyPressed == PageUp or keyPressed == PageDown) {
+    for (auto i = window.rows; i > 0; i--) {
+      moveCursor(keyPressed == PageUp ? ArrowUp : ArrowDown);
+    }
+  }
+  else if (keyPressed == ArrowLeft or keyPressed == ArrowRight or keyPressed == ArrowUp or keyPressed == ArrowDown) {
+    moveCursor(keyPressed);
+  }
+}
+
 }   // namespace Kilo::editor::detail

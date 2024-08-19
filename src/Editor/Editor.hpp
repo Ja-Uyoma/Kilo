@@ -237,6 +237,24 @@ constexpr void fixCursorToVisibleWindow(int const cursorPos, int& offOf, int con
   assert(offOf == cursorPos or offOf == cursorPos - windowDimension + 1);
 };
 
+/**
+ * @brief Perform an editor operation depending on the key pressed
+ *
+ * @param[in] keyPressed The key pressed by the user
+ */
+void processKeypressHelper(unsigned const keyPressed) noexcept;
+
+/**
+ * @brief Perform an editor operation depending on the key pressed
+ *
+ * @param[in] keyPressed The key pressed by the user
+ * @param[in] cursor The position of the cursor in the terminal window
+ * @param[in] window The terminal window
+ */
+void processKeypressHelper(utilities::EditorKey keyPressed,
+                           cursor::Cursor& cursor,
+                           window::Window const& window) noexcept;
+
 }   // namespace Kilo::editor::detail
 
 #endif
