@@ -33,7 +33,7 @@ public:
    * @brief Construct a new Window object
    *
    */
-  explicit Window() noexcept = default;
+  constexpr explicit Window() noexcept = default;
 
   /**
    * @brief Create a new Window object from the given row and column dimensions
