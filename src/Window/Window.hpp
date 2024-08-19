@@ -29,6 +29,26 @@ namespace Kilo::window {
 class Window
 {
 public:
+  /**
+   * @brief Get the number of rows of the terminal window
+   *
+   * @return The number of rows of the terminal window
+   */
+  constexpr auto rows() const noexcept
+  {
+    return m_rows;
+  }
+
+  /**
+   * @brief Get the number of columns of the terminal window
+   *
+   * @return The number of columns of the terminal window
+   */
+  constexpr auto cols() const noexcept
+  {
+    return m_cols;
+  }
+
   int m_rows {};
   int m_cols {};
 };
