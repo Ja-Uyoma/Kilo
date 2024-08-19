@@ -220,6 +220,43 @@ void getCursorPosition(int* const rows, int* const cols)
   }
 }
 
+/**
+ * @brief Get the position of the cursor
+ *
+ * @throws std::system_error If we could not determine the position of the cursor
+ * @returns The position of the cursor
+ */
+std::pair<int, int> getCursorPosition()
+{
+  // Get the position of the cursor
+  if (errno = 0; ::write(STDOUT_FILENO, "\x1b[6n", 4) != 4) {
+    throw std::system_error(errno, std::system_category(), "Could not get cursor position");
+  }
+
+  std::array<char, 32> buf {};
+
+  detail::writeCursorPositionToBuffer(buf);
+
+  // First make sure ::read responded with an escape sequence
+  if (buf[0] != '\x1b' || buf[1] != '[') {
+    throw std::system_error(std::make_error_code(std::errc::invalid_argument),
+                            "An invalid argument was encountered where an "
+                            "escape sequence was expected.");
+  }
+
+  std::pair<int, int> cursorPos;
+  auto [cols, rows] = cursorPos;
+
+  // At this point, we are passing a string of the form "35;76" to sscanf
+  // We tell it to parse the 2 integers separated by a ';' and write the value
+  // into the rows and cols variables
+  if (std::sscanf(&buf[2], "%d;%d", &rows, &cols) != 2) {
+    throw std::system_error(errno, std::system_category(), "Failed to write buffer data into rows and cols variables");
+  }
+
+  return cursorPos;
+}
+
 }   // namespace detail
 
 }   // namespace Kilo::terminal

@@ -27,6 +27,7 @@
 #include <array>
 #include <termios.h>
 
+
 namespace Kilo::terminal {
 
 /**
@@ -58,6 +59,14 @@ void writeCursorPositionToBuffer(std::array<char, 32>& buf) noexcept;
  * @param[inout] cols The number of columns of the terminal window
  */
 void getCursorPosition(int* const rows, int* const cols);
+
+/**
+ * @brief Get the position of the cursor
+ *
+ * @throws std::system_error If we could not determine the position of the cursor
+ * @returns The position of the cursor
+ */
+std::pair<int, int> getCursorPosition();
 
 }   // namespace detail
 
