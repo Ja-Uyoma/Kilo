@@ -34,6 +34,97 @@
 
 namespace Kilo::terminal {
 
+int readKey()
+{
+  char c {};
+
+  for (long nread = 0; nread != 1; nread = ::read(STDIN_FILENO, &c, 1)) {
+    if (nread == -1 && errno != EAGAIN) {
+      throw std::system_error(errno, std::system_category(), "Could not read key input from stdin");
+    }
+
+    errno = 0;
+  }
+
+  // Pressing an arrow key sends multiple bytes as input to our program.
+  // These bytes are in the form of an escape sequence that starts with '\x1b',
+  // '[', followed by an 'A', 'B', 'C', or 'D', depending on which of the 4
+  // arrow keys was pressed. We want to read escape sequences of this form as a
+  // single key press.
+
+  if (c == '\x1b') {
+    return detail::handleEscapeSequences();
+  }
+  else {
+    return c;
+  }
+}
+
+void getWindowSize(int* const rows, int* const cols)
+{
+  winsize ws;
+
+  if (::ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == -1 || ws.ws_col == 0) {
+    // Move the cursor to the bottom-right of the screen
+    if (::write(STDOUT_FILENO, "\x1b[999C\x1b[999B", 12) != 12) {
+      throw std::system_error(
+        errno, std::system_category(), "Could not move the cursor to the bottom-right of the screen");
+    }
+
+    getCursorPosition(rows, cols);
+  }
+
+  *cols = ws.ws_col;
+  *rows = ws.ws_row;
+}
+
+void writeCursorPositionToBuffer(std::array<char, 32>& buf) noexcept
+{
+  /*
+   * Read the reply from stdin and store it in a buffer
+   * We do this until we encounter a 'R' character
+   */
+
+  for (std::size_t i {}; i < buf.size() - 1; i++) {
+    if (::read(STDIN_FILENO, &buf[i], 1) != 1 or buf[i] == 'R') {
+      break;
+    }
+  }
+
+  /*
+   * Assign the null-termination character to the the final byte of buf because
+   * C-strings should end with a zero byte
+   */
+
+  buf.back() = '\0';
+}
+
+void getCursorPosition(int* const rows, int* const cols)
+{
+  // Get the position of the cursor
+  if (::write(STDOUT_FILENO, "\x1b[6n", 4) != 4) {
+    throw std::system_error(errno, std::system_category(), "Could not get cursor position");
+  }
+
+  std::array<char, 32> buf {};
+
+  writeCursorPositionToBuffer(buf);
+
+  // First make sure ::read responded with an escape sequence
+  if (buf[0] != '\x1b' || buf[1] != '[') {
+    throw std::system_error(std::make_error_code(std::errc::invalid_argument),
+                            "An invalid argument was encountered where an "
+                            "escape sequence was expected.");
+  }
+
+  // At this point, we are passing a string of the form "35;76" to sscanf
+  // We tell it to parse the 2 integers separated by a ';' and write the value
+  // into the rows and cols variables
+  if (std::sscanf(&buf[2], "%d;%d", rows, cols) != 2) {
+    throw std::system_error(errno, std::system_category(), "Failed to write buffer data into rows and cols variables");
+  }
+}
+
 namespace detail {
 
 int handleEscapeSequences() noexcept
@@ -131,94 +222,4 @@ int handleEscapeSequences() noexcept
 
 }   // namespace detail
 
-int readKey()
-{
-  char c {};
-
-  for (long nread = 0; nread != 1; nread = ::read(STDIN_FILENO, &c, 1)) {
-    if (nread == -1 && errno != EAGAIN) {
-      throw std::system_error(errno, std::system_category(), "Could not read key input from stdin");
-    }
-
-    errno = 0;
-  }
-
-  // Pressing an arrow key sends multiple bytes as input to our program.
-  // These bytes are in the form of an escape sequence that starts with '\x1b',
-  // '[', followed by an 'A', 'B', 'C', or 'D', depending on which of the 4
-  // arrow keys was pressed. We want to read escape sequences of this form as a
-  // single key press.
-
-  if (c == '\x1b') {
-    return detail::handleEscapeSequences();
-  }
-  else {
-    return c;
-  }
-}
-
-void getWindowSize(int* const rows, int* const cols)
-{
-  winsize ws;
-
-  if (::ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == -1 || ws.ws_col == 0) {
-    // Move the cursor to the bottom-right of the screen
-    if (::write(STDOUT_FILENO, "\x1b[999C\x1b[999B", 12) != 12) {
-      throw std::system_error(
-        errno, std::system_category(), "Could not move the cursor to the bottom-right of the screen");
-    }
-
-    getCursorPosition(rows, cols);
-  }
-
-  *cols = ws.ws_col;
-  *rows = ws.ws_row;
-}
-
-void writeCursorPositionToBuffer(std::array<char, 32>& buf) noexcept
-{
-  /*
-   * Read the reply from stdin and store it in a buffer
-   * We do this until we encounter a 'R' character
-   */
-
-  for (std::size_t i {}; i < buf.size() - 1; i++) {
-    if (::read(STDIN_FILENO, &buf[i], 1) != 1 or buf[i] == 'R') {
-      break;
-    }
-  }
-
-  /*
-   * Assign the null-termination character to the the final byte of buf because
-   * C-strings should end with a zero byte
-   */
-
-  buf.back() = '\0';
-}
-
-void getCursorPosition(int* const rows, int* const cols)
-{
-  // Get the position of the cursor
-  if (::write(STDOUT_FILENO, "\x1b[6n", 4) != 4) {
-    throw std::system_error(errno, std::system_category(), "Could not get cursor position");
-  }
-
-  std::array<char, 32> buf {};
-
-  writeCursorPositionToBuffer(buf);
-
-  // First make sure ::read responded with an escape sequence
-  if (buf[0] != '\x1b' || buf[1] != '[') {
-    throw std::system_error(std::make_error_code(std::errc::invalid_argument),
-                            "An invalid argument was encountered where an "
-                            "escape sequence was expected.");
-  }
-
-  // At this point, we are passing a string of the form "35;76" to sscanf
-  // We tell it to parse the 2 integers separated by a ';' and write the value
-  // into the rows and cols variables
-  if (std::sscanf(&buf[2], "%d;%d", rows, cols) != 2) {
-    throw std::system_error(errno, std::system_category(), "Failed to write buffer data into rows and cols variables");
-  }
-}
 }   // namespace Kilo::terminal
