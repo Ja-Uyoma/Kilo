@@ -57,6 +57,21 @@ TEST(processKeypress, MovesCursorToStartOfLineIfHomeButtonIsPressed)
   ASSERT_THAT(cursor.x, ::testing::Eq(0));
 }
 
+TEST(processKeypress, MovesCursorToEndOfLineIfEndButtonIsPressed)
+{
+  using cursor::Cursor;
+  using utilities::EditorKey;
+  using window::Window;
+
+  EditorKey const key = EditorKey::End;
+  Cursor cursor {100, 100};
+  Window const window {50, 50};
+
+  detail::processKeypressHelper(key, cursor, window);
+
+  ASSERT_THAT(cursor.x, ::testing::Eq(window.cols - 1));
+}
+
 namespace detail {
 
 TEST(FixCursorToVisibleWindow, ModifiesTheOffsetIfCursorPositionIsLessThanOffsetValue)
