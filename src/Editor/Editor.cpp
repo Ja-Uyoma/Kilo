@@ -56,33 +56,12 @@ static EditorConfig editorConfig;
  */
 void processKeypress(int const keyPressed, cursor::Cursor& cursor, window::Window const& window) noexcept
 {
-  using utilities::clearScreenAndRepositionCursor;
-  using utilities::ctrlKey;
+  detail::processKeypressHelper(keyPressed);
 
-  if (keyPressed == ctrlKey('q')) {
-    clearScreenAndRepositionCursor();
-    std::exit(EXIT_SUCCESS);
-  }
-
-  using enum utilities::EditorKey;
   using utilities::EditorKey;
-
   auto key = static_cast<EditorKey>(keyPressed);
 
-  if (key == Home) {
-    cursor.x = 0;
-  }
-  else if (key == End) {
-    cursor.x = window.cols - 1;
-  }
-  else if (key == PageUp or key == PageDown) {
-    for (auto i = window.rows; i > 0; i--) {
-      moveCursor(key == PageUp ? ArrowUp : ArrowDown);
-    }
-  }
-  else if (key == ArrowLeft or key == ArrowRight or key == ArrowUp or key == ArrowDown) {
-    moveCursor(key);
-  }
+  detail::processKeypressHelper(key, cursor, window);
 }
 
 void processKeypress()
