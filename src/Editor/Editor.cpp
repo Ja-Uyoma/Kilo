@@ -47,6 +47,44 @@
 namespace Kilo::editor {
 static EditorConfig editorConfig;
 
+/**
+ * @brief Performs an action depending on the key pressed
+ *
+ * @param[in] keyPressed The key pressed by the user
+ * @param[in] cursor The position of the cursor in the terminal window
+ * @param[in] window The terminal window
+ */
+void processKeypress(int const keyPressed, cursor::Cursor& cursor, window::Window const& window) noexcept
+{
+  using utilities::clearScreenAndRepositionCursor;
+  using utilities::ctrlKey;
+
+  if (keyPressed == ctrlKey('q')) {
+    clearScreenAndRepositionCursor();
+    std::exit(EXIT_SUCCESS);
+  }
+
+  using enum utilities::EditorKey;
+  using utilities::EditorKey;
+
+  auto key = static_cast<EditorKey>(keyPressed);
+
+  if (key == Home) {
+    cursor.x = 0;
+  }
+  else if (key == End) {
+    cursor.x = window.cols - 1;
+  }
+  else if (key == PageUp or key == PageDown) {
+    for (auto i = window.rows; i > 0; i--) {
+      moveCursor(key == PageUp ? ArrowUp : ArrowDown);
+    }
+  }
+  else if (key == ArrowLeft or key == ArrowRight or key == ArrowUp or key == ArrowDown) {
+    moveCursor(key);
+  }
+}
+
 void processKeypress()
 {
   using utilities::clearScreenAndRepositionCursor;

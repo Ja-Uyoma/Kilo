@@ -28,6 +28,7 @@
 #include "Offset/Offset.hpp"
 #include "ScreenBuffer/ScreenBuffer.hpp"
 #include "Utilities/Utilities.hpp"
+#include "Window/Window.hpp"
 #include <cassert>
 #include <filesystem>
 #include <optional>
@@ -36,6 +37,15 @@
 #include <vector>
 
 namespace Kilo::editor {
+
+/**
+ * @brief Performs an action depending on the key pressed
+ *
+ * @param[in] keyPressed The key pressed by the user
+ * @param[in] cursor The position of the cursor in the terminal window
+ * @param[in] window The terminal window
+ */
+void processKeypress(int const keyPressed, cursor::Cursor& cursor, window::Window const& window) noexcept;
 
 /// @brief Process the results from readKey
 /// @details This function is responsible for mapping keypresses to editor
