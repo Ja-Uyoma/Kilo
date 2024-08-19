@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-namespace Kilo::cursor {
+namespace Kilo::editor {
 
 TEST(Cursor, MembersAreInitializedToZeroByDefault)
 {
@@ -12,4 +12,4 @@ TEST(Cursor, MembersAreInitializedToZeroByDefault)
   ASSERT_EQ(c.y, 0);
 }
 
-}   // namespace Kilo::cursor
+}   // namespace Kilo::editor

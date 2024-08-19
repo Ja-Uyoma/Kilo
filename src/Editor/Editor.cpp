@@ -54,7 +54,7 @@ static EditorConfig editorConfig;
  * @param[in] cursor The position of the cursor in the terminal window
  * @param[in] window The terminal window
  */
-void processKeypress(int const keyPressed, cursor::Cursor& cursor, window::Window const& window) noexcept
+void processKeypress(int const keyPressed, Cursor& cursor, window::Window const& window) noexcept
 {
   detail::processKeypressHelper(keyPressed);
 
@@ -252,7 +252,7 @@ namespace Kilo::editor::detail {
  * @param offset The offset from the terminal window to the currently-open document
  * @return std::string
  */
-std::string setExactPositionToMoveCursorTo(cursor::Cursor const& cursor, Offset const& offset)
+std::string setExactPositionToMoveCursorTo(Cursor const& cursor, Offset const& offset)
 {
   /*
    * We add 1 to cursor.x and cursor.y to convert from 0-indexed values to the
@@ -356,9 +356,7 @@ void processKeypressHelper(unsigned const keyPressed) noexcept
  * @param[in] cursor The position of the cursor in the terminal window
  * @param[in] window The terminal window
  */
-void processKeypressHelper(utilities::EditorKey keyPressed,
-                           cursor::Cursor& cursor,
-                           window::Window const& window) noexcept
+void processKeypressHelper(utilities::EditorKey keyPressed, Cursor& cursor, window::Window const& window) noexcept
 {
   using enum utilities::EditorKey;
 

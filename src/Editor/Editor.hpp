@@ -45,7 +45,7 @@ namespace Kilo::editor {
  * @param[in] cursor The position of the cursor in the terminal window
  * @param[in] window The terminal window
  */
-void processKeypress(int const keyPressed, cursor::Cursor& cursor, window::Window const& window) noexcept;
+void processKeypress(int const keyPressed, Cursor& cursor, window::Window const& window) noexcept;
 
 /// @brief Process the results from readKey
 /// @details This function is responsible for mapping keypresses to editor
@@ -99,7 +99,7 @@ namespace Kilo::editor::detail {
  * @param offset The offset from the terminal window to the currently-open document
  * @return std::string
  */
-std::string setExactPositionToMoveCursorTo(cursor::Cursor const& cursor, Offset const& offset);
+std::string setExactPositionToMoveCursorTo(Cursor const& cursor, Offset const& offset);
 
 /**
  * @brief Create a welcome message by interpolating two strings
@@ -155,8 +155,7 @@ void printWelcomeMessage(int windowWidth, ScreenBuffer& buffer);
  * @param rows The rows of text of the document in memory
  * @return std::optional<std::string> The current row at which the cursor is located
  */
-constexpr std::optional<std::string> getCurrentRow(cursor::Cursor const& cursor,
-                                                   std::vector<std::string> const& rows) noexcept
+constexpr std::optional<std::string> getCurrentRow(Cursor const& cursor, std::vector<std::string> const& rows) noexcept
 {
   assert(cursor.x >= 0 and cursor.y >= 0);
 
@@ -175,7 +174,7 @@ constexpr std::optional<std::string> getCurrentRow(cursor::Cursor const& cursor,
  * @param keyPressed The key press determining how the cursor is to be moved
  * @param document The document within which the cursor is located
  */
-constexpr void moveCursorHelper(cursor::Cursor& cursor,
+constexpr void moveCursorHelper(Cursor& cursor,
                                 utilities::EditorKey const& keyPressed,
                                 std::vector<std::string> const& document) noexcept
 {
@@ -251,9 +250,7 @@ void processKeypressHelper(unsigned const keyPressed) noexcept;
  * @param[in] cursor The position of the cursor in the terminal window
  * @param[in] window The terminal window
  */
-void processKeypressHelper(utilities::EditorKey keyPressed,
-                           cursor::Cursor& cursor,
-                           window::Window const& window) noexcept;
+void processKeypressHelper(utilities::EditorKey keyPressed, Cursor& cursor, window::Window const& window) noexcept;
 
 }   // namespace Kilo::editor::detail
 

@@ -1,7 +1,7 @@
 #ifndef CURSOR_HPP
 #define CURSOR_HPP
 
-namespace Kilo::cursor {
+namespace Kilo::editor {
 
 struct Cursor
 {
@@ -9,6 +9,6 @@ struct Cursor
   int y {};
 };
 
-}   // namespace Kilo::cursor
+}   // namespace Kilo::editor
 
 #endif
