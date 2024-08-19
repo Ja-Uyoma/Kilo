@@ -54,30 +54,26 @@ void processKeypress()
 
   int c = terminal::readKey();
 
-  switch (c) {
-    case ctrlKey('q'):
-      clearScreenAndRepositionCursor();
-      std::exit(EXIT_SUCCESS);
-    case static_cast<int>(Home):
-      editorConfig.cursor.x = 0;
-      break;
-    case static_cast<int>(End):
-      editorConfig.cursor.x = editorConfig.window.cols - 1;
-      break;
-    case static_cast<int>(PageUp):
-    case static_cast<int>(PageDown): {
-      for (int i = editorConfig.window.rows; i > 0; i--) {
-        moveCursor(c == static_cast<int>(PageUp) ? ArrowUp : ArrowDown);
-      }
-    } break;
-    case static_cast<int>(ArrowUp):
-    case static_cast<int>(ArrowDown):
-    case static_cast<int>(ArrowLeft):
-    case static_cast<int>(ArrowRight):
-      moveCursor(static_cast<EditorKey>(c));
-      break;
-    default:
-      break;
+  if (c == ctrlKey('q')) {
+    clearScreenAndRepositionCursor();
+    std::exit(EXIT_SUCCESS);
+  }
+
+  auto key = static_cast<EditorKey>(c);
+
+  if (key == Home) {
+    editorConfig.cursor.x = 0;
+  }
+  else if (key == End) {
+    editorConfig.cursor.x = editorConfig.window.cols - 1;
+  }
+  else if (key == PageUp or key == PageDown) {
+    for (auto i = editorConfig.window.rows; i > 0; i--) {
+      moveCursor(key == PageUp ? ArrowUp : ArrowDown);
+    }
+  }
+  else if (key == ArrowLeft or key == ArrowRight or key == ArrowUp or key == ArrowDown) {
+    moveCursor(key);
   }
 }
 
