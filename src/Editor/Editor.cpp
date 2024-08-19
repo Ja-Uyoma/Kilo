@@ -70,7 +70,7 @@ void processKeypress()
     case static_cast<int>(ArrowUp):
     case static_cast<int>(ArrowDown):
     case static_cast<int>(ArrowLeft):
-    case static_cast<int>(ArrowRight): moveCursor(static_cast<EditorKey>(c));
+    case static_cast<int>(ArrowRight): moveCursor(static_cast<EditorKey>(c)); break;
     default:                           break;
   }
 }
