@@ -27,6 +27,8 @@
 #include <array>
 #include <termios.h>
 
+/* Forward declaration to the winsize struct */
+struct winsize;
 
 namespace Kilo::terminal {
 
@@ -45,6 +47,13 @@ int readKey();
  * @throws std::system_error if the terminal window size could not be retrieved
  */
 void getWindowSize(int* const rows, int* const cols);
+
+/**
+ * @brief Get the size of the terminal window
+ * @throws std::system_error if the terminal window size could not be retrieved
+ * @returns The size of the terminal window
+ */
+std::pair<int, int> getWindowSize(::winsize const& winsize);
 
 namespace detail {
 

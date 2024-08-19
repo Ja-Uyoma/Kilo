@@ -78,6 +78,26 @@ void getWindowSize(int* const rows, int* const cols)
   *rows = ws.ws_row;
 }
 
+/**
+ * @brief Get the size of the terminal window
+ * @throws std::system_error if the terminal window size could not be retrieved
+ * @returns The size of the terminal window
+ */
+std::pair<int, int> getWindowSize(::winsize const& winsize)
+{
+  if (::ioctl(STDOUT_FILENO, TIOCGWINSZ, &winsize) == -1 or winsize.ws_col == 0) {
+    if (errno = 0; ::write(STDOUT_FILENO, "\x1b[999c\x1b[999B", 12) != 12) {
+      throw std::system_error(
+        errno, std::system_category(), "Could not move the cursor to the bottom-right of the screen");
+    }
+    else {
+      return detail::getCursorPosition();
+    }
+  }
+
+  return std::make_pair(winsize.ws_col, winsize.ws_row);
+}
+
 namespace detail {
 
 unsigned handleEscapeSequences() noexcept
