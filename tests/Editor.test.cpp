@@ -39,10 +39,7 @@ namespace Kilo::editor {
 TEST(processKeypress, TerminatesTheProgramIfQIsPressed)
 {
   auto key = utilities::ctrlKey('q');
-  cursor::Cursor cursor;
-  window::Window window;
-
-  ASSERT_EXIT(processKeypress(key, cursor, window), ::testing::ExitedWithCode(0), ::testing::Eq(""));
+  ASSERT_EXIT(detail::processKeypressHelper(key), ::testing::ExitedWithCode(0), ::testing::Eq(""));
 }
 
 namespace detail {
