@@ -30,6 +30,12 @@ class Window
 {
 public:
   /**
+   * @brief Construct a new Window object
+   *
+   */
+  explicit Window() noexcept = default;
+
+  /**
    * @brief Get the number of rows of the terminal window
    *
    * @return The number of rows of the terminal window
