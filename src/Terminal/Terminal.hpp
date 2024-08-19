@@ -27,6 +27,7 @@
 #include <termios.h>
 
 namespace Kilo::terminal {
+
 /**
  * @brief Read key input from stdin
  * @return The character read
@@ -50,6 +51,13 @@ void getWindowSize(int* const rows, int* const cols);
  * @param[inout] cols The number of columns of the terminal window
  */
 void getCursorPosition(int* const rows, int* const cols);
+
+namespace detail {
+
+int handleEscapeSequences() noexcept;
+
+}
+
 }   // namespace Kilo::terminal
 
 #endif

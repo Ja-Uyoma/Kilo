@@ -34,6 +34,8 @@
 
 namespace Kilo::terminal {
 
+namespace detail {
+
 int handleEscapeSequences() noexcept
 {
   std::array<char, 3> seq {};
@@ -127,6 +129,8 @@ int handleEscapeSequences() noexcept
   return '\x1b';
 }
 
+}   // namespace detail
+
 int readKey()
 {
   char c {};
@@ -146,7 +150,7 @@ int readKey()
   // single key press.
 
   if (c == '\x1b') {
-    return handleEscapeSequences();
+    return detail::handleEscapeSequences();
   }
   else {
     return c;
