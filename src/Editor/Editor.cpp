@@ -24,7 +24,7 @@
 #include "Editor.hpp"
 
 #include "Constants.hpp"
-#include "Cursor/Cursor.hpp"
+#include "Cursor.hpp"
 #include "EditorConfig/EditorConfig.hpp"
 #include "Offset.hpp"
 #include "ScreenBuffer/ScreenBuffer.hpp"

@@ -12,8 +12,8 @@ target_include_directories(kilo
 
 target_sources(kilo
     PRIVATE
-        "${PROJECT_SOURCE_DIR}/src/Cursor/Cursor.hpp"
-        "${PROJECT_SOURCE_DIR}/src/Cursor/Cursor.cpp"
+        "${PROJECT_SOURCE_DIR}/src/Editor/Cursor.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Editor/Cursor.cpp"
 
         "${PROJECT_SOURCE_DIR}/src/Editor/Editor.hpp"
         "${PROJECT_SOURCE_DIR}/src/Editor/Editor.cpp"

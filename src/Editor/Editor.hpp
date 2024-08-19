@@ -24,7 +24,7 @@
 #ifndef EDITOR_HPP
 #define EDITOR_HPP
 
-#include "Cursor/Cursor.hpp"
+#include "Cursor.hpp"
 #include "Offset.hpp"
 #include "ScreenBuffer/ScreenBuffer.hpp"
 #include "Utilities/Utilities.hpp"
