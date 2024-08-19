@@ -47,7 +47,7 @@ void getWindowSize(int* const rows, int* const cols);
 
 namespace detail {
 
-int handleEscapeSequences() noexcept;
+unsigned handleEscapeSequences() noexcept;
 
 void writeCursorPositionToBuffer(std::array<char, 32>& buf) noexcept;
 

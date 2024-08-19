@@ -80,7 +80,7 @@ void getWindowSize(int* const rows, int* const cols)
 
 namespace detail {
 
-int handleEscapeSequences() noexcept
+unsigned handleEscapeSequences() noexcept
 {
   std::array<char, 3> seq {};
 
