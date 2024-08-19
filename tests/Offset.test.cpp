@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-namespace Kilo::offset {
+namespace Kilo::editor {
 
 TEST(Offset, MembersAreInitializedToZeroByDefault)
 {
@@ -12,4 +12,4 @@ TEST(Offset, MembersAreInitializedToZeroByDefault)
   ASSERT_EQ(off.col, 0);
 }
 
-}   // namespace Kilo::offset
+}   // namespace Kilo::editor

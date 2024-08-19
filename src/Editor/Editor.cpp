@@ -252,7 +252,7 @@ namespace Kilo::editor::detail {
  * @param offset The offset from the terminal window to the currently-open document
  * @return std::string
  */
-std::string setExactPositionToMoveCursorTo(cursor::Cursor const& cursor, offset::Offset const& offset)
+std::string setExactPositionToMoveCursorTo(cursor::Cursor const& cursor, Offset const& offset)
 {
   /*
    * We add 1 to cursor.x and cursor.y to convert from 0-indexed values to the

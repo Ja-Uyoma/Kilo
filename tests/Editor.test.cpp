@@ -250,7 +250,7 @@ TEST(moveCursorHelper, ArrowDownIsANoOpIfTheCursorIsAtTheBottomOfTheDocument)
 TEST(setExactPositionToMoveCursorTo, ReturnsAStringContainingThePositionToMoveTheCursorTo)
 {
   cursor::Cursor c {15, 15};
-  offset::Offset off {10, 10};
+  Offset off {10, 10};
 
   auto pos = setExactPositionToMoveCursorTo(c, off);
 

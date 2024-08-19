@@ -1,7 +1,7 @@
 #ifndef OFFSET_HPP
 #define OFFSET_HPP
 
-namespace Kilo::offset {
+namespace Kilo::editor {
 
 struct Offset
 {
@@ -9,6 +9,6 @@ struct Offset
   int col {};
 };
 
-}   // namespace Kilo::offset
+}   // namespace Kilo::editor
 
 #endif
