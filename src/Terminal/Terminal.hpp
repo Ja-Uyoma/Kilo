@@ -32,6 +32,9 @@ struct winsize;
 
 namespace Kilo::terminal {
 
+/* Forward declaration to the WindowSize struct */
+struct WindowSize;
+
 /**
  * @brief Read key input from stdin
  * @return The character read
@@ -53,7 +56,7 @@ void getWindowSize(int* const rows, int* const cols);
  * @throws std::system_error if the terminal window size could not be retrieved
  * @returns The size of the terminal window
  */
-std::pair<int, int> getWindowSize(::winsize const& winsize);
+WindowSize getWindowSize(::winsize const& winsize);
 
 namespace detail {
 
