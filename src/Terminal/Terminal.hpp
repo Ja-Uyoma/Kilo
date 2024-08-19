@@ -24,6 +24,7 @@
 #ifndef TERMINAL_HPP
 #define TERMINAL_HPP
 
+#include <array>
 #include <termios.h>
 
 namespace Kilo::terminal {
@@ -56,7 +57,9 @@ namespace detail {
 
 int handleEscapeSequences() noexcept;
 
-}
+void writeCursorPositionToBuffer(std::array<char, 32>& buf) noexcept;
+
+}   // namespace detail
 
 }   // namespace Kilo::terminal
 
