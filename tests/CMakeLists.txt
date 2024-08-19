@@ -30,8 +30,8 @@ target_sources(tests
         "${PROJECT_SOURCE_DIR}/src/EditorConfig/EditorConfig.hpp"
         "${PROJECT_SOURCE_DIR}/src/EditorConfig/EditorConfig.cpp"
 
-        "${PROJECT_SOURCE_DIR}/src/Offset/Offset.hpp"
-        "${PROJECT_SOURCE_DIR}/src/Offset/Offset.cpp"
+        "${PROJECT_SOURCE_DIR}/src/Editor/Offset.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Editor/Offset.cpp"
         Offset.test.cpp
 
         "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.hpp"

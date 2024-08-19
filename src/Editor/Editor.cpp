@@ -26,7 +26,7 @@
 #include "Constants.hpp"
 #include "Cursor/Cursor.hpp"
 #include "EditorConfig/EditorConfig.hpp"
-#include "Offset/Offset.hpp"
+#include "Offset.hpp"
 #include "ScreenBuffer/ScreenBuffer.hpp"
 #include "Terminal/Terminal.hpp"
 #include "Utilities/Utilities.hpp"
