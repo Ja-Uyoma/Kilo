@@ -29,8 +29,8 @@ namespace Kilo::window {
 class Window
 {
 public:
-  int rows {};
-  int cols {};
+  int m_rows {};
+  int m_cols {};
 };
 
 }   // namespace Kilo::window

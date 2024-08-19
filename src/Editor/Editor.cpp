@@ -85,10 +85,10 @@ void processKeypress()
     editorConfig.cursor.x = 0;
   }
   else if (key == End) {
-    editorConfig.cursor.x = editorConfig.window.cols - 1;
+    editorConfig.cursor.x = editorConfig.window.m_cols - 1;
   }
   else if (key == PageUp or key == PageDown) {
-    for (auto i = editorConfig.window.rows; i > 0; i--) {
+    for (auto i = editorConfig.window.m_rows; i > 0; i--) {
       moveCursor(key == PageUp ? ArrowUp : ArrowDown);
     }
   }
@@ -122,10 +122,10 @@ void drawRows(ScreenBuffer& buffer) noexcept
 {
   using namespace std::string_literals;
 
-  for (int y = 0; y < editorConfig.window.rows; y++) {
+  for (int y = 0; y < editorConfig.window.m_rows; y++) {
     if (int filerow = y + editorConfig.off.row; filerow >= editorConfig.numrows) {
-      if (editorConfig.numrows == 0 && y == editorConfig.window.rows / 3) {
-        detail::printWelcomeMessage(editorConfig.window.cols, buffer);
+      if (editorConfig.numrows == 0 && y == editorConfig.window.m_rows / 3) {
+        detail::printWelcomeMessage(editorConfig.window.m_cols, buffer);
       }
       else {
         buffer.write("~"s);
@@ -138,8 +138,8 @@ void drawRows(ScreenBuffer& buffer) noexcept
         len = 0;
       }
 
-      if (len > editorConfig.window.cols) {
-        len = editorConfig.window.cols;
+      if (len > editorConfig.window.m_cols) {
+        len = editorConfig.window.m_cols;
       }
 
       buffer.write(&editorConfig.render[filerow][editorConfig.off.col], len);
@@ -147,7 +147,7 @@ void drawRows(ScreenBuffer& buffer) noexcept
 
     buffer.write(EscapeSequences::ErasePartOfLineToTheRightOfCursor);
 
-    if (y < editorConfig.window.rows - 1) {
+    if (y < editorConfig.window.m_rows - 1) {
       buffer.write("\r\n"s);
     }
   }
@@ -203,16 +203,16 @@ void scroll() noexcept
     editorConfig.off.row = editorConfig.cursor.y;
   }
 
-  if (editorConfig.cursor.y >= editorConfig.off.row + editorConfig.window.rows) {
-    editorConfig.off.row = editorConfig.cursor.y - editorConfig.window.rows + 1;
+  if (editorConfig.cursor.y >= editorConfig.off.row + editorConfig.window.m_rows) {
+    editorConfig.off.row = editorConfig.cursor.y - editorConfig.window.m_rows + 1;
   }
 
   if (editorConfig.cursor.x < editorConfig.off.col) {
     editorConfig.off.col = editorConfig.cursor.x;
   }
 
-  if (editorConfig.cursor.x >= editorConfig.off.col + editorConfig.window.cols) {
-    editorConfig.off.col = editorConfig.cursor.x - editorConfig.window.cols + 1;
+  if (editorConfig.cursor.x >= editorConfig.off.col + editorConfig.window.m_cols) {
+    editorConfig.off.col = editorConfig.cursor.x - editorConfig.window.m_cols + 1;
   }
 }
 
@@ -364,10 +364,10 @@ void processKeypressHelper(utilities::EditorKey keyPressed, Cursor& cursor, wind
     cursor.x = 0;
   }
   else if (keyPressed == End) {
-    cursor.x = window.cols - 1;
+    cursor.x = window.m_cols - 1;
   }
   else if (keyPressed == PageUp or keyPressed == PageDown) {
-    for (auto i = window.rows; i > 0; i--) {
+    for (auto i = window.m_rows; i > 0; i--) {
       moveCursor(keyPressed == PageUp ? ArrowUp : ArrowDown);
     }
   }
