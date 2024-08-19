@@ -67,7 +67,7 @@ TEST(processKeypress, MovesCursorToEndOfLineIfEndButtonIsPressed)
 
   detail::processKeypressHelper(key, cursor, window);
 
-  ASSERT_THAT(cursor.x, ::testing::Eq(window.cols - 1));
+  ASSERT_THAT(cursor.x, ::testing::Eq(window.m_cols - 1));
 }
 
 namespace detail {

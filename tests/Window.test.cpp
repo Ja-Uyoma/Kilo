@@ -8,8 +8,8 @@ TEST(Window, MembersAreInitializedToZeroByDefault)
 {
   Window window {};
 
-  ASSERT_EQ(window.rows, 0);
-  ASSERT_EQ(window.cols, 0);
+  ASSERT_EQ(window.m_rows, 0);
+  ASSERT_EQ(window.m_cols, 0);
 }
 
 }   // namespace Kilo::window
