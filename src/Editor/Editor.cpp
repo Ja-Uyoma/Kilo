@@ -55,10 +55,7 @@ void processKeypress()
   int c = terminal::readKey();
 
   switch (c) {
-    case ctrlKey('q'):
-      clearScreenAndRepositionCursor();
-      std::exit(EXIT_SUCCESS);
-      break;
+    case ctrlKey('q'):               clearScreenAndRepositionCursor(); std::exit(EXIT_SUCCESS);
     case static_cast<int>(Home):     editorConfig.cursor.x = 0; break;
     case static_cast<int>(End):      editorConfig.cursor.x = editorConfig.window.cols - 1; break;
     case static_cast<int>(PageUp):
