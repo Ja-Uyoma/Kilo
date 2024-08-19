@@ -49,8 +49,8 @@ static EditorConfig editorConfig;
 
 void processKeypress()
 {
-  using namespace Kilo::utilities;
-  using enum Kilo::utilities::EditorKey;
+  using utilities::clearScreenAndRepositionCursor;
+  using utilities::ctrlKey;
 
   int c = terminal::readKey();
 
@@ -58,6 +58,9 @@ void processKeypress()
     clearScreenAndRepositionCursor();
     std::exit(EXIT_SUCCESS);
   }
+
+  using enum utilities::EditorKey;
+  using utilities::EditorKey;
 
   auto key = static_cast<EditorKey>(c);
 
