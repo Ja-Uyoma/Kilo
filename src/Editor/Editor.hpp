@@ -60,6 +60,17 @@ void processKeypress();
 /// @brief Clear the screen and reposition the cursor to the top-left corner
 void refreshScreen() noexcept;
 
+/**
+ * @brief Perform a screen refresh
+ *
+ * @details Fit the cursor within the visible window and draw each row of the buffer of text being edited together with
+ * the tildes
+ * @param buffer The screen buffer
+ * @param cursor The cursor
+ * @param offset The offset from the window to the open document
+ */
+void refreshScreen(ScreenBuffer& buffer, Cursor const& cursor, Offset const& offset);
+
 /// @brief Draw each row of the buffer of text being edited, plus a tilde at the
 /// beginning
 void drawRows(ScreenBuffer& buffer) noexcept;

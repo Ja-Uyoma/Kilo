@@ -116,6 +116,30 @@ void refreshScreen() noexcept
   buffer.write(cursorPos).write(EscapeSequences::ShowTheCursor).flush();
 }
 
+/**
+ * @brief Perform a screen refresh
+ *
+ * @details Fit the cursor within the visible window and draw each row of the buffer of text being edited together with
+ * the tildes
+ * @param buffer The screen buffer
+ * @param cursor The cursor
+ * @param offset The offset from the window to the open document
+ */
+void refreshScreen(ScreenBuffer& buffer, Cursor const& cursor, Offset const& offset)
+{
+  scroll();
+
+  /*
+   * Hide the cursor when painting and then move it to the home position
+   */
+
+  buffer.write(EscapeSequences::HideCursorWhenRepainting).write(EscapeSequences::MoveCursorToHomePosition);
+
+  drawRows(buffer);
+  auto const cursorPos = detail::setExactPositionToMoveCursorTo(cursor, offset);
+  buffer.write(cursorPos).write(EscapeSequences::ShowTheCursor).flush();
+}
+
 void drawRows(ScreenBuffer& buffer) noexcept
 {
   using namespace std::string_literals;
