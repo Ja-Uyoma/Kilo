@@ -39,16 +39,6 @@ public:
   static Window& create();
 
   /**
-   * @brief Create a new Window object from the given row and column dimensions
-   *
-   * @param[in] rows The number of rows of the Window
-   * @param[in] cols The number of columns of the Window
-   */
-  constexpr explicit Window(int const rows, int const cols) noexcept : m_winsize {cols, rows}
-  {
-  }
-
-  /**
    * @brief Get the number of columns of the terminal window
    *
    * @return The number of columns of the terminal window
