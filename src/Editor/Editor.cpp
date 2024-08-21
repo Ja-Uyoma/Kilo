@@ -97,7 +97,7 @@ void processKeypress()
   }
 }
 
-void refreshScreen() noexcept
+void refreshScreen()
 {
   scroll();
 

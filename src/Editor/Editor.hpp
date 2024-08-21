@@ -58,7 +58,7 @@ void processKeypress(int const keyPressed, Cursor& cursor, terminal::Window cons
 void processKeypress();
 
 /// @brief Clear the screen and reposition the cursor to the top-left corner
-void refreshScreen() noexcept;
+void refreshScreen();
 
 /**
  * @brief Perform a screen refresh
