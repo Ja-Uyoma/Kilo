@@ -8,7 +8,6 @@ namespace Kilo::editor {
 EditorConfig::EditorConfig()
 {
   try {
-    terminal::getWindowSize(&window.m_rows, &window.m_cols);
     state.setRawMode();
   }
   catch (std::system_error const& err) {
