@@ -93,11 +93,11 @@ WindowSize getWindowSize(::winsize const& winsize)
     }
     else {
       auto [c, r] = detail::getCursorPosition();
-      return WindowSize {.rows = r, .cols = c};
+      return WindowSize {.cols = c, .rows = r};
     }
   }
 
-  return WindowSize {.rows = winsize.ws_row, .cols = winsize.ws_col};
+  return WindowSize {.cols = winsize.ws_col, .rows = winsize.ws_row};
 }
 
 namespace detail {
