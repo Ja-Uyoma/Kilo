@@ -49,7 +49,7 @@ class ScreenBuffer;
  * @param[in] cursor The position of the cursor in the terminal window
  * @param[in] window The terminal window
  */
-void processKeypress(int const keyPressed, Cursor& cursor, window::Window const& window) noexcept;
+void processKeypress(int const keyPressed, Cursor& cursor, terminal::Window const& window) noexcept;
 
 /// @brief Process the results from readKey
 /// @details This function is responsible for mapping keypresses to editor
@@ -254,7 +254,7 @@ void processKeypressHelper(unsigned const keyPressed) noexcept;
  * @param[in] cursor The position of the cursor in the terminal window
  * @param[in] window The terminal window
  */
-void processKeypressHelper(utilities::EditorKey keyPressed, Cursor& cursor, window::Window const& window) noexcept;
+void processKeypressHelper(utilities::EditorKey keyPressed, Cursor& cursor, terminal::Window const& window) noexcept;
 
 }   // namespace Kilo::editor::detail
 

@@ -18,7 +18,7 @@ public:
   int numrows {};
   Cursor cursor {};
   Offset off {};
-  window::Window window = window::Window::create();
+  terminal::Window window = terminal::Window::create();
   int rx {};
 
   explicit EditorConfig();

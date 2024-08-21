@@ -54,7 +54,7 @@ static EditorConfig editorConfig;
  * @param[in] cursor The position of the cursor in the terminal window
  * @param[in] window The terminal window
  */
-void processKeypress(int const keyPressed, Cursor& cursor, window::Window const& window) noexcept
+void processKeypress(int const keyPressed, Cursor& cursor, terminal::Window const& window) noexcept
 {
   detail::processKeypressHelper(keyPressed);
 
@@ -356,7 +356,7 @@ void processKeypressHelper(unsigned const keyPressed) noexcept
  * @param[in] cursor The position of the cursor in the terminal window
  * @param[in] window The terminal window
  */
-void processKeypressHelper(utilities::EditorKey keyPressed, Cursor& cursor, window::Window const& window) noexcept
+void processKeypressHelper(utilities::EditorKey keyPressed, Cursor& cursor, terminal::Window const& window) noexcept
 {
   using enum utilities::EditorKey;
 
