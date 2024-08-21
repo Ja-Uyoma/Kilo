@@ -49,16 +49,6 @@ public:
   }
 
   /**
-   * @brief Get the number of rows of the terminal window
-   *
-   * @return The number of rows of the terminal window
-   */
-  constexpr auto rows() const noexcept
-  {
-    return m_winsize.rows;
-  }
-
-  /**
    * @brief Get the number of columns of the terminal window
    *
    * @return The number of columns of the terminal window
@@ -66,6 +56,16 @@ public:
   constexpr auto cols() const noexcept
   {
     return m_winsize.cols;
+  }
+
+  /**
+   * @brief Get the number of rows of the terminal window
+   *
+   * @return The number of rows of the terminal window
+   */
+  constexpr auto rows() const noexcept
+  {
+    return m_winsize.rows;
   }
 
 private:
