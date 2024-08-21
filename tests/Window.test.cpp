@@ -16,7 +16,7 @@ TEST(Window, ColsReturnsTheNumberOfColumns)
 {
   Window w;
 
-  ASSERT_THAT(w.cols(), ::testing::Eq(0));
+  ASSERT_THAT(w.cols(), ::testing::Gt(0));
 }
 
 }   // namespace Kilo::window
