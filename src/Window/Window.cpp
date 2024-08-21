@@ -24,7 +24,6 @@
 #include "Window.hpp"
 
 #include "Terminal/Terminal.hpp"
-#include "Terminal/WindowSize.hpp"
 #include <iostream>
 #include <sys/ioctl.h>
 #include <system_error>
