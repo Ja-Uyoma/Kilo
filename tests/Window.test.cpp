@@ -5,14 +5,14 @@
 
 namespace Kilo::window {
 
-TEST(Window, RowsReturnsTheNumberOfRows)
+TEST(Window, RowsReturnsAPositiveNumberOfRows)
 {
   Window w;
 
   ASSERT_THAT(w.rows(), ::testing::Gt(0));
 }
 
-TEST(Window, ColsReturnsTheNumberOfColumns)
+TEST(Window, ColsReturnsAPositiveNumberOfColumns)
 {
   Window w;
 
