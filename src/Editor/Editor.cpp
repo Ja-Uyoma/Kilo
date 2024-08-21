@@ -146,12 +146,7 @@ void drawRows(ScreenBuffer& buffer) noexcept
 
   for (int y = 0; y < editorConfig.window.rows(); y++) {
     if (int filerow = y + editorConfig.off.row; std::cmp_greater_equal(filerow, editorConfig.row.size())) {
-      if (editorConfig.row.empty() && y == editorConfig.window.rows() / 3) {
-        detail::printWelcomeMessage(editorConfig.window.cols(), buffer);
-      }
-      else {
-        buffer.write("~"s);
-      }
+      detail::printWelcomeMessageOrTilde(editorConfig.row.empty(), y, buffer, editorConfig.window);
     }
     else {
       auto len = std::ssize(editorConfig.render[filerow]) - editorConfig.off.col;
