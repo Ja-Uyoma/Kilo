@@ -78,7 +78,7 @@ void getCursorPosition(int* const rows, int* const cols);
  * @throws std::system_error If we could not determine the position of the cursor
  * @returns The position of the cursor
  */
-std::pair<int, int> getCursorPosition();
+WindowSize getCursorPosition();
 
 }   // namespace detail
 
