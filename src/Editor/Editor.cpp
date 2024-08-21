@@ -203,7 +203,6 @@ bool open(std::filesystem::path const& path)
 
   while (std::getline(infile, line)) {
     editorConfig.row.push_back(line);
-    editorConfig.numrows++;
   }
 
   editorConfig.render = editorConfig.row;
