@@ -322,6 +322,18 @@ TEST(printWelcomeMessage, TruncatesTheMessageIfItsTooLong)
   ASSERT_THAT(buf.c_str(), ::testing::Eq(truncatedMsg));
 }
 
+TEST(printWelcomeMessageOrTilde, PrintsATildeIfTheDocumentIsNotEmpty)
+{
+  bool documentIsEmpty = false;
+  int currentRow = 8;
+  ScreenBuffer buf;
+  terminal::Window window = terminal::Window::create();
+
+  printWelcomeMessageOrTilde(documentIsEmpty, currentRow, buf, window);
+
+  ASSERT_THAT(buf.size(), ::testing::Eq(1));
+}
+
 }   // namespace detail
 
 }   // namespace Kilo::editor
