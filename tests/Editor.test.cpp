@@ -325,9 +325,9 @@ TEST(printWelcomeMessage, TruncatesTheMessageIfItsTooLong)
 TEST(printWelcomeMessageOrTilde, PrintsATildeIfTheDocumentIsNotEmpty)
 {
   bool documentIsEmpty = false;
-  int currentRow = 8;
   ScreenBuffer buf;
   terminal::Window window = terminal::Window::create();
+  int currentRow = window.rows() / 3;
 
   printWelcomeMessageOrTilde(documentIsEmpty, currentRow, buf, window);
 
