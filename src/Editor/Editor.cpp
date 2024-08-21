@@ -145,8 +145,8 @@ void drawRows(ScreenBuffer& buffer) noexcept
   using namespace std::string_literals;
 
   for (int y = 0; y < editorConfig.window.rows(); y++) {
-    if (int filerow = y + editorConfig.off.row; filerow >= editorConfig.numrows) {
       if (editorConfig.numrows == 0 && y == editorConfig.window.rows() / 3) {
+    if (int filerow = y + editorConfig.off.row; std::cmp_greater_equal(filerow, editorConfig.row.size())) {
         detail::printWelcomeMessage(editorConfig.window.cols(), buffer);
       }
       else {
