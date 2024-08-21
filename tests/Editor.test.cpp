@@ -49,7 +49,7 @@ TEST(processKeypress, MovesCursorToStartOfLineIfHomeButtonIsPressed)
 
   EditorKey const key = EditorKey::Home;
   Cursor cursor {100, 100};
-  Window const window {50, 50};
+  Window const window = Window::create();
 
   detail::processKeypressHelper(key, cursor, window);
 
@@ -63,7 +63,7 @@ TEST(processKeypress, MovesCursorToEndOfLineIfEndButtonIsPressed)
 
   EditorKey const key = EditorKey::End;
   Cursor cursor {100, 100};
-  Window const window {50, 50};
+  Window const window = Window::create();
 
   detail::processKeypressHelper(key, cursor, window);
 
