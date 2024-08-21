@@ -7,14 +7,14 @@ namespace Kilo::window {
 
 TEST(Window, RowsReturnsAPositiveNumberOfRows)
 {
-  Window w;
+  Window w = Window::create();
 
   ASSERT_THAT(w.rows(), ::testing::Gt(0));
 }
 
 TEST(Window, ColsReturnsAPositiveNumberOfColumns)
 {
-  Window w;
+  Window w = Window::create();
 
   ASSERT_THAT(w.cols(), ::testing::Gt(0));
 }
