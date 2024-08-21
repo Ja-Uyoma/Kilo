@@ -28,6 +28,7 @@
 #include "ScreenBuffer/ScreenBuffer.hpp"
 #include "Utilities/Utilities.hpp"
 #include "Window/Window.hpp"
+#include "gmock/gmock.h"
 #include <cstring>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -344,6 +345,21 @@ TEST(printWelcomeMessageOrTilde, PrintsATildeIfTheCurrentRowIsNotAThirdOfTheWind
   printWelcomeMessageOrTilde(documentIsEmpty, currentRow, buf, window);
 
   ASSERT_THAT(buf.size(), ::testing::Eq(1));
+}
+
+TEST(printWelcomeMessageOrTilde, PrintsTheWelcomeMessage)
+{
+  // This is not a good test
+  // Try rewriting this using EXPECT_CALL
+
+  bool documentIsEmpty = true;
+  ScreenBuffer buffer;
+  terminal::Window window = terminal::Window::create();
+  auto currentRow = window.rows() / 3;
+
+  printWelcomeMessageOrTilde(documentIsEmpty, currentRow, buffer, window);
+
+  ASSERT_THAT(buffer.size(), ::testing::Gt(1));
 }
 
 }   // namespace detail
