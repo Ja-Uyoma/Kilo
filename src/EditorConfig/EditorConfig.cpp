@@ -1,6 +1,5 @@
 #include "EditorConfig.hpp"
 
-#include "Terminal/Terminal.hpp"
 #include <iostream>
 #include <system_error>
 
