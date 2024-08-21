@@ -334,6 +334,18 @@ TEST(printWelcomeMessageOrTilde, PrintsATildeIfTheDocumentIsNotEmpty)
   ASSERT_THAT(buf.size(), ::testing::Eq(1));
 }
 
+TEST(printWelcomeMessageOrTilde, PrintsATildeIfTheCurrentRowIsNotAThirdOfTheWindowHeight)
+{
+  bool documentIsEmpty = true;
+  ScreenBuffer buf;
+  terminal::Window window = terminal::Window::create();
+  int currentRow = 0;
+
+  printWelcomeMessageOrTilde(documentIsEmpty, currentRow, buf, window);
+
+  ASSERT_THAT(buf.size(), ::testing::Eq(1));
+}
+
 }   // namespace detail
 
 }   // namespace Kilo::editor
