@@ -15,7 +15,6 @@ public:
   terminal::TerminalState state {};
   std::vector<std::string> row;
   std::vector<std::string> render;
-  int numrows {};
   Cursor cursor {};
   Offset off {};
   terminal::Window window = terminal::Window::create();
