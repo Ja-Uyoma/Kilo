@@ -24,6 +24,8 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
+#include "Terminal/WindowSize.hpp"
+
 namespace Kilo::terminal {
 
 class Window
@@ -42,7 +44,7 @@ public:
    * @param[in] rows The number of rows of the Window
    * @param[in] cols The number of columns of the Window
    */
-  constexpr explicit Window(int const rows, int const cols) noexcept : m_rows(rows), m_cols(cols)
+  constexpr explicit Window(int const rows, int const cols) noexcept : m_winsize {cols, rows}
   {
   }
 
@@ -53,7 +55,7 @@ public:
    */
   constexpr auto rows() const noexcept
   {
-    return m_rows;
+    return m_winsize.rows;
   }
 
   /**
@@ -63,12 +65,11 @@ public:
    */
   constexpr auto cols() const noexcept
   {
-    return m_cols;
+    return m_winsize.cols;
   }
 
 private:
-  int m_rows {};
-  int m_cols {};
+  WindowSize m_winsize;
 
   /**
    * @brief Construct a new Window object

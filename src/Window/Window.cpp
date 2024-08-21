@@ -47,14 +47,11 @@ Window::Window()
   ::winsize ws;
 
   try {
-    auto [c, r] = terminal::getWindowSize(ws);
-    m_cols = c;
-    m_rows = r;
+    m_winsize = terminal::getWindowSize(ws);
   }
   catch (std::system_error const& err) {
     std::cerr << err.code() << ": " << err.what() << '\n';
-    m_cols = 0;
-    m_rows = 0;
+    m_winsize = {0, 0};
 
     throw;
   }
