@@ -267,6 +267,19 @@ void processKeypressHelper(unsigned const keyPressed) noexcept;
  */
 void processKeypressHelper(utilities::EditorKey keyPressed, Cursor& cursor, terminal::Window const& window) noexcept;
 
+/**
+ * @brief Print the welcome message or a tilde to the window
+ *
+ * @param documentIsEmpty A boolean value representing whether the document is empty or not
+ * @param currentRow The row we are currently scrolled to in the open document
+ * @param buffer The ScreenBuffer
+ * @param window The terminal window
+ */
+void printWelcomeMessageOrTilde(bool documentIsEmpty,
+                                int currentRow,
+                                ScreenBuffer& buffer,
+                                terminal::Window const& window);
+
 }   // namespace Kilo::editor::detail
 
 #endif

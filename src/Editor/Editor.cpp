@@ -397,4 +397,25 @@ void processKeypressHelper(utilities::EditorKey keyPressed, Cursor& cursor, term
   }
 }
 
+/**
+ * @brief Print the welcome message or a tilde to the window
+ *
+ * @param documentIsEmpty A boolean value representing whether the document is empty or not
+ * @param currentRow The row we are currently scrolled to in the open document
+ * @param buffer The ScreenBuffer
+ * @param window The terminal window
+ */
+void printWelcomeMessageOrTilde(bool documentIsEmpty,
+                                int currentRow,
+                                ScreenBuffer& buffer,
+                                terminal::Window const& window)
+{
+  if (documentIsEmpty && currentRow == window.rows() / 3) {
+    detail::printWelcomeMessage(window.cols(), buffer);
+  }
+  else {
+    buffer.write("~");
+  }
+}
+
 }   // namespace Kilo::editor::detail
