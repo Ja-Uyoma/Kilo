@@ -31,6 +31,17 @@
 
 namespace Kilo::window {
 
+/**
+ * @brief Create a static Window instance and return a reference to it
+ *
+ * @return Window& A reference to the static Window instance
+ */
+Window& Window::create()
+{
+  static Window window;
+  return window;
+}
+
 Window::Window()
 {
   ::winsize ws;

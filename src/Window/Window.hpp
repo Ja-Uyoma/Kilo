@@ -30,6 +30,13 @@ class Window
 {
 public:
   /**
+   * @brief Create a static Window instance and return a reference to it
+   *
+   * @return Window& A reference to the static Window instance
+   */
+  static Window& create();
+
+  /**
    * @brief Construct a new Window object
    *
    */
