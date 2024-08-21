@@ -37,12 +37,6 @@ public:
   static Window& create();
 
   /**
-   * @brief Construct a new Window object
-   *
-   */
-  explicit Window();
-
-  /**
    * @brief Create a new Window object from the given row and column dimensions
    *
    * @param[in] rows The number of rows of the Window
@@ -75,6 +69,12 @@ public:
 private:
   int m_rows {};
   int m_cols {};
+
+  /**
+   * @brief Construct a new Window object
+   *
+   */
+  explicit Window();
 };
 
 }   // namespace Kilo::window
