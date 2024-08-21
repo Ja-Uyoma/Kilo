@@ -22,3 +22,31 @@
  */
 
 #include "Window.hpp"
+
+#include "Terminal/Terminal.hpp"
+#include "Terminal/WindowSize.hpp"
+#include <iostream>
+#include <sys/ioctl.h>
+#include <system_error>
+
+namespace Kilo::window {
+
+Window::Window()
+{
+  ::winsize ws;
+
+  try {
+    auto [c, r] = terminal::getWindowSize(ws);
+    m_cols = c;
+    m_rows = r;
+  }
+  catch (std::system_error const& err) {
+    std::cerr << err.code() << ": " << err.what() << '\n';
+    m_cols = 0;
+    m_rows = 0;
+
+    throw;
+  }
+}
+
+}   // namespace Kilo::window
