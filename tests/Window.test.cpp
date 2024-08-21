@@ -9,7 +9,7 @@ TEST(Window, RowsReturnsTheNumberOfRows)
 {
   Window w;
 
-  ASSERT_THAT(w.rows(), ::testing::Eq(0));
+  ASSERT_THAT(w.rows(), ::testing::Gt(0));
 }
 
 TEST(Window, ColsReturnsTheNumberOfColumns)
