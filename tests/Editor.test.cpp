@@ -44,8 +44,8 @@ TEST(processKeypress, TerminatesTheProgramIfQIsPressed)
 
 TEST(processKeypress, MovesCursorToStartOfLineIfHomeButtonIsPressed)
 {
+  using terminal::Window;
   using utilities::EditorKey;
-  using window::Window;
 
   EditorKey const key = EditorKey::Home;
   Cursor cursor {100, 100};
@@ -58,8 +58,8 @@ TEST(processKeypress, MovesCursorToStartOfLineIfHomeButtonIsPressed)
 
 TEST(processKeypress, MovesCursorToEndOfLineIfEndButtonIsPressed)
 {
+  using terminal::Window;
   using utilities::EditorKey;
-  using window::Window;
 
   EditorKey const key = EditorKey::End;
   Cursor cursor {100, 100};
