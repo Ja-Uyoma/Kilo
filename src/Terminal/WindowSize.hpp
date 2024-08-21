@@ -28,8 +28,8 @@ namespace Kilo::terminal {
 
 struct WindowSize
 {
-  int rows;
   int cols;
+  int rows;
 };
 
 }   // namespace Kilo::terminal
