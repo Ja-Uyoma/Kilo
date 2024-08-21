@@ -24,7 +24,7 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
-namespace Kilo::window {
+namespace Kilo::terminal {
 
 class Window
 {
@@ -77,6 +77,6 @@ private:
   explicit Window();
 };
 
-}   // namespace Kilo::window
+}   // namespace Kilo::terminal
 
 #endif

@@ -29,7 +29,7 @@
 #include <sys/ioctl.h>
 #include <system_error>
 
-namespace Kilo::window {
+namespace Kilo::terminal {
 
 /**
  * @brief Create a static Window instance and return a reference to it
@@ -60,4 +60,4 @@ Window::Window()
   }
 }
 
-}   // namespace Kilo::window
+}   // namespace Kilo::terminal
