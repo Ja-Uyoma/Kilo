@@ -99,8 +99,6 @@ void processKeypress()
 
 void refreshScreen() noexcept
 {
-  using namespace std::string_literals;
-
   scroll();
 
   ScreenBuffer buffer;
