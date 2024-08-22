@@ -97,30 +97,30 @@ TEST(FixCursorToVisibleWindow, ModifiesTheOffsetIfCursorPositionIsGreaterOrEqual
 
 TEST(getCurrentRow, ReturnsTheCurrentRowOnWhichTheCursorIsLocated)
 {
-  Cursor cursor {.x = 0, .y = 0};
+  int const cursorY {};
   std::vector<std::string> rows({"The quick brown fox", "jumped over the lazy dog"});
 
-  auto currentRow = detail::getCurrentRow(cursor, rows);
+  auto currentRow = detail::getCurrentRow(cursorY, rows);
 
   ASSERT_THAT(currentRow.has_value(), ::testing::Eq(true));
 }
 
 TEST(getCurrentRow, ReturnsAnEmptyOptionalIfTheCursorIsOutOfBounds)
 {
-  Cursor cursor {.x = 0, .y = 4};
+  int const cursorY {4};
   std::vector<std::string> rows({"The quick brown fox", "jumped over the lazy dog"});
 
-  auto currentRow = detail::getCurrentRow(cursor, rows);
+  auto currentRow = detail::getCurrentRow(cursorY, rows);
 
   ASSERT_THAT(currentRow.has_value(), ::testing::Eq(false));
 }
 
 TEST(getCurrentRow, ReturnsAnEmptyOptionalIfTheRowsObjectIsEmpty)
 {
-  Cursor cursor {.x = 0, .y = 4};
+  int const cursorY {4};
   std::vector<std::string> rows {};
 
-  auto currentRow = detail::getCurrentRow(cursor, rows);
+  auto currentRow = detail::getCurrentRow(cursorY, rows);
 
   ASSERT_THAT(currentRow.has_value(), ::testing::Eq(false));
 }
