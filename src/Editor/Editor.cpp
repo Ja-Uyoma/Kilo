@@ -150,17 +150,8 @@ void drawRows(ScreenBuffer& buffer) noexcept
       detail::printWelcomeMessageOrTilde(editorConfig.row.empty(), y, buffer, editorConfig.window);
     }
     else {
-      auto len = std::ssize(editorConfig.render[filerow]) - editorConfig.off.col;
-
-      if (len < 0) {
-        len = 0;
-      }
-
-      if (len > editorConfig.window.cols()) {
-        len = editorConfig.window.cols();
-      }
-
-      buffer.write(&editorConfig.render[filerow][editorConfig.off.col], len);
+      detail::printLineOfDocument(
+        editorConfig.render[filerow], buffer, editorConfig.window.cols(), editorConfig.off.col);
     }
 
     buffer.write(EscapeSequences::ErasePartOfLineToTheRightOfCursor);
