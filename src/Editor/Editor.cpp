@@ -43,6 +43,7 @@
 #include <string_view>
 #include <unistd.h>
 #include <utility>
+#include <vector>
 
 namespace Kilo::editor {
 static EditorConfig editorConfig;
@@ -411,6 +412,29 @@ void printWelcomeMessageOrTilde(bool documentIsEmpty,
   else {
     buffer.write("~");
   }
+}
+
+/**
+ * @brief Print a line of text from the open document to the screen
+ *
+ * @param line The line to be printed
+ * @param buffer The screen buffer
+ * @param windowWidth The width of the terminal window
+ * @param columnOffset The column offset between the terminal window width and the document width
+ */
+void printLineOfDocument(std::string const& line, ScreenBuffer& buffer, int const windowWidth, int const columnOffset)
+{
+  auto lineLen = std::ssize(line) - columnOffset;
+
+  if (lineLen < 0) {
+    lineLen = 0;
+  }
+
+  if (lineLen > windowWidth) {
+    lineLen = windowWidth;
+  }
+
+  buffer.write(&line[columnOffset], lineLen);
 }
 
 }   // namespace Kilo::editor::detail
