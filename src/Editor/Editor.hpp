@@ -184,7 +184,7 @@ void printWelcomeMessage(int windowWidth, ScreenBuffer& buffer);
  */
 constexpr std::optional<std::string> getCurrentRow(int const cursorY, std::vector<std::string> const& rows) noexcept
 {
-  assert(cursorY >= 0);
+  assert(cursorY >= 0 and "cursorY must be non-negative");
 
   if (std::cmp_greater_equal(cursorY, rows.size())) {
     return std::nullopt;
