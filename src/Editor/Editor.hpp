@@ -84,11 +84,8 @@ void drawRows(ScreenBuffer& buffer) noexcept;
  * @param buffer The screen buffer
  * @param renderedDoc The version of the document being edited that is actually rendered
  */
-void drawRows(terminal::Window const& window,
-              Offset const& offset,
-              std::vector<std::string> const& doc,
-              ScreenBuffer& buffer,
-              std::vector<std::string> const& renderedDoc);
+void drawRows(terminal::Window const& window, Offset const& offset, std::vector<std::string> const& doc,
+              ScreenBuffer& buffer, std::vector<std::string> const& renderedDoc);
 
 /**
  * @brief Move the cursor in accordance with the key pressed
@@ -204,8 +201,7 @@ constexpr std::optional<std::string> getCurrentRow(Cursor const& cursor, std::ve
  * @param keyPressed The key press determining how the cursor is to be moved
  * @param document The document within which the cursor is located
  */
-constexpr void moveCursorHelper(Cursor& cursor,
-                                utilities::EditorKey const& keyPressed,
+constexpr void moveCursorHelper(Cursor& cursor, utilities::EditorKey const& keyPressed,
                                 std::vector<std::string> const& document) noexcept
 {
   switch (keyPressed) {
@@ -290,9 +286,7 @@ void processKeypressHelper(utilities::EditorKey keyPressed, Cursor& cursor, term
  * @param buffer The ScreenBuffer
  * @param window The terminal window
  */
-void printWelcomeMessageOrTilde(bool documentIsEmpty,
-                                int currentRow,
-                                ScreenBuffer& buffer,
+void printWelcomeMessageOrTilde(bool documentIsEmpty, int currentRow, ScreenBuffer& buffer,
                                 terminal::Window const& window);
 
 /**

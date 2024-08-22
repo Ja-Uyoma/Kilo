@@ -61,8 +61,7 @@ void TerminalState::reset() &
 void getTerminalDriverSettings(int fd, termios& buf)
 {
   if (errno = 0; tcgetattr(fd, &buf) == -1) {
-    throw std::system_error(
-      errno, std::system_category(), "Could not retrieve terminal driver settings");
+    throw std::system_error(errno, std::system_category(), "Could not retrieve terminal driver settings");
   }
 }
 
@@ -92,8 +91,7 @@ void ttyRaw(int fd, termios const& buf, termios& copy)
   copy.c_cc[VTIME] = 1;
 
   if (errno = 0; tcsetattr(fd, TCSAFLUSH, &copy) == -1) {
-    throw std::system_error(
-      errno, std::system_category(), "Failed to set terminal driver to raw mode");
+    throw std::system_error(errno, std::system_category(), "Failed to set terminal driver to raw mode");
   }
 
   /*
@@ -102,14 +100,13 @@ void ttyRaw(int fd, termios const& buf, termios& copy)
 
   if (errno = 0; tcgetattr(fd, &copy) == -1) {
     tcsetattr(fd, TCSAFLUSH, &buf);
-    throw std::system_error(
-      errno, std::system_category(), "Error while writing terminal driver settings to buffer");
+    throw std::system_error(errno, std::system_category(), "Error while writing terminal driver settings to buffer");
   }
 
   auto const verify = [&copy] {
     return (copy.c_iflag & (BRKINT | ICRNL | INPCK | ISTRIP | IXON)) || (copy.c_oflag & OPOST)
-        || ((copy.c_cflag & CS8) != CS8) || (copy.c_lflag & (ECHO | ICANON | IEXTEN | ISIG))
-        || (copy.c_cc[VMIN] != 0) || (copy.c_cc[VTIME] != 1);
+        || ((copy.c_cflag & CS8) != CS8) || (copy.c_lflag & (ECHO | ICANON | IEXTEN | ISIG)) || (copy.c_cc[VMIN] != 0)
+        || (copy.c_cc[VTIME] != 1);
   };
 
   /*
@@ -118,16 +115,14 @@ void ttyRaw(int fd, termios const& buf, termios& copy)
 
   if (verify()) {
     tcsetattr(fd, TCSAFLUSH, &buf);
-    throw std::system_error(
-      EINVAL, std::system_category(), "Setting driver to raw mode only partially successful");
+    throw std::system_error(EINVAL, std::system_category(), "Setting driver to raw mode only partially successful");
   }
 }
 
 void ttyReset(int fd, termios const& buf)
 {
   if (errno = 0; tcsetattr(fd, TCSAFLUSH, &buf) == -1) {
-    throw std::system_error(
-      errno, std::system_category(), "Failed to reset terminal driver to canonical mode");
+    throw std::system_error(errno, std::system_category(), "Failed to reset terminal driver to canonical mode");
   }
 }
 

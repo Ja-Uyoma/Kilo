@@ -148,8 +148,8 @@ void drawRows(ScreenBuffer& buffer) noexcept
       detail::printWelcomeMessageOrTilde(editorConfig.row.empty(), currentRow, buffer, editorConfig.window);
     }
     else {
-      detail::printLineOfDocument(
-        editorConfig.render[filerow], buffer, editorConfig.window.cols(), editorConfig.off.col);
+      detail::printLineOfDocument(editorConfig.render[filerow], buffer, editorConfig.window.cols(),
+                                  editorConfig.off.col);
     }
 
     buffer.write(EscapeSequences::ErasePartOfLineToTheRightOfCursor);
@@ -169,11 +169,8 @@ void drawRows(ScreenBuffer& buffer) noexcept
  * @param buffer The screen buffer
  * @param renderedDoc The version of the document being edited that is actually rendered
  */
-void drawRows(terminal::Window const& window,
-              Offset const& offset,
-              std::vector<std::string> const& doc,
-              ScreenBuffer& buffer,
-              std::vector<std::string> const& renderedDoc)
+void drawRows(terminal::Window const& window, Offset const& offset, std::vector<std::string> const& doc,
+              ScreenBuffer& buffer, std::vector<std::string> const& renderedDoc)
 {
   for (std::size_t currentRow = 0; std::cmp_less(currentRow, window.rows()); currentRow++) {
     if (auto fileRow = currentRow + offset.row; std::cmp_greater_equal(fileRow, doc.size())) {
@@ -421,9 +418,7 @@ void processKeypressHelper(utilities::EditorKey keyPressed, Cursor& cursor, term
  * @param buffer The ScreenBuffer
  * @param window The terminal window
  */
-void printWelcomeMessageOrTilde(bool documentIsEmpty,
-                                int currentRow,
-                                ScreenBuffer& buffer,
+void printWelcomeMessageOrTilde(bool documentIsEmpty, int currentRow, ScreenBuffer& buffer,
                                 terminal::Window const& window)
 {
   if (documentIsEmpty && currentRow == window.rows() / 3) {

@@ -68,8 +68,8 @@ void getWindowSize(int* const rows, int* const cols)
   if (::ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == -1 || ws.ws_col == 0) {
     // Move the cursor to the bottom-right of the screen
     if (::write(STDOUT_FILENO, "\x1b[999C\x1b[999B", 12) != 12) {
-      throw std::system_error(
-        errno, std::system_category(), "Could not move the cursor to the bottom-right of the screen");
+      throw std::system_error(errno, std::system_category(),
+                              "Could not move the cursor to the bottom-right of the screen");
     }
 
     detail::getCursorPosition(rows, cols);
@@ -88,8 +88,8 @@ WindowSize getWindowSize(::winsize const& winsize)
 {
   if (::ioctl(STDOUT_FILENO, TIOCGWINSZ, &winsize) == -1 or winsize.ws_col == 0) {
     if (errno = 0; ::write(STDOUT_FILENO, "\x1b[999c\x1b[999B", 12) != 12) {
-      throw std::system_error(
-        errno, std::system_category(), "Could not move the cursor to the bottom-right of the screen");
+      throw std::system_error(errno, std::system_category(),
+                              "Could not move the cursor to the bottom-right of the screen");
     }
     else {
       auto [c, r] = detail::getCursorPosition();
