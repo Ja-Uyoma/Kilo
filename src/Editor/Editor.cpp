@@ -421,9 +421,12 @@ void printWelcomeMessageOrTilde(bool documentIsEmpty,
  * @param buffer The screen buffer
  * @param windowWidth The width of the terminal window
  * @param columnOffset The column offset between the terminal window width and the document width
+ * @pre The column offset must be non-negative
  */
 void printLineOfDocument(std::string const& line, ScreenBuffer& buffer, int const windowWidth, int const columnOffset)
 {
+  assert(columnOffset >= 0 and "Column offset must be non-negative");
+
   auto lineLen = std::ssize(line) - columnOffset;
 
   if (lineLen < 0) {
