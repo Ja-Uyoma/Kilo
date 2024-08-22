@@ -178,19 +178,19 @@ void printWelcomeMessage(int windowWidth, ScreenBuffer& buffer);
 /**
  * @brief Get the current row at which the cursor is located
  *
- * @param cursor The cursor object
+ * @param cursorY The position of the cursor along the y-axis
  * @param rows The rows of text of the document in memory
  * @return std::optional<std::string> The current row at which the cursor is located
  */
-constexpr std::optional<std::string> getCurrentRow(Cursor const& cursor, std::vector<std::string> const& rows) noexcept
+constexpr std::optional<std::string> getCurrentRow(int const cursorY, std::vector<std::string> const& rows) noexcept
 {
-  assert(cursor.x >= 0 and cursor.y >= 0);
+  assert(cursorY >= 0);
 
-  if (std::cmp_greater_equal(cursor.y, rows.size())) {
+  if (std::cmp_greater_equal(cursorY, rows.size())) {
     return std::nullopt;
   }
   else {
-    return std::make_optional(rows[cursor.y]);
+    return std::make_optional(rows[cursorY]);
   }
 }
 
@@ -217,7 +217,7 @@ constexpr void moveCursorHelper(Cursor& cursor, utilities::EditorKey const& keyP
       }
       break;
     case ArrowRight: {
-      auto currentRow = detail::getCurrentRow(cursor, document);
+      auto currentRow = detail::getCurrentRow(cursor.y, document);
 
       if (currentRow && std::cmp_less(cursor.x, currentRow->size())) {
         cursor.x++;
