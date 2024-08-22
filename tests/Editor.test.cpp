@@ -374,6 +374,18 @@ TEST(printLineOfDocument, PrintsNothingWhenTheLineLengthIsLessThanTheColumnOffse
   ASSERT_THAT(buf.size(), ::testing::Eq(0));
 }
 
+TEST(printLineOfDocument, TruncatesTheLineIfItsLongerThanWindowWidth)
+{
+  std::string const line {"The quick brown fox jumped over the lazy doggo"};
+  int const windowWidth {20};
+  int const colOffset = 5;
+  ScreenBuffer buf;
+
+  printLineOfDocument(line, buf, windowWidth, colOffset);
+
+  ASSERT_THAT(buf.size(), ::testing::Eq(windowWidth));
+}
+
 }   // namespace detail
 
 }   // namespace Kilo::editor
