@@ -160,6 +160,37 @@ void drawRows(ScreenBuffer& buffer) noexcept
   }
 }
 
+/**
+ * @brief Draw each row of the buffer of text being edited, plus a tilde at the beginning
+ *
+ * @param window The terminal window
+ * @param offset The offset from the terminal window to the document
+ * @param doc The document being edited
+ * @param buffer The screen buffer
+ * @param renderedDoc The version of the document being edited that is actually rendered
+ */
+void drawRows(terminal::Window const& window,
+              Offset const& offset,
+              std::vector<std::string> const& doc,
+              ScreenBuffer& buffer,
+              std::vector<std::string> const& renderedDoc)
+{
+  for (std::size_t currentRow = 0; std::cmp_less(currentRow, window.rows()); currentRow++) {
+    if (auto fileRow = currentRow + offset.row; std::cmp_greater_equal(fileRow, doc.size())) {
+      detail::printWelcomeMessageOrTilde(doc.empty(), currentRow, buffer, window);
+    }
+    else {
+      detail::printLineOfDocument(renderedDoc[fileRow], buffer, window.cols(), offset.col);
+    }
+
+    buffer.write(EscapeSequences::ErasePartOfLineToTheRightOfCursor);
+
+    if (std::cmp_less(currentRow, window.rows() - 1)) {
+      buffer.write("\r\n");
+    }
+  }
+}
+
 void moveCursor(utilities::EditorKey key) noexcept
 {
   detail::moveCursorHelper(editorConfig.cursor, key, editorConfig.row);

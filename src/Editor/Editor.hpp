@@ -76,6 +76,21 @@ void refreshScreen(ScreenBuffer& buffer, Cursor const& cursor, Offset const& off
 void drawRows(ScreenBuffer& buffer) noexcept;
 
 /**
+ * @brief Draw each row of the buffer of text being edited, plus a tilde at the beginning
+ *
+ * @param window The terminal window
+ * @param offset The offset from the terminal window to the document
+ * @param doc The document being edited
+ * @param buffer The screen buffer
+ * @param renderedDoc The version of the document being edited that is actually rendered
+ */
+void drawRows(terminal::Window const& window,
+              Offset const& offset,
+              std::vector<std::string> const& doc,
+              ScreenBuffer& buffer,
+              std::vector<std::string> const& renderedDoc);
+
+/**
  * @brief Move the cursor in accordance with the key pressed
  *
  * @param key The character representing the direction to move the cursor in
