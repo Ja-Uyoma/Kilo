@@ -143,9 +143,9 @@ void refreshScreen(ScreenBuffer& buffer, Cursor const& cursor, Offset const& off
 
 void drawRows(ScreenBuffer& buffer) noexcept
 {
-  for (int y = 0; y < editorConfig.window.rows(); y++) {
-    if (int filerow = y + editorConfig.off.row; std::cmp_greater_equal(filerow, editorConfig.row.size())) {
-      detail::printWelcomeMessageOrTilde(editorConfig.row.empty(), y, buffer, editorConfig.window);
+  for (int currentRow = 0; currentRow < editorConfig.window.rows(); currentRow++) {
+    if (int filerow = currentRow + editorConfig.off.row; std::cmp_greater_equal(filerow, editorConfig.row.size())) {
+      detail::printWelcomeMessageOrTilde(editorConfig.row.empty(), currentRow, buffer, editorConfig.window);
     }
     else {
       detail::printLineOfDocument(
@@ -154,7 +154,7 @@ void drawRows(ScreenBuffer& buffer) noexcept
 
     buffer.write(EscapeSequences::ErasePartOfLineToTheRightOfCursor);
 
-    if (y < editorConfig.window.rows() - 1) {
+    if (currentRow < editorConfig.window.rows() - 1) {
       buffer.write("\r\n");
     }
   }
