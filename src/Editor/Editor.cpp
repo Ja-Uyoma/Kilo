@@ -157,7 +157,7 @@ void drawRows(ScreenBuffer& buffer) noexcept
     buffer.write(EscapeSequences::ErasePartOfLineToTheRightOfCursor);
 
     if (y < editorConfig.window.rows() - 1) {
-      buffer.write("\r\n"s);
+      buffer.write("\r\n");
     }
   }
 }
