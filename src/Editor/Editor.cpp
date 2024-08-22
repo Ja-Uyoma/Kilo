@@ -143,8 +143,6 @@ void refreshScreen(ScreenBuffer& buffer, Cursor const& cursor, Offset const& off
 
 void drawRows(ScreenBuffer& buffer) noexcept
 {
-  using namespace std::string_literals;
-
   for (int y = 0; y < editorConfig.window.rows(); y++) {
     if (int filerow = y + editorConfig.off.row; std::cmp_greater_equal(filerow, editorConfig.row.size())) {
       detail::printWelcomeMessageOrTilde(editorConfig.row.empty(), y, buffer, editorConfig.window);
