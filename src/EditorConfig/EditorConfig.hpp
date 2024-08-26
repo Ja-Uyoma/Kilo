@@ -34,6 +34,12 @@ public:
    *
    */
   void scroll() noexcept;
+
+  /**
+   * @brief Process the result of calling readKey
+   *
+   */
+  void processKeypress();
 };
 }   // namespace Kilo::editor
 

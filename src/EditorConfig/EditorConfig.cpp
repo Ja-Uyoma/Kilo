@@ -1,6 +1,7 @@
 #include "EditorConfig.hpp"
 
 #include "Editor/Editor.hpp"
+#include "Terminal/Terminal.hpp"
 #include <iostream>
 #include <system_error>
 
@@ -35,4 +36,16 @@ void EditorConfig::scroll() noexcept
 {
   editor::scroll(cursor, off, window);
 }
+
+/**
+ * @brief Process the result of calling readKey
+ *
+ */
+void EditorConfig::processKeypress()
+{
+  auto const keyPressed = terminal::readKey();
+
+  editor::processKeypress(keyPressed, cursor, window);
+}
+
 }   // namespace Kilo::editor
