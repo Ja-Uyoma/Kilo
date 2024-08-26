@@ -225,8 +225,6 @@ bool open(std::filesystem::path const& path)
 
 void scroll() noexcept
 {
-  editorConfig.rx = editorConfig.cursor.x;
-
   /*
    * Check if the cursor has moved outside of the visible window.
    * If so, adjust editorConfig.off.row and/or editorConfig.off.col so that the
