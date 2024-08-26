@@ -6,6 +6,7 @@
 #include "ScreenBuffer/ScreenBuffer.hpp"
 #include "TerminalState/TerminalState.hpp"
 #include "Window/Window.hpp"
+#include <filesystem>
 #include <string>
 #include <vector>
 
@@ -53,6 +54,15 @@ public:
    * @brief Draw each row of the buffer of text being edited, plus a tilde at the beginning
    */
   void drawRows();
+
+  /**
+   * @brief Open a file and write its contents to memory
+   *
+   * @param[in] path The path to the file
+   * @return true If the operation was successful
+   * @return false If the operation failed
+   */
+  bool open(std::filesystem::path const& path);
 };
 }   // namespace Kilo::editor
 

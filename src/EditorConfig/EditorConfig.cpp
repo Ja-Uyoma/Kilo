@@ -74,4 +74,16 @@ void EditorConfig::drawRows()
   editor::drawRows(window, off, row, buffer, render);
 }
 
+/**
+ * @brief Open a file and write its contents to memory
+ *
+ * @param[in] path The path to the file
+ * @return true If the operation was successful
+ * @return false If the operation failed
+ */
+bool EditorConfig::open(std::filesystem::path const& path)
+{
+  return editor::open(path, row);
+}
+
 }   // namespace Kilo::editor
