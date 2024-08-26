@@ -1,5 +1,6 @@
 #include "EditorConfig.hpp"
 
+#include "Editor/Constants.hpp"
 #include "Editor/Editor.hpp"
 #include "Terminal/Terminal.hpp"
 #include <iostream>
@@ -35,6 +36,23 @@ EditorConfig::~EditorConfig()
 void EditorConfig::scroll() noexcept
 {
   editor::scroll(cursor, off, window);
+}
+
+/**
+ * @brief Perform a screen refresh
+ *
+ */
+void EditorConfig::refreshScreen()
+{
+  /*
+   * Hide the cursor when painting and then move it to the home position
+   */
+
+  buffer.write(EscapeSequences::HideCursorWhenRepainting).write(EscapeSequences::MoveCursorToHomePosition);
+
+  this->drawRows();
+  auto const cursorPos = detail::setExactPositionToMoveCursorTo(cursor, off);
+  buffer.write(cursorPos).write(EscapeSequences::ShowTheCursor).flush();
 }
 
 /**

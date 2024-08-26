@@ -38,6 +38,12 @@ public:
   void scroll() noexcept;
 
   /**
+   * @brief Perform a screen refresh
+   *
+   */
+  void refreshScreen();
+
+  /**
    * @brief Process the result of calling readKey
    *
    */
