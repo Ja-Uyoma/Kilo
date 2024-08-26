@@ -28,6 +28,12 @@ public:
 
   EditorConfig(EditorConfig&&) noexcept = delete;
   EditorConfig operator=(EditorConfig&&) noexcept = delete;
+
+  /**
+   * @brief Position the cursor within the visible window
+   *
+   */
+  void scroll() noexcept;
 };
 }   // namespace Kilo::editor
 

@@ -1,5 +1,6 @@
 #include "EditorConfig.hpp"
 
+#include "Editor/Editor.hpp"
 #include <iostream>
 #include <system_error>
 
@@ -24,5 +25,14 @@ EditorConfig::~EditorConfig()
   // cleaned up at program exit
 
   state.reset();
+}
+
+/**
+ * @brief Position the cursor within the visible window
+ *
+ */
+void EditorConfig::scroll() noexcept
+{
+  editor::scroll(cursor, off, window);
 }
 }   // namespace Kilo::editor
