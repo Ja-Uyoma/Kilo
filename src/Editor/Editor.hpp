@@ -108,10 +108,11 @@ bool open(std::filesystem::path const& path);
  *
  * @param[in] path The path to the file
  * @param[in] document The buffer containing the file in memory
+ * @param[in] rendered The document that is actually rendered to the window
  * @return true If the operation was successful
  * @return false If the operation failed
  */
-bool open(std::filesystem::path const& path, std::vector<std::string>& document);
+bool open(std::filesystem::path const& path, std::vector<std::string>& document, std::vector<std::string>& rendered);
 
 /**
  * @brief Position the cursor within the visible window

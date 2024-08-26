@@ -214,6 +214,8 @@ bool open(std::filesystem::path const& path)
     editorConfig.row.push_back(line);
   }
 
+  editorConfig.render = editorConfig.row;
+
   return true;
 }
 
@@ -222,10 +224,11 @@ bool open(std::filesystem::path const& path)
  *
  * @param[in] path The path to the file
  * @param[in] document The buffer containing the file in memory
+ * @param[in] rendered The document that is actually rendered to the window
  * @return true If the operation was successful
  * @return false If the operation failed
  */
-bool open(std::filesystem::path const& path, std::vector<std::string>& document)
+bool open(std::filesystem::path const& path, std::vector<std::string>& document, std::vector<std::string>& rendered)
 {
   std::ifstream infile(path);
 
@@ -238,6 +241,8 @@ bool open(std::filesystem::path const& path, std::vector<std::string>& document)
   while (std::getline(infile, line)) {
     document.push_back(line);
   }
+
+  rendered = document;
 
   return true;
 }

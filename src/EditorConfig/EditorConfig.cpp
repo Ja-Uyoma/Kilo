@@ -83,7 +83,7 @@ void EditorConfig::drawRows()
  */
 bool EditorConfig::open(std::filesystem::path const& path)
 {
-  return editor::open(path, row);
+  return editor::open(path, row, render);
 }
 
 }   // namespace Kilo::editor
