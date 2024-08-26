@@ -3,6 +3,7 @@
 
 #include "Editor/Cursor.hpp"
 #include "Editor/Offset.hpp"
+#include "ScreenBuffer/ScreenBuffer.hpp"
 #include "TerminalState/TerminalState.hpp"
 #include "Window/Window.hpp"
 #include <string>
@@ -19,6 +20,7 @@ public:
   Offset off {};
   terminal::Window window = terminal::Window::create();
   int rx {};
+  ScreenBuffer buffer {};
 
   explicit EditorConfig();
   ~EditorConfig();

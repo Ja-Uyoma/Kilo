@@ -1,7 +1,6 @@
 #include "EditorConfig.hpp"
 
 #include "Editor/Editor.hpp"
-#include "ScreenBuffer/ScreenBuffer.hpp"
 #include "Terminal/Terminal.hpp"
 #include <iostream>
 #include <system_error>
@@ -54,7 +53,6 @@ void EditorConfig::processKeypress()
  */
 void EditorConfig::drawRows()
 {
-  ScreenBuffer buffer;
   editor::drawRows(window, off, row, buffer, render);
 }
 
