@@ -110,6 +110,15 @@ bool open(std::filesystem::path const& path);
 void scroll() noexcept;
 
 /**
+ * @brief Fit the cursor in the visible window
+ *
+ * @param[in] cursor The cursor
+ * @param[in] offset The position the user is currently scrolled to in the document
+ * @param[in] window The terminal window
+ */
+void scroll(Cursor const& cursor, Offset& offset, terminal::Window const& window) noexcept;
+
+/**
  * @brief Copies the contents of the source string into the destination string
  * @param[in] row The source string
  * @param[in] render The destination string

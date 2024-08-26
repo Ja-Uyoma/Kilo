@@ -248,6 +248,38 @@ void scroll() noexcept
   }
 }
 
+/**
+ * @brief Fit the cursor in the visible window
+ *
+ * @param[in] cursor The cursor
+ * @param[in] offset The position the user is currently scrolled to in the document
+ * @param[in] window The terminal window
+ */
+void scroll(Cursor const& cursor, Offset& offset, terminal::Window const& window) noexcept
+{
+  /*
+   * Check if the cursor has moved outside of the visible window.
+   * If so, adjust editorConfig.off.row and/or editorConfig.off.col so that the
+   * cursor is just inside the visible window
+   */
+
+  if (cursor.y < offset.row) {
+    offset.row = cursor.y;
+  }
+
+  if (cursor.y >= offset.row + window.rows()) {
+    offset.row = cursor.y - window.rows() + 1;
+  }
+
+  if (cursor.x < offset.col) {
+    offset.col = cursor.x;
+  }
+
+  if (cursor.x >= offset.col + window.cols()) {
+    offset.col = cursor.x - window.cols() + 1;
+  }
+}
+
 void updateRow(std::string_view row, std::string& render)
 {
   using utilities::KILO_TAB_STOP;
