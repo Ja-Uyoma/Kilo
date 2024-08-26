@@ -104,6 +104,16 @@ void moveCursor(utilities::EditorKey key) noexcept;
 bool open(std::filesystem::path const& path);
 
 /**
+ * @brief Open a file and write its contents to memory
+ *
+ * @param[in] path The path to the file
+ * @param[in] document The buffer containing the file in memory
+ * @return true If the operation was successful
+ * @return false If the operation failed
+ */
+bool open(std::filesystem::path const& path, std::vector<std::string>& document);
+
+/**
  * @brief Position the cursor within the visible window
  *
  */

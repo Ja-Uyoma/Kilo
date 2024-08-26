@@ -219,6 +219,31 @@ bool open(std::filesystem::path const& path)
   return true;
 }
 
+/**
+ * @brief Open a file and write its contents to memory
+ *
+ * @param[in] path The path to the file
+ * @param[in] document The buffer containing the file in memory
+ * @return true If the operation was successful
+ * @return false If the operation failed
+ */
+bool open(std::filesystem::path const& path, std::vector<std::string>& document)
+{
+  std::ifstream infile(path);
+
+  if (!infile) {
+    return false;
+  }
+
+  std::string line;
+
+  while (std::getline(infile, line)) {
+    document.push_back(line);
+  }
+
+  return true;
+}
+
 void scroll() noexcept
 {
   /*
