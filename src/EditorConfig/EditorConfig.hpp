@@ -40,6 +40,11 @@ public:
    *
    */
   void processKeypress();
+
+  /**
+   * @brief Draw each row of the buffer of text being edited, plus a tilde at the beginning
+   */
+  void drawRows();
 };
 }   // namespace Kilo::editor
 

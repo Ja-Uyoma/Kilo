@@ -1,6 +1,7 @@
 #include "EditorConfig.hpp"
 
 #include "Editor/Editor.hpp"
+#include "ScreenBuffer/ScreenBuffer.hpp"
 #include "Terminal/Terminal.hpp"
 #include <iostream>
 #include <system_error>
@@ -46,6 +47,15 @@ void EditorConfig::processKeypress()
   auto const keyPressed = terminal::readKey();
 
   editor::processKeypress(keyPressed, cursor, window);
+}
+
+/**
+ * @brief Draw each row of the buffer of text being edited, plus a tilde at the beginning
+ */
+void EditorConfig::drawRows()
+{
+  ScreenBuffer buffer;
+  editor::drawRows(window, off, row, buffer, render);
 }
 
 }   // namespace Kilo::editor
