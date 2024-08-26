@@ -214,8 +214,6 @@ bool open(std::filesystem::path const& path)
     editorConfig.row.push_back(line);
   }
 
-  editorConfig.render = editorConfig.row;
-
   return true;
 }
 
