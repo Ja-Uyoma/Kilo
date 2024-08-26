@@ -100,8 +100,6 @@ void processKeypress()
 
 void refreshScreen()
 {
-  scroll();
-
   ScreenBuffer buffer;
 
   /*
@@ -128,8 +126,6 @@ void refreshScreen()
  */
 void refreshScreen(ScreenBuffer& buffer, Cursor const& cursor, Offset const& offset)
 {
-  scroll();
-
   /*
    * Hide the cursor when painting and then move it to the home position
    */

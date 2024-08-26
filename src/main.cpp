@@ -35,10 +35,12 @@
 {
   using Kilo::editor::processKeypress;
   using Kilo::editor::refreshScreen;
+  using Kilo::editor::scroll;
   using Kilo::utilities::clearScreenAndRepositionCursor;
 
   while (true) {
     try {
+      scroll();
       refreshScreen();
       processKeypress();
     }
