@@ -32,7 +32,15 @@ class File : public System
 {
 public:
   explicit File() noexcept = default;
-  void read() override;
+
+  /**
+   * @brief Read nbytes from fd into buffer
+   *
+   * @param fd The file being read from
+   * @param buffer The buffer being read to
+   * @param nbytes The number of bytes to read
+   */
+  void read(int fd, void* buffer, std::size_t nbytes) override;
 
   /**
    * @brief Write n bytes of buffer to fd
