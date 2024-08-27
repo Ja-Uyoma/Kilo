@@ -28,7 +28,7 @@
 
 namespace Kilo::terminal {
 
-class File : public System
+class File : public FileInterface
 {
 public:
   explicit File() noexcept = default;

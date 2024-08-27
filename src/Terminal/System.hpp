@@ -27,7 +27,7 @@
 #include <cstddef>
 namespace Kilo::terminal {
 
-class System
+class FileInterface
 {
 public:
   /**
@@ -54,7 +54,7 @@ public:
    * @brief Destructor
    *
    */
-  virtual ~System() = default;
+  virtual ~FileInterface() = default;
 };
 
 }   // namespace Kilo::terminal
