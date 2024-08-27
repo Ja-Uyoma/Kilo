@@ -24,7 +24,7 @@
 #ifndef FILE_HPP
 #define FILE_HPP
 
-#include "System.hpp"
+#include "FileInterface.hpp"
 
 namespace Kilo::terminal {
 
