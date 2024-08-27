@@ -26,6 +26,8 @@
 
 #include "System.hpp"
 
+namespace Kilo::terminal {
+
 class File : public System
 {
 public:
@@ -33,5 +35,7 @@ public:
   void read() override;
   void write() override;
 };
+
+}   // namespace Kilo::terminal
 
 #endif

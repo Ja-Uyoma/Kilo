@@ -24,6 +24,8 @@
 #ifndef SYSTEM_HPP
 #define SYSTEM_HPP
 
+namespace Kilo::terminal {
+
 class System
 {
 public:
@@ -31,5 +33,7 @@ public:
   virtual void write();
   virtual ~System();
 };
+
+}   // namespace Kilo::terminal
 
 #endif

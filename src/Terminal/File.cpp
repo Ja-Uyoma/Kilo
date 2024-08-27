@@ -23,6 +23,8 @@
 
 #include "File.hpp"
 
+namespace Kilo::terminal {
+
 void File::read()
 {
   return;
@@ -32,3 +34,5 @@ void File::write()
 {
   return;
 }
+
+}   // namespace Kilo::terminal
