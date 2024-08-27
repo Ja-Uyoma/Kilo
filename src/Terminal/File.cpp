@@ -36,6 +36,7 @@ namespace Kilo::terminal {
  * @param fd The file being read from
  * @param buffer The buffer being read to
  * @param nbytes The number of bytes to read
+ * @throws std::system_error On read failure
  */
 void File::read(int fd, void* buffer, std::size_t nbytes)
 {
