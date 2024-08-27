@@ -47,7 +47,12 @@ public:
    * @param nbytes The number of bytes to be written
    */
   virtual void write(int fd, void const* buffer, std::size_t nbytes) = 0;
-  virtual ~System();
+
+  /**
+   * @brief Destructor
+   *
+   */
+  virtual ~System() = default;
 };
 
 }   // namespace Kilo::terminal
