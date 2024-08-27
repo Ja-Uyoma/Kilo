@@ -40,7 +40,9 @@ namespace Kilo::terminal {
  */
 void File::read(int fd, void* buffer, std::size_t nbytes)
 {
-  return;
+  if (errno = 0; std::cmp_not_equal(::read(fd, buffer, nbytes), nbytes)) {
+    throw std::system_error(errno, std::system_category());
+  }
 }
 
 /**
