@@ -23,6 +23,11 @@
 
 #include "File.hpp"
 
+#include <cerrno>
+#include <system_error>
+#include <unistd.h>
+#include <utility>
+
 namespace Kilo::terminal {
 
 void File::read()
@@ -30,9 +35,18 @@ void File::read()
   return;
 }
 
-void File::write()
+/**
+ * @brief Write n bytes of buffer to fd
+ *
+ * @param fd The file descriptor being written to
+ * @param buffer The buffer being written from
+ * @param nbytes The number of bytes to be written
+ */
+void File::write(int fd, void const* buffer, std::size_t nbytes)
 {
-  return;
+  if (errno = 0; std::cmp_not_equal(::write(fd, buffer, nbytes), nbytes)) {
+    throw std::system_error(errno, std::system_category(), "Could not get cursor position");
+  }
 }
 
 }   // namespace Kilo::terminal
