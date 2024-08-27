@@ -58,12 +58,18 @@ std::size_t File::read(int fd, void* buffer, std::size_t nbytes)
  * @param buffer The buffer being written from
  * @param nbytes The number of bytes to be written
  * @throws std::system_error On write failure
+ * @returns The number of bytes written
  */
-void File::write(int fd, void const* buffer, std::size_t nbytes)
+std::size_t File::write(int fd, void const* buffer, std::size_t nbytes)
 {
-  if (errno = 0; std::cmp_not_equal(::write(fd, buffer, nbytes), nbytes)) {
+  errno = 0;
+  auto result = ::write(fd, buffer, nbytes);
+
+  if (result < 0) {
     throw std::system_error(errno, std::system_category());
   }
+
+  return result;
 }
 
 }   // namespace Kilo::terminal

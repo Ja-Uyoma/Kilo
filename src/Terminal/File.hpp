@@ -51,8 +51,9 @@ public:
    * @param buffer The buffer being written from
    * @param nbytes The number of bytes to be written
    * @throws std::system_error On write failure
+   * @returns The number of bytes written
    */
-  void write(int fd, void const* buffer, std::size_t nbytes) override;
+  std::size_t write(int fd, void const* buffer, std::size_t nbytes) override;
 };
 
 }   // namespace Kilo::terminal
