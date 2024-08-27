@@ -46,8 +46,9 @@ public:
    * @param fd The file descriptor being written to
    * @param buffer The buffer being written from
    * @param nbytes The number of bytes to be written
+   * @returns The number of bytes written
    */
-  virtual void write(int fd, void const* buffer, std::size_t nbytes) = 0;
+  virtual std::size_t write(int fd, void const* buffer, std::size_t nbytes) = 0;
 
   /**
    * @brief Destructor
