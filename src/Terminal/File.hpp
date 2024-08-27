@@ -40,8 +40,9 @@ public:
    * @param buffer The buffer being read to
    * @param nbytes The number of bytes to read
    * @throws std::system_error On read failure
+   * @returns The number of bytes read
    */
-  void read(int fd, void* buffer, std::size_t nbytes) override;
+  std::size_t read(int fd, void* buffer, std::size_t nbytes) override;
 
   /**
    * @brief Write n bytes of buffer to fd

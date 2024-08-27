@@ -37,12 +37,18 @@ namespace Kilo::terminal {
  * @param buffer The buffer being read to
  * @param nbytes The number of bytes to read
  * @throws std::system_error On read failure
+ * @returns The number of bytes read
  */
-void File::read(int fd, void* buffer, std::size_t nbytes)
+std::size_t File::read(int fd, void* buffer, std::size_t nbytes)
 {
-  if (errno = 0; std::cmp_not_equal(::read(fd, buffer, nbytes), nbytes)) {
+  errno = 0;
+  auto result = ::read(fd, buffer, nbytes);
+
+  if (result < 0) {
     throw std::system_error(errno, std::system_category());
   }
+
+  return result;
 }
 
 /**
