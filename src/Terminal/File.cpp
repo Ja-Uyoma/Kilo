@@ -26,7 +26,6 @@
 #include <cerrno>
 #include <system_error>
 #include <unistd.h>
-#include <utility>
 
 namespace Kilo::terminal {
 
