@@ -40,6 +40,7 @@ public:
    * @param fd The file descriptor being written to
    * @param buffer The buffer being written from
    * @param nbytes The number of bytes to be written
+   * @throws std::system_error On write failure
    */
   void write(int fd, void const* buffer, std::size_t nbytes) override;
 };
