@@ -37,7 +37,7 @@ public:
    * @param buffer The buffer being read to
    * @param nbytes The number of bytes to read
    */
-  virtual void read(int fd, void* buffer, std::size_t nbytes);
+  virtual void read(int fd, void* buffer, std::size_t nbytes) = 0;
 
   /**
    * @brief Write n bytes of buffer to fd
@@ -46,7 +46,7 @@ public:
    * @param buffer The buffer being written from
    * @param nbytes The number of bytes to be written
    */
-  virtual void write(int fd, void const* buffer, std::size_t nbytes);
+  virtual void write(int fd, void const* buffer, std::size_t nbytes) = 0;
   virtual ~System();
 };
 
