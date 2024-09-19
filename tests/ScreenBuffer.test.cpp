@@ -21,33 +21,38 @@
  * SOFTWARE.
  */
 
-#include "Terminal.hpp"
+#include "ScreenBuffer/ScreenBuffer.hpp"
 
+#include <cstring>
 #include <gtest/gtest.h>
-#include <system_error>
 
-namespace Kilo::Terminal {
-class TerminalMode : public ::testing::Test
+namespace Kilo::editor {
+
+class ScreenBufferTest : public ::testing::Test
 {
 public:
-  ::termios term;
-
-  void TearDown() override
-  {
-    disableRawMode(term);
-  }
+  ScreenBuffer buf;
 };
 
-TEST_F(TerminalMode, enableRawModeSetsTheTerminalDriverToNonCanonicalMode)
+TEST_F(ScreenBufferTest, IsEmptyWhenCreated)
 {
-  try {
-    enableRawMode(term);
-  }
-  catch (std::system_error const& err) {
-    std::cerr << err.what() << '\n';
-    std::exit(EXIT_FAILURE);
-  }
-
-  ASSERT_TRUE(ascertainNonCanonicalMode(term));
+  ASSERT_EQ(buf.size(), 0);
 }
-}   // namespace Kilo::Terminal
+
+TEST_F(ScreenBufferTest, ItsSizeIncreasesByTheLengthOfTheAppendedString)
+{
+  char const* str = "Hello, World!";
+  buf.write(str, std::strlen(str));
+
+  ASSERT_EQ(buf.size(), 13);
+}
+
+TEST_F(ScreenBufferTest, c_strReturnsACStringRepresentationOfTheContentsOfTheBuffer)
+{
+  char const* str = "The quick brown fox jumped over the lazy dog";
+  buf.write(str, std::strlen(str));
+
+  ASSERT_STREQ(buf.c_str(), str);
+}
+
+}   // namespace Kilo::editor

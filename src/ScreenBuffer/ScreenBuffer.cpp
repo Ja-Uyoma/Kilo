@@ -21,42 +21,23 @@
  * SOFTWARE.
  */
 
-#include "WriteBuffer.hpp"
-#include <filesystem>
+#include "ScreenBuffer.hpp"
 
-namespace Kilo::Editor {
-/// @brief Process the results from readKey
-/// @details This function is responsible for mapping keypresses to editor
-/// operations
-/// @throws std::system_error if an error occured during read
-void processKeypress();
+#include <cerrno>
+#include <system_error>
+#include <unistd.h>
 
-/// @brief Clear the screen and reposition the cursor to the top-left corner
-void refreshScreen() noexcept;
-
-/// @brief Draw each row of the buffer of text being edited, plus a tilde at the
-/// beginning
-void drawRows(WriteBuffer& buffer) noexcept;
+namespace Kilo::editor {
 
 /**
- * @brief Move the cursor in accordance with the key pressed
- *
- * @param key The character representing the direction to move the cursor in
+ * @brief Flush the buffer by writing its contents to stdout
+ * @throws std::system_error If the write to stdout failed
  */
-void moveCursor(int key);
+void ScreenBuffer::flush() const
+{
+  if (errno = 0; ::write(STDOUT_FILENO, m_buffer.c_str(), size()) == -1) {
+    throw std::system_error(errno, std::generic_category(), "Could not flush buffer to stdout");
+  }
+}
 
-/**
- * @brief Open a file for reading and write its contents to the EditorConfig
- * instance's row member variable
- *
- * @param[in] path The path to the file to be opened for reading
- * @return True if the file was opened successfully and false otherwise
- */
-bool open(std::filesystem::path const& path);
-
-/**
- * @brief Position the cursor within the visible window
- *
- */
-void scroll() noexcept;
-}   // namespace Kilo::Editor
+}   // namespace Kilo::editor

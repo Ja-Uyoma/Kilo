@@ -21,9 +21,18 @@
  * SOFTWARE.
  */
 
-namespace Kilo::Utilities {
+#ifndef UTILITIES_HPP
+#define UTILITIES_HPP
+
+namespace Kilo::utilities {
 /// @brief The version number of the application
 inline constexpr char const* KILO_VERSION = "0.0.1";
+
+/**
+ * @brief The length of a tab stop
+ *
+ */
+inline constexpr int KILO_TAB_STOP {8};
 
 // We choose a representation for arrow keys that doesn't conflict with w, a, s,
 // d. We give them a large integer value that is out of the range of a char, so
@@ -62,4 +71,6 @@ constexpr unsigned ctrlKey(unsigned char key) noexcept
  * @throws std::system_error in case of total write failure
  */
 [[nodiscard]] long writeAll(int fd, void const* buf, long count);
-}   // namespace Kilo::Utilities
+}   // namespace Kilo::utilities
+
+#endif

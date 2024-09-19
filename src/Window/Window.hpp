@@ -20,51 +20,54 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "Editor/Editor.hpp"
-#include "Utilities/Utilities.hpp"
-#include <cstdlib>
-#include <iostream>
-#include <system_error>
 
-/**
- * @brief Handles the processing of keypresses and repainting the screen on
- * every refresh
- *
- */
-[[noreturn]] void Main() noexcept
+#ifndef WINDOW_HPP
+#define WINDOW_HPP
+
+#include "Terminal/WindowSize.hpp"
+
+namespace Kilo::terminal {
+
+class Window
 {
-  using Kilo::editor::processKeypress;
-  using Kilo::editor::refreshScreen;
-  using Kilo::editor::scroll;
-  using Kilo::utilities::clearScreenAndRepositionCursor;
+public:
+  /**
+   * @brief Create a static Window instance and return a reference to it
+   *
+   * @return Window& A reference to the static Window instance
+   */
+  static Window& create();
 
-  while (true) {
-    try {
-      scroll();
-      refreshScreen();
-      processKeypress();
-    }
-    catch (std::system_error const& e) {
-      /*
-       * Clear the screen and reset the cursor as a fallback in case an error
-       * occurs in the middle of rendering the screen. We would otherwise have
-       * garbage and/or errors printed wherever the cursor happens to be.
-       */
-      clearScreenAndRepositionCursor();
-      std::cerr << e.code() << ": " << e.what() << '\n';
-    }
-  }
-}
-
-int main(int argc, char const* argv[])
-{
-  using Kilo::editor::open;
-
-  if (argc >= 2 && !open(argv[1])) {
-    return EXIT_FAILURE;
+  /**
+   * @brief Get the number of columns of the terminal window
+   *
+   * @return The number of columns of the terminal window
+   */
+  constexpr auto cols() const noexcept
+  {
+    return m_winsize.cols;
   }
 
-  Main();
+  /**
+   * @brief Get the number of rows of the terminal window
+   *
+   * @return The number of rows of the terminal window
+   */
+  constexpr auto rows() const noexcept
+  {
+    return m_winsize.rows;
+  }
 
-  return EXIT_SUCCESS;
-}
+private:
+  WindowSize m_winsize;
+
+  /**
+   * @brief Construct a new Window object
+   *
+   */
+  explicit Window();
+};
+
+}   // namespace Kilo::terminal
+
+#endif

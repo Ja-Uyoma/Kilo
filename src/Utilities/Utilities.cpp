@@ -20,51 +20,49 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "Editor/Editor.hpp"
-#include "Utilities/Utilities.hpp"
-#include <cstdlib>
-#include <iostream>
+
+#include "Utilities.hpp"
+
+#include <cerrno>
+#include <cstring>
 #include <system_error>
+#include <unistd.h>
 
-/**
- * @brief Handles the processing of keypresses and repainting the screen on
- * every refresh
- *
- */
-[[noreturn]] void Main() noexcept
+namespace Kilo::utilities {
+void clearScreenAndRepositionCursor() noexcept
 {
-  using Kilo::editor::processKeypress;
-  using Kilo::editor::refreshScreen;
-  using Kilo::editor::scroll;
-  using Kilo::utilities::clearScreenAndRepositionCursor;
-
-  while (true) {
-    try {
-      scroll();
-      refreshScreen();
-      processKeypress();
-    }
-    catch (std::system_error const& e) {
-      /*
-       * Clear the screen and reset the cursor as a fallback in case an error
-       * occurs in the middle of rendering the screen. We would otherwise have
-       * garbage and/or errors printed wherever the cursor happens to be.
-       */
-      clearScreenAndRepositionCursor();
-      std::cerr << e.code() << ": " << e.what() << '\n';
-    }
+  {
+    [[maybe_unused]] auto&& rv = ::write(STDOUT_FILENO, "\x1b[2J", 4);
+  }
+  {
+    [[maybe_unused]] auto&& rv = ::write(STDOUT_FILENO, "\x1b[H", 3);
   }
 }
 
-int main(int argc, char const* argv[])
+[[nodiscard]] long writeAll(int fd, void const* buf, long count)
 {
-  using Kilo::editor::open;
+  long totalWritten {};
+  auto const* ptr = static_cast<char const*>(buf);
 
-  if (argc >= 2 && !open(argv[1])) {
-    return EXIT_FAILURE;
+  while (totalWritten < count) {
+    long written = ::write(fd, ptr + totalWritten, count - totalWritten);
+
+    if (written == -1) {
+      if (errno == EINTR || errno == EAGAIN) {
+        continue;
+      }
+      else {
+        throw std::system_error(errno, std::system_category(), std::strerror(errno));
+      }
+    }
+
+    if (written == 0) {
+      break;
+    }
+
+    totalWritten += written;
   }
 
-  Main();
-
-  return EXIT_SUCCESS;
+  return totalWritten;
 }
+}   // namespace Kilo::utilities

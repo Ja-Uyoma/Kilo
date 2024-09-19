@@ -21,48 +21,41 @@
  * SOFTWARE.
  */
 
-#include "Utilities.hpp"
+#ifndef FILE_HPP
+#define FILE_HPP
 
-#include <cerrno>
-#include <cstring>
-#include <system_error>
-#include <unistd.h>
+#include "FileInterface.hpp"
 
-namespace Kilo::Utilities {
-void clearScreenAndRepositionCursor() noexcept
+namespace Kilo::terminal {
+
+class File : public FileInterface
 {
-  {
-    [[maybe_unused]] auto&& rv = ::write(STDOUT_FILENO, "\x1b[2J", 4);
-  }
-  {
-    [[maybe_unused]] auto&& rv = ::write(STDOUT_FILENO, "\x1b[H", 3);
-  }
-}
+public:
+  explicit File() noexcept = default;
 
-[[nodiscard]] long writeAll(int fd, void const* buf, long count)
-{
-  long totalWritten {};
-  auto const* ptr = static_cast<char const*>(buf);
+  /**
+   * @brief Read nbytes from fd into buffer
+   *
+   * @param fd The file being read from
+   * @param buffer The buffer being read to
+   * @param nbytes The number of bytes to read
+   * @throws std::system_error On read failure
+   * @returns The number of bytes read
+   */
+  std::size_t read(int fd, void* buffer, std::size_t nbytes) override;
 
-  while (totalWritten < count) {
-    long written = ::write(fd, ptr + totalWritten, count - totalWritten);
+  /**
+   * @brief Write n bytes of buffer to fd
+   *
+   * @param fd The file descriptor being written to
+   * @param buffer The buffer being written from
+   * @param nbytes The number of bytes to be written
+   * @throws std::system_error On write failure
+   * @returns The number of bytes written
+   */
+  std::size_t write(int fd, void const* buffer, std::size_t nbytes) override;
+};
 
-    if (written == -1) {
-      if (errno == EINTR || errno == EAGAIN) {
-        continue;
-      }
-      else {
-        throw std::system_error(errno, std::system_category(), std::strerror(errno));
-      }
-    }
+}   // namespace Kilo::terminal
 
-    if (written == 0) {
-      break;
-    }
-
-    totalWritten += written;
-  }
-
-  return totalWritten;
-}
-}   // namespace Kilo::Utilities
+#endif

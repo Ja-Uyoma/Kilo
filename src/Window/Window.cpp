@@ -20,51 +20,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "Editor/Editor.hpp"
-#include "Utilities/Utilities.hpp"
-#include <cstdlib>
+
+#include "Window.hpp"
+
+#include "Terminal/Terminal.hpp"
 #include <iostream>
+#include <sys/ioctl.h>
 #include <system_error>
 
+namespace Kilo::terminal {
+
 /**
- * @brief Handles the processing of keypresses and repainting the screen on
- * every refresh
+ * @brief Create a static Window instance and return a reference to it
  *
+ * @return Window& A reference to the static Window instance
  */
-[[noreturn]] void Main() noexcept
+Window& Window::create()
 {
-  using Kilo::editor::processKeypress;
-  using Kilo::editor::refreshScreen;
-  using Kilo::editor::scroll;
-  using Kilo::utilities::clearScreenAndRepositionCursor;
+  static Window window;
+  return window;
+}
 
-  while (true) {
-    try {
-      scroll();
-      refreshScreen();
-      processKeypress();
-    }
-    catch (std::system_error const& e) {
-      /*
-       * Clear the screen and reset the cursor as a fallback in case an error
-       * occurs in the middle of rendering the screen. We would otherwise have
-       * garbage and/or errors printed wherever the cursor happens to be.
-       */
-      clearScreenAndRepositionCursor();
-      std::cerr << e.code() << ": " << e.what() << '\n';
-    }
+Window::Window()
+{
+  ::winsize ws;
+
+  try {
+    m_winsize = terminal::getWindowSize(ws);
+  }
+  catch (std::system_error const& err) {
+    std::cerr << err.code() << ": " << err.what() << '\n';
+    m_winsize = {0, 0};
+
+    throw;
   }
 }
 
-int main(int argc, char const* argv[])
-{
-  using Kilo::editor::open;
-
-  if (argc >= 2 && !open(argv[1])) {
-    return EXIT_FAILURE;
-  }
-
-  Main();
-
-  return EXIT_SUCCESS;
-}
+}   // namespace Kilo::terminal

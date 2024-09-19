@@ -20,51 +20,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "Editor/Editor.hpp"
-#include "Utilities/Utilities.hpp"
-#include <cstdlib>
-#include <iostream>
-#include <system_error>
 
-/**
- * @brief Handles the processing of keypresses and repainting the screen on
- * every refresh
- *
- */
-[[noreturn]] void Main() noexcept
+#ifndef APPLICATION_HPP
+#define APPLICATION_HPP
+
+namespace Kilo {
+
+class Application
 {
-  using Kilo::editor::processKeypress;
-  using Kilo::editor::refreshScreen;
-  using Kilo::editor::scroll;
-  using Kilo::utilities::clearScreenAndRepositionCursor;
+};
 
-  while (true) {
-    try {
-      scroll();
-      refreshScreen();
-      processKeypress();
-    }
-    catch (std::system_error const& e) {
-      /*
-       * Clear the screen and reset the cursor as a fallback in case an error
-       * occurs in the middle of rendering the screen. We would otherwise have
-       * garbage and/or errors printed wherever the cursor happens to be.
-       */
-      clearScreenAndRepositionCursor();
-      std::cerr << e.code() << ": " << e.what() << '\n';
-    }
-  }
-}
+}   // namespace Kilo
 
-int main(int argc, char const* argv[])
-{
-  using Kilo::editor::open;
-
-  if (argc >= 2 && !open(argv[1])) {
-    return EXIT_FAILURE;
-  }
-
-  Main();
-
-  return EXIT_SUCCESS;
-}
+#endif

@@ -21,51 +21,19 @@
  * SOFTWARE.
  */
 
-/************************************************************************************/
-
-/**
- * This file contains the declarations of functions used to manipulate the
- * terminal driver settings with regards to entering and exiting raw and/or
- * canonical mode
- */
-
 #ifndef TERMINAL_HPP
 #define TERMINAL_HPP
 
+#include <array>
 #include <termios.h>
 
-namespace Kilo::Terminal {
-/**
- * @brief Enable raw mode by turning off some terminal flags
- *
- * @param[in] canonicalSettings The original settings of the terminal driver
- * @pre canonicalSettings must be a valid reference
- * @throws std::system_error if either querying the terminal driver for its
- * current settings fails or if writing the modified settings fails.
- */
-void enableRawMode(termios& canonicalSettings);
+/* Forward declaration to the winsize struct */
+struct winsize;
 
-/**
- * @brief Disable raw mode by restoring the original canonical settings
- *
- * @param[in] canonicalSettings The original settings of the terminal driver
- * @pre canonicalSettings must be a valid reference
- * @throws std::system_error if restoring the terminal driver to normal mode
- * fails
- */
-void disableRawMode(termios const& canonicalSettings);
+namespace Kilo::terminal {
 
-/**
- * @brief Verifies that all changes to the terminal driver were made
- * successfully.
- *
- * @details This is necessary because tcsetattr returns successfully it at least
- * one change was successful.
- * @param term The terminal driver
- * @return true If all changes were made successfully
- * @return false If at least one change was unsuccessful
- */
-bool ascertainNonCanonicalMode(termios const& term) noexcept;
+/* Forward declaration to the WindowSize struct */
+struct WindowSize;
 
 /**
  * @brief Read key input from stdin
@@ -84,12 +52,36 @@ int readKey();
 void getWindowSize(int* const rows, int* const cols);
 
 /**
+ * @brief Get the size of the terminal window
+ * @throws std::system_error if the terminal window size could not be retrieved
+ * @returns The size of the terminal window
+ */
+WindowSize getWindowSize(::winsize const& winsize);
+
+namespace detail {
+
+unsigned handleEscapeSequences() noexcept;
+
+void writeCursorPositionToBuffer(std::array<char, 32>& buf) noexcept;
+
+/**
  * @brief Get the position of the cursor and write them to @param rows and
  * @param cols
  * @param[inout] rows The number of rows of the terminal window
  * @param[inout] cols The number of columns of the terminal window
  */
 void getCursorPosition(int* const rows, int* const cols);
-}   // namespace Kilo::Terminal
+
+/**
+ * @brief Get the position of the cursor
+ *
+ * @throws std::system_error If we could not determine the position of the cursor
+ * @returns The position of the cursor
+ */
+WindowSize getCursorPosition();
+
+}   // namespace detail
+
+}   // namespace Kilo::terminal
 
 #endif
