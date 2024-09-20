@@ -4,8 +4,8 @@
 #include "Editor/cursor/cursor.hpp"
 #include "Editor/offset/offset.hpp"
 #include "Editor/screen_buffer/screen_buffer.hpp"
+#include "Terminal/mode/terminal_mode.hpp"
 #include "Terminal/window/window.hpp"
-#include "TerminalState/TerminalState.hpp"
 #include <filesystem>
 #include <string>
 #include <vector>

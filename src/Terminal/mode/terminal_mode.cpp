@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-#include "TerminalState.hpp"
+#include "terminal_mode.hpp"
 
 #include <cassert>
 #include <cerrno>

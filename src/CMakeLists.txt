@@ -25,8 +25,8 @@ target_sources(kilo
         "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.hpp"
         "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.cpp"
 
-        "${PROJECT_SOURCE_DIR}/src/TerminalState/TerminalState.hpp"
-        "${PROJECT_SOURCE_DIR}/src/TerminalState/TerminalState.cpp"
+        "${PROJECT_SOURCE_DIR}/src/Terminal/mode/terminal_mode.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Terminal/mode/terminal_mode.cpp"
 
         "${PROJECT_SOURCE_DIR}/src/Utilities/Utilities.hpp"
         "${PROJECT_SOURCE_DIR}/src/Utilities/Utilities.cpp"
