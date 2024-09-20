@@ -20,29 +20,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "Editor/Editor.hpp"
+
+#include "EditorConfig/EditorConfig.hpp"
 #include "Utilities/Utilities.hpp"
 #include <cstdlib>
 #include <iostream>
 #include <system_error>
+
+using namespace Kilo;
 
 /**
  * @brief Handles the processing of keypresses and repainting the screen on
  * every refresh
  *
  */
-[[noreturn]] void Main() noexcept
+[[noreturn]] void Main(editor::EditorConfig& app) noexcept
 {
-  using Kilo::editor::processKeypress;
-  using Kilo::editor::refreshScreen;
-  using Kilo::editor::scroll;
-  using Kilo::utilities::clearScreenAndRepositionCursor;
-
   while (true) {
     try {
-      scroll();
-      refreshScreen();
-      processKeypress();
+      app.scroll();
+      app.refreshScreen();
+      app.processKeypress();
     }
     catch (std::system_error const& e) {
       /*
@@ -50,7 +48,7 @@
        * occurs in the middle of rendering the screen. We would otherwise have
        * garbage and/or errors printed wherever the cursor happens to be.
        */
-      clearScreenAndRepositionCursor();
+      utilities::clearScreenAndRepositionCursor();
       std::cerr << e.code() << ": " << e.what() << '\n';
     }
   }
@@ -58,13 +56,13 @@
 
 int main(int argc, char const* argv[])
 {
-  using Kilo::editor::open;
+  static editor::EditorConfig app;
 
-  if (argc >= 2 && !open(argv[1])) {
+  if (argc >= 2 && !app.open(argv[1])) {
     return EXIT_FAILURE;
   }
 
-  Main();
+  Main(app);
 
   return EXIT_SUCCESS;
 }
