@@ -10,7 +10,7 @@ namespace Kilo::editor {
 EditorConfig::EditorConfig()
 {
   try {
-    state.setRawMode();
+    m_state.setRawMode();
   }
   catch (std::system_error const& err) {
     std::cerr << err.code() << ": " << err.what() << '\n';
@@ -26,7 +26,7 @@ EditorConfig::~EditorConfig()
   // solution is to use RAII with a static object whose resources must be
   // cleaned up at program exit
 
-  state.reset();
+  m_state.reset();
 }
 
 /**
@@ -35,7 +35,7 @@ EditorConfig::~EditorConfig()
  */
 void EditorConfig::scroll() noexcept
 {
-  editor::scroll(cursor, off, window);
+  editor::scroll(m_cursor, m_off, m_window);
 }
 
 /**
@@ -48,11 +48,11 @@ void EditorConfig::refreshScreen()
    * Hide the cursor when painting and then move it to the home position
    */
 
-  buffer.write(EscapeSequences::HideCursorWhenRepainting).write(EscapeSequences::MoveCursorToHomePosition);
+  m_buffer.write(EscapeSequences::HideCursorWhenRepainting).write(EscapeSequences::MoveCursorToHomePosition);
 
   this->drawRows();
-  auto const cursorPos = detail::setExactPositionToMoveCursorTo(cursor, off);
-  buffer.write(cursorPos).write(EscapeSequences::ShowTheCursor).flush();
+  auto const cursorPos = detail::setExactPositionToMoveCursorTo(m_cursor, m_off);
+  m_buffer.write(cursorPos).write(EscapeSequences::ShowTheCursor).flush();
 }
 
 /**
@@ -63,7 +63,7 @@ void EditorConfig::processKeypress()
 {
   auto const keyPressed = terminal::readKey();
 
-  editor::processKeypress(keyPressed, cursor, window, row);
+  editor::processKeypress(keyPressed, m_cursor, m_window, m_row);
 }
 
 /**
@@ -71,7 +71,7 @@ void EditorConfig::processKeypress()
  */
 void EditorConfig::drawRows()
 {
-  editor::drawRows(window, off, row, buffer, render);
+  editor::drawRows(m_window, m_off, m_row, m_buffer, m_render);
 }
 
 /**
@@ -83,7 +83,7 @@ void EditorConfig::drawRows()
  */
 bool EditorConfig::open(std::filesystem::path const& path)
 {
-  return editor::open(path, row, render);
+  return editor::open(path, m_row, m_render);
 }
 
 }   // namespace Kilo::editor

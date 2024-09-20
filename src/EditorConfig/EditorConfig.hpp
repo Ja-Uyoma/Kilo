@@ -56,14 +56,14 @@ public:
   bool open(std::filesystem::path const& path);
 
 private:
-  terminal::TerminalState state {};
-  std::vector<std::string> row;
-  std::vector<std::string> render;
-  Cursor cursor {};
-  Offset off {};
-  terminal::Window window = terminal::Window::create();
-  [[maybe_unused]] int rx {};
-  ScreenBuffer buffer {};
+  terminal::TerminalState m_state {};
+  std::vector<std::string> m_row;
+  std::vector<std::string> m_render;
+  Cursor m_cursor {};
+  Offset m_off {};
+  terminal::Window m_window = terminal::Window::create();
+  [[maybe_unused]] int m_rx {};
+  ScreenBuffer m_buffer {};
 };
 }   // namespace Kilo::editor
 
