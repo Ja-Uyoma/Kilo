@@ -19,8 +19,7 @@ target_include_directories(tests
 
 target_sources(tests
     PRIVATE
-        "${PROJECT_SOURCE_DIR}/src/Editor/Cursor.hpp"
-        "${PROJECT_SOURCE_DIR}/src/Editor/Cursor.cpp"
+        "${PROJECT_SOURCE_DIR}/src/Editor/cursor/cursor.hpp"
         Cursor.test.cpp
 
         "${PROJECT_SOURCE_DIR}/src/Editor/Editor.hpp"

@@ -23,12 +23,12 @@
 
 #include "Editor.hpp"
 
-#include "Cursor.hpp"
 #include "Offset.hpp"
 #include "ScreenBuffer/ScreenBuffer.hpp"
 #include "Utilities/Utilities.hpp"
 #include "Window/Window.hpp"
 #include "constants/constants.hpp"
+#include "cursor/cursor.hpp"
 #include <algorithm>
 #include <cstdio>
 #include <cstdlib>

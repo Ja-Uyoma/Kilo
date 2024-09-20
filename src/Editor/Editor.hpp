@@ -24,10 +24,10 @@
 #ifndef EDITOR_HPP
 #define EDITOR_HPP
 
-#include "Cursor.hpp"
 #include "Offset.hpp"
 #include "Utilities/Utilities.hpp"
 #include "Window/Window.hpp"
+#include "cursor/cursor.hpp"
 #include <cassert>
 #include <filesystem>
 #include <optional>
