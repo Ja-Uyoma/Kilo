@@ -126,7 +126,8 @@ void refreshScreen()
  * @param cursor The cursor
  * @param offset The offset from the window to the open document
  */
-void refreshScreen(ScreenBuffer& buffer, Cursor const& cursor, Offset const& offset)
+void refreshScreen(ScreenBuffer& buffer, Cursor const& cursor, Offset const& offset, terminal::Window const& window,
+                   std::vector<std::string> const& document, std::vector<std::string> const& renderedDoc)
 {
   /*
    * Hide the cursor when painting and then move it to the home position
