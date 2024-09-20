@@ -17,8 +17,8 @@ target_sources(kilo
         "${PROJECT_SOURCE_DIR}/src/Editor/Editor.hpp"
         "${PROJECT_SOURCE_DIR}/src/Editor/Editor.cpp"
         
-        "${PROJECT_SOURCE_DIR}/src/EditorConfig/EditorConfig.hpp"
-        "${PROJECT_SOURCE_DIR}/src/EditorConfig/EditorConfig.cpp"
+        "${PROJECT_SOURCE_DIR}/src/config/config.hpp"
+        "${PROJECT_SOURCE_DIR}/src/config/config.cpp"
 
         "${PROJECT_SOURCE_DIR}/src/Editor/offset/offset.hpp"
 

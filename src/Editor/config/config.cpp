@@ -1,4 +1,4 @@
-#include "EditorConfig.hpp"
+#include "config.hpp"
 
 #include "Editor/Editor.hpp"
 #include "Editor/constants/constants.hpp"
