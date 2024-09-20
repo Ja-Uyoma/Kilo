@@ -55,7 +55,8 @@ static EditorConfig editorConfig;
  * @param[in] cursor The position of the cursor in the terminal window
  * @param[in] window The terminal window
  */
-void processKeypress(int const keyPressed, Cursor& cursor, terminal::Window const& window) noexcept
+void processKeypress(int const keyPressed, Cursor& cursor, terminal::Window const& window,
+                     std::vector<std::string> const& document) noexcept
 {
   detail::processKeypressHelper(keyPressed);
 
@@ -113,6 +114,7 @@ void refreshScreen()
   auto const cursorPos = detail::setExactPositionToMoveCursorTo(editorConfig.cursor, editorConfig.off);
 
   buffer.write(cursorPos).write(EscapeSequences::ShowTheCursor).flush();
+  detail::processKeypressHelper(key, cursor, window, document);
 }
 
 /**
@@ -468,7 +470,8 @@ void processKeypressHelper(unsigned const keyPressed) noexcept
  * @param[in] cursor The position of the cursor in the terminal window
  * @param[in] window The terminal window
  */
-void processKeypressHelper(utilities::EditorKey keyPressed, Cursor& cursor, terminal::Window const& window) noexcept
+void processKeypressHelper(utilities::EditorKey keyPressed, Cursor& cursor, terminal::Window const& window,
+                           std::vector<std::string> const& document) noexcept
 {
   using enum utilities::EditorKey;
 
@@ -480,11 +483,11 @@ void processKeypressHelper(utilities::EditorKey keyPressed, Cursor& cursor, term
   }
   else if (keyPressed == PageUp or keyPressed == PageDown) {
     for (auto i = window.rows(); i > 0; i--) {
-      moveCursor(keyPressed == PageUp ? ArrowUp : ArrowDown);
+      moveCursor(keyPressed == PageUp ? ArrowUp : ArrowDown, cursor, document);
     }
   }
   else if (keyPressed == ArrowLeft or keyPressed == ArrowRight or keyPressed == ArrowUp or keyPressed == ArrowDown) {
-    moveCursor(keyPressed);
+    moveCursor(keyPressed, cursor, document);
   }
 }
 
