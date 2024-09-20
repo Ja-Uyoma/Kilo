@@ -51,8 +51,9 @@ TEST(processKeypress, MovesCursorToStartOfLineIfHomeButtonIsPressed)
   EditorKey const key = EditorKey::Home;
   Cursor cursor {100, 100};
   Window const window = Window::create();
+  std::vector<std::string> const& doc {};
 
-  detail::processKeypressHelper(key, cursor, window);
+  detail::processKeypressHelper(key, cursor, window, doc);
 
   ASSERT_THAT(cursor.x, ::testing::Eq(0));
 }
@@ -65,8 +66,9 @@ TEST(processKeypress, MovesCursorToEndOfLineIfEndButtonIsPressed)
   EditorKey const key = EditorKey::End;
   Cursor cursor {100, 100};
   Window const window = Window::create();
+  std::vector<std::string> const& doc {};
 
-  detail::processKeypressHelper(key, cursor, window);
+  detail::processKeypressHelper(key, cursor, window, doc);
 
   ASSERT_THAT(cursor.x, ::testing::Eq(window.cols() - 1));
 }
