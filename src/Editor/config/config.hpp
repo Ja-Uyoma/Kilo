@@ -3,7 +3,7 @@
 
 #include "Editor/cursor/cursor.hpp"
 #include "Editor/offset/offset.hpp"
-#include "ScreenBuffer/ScreenBuffer.hpp"
+#include "Editor/screen_buffer/screen_buffer.hpp"
 #include "TerminalState/TerminalState.hpp"
 #include "Window/Window.hpp"
 #include <filesystem>

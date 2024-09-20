@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-#include "ScreenBuffer.hpp"
+#include "screen_buffer.hpp"
 
 #include <cerrno>
 #include <system_error>
