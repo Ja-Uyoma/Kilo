@@ -14,14 +14,6 @@ namespace Kilo::editor {
 class EditorConfig
 {
 public:
-  terminal::TerminalState state {};
-  std::vector<std::string> row;
-  std::vector<std::string> render;
-  Cursor cursor {};
-  Offset off {};
-  terminal::Window window = terminal::Window::create();
-  ScreenBuffer buffer {};
-
   explicit EditorConfig();
   ~EditorConfig();
 
@@ -62,7 +54,16 @@ public:
    * @return false If the operation failed
    */
   bool open(std::filesystem::path const& path);
+
+private:
+  terminal::TerminalState state {};
+  std::vector<std::string> row;
+  std::vector<std::string> render;
+  Cursor cursor {};
+  Offset off {};
+  terminal::Window window = terminal::Window::create();
   [[maybe_unused]] int rx {};
+  ScreenBuffer buffer {};
 };
 }   // namespace Kilo::editor
 
