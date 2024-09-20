@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-#include "Window.hpp"
+#include "window.hpp"
 
 #include "Terminal/Terminal.hpp"
 #include <iostream>

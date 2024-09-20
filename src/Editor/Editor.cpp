@@ -23,8 +23,8 @@
 
 #include "Editor.hpp"
 
+#include "Terminal/window/window.hpp"
 #include "Utilities/Utilities.hpp"
-#include "Window/Window.hpp"
 #include "constants/constants.hpp"
 #include "cursor/cursor.hpp"
 #include "offset/offset.hpp"

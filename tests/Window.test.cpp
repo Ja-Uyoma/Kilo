@@ -1,4 +1,4 @@
-#include "Window/Window.hpp"
+#include "Terminal/window/window.hpp"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
