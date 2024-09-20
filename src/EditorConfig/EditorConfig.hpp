@@ -1,8 +1,8 @@
 #ifndef EDITOR_CONFIG_HPP
 #define EDITOR_CONFIG_HPP
 
-#include "Editor/Offset.hpp"
 #include "Editor/cursor/cursor.hpp"
+#include "Editor/offset/offset.hpp"
 #include "ScreenBuffer/ScreenBuffer.hpp"
 #include "TerminalState/TerminalState.hpp"
 #include "Window/Window.hpp"

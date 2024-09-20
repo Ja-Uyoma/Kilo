@@ -20,8 +20,7 @@ target_sources(kilo
         "${PROJECT_SOURCE_DIR}/src/EditorConfig/EditorConfig.hpp"
         "${PROJECT_SOURCE_DIR}/src/EditorConfig/EditorConfig.cpp"
 
-        "${PROJECT_SOURCE_DIR}/src/Editor/Offset.hpp"
-        "${PROJECT_SOURCE_DIR}/src/Editor/Offset.cpp"
+        "${PROJECT_SOURCE_DIR}/src/Editor/offset/offset.hpp"
 
         "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.hpp"
         "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.cpp"
