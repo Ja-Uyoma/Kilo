@@ -25,10 +25,8 @@
 
 #include "Constants.hpp"
 #include "Cursor.hpp"
-#include "EditorConfig/EditorConfig.hpp"
 #include "Offset.hpp"
 #include "ScreenBuffer/ScreenBuffer.hpp"
-#include "Terminal/Terminal.hpp"
 #include "Utilities/Utilities.hpp"
 #include "Window/Window.hpp"
 #include <algorithm>
@@ -46,7 +44,6 @@
 #include <vector>
 
 namespace Kilo::editor {
-static EditorConfig editorConfig;
 
 /**
  * @brief Performs an action depending on the key pressed
@@ -63,57 +60,6 @@ void processKeypress(int const keyPressed, Cursor& cursor, terminal::Window cons
   using utilities::EditorKey;
   auto key = static_cast<EditorKey>(keyPressed);
 
-  detail::processKeypressHelper(key, cursor, window);
-}
-
-void processKeypress()
-{
-  using utilities::clearScreenAndRepositionCursor;
-  using utilities::ctrlKey;
-
-  int c = terminal::readKey();
-
-  if (c == ctrlKey('q')) {
-    clearScreenAndRepositionCursor();
-    std::exit(EXIT_SUCCESS);
-  }
-
-  using enum utilities::EditorKey;
-  using utilities::EditorKey;
-
-  auto key = static_cast<EditorKey>(c);
-
-  if (key == Home) {
-    editorConfig.cursor.x = 0;
-  }
-  else if (key == End) {
-    editorConfig.cursor.x = editorConfig.window.cols() - 1;
-  }
-  else if (key == PageUp or key == PageDown) {
-    for (auto i = editorConfig.window.rows(); i > 0; i--) {
-      moveCursor(key == PageUp ? ArrowUp : ArrowDown);
-    }
-  }
-  else if (key == ArrowLeft or key == ArrowRight or key == ArrowUp or key == ArrowDown) {
-    moveCursor(key);
-  }
-}
-
-void refreshScreen()
-{
-  ScreenBuffer buffer;
-
-  /*
-   * Hide the cursor when painting and then move it to the home position
-   */
-
-  buffer.write(EscapeSequences::HideCursorWhenRepainting).write(EscapeSequences::MoveCursorToHomePosition);
-
-  drawRows(buffer);
-
-  auto const cursorPos = detail::setExactPositionToMoveCursorTo(editorConfig.cursor, editorConfig.off);
-
-  buffer.write(cursorPos).write(EscapeSequences::ShowTheCursor).flush();
   detail::processKeypressHelper(key, cursor, window, document);
 }
 
@@ -135,28 +81,9 @@ void refreshScreen(ScreenBuffer& buffer, Cursor const& cursor, Offset const& off
 
   buffer.write(EscapeSequences::HideCursorWhenRepainting).write(EscapeSequences::MoveCursorToHomePosition);
 
-  drawRows(buffer);
+  drawRows(window, offset, document, buffer, renderedDoc);
   auto const cursorPos = detail::setExactPositionToMoveCursorTo(cursor, offset);
   buffer.write(cursorPos).write(EscapeSequences::ShowTheCursor).flush();
-}
-
-void drawRows(ScreenBuffer& buffer) noexcept
-{
-  for (int currentRow = 0; currentRow < editorConfig.window.rows(); currentRow++) {
-    if (int filerow = currentRow + editorConfig.off.row; std::cmp_greater_equal(filerow, editorConfig.row.size())) {
-      detail::printWelcomeMessageOrTilde(editorConfig.row.empty(), currentRow, buffer, editorConfig.window);
-    }
-    else {
-      detail::printLineOfDocument(editorConfig.render[filerow], buffer, editorConfig.window.cols(),
-                                  editorConfig.off.col);
-    }
-
-    buffer.write(EscapeSequences::ErasePartOfLineToTheRightOfCursor);
-
-    if (currentRow < editorConfig.window.rows() - 1) {
-      buffer.write("\r\n");
-    }
-  }
 }
 
 /**
@@ -188,24 +115,6 @@ void drawRows(terminal::Window const& window, Offset const& offset, std::vector<
 }
 
 /**
- * @brief Move the cursor in accordance with the key pressed
- *
- * @param key The character representing the direction to move the cursor in
- */
-void moveCursor(utilities::EditorKey key) noexcept
-{
-  detail::moveCursorHelper(editorConfig.cursor, key, editorConfig.row);
-
-  auto currRow = detail::getCurrentRow(editorConfig.cursor.y, editorConfig.row);
-
-  int rowlen = currRow ? currRow->length() : 0;
-
-  if (editorConfig.cursor.x > rowlen) {
-    editorConfig.cursor.x = rowlen;
-  }
-}
-
-/**
  * @brief Move the cursor in the direction of the key pressed
  *
  * @param key The key pressed
@@ -222,28 +131,6 @@ void moveCursor(utilities::EditorKey key, Cursor& cursor, std::vector<std::strin
   if (std::cmp_greater_equal(cursor.x, rowlen)) {
     cursor.x = rowlen;
   }
-}
-
-bool open(std::filesystem::path const& path)
-{
-  // TODO: rewrite the error handling logic to match the approach used in rest
-  // of the application
-
-  std::ifstream infile(path);
-
-  if (!infile) {
-    return false;
-  }
-
-  std::string line;
-
-  while (std::getline(infile, line)) {
-    editorConfig.row.push_back(line);
-  }
-
-  editorConfig.render = editorConfig.row;
-
-  return true;
 }
 
 /**
@@ -272,31 +159,6 @@ bool open(std::filesystem::path const& path, std::vector<std::string>& document,
   rendered = document;
 
   return true;
-}
-
-void scroll() noexcept
-{
-  /*
-   * Check if the cursor has moved outside of the visible window.
-   * If so, adjust editorConfig.off.row and/or editorConfig.off.col so that the
-   * cursor is just inside the visible window
-   */
-
-  if (editorConfig.cursor.y < editorConfig.off.row) {
-    editorConfig.off.row = editorConfig.cursor.y;
-  }
-
-  if (editorConfig.cursor.y >= editorConfig.off.row + editorConfig.window.rows()) {
-    editorConfig.off.row = editorConfig.cursor.y - editorConfig.window.rows() + 1;
-  }
-
-  if (editorConfig.cursor.x < editorConfig.off.col) {
-    editorConfig.off.col = editorConfig.cursor.x;
-  }
-
-  if (editorConfig.cursor.x >= editorConfig.off.col + editorConfig.window.cols()) {
-    editorConfig.off.col = editorConfig.cursor.x - editorConfig.window.cols() + 1;
-  }
 }
 
 /**

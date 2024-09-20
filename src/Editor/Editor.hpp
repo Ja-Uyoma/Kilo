@@ -49,16 +49,8 @@ class ScreenBuffer;
  * @param[in] cursor The position of the cursor in the terminal window
  * @param[in] window The terminal window
  */
-void processKeypress(int const keyPressed, Cursor& cursor, terminal::Window const& window) noexcept;
-
-/// @brief Process the results from readKey
-/// @details This function is responsible for mapping keypresses to editor
-/// operations
-/// @throws std::system_error if an error occured during read
-void processKeypress();
-
-/// @brief Clear the screen and reposition the cursor to the top-left corner
-void refreshScreen();
+void processKeypress(int const keyPressed, Cursor& cursor, terminal::Window const& window,
+                     std::vector<std::string> const& document) noexcept;
 
 /**
  * @brief Perform a screen refresh
@@ -69,11 +61,8 @@ void refreshScreen();
  * @param cursor The cursor
  * @param offset The offset from the window to the open document
  */
-void refreshScreen(ScreenBuffer& buffer, Cursor const& cursor, Offset const& offset);
-
-/// @brief Draw each row of the buffer of text being edited, plus a tilde at the
-/// beginning
-void drawRows(ScreenBuffer& buffer) noexcept;
+void refreshScreen(ScreenBuffer& buffer, Cursor const& cursor, Offset const& offset, terminal::Window const& window,
+                   std::vector<std::string> const& document, std::vector<std::string> const& renderedDoc);
 
 /**
  * @brief Draw each row of the buffer of text being edited, plus a tilde at the beginning
@@ -88,13 +77,6 @@ void drawRows(terminal::Window const& window, Offset const& offset, std::vector<
               ScreenBuffer& buffer, std::vector<std::string> const& renderedDoc);
 
 /**
- * @brief Move the cursor in accordance with the key pressed
- *
- * @param key The character representing the direction to move the cursor in
- */
-void moveCursor(utilities::EditorKey key) noexcept;
-
-/**
  * @brief Move the cursor in the direction of the key pressed
  *
  * @param key The key pressed
@@ -102,15 +84,6 @@ void moveCursor(utilities::EditorKey key) noexcept;
  * @param row The document which is currently open
  */
 void moveCursor(utilities::EditorKey key, Cursor& cursor, std::vector<std::string> const& row);
-
-/**
- * @brief Open a file for reading and write its contents to the EditorConfig
- * instance's row member variable
- *
- * @param[in] path The path to the file to be opened for reading
- * @return True if the file was opened successfully and false otherwise
- */
-bool open(std::filesystem::path const& path);
 
 /**
  * @brief Open a file and write its contents to memory
@@ -122,12 +95,6 @@ bool open(std::filesystem::path const& path);
  * @return false If the operation failed
  */
 bool open(std::filesystem::path const& path, std::vector<std::string>& document, std::vector<std::string>& rendered);
-
-/**
- * @brief Position the cursor within the visible window
- *
- */
-void scroll() noexcept;
 
 /**
  * @brief Fit the cursor in the visible window
@@ -305,7 +272,8 @@ void processKeypressHelper(unsigned const keyPressed) noexcept;
  * @param[in] cursor The position of the cursor in the terminal window
  * @param[in] window The terminal window
  */
-void processKeypressHelper(utilities::EditorKey keyPressed, Cursor& cursor, terminal::Window const& window) noexcept;
+void processKeypressHelper(utilities::EditorKey keyPressed, Cursor& cursor, terminal::Window const& window,
+                           std::vector<std::string> const& document) noexcept;
 
 /**
  * @brief Print the welcome message or a tilde to the window
