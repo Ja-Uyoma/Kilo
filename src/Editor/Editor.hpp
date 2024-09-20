@@ -95,6 +95,15 @@ void drawRows(terminal::Window const& window, Offset const& offset, std::vector<
 void moveCursor(utilities::EditorKey key) noexcept;
 
 /**
+ * @brief Move the cursor in the direction of the key pressed
+ *
+ * @param key The key pressed
+ * @param cursor The editor cursor
+ * @param row The document which is currently open
+ */
+void moveCursor(utilities::EditorKey key, Cursor& cursor, std::vector<std::string> const& row);
+
+/**
  * @brief Open a file for reading and write its contents to the EditorConfig
  * instance's row member variable
  *

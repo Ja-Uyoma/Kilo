@@ -184,6 +184,11 @@ void drawRows(terminal::Window const& window, Offset const& offset, std::vector<
   }
 }
 
+/**
+ * @brief Move the cursor in accordance with the key pressed
+ *
+ * @param key The character representing the direction to move the cursor in
+ */
 void moveCursor(utilities::EditorKey key) noexcept
 {
   detail::moveCursorHelper(editorConfig.cursor, key, editorConfig.row);
@@ -194,6 +199,25 @@ void moveCursor(utilities::EditorKey key) noexcept
 
   if (editorConfig.cursor.x > rowlen) {
     editorConfig.cursor.x = rowlen;
+  }
+}
+
+/**
+ * @brief Move the cursor in the direction of the key pressed
+ *
+ * @param key The key pressed
+ * @param cursor The editor cursor
+ * @param row The document which is currently open
+ */
+void moveCursor(utilities::EditorKey key, Cursor& cursor, std::vector<std::string> const& row)
+{
+  detail::moveCursorHelper(cursor, key, row);
+
+  auto currRow = detail::getCurrentRow(cursor.y, row);
+  auto rowlen = currRow ? currRow->length() : 0;
+
+  if (std::cmp_greater_equal(cursor.x, rowlen)) {
+    cursor.x = rowlen;
   }
 }
 
