@@ -63,7 +63,7 @@ void EditorConfig::processKeypress()
 {
   auto const keyPressed = terminal::readKey();
 
-  editor::processKeypress(keyPressed, cursor, window);
+  editor::processKeypress(keyPressed, cursor, window, row);
 }
 
 /**
