@@ -11,17 +11,17 @@
 #include <vector>
 
 namespace Kilo::editor {
-class EditorConfig
+class Config
 {
 public:
-  explicit EditorConfig();
-  ~EditorConfig();
+  explicit Config();
+  ~Config();
 
-  EditorConfig(EditorConfig const&) = delete;
-  EditorConfig& operator=(EditorConfig const&) = delete;
+  Config(Config const&) = delete;
+  Config& operator=(Config const&) = delete;
 
-  EditorConfig(EditorConfig&&) noexcept = delete;
-  EditorConfig operator=(EditorConfig&&) noexcept = delete;
+  Config(Config&&) noexcept = delete;
+  Config operator=(Config&&) noexcept = delete;
 
   /**
    * @brief Position the cursor within the visible window

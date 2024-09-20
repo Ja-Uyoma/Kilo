@@ -7,7 +7,7 @@
 #include <system_error>
 
 namespace Kilo::editor {
-EditorConfig::EditorConfig()
+Config::Config()
 {
   try {
     m_state.setRawMode();
@@ -18,7 +18,7 @@ EditorConfig::EditorConfig()
   }
 }
 
-EditorConfig::~EditorConfig()
+Config::~Config()
 {
   // We need to call state.reset() at program exit to reset the terminal to its
   // canonical settings We cannot register an atexit handler for this because
@@ -33,7 +33,7 @@ EditorConfig::~EditorConfig()
  * @brief Position the cursor within the visible window
  *
  */
-void EditorConfig::scroll() noexcept
+void Config::scroll() noexcept
 {
   editor::scroll(m_cursor, m_off, m_window);
 }
@@ -42,7 +42,7 @@ void EditorConfig::scroll() noexcept
  * @brief Perform a screen refresh
  *
  */
-void EditorConfig::refreshScreen()
+void Config::refreshScreen()
 {
   /*
    * Hide the cursor when painting and then move it to the home position
@@ -59,7 +59,7 @@ void EditorConfig::refreshScreen()
  * @brief Process the result of calling readKey
  *
  */
-void EditorConfig::processKeypress()
+void Config::processKeypress()
 {
   auto const keyPressed = terminal::readKey();
 
@@ -69,7 +69,7 @@ void EditorConfig::processKeypress()
 /**
  * @brief Draw each row of the buffer of text being edited, plus a tilde at the beginning
  */
-void EditorConfig::drawRows()
+void Config::drawRows()
 {
   editor::drawRows(m_window, m_off, m_row, m_buffer, m_render);
 }
@@ -81,7 +81,7 @@ void EditorConfig::drawRows()
  * @return true If the operation was successful
  * @return false If the operation failed
  */
-bool EditorConfig::open(std::filesystem::path const& path)
+bool Config::open(std::filesystem::path const& path)
 {
   return editor::open(path, m_row, m_render);
 }
