@@ -20,7 +20,6 @@ public:
   Cursor cursor {};
   Offset off {};
   terminal::Window window = terminal::Window::create();
-  int rx {};
   ScreenBuffer buffer {};
 
   explicit EditorConfig();
@@ -63,6 +62,7 @@ public:
    * @return false If the operation failed
    */
   bool open(std::filesystem::path const& path);
+  [[maybe_unused]] int rx {};
 };
 }   // namespace Kilo::editor
 
