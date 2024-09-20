@@ -1,7 +1,7 @@
 #include "EditorConfig.hpp"
 
-#include "Editor/Constants.hpp"
 #include "Editor/Editor.hpp"
+#include "Editor/constants/constants.hpp"
 #include "Terminal/Terminal.hpp"
 #include <iostream>
 #include <system_error>
