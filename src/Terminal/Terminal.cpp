@@ -24,7 +24,7 @@
 #include "Terminal.hpp"
 
 #include "Utilities/Utilities.hpp"
-#include "WindowSize.hpp"
+#include "window/window_size.hpp"
 #include <array>
 #include <cerrno>
 #include <cstddef>

@@ -24,7 +24,7 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
-#include "Terminal/WindowSize.hpp"
+#include "window_size.hpp"
 
 namespace Kilo::terminal {
 
