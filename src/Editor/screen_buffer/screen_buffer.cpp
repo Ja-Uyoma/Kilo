@@ -24,7 +24,6 @@
 #include "screen_buffer.hpp"
 
 #include <cerrno>
-#include <system_error>
 #include <unistd.h>
 
 namespace Kilo::editor {
