@@ -29,22 +29,6 @@
 
 namespace Kilo::editor {
 
-/**
- * @brief Flush the buffer by writing its contents to stdout
- * @throws std::system_error If the write to stdout failed
- */
-std::size_t ScreenBuffer::flush() const
-{
-  errno = 0;
-  auto const rv = ::write(STDOUT_FILENO, m_buffer.c_str(), size());
-
-  if (rv == -1) {
-    throw std::system_error(errno, std::generic_category(), "Could not flush buffer to stdout");
-  }
-
-  return rv;
-}
-
 /// \brief Flush the buffer by writing its contents to a file
 /// \param[in] file The file being written to
 /// \returns The number of bytes written

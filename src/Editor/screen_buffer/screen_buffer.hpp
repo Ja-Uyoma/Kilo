@@ -74,12 +74,6 @@ public:
     return m_buffer.c_str();
   }
 
-  /**
-   * @brief Flush the buffer by writing its contents to stdout
-   * @throws std::system_error If the write to stdout failed
-   */
-  std::size_t flush() const;
-
   /// \brief Flush the buffer by writing its contents to a file
   /// \param[in] file The file being written to
   /// \returns The number of bytes written
