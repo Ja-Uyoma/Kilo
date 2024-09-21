@@ -77,7 +77,7 @@ public:
    * @brief Flush the buffer by writing its contents to stdout
    * @throws std::system_error If the write to stdout failed
    */
-  void flush() const;
+  std::size_t flush() const;
 
 private:
   std::string m_buffer;
