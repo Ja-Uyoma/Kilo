@@ -56,7 +56,7 @@ public:
   bool open(std::filesystem::path const& path);
 
 private:
-  terminal::TerminalState m_state {};
+  terminal::TerminalMode m_state {};
   std::vector<std::string> m_row;
   std::vector<std::string> m_render;
   Cursor m_cursor {};

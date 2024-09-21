@@ -85,12 +85,12 @@ TEST(TerminalState, ttyResetSucceedsWhenGivenAValidFileDescriptor)
 
 TEST(TerminalState, EachInstanceIsWellFormed)
 {
-  ASSERT_NO_THROW(TerminalState tstate {});
+  ASSERT_NO_THROW(TerminalMode tstate {});
 }
 
 TEST(TerminalState, SetRawModePutsTheTerminalDriverInRawMode)
 {
-  TerminalState state {};
+  TerminalMode state {};
 
   auto cleanup = gsl::finally([&state] { state.reset(); });
 
@@ -99,7 +99,7 @@ TEST(TerminalState, SetRawModePutsTheTerminalDriverInRawMode)
 
 TEST(TerminalState, ResetRestoresTerminalSettingsToCanonicalMode)
 {
-  TerminalState tstate {};
+  TerminalMode tstate {};
   tstate.setRawMode();
 
   ASSERT_NO_THROW(tstate.reset());

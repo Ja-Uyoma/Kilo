@@ -31,12 +31,12 @@
 
 namespace Kilo::terminal {
 
-TerminalState::TerminalState()
+TerminalMode::TerminalMode()
 {
   getTerminalDriverSettings(STDIN_FILENO, m_termios);
 }
 
-void TerminalState::setRawMode() &
+void TerminalMode::setRawMode() &
 {
   if (m_state == ttystate::Raw) {
     return;
@@ -47,7 +47,7 @@ void TerminalState::setRawMode() &
   m_state = ttystate::Raw;
 }
 
-void TerminalState::reset() &
+void TerminalMode::reset() &
 {
   if (m_state == ttystate::Reset) {
     return;

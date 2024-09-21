@@ -28,7 +28,7 @@
 
 namespace Kilo::terminal {
 
-class TerminalState
+class TerminalMode
 {
 public:
   /**
@@ -36,7 +36,7 @@ public:
    * @throws std::system_error An exception describing what went wrong
    *
    */
-  explicit TerminalState();
+  explicit TerminalMode();
 
   /**
    * @brief Set the terminal driver to raw (or non-canonical) mode
