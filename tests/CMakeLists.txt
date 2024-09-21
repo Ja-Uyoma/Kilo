@@ -4,6 +4,8 @@ find_package(GTest REQUIRED)
 find_package(Microsoft.GSL REQUIRED)
 find_package(fmt REQUIRED)
 
+include(GoogleTest)
+
 target_link_libraries(tests
     PRIVATE
         GTest::gtest_main
@@ -60,3 +62,7 @@ target_compile_options(tests
     PRIVATE
         -Wall -Wextra -Werror -Wpedantic
 )
+
+add_test(NAME tests COMMAND tests)
+
+gtest_discover_tests(tests)
