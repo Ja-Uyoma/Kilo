@@ -2,6 +2,7 @@
 
 #include "Editor/Editor.hpp"
 #include "Editor/constants/constants.hpp"
+#include "Terminal/File.hpp"
 #include "Terminal/Terminal.hpp"
 #include <iostream>
 #include <system_error>
@@ -52,7 +53,9 @@ void Config::refreshScreen()
 
   this->drawRows();
   auto const cursorPos = detail::setExactPositionToMoveCursorTo(m_cursor, m_off);
-  m_buffer.write(cursorPos).write(EscapeSequences::ShowTheCursor).flush();
+
+  terminal::File output;
+  m_buffer.write(cursorPos).write(EscapeSequences::ShowTheCursor).flush(output);
 }
 
 /**
