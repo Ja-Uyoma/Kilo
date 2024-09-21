@@ -39,7 +39,7 @@ target_sources(tests
 
         "${PROJECT_SOURCE_DIR}/src/Terminal/mode/terminal_mode.hpp"
         "${PROJECT_SOURCE_DIR}/src/Terminal/mode/terminal_mode.cpp"
-        TerminalState.test.cpp
+        TerminalMode.test.cpp
 
         "${PROJECT_SOURCE_DIR}/src/Utilities/Utilities.hpp"
         "${PROJECT_SOURCE_DIR}/src/Utilities/Utilities.cpp"
