@@ -60,7 +60,9 @@ void TerminalMode::reset() &
 
 void getTerminalDriverSettings(int fd, termios& buf)
 {
-  if (errno = 0; tcgetattr(fd, &buf) == -1) {
+  errno = 0;
+
+  if (tcgetattr(fd, &buf) == -1) {
     throw std::system_error(errno, std::system_category(), "Could not retrieve terminal driver settings");
   }
 }
@@ -90,7 +92,9 @@ void ttyRaw(int fd, termios const& buf, termios& copy)
   /* No timer */
   copy.c_cc[VTIME] = 1;
 
-  if (errno = 0; tcsetattr(fd, TCSAFLUSH, &copy) == -1) {
+  errno = 0;
+
+  if (tcsetattr(fd, TCSAFLUSH, &copy) == -1) {
     throw std::system_error(errno, std::system_category(), "Failed to set terminal driver to raw mode");
   }
 
@@ -98,7 +102,9 @@ void ttyRaw(int fd, termios const& buf, termios& copy)
    * Verify that the changes stuck since tcsetattr can return 0 on partial success
    */
 
-  if (errno = 0; tcgetattr(fd, &copy) == -1) {
+  errno = 0;
+
+  if (tcgetattr(fd, &copy) == -1) {
     tcsetattr(fd, TCSAFLUSH, &buf);
     throw std::system_error(errno, std::system_category(), "Error while writing terminal driver settings to buffer");
   }
@@ -121,7 +127,9 @@ void ttyRaw(int fd, termios const& buf, termios& copy)
 
 void ttyReset(int fd, termios const& buf)
 {
-  if (errno = 0; tcsetattr(fd, TCSAFLUSH, &buf) == -1) {
+  errno = 0;
+
+  if (tcsetattr(fd, TCSAFLUSH, &buf) == -1) {
     throw std::system_error(errno, std::system_category(), "Failed to reset terminal driver to canonical mode");
   }
 }
