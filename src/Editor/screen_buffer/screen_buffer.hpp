@@ -24,6 +24,7 @@
 #ifndef WRITE_BUFFER_HPP
 #define WRITE_BUFFER_HPP
 
+#include "Terminal/File.hpp"
 #include <string>
 #include <string_view>
 
@@ -78,6 +79,12 @@ public:
    * @throws std::system_error If the write to stdout failed
    */
   std::size_t flush() const;
+
+  /// \brief Flush the buffer by writing its contents to a file
+  /// \param[in] file The file being written to
+  /// \returns The number of bytes written
+  /// \throws `std::system_error` if the operation failed
+  std::size_t flush(terminal::File& file) const;
 
 private:
   std::string m_buffer;
