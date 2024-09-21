@@ -23,6 +23,7 @@
 
 #include "Editor.hpp"
 
+#include "Terminal/File.hpp"
 #include "Terminal/window/window.hpp"
 #include "Utilities/Utilities.hpp"
 #include "constants/constants.hpp"
@@ -81,9 +82,11 @@ void refreshScreen(ScreenBuffer& buffer, Cursor const& cursor, Offset const& off
 
   buffer.write(EscapeSequences::HideCursorWhenRepainting).write(EscapeSequences::MoveCursorToHomePosition);
 
+  terminal::File output;
+
   drawRows(window, offset, document, buffer, renderedDoc);
   auto const cursorPos = detail::setExactPositionToMoveCursorTo(cursor, offset);
-  buffer.write(cursorPos).write(EscapeSequences::ShowTheCursor).flush();
+  buffer.write(cursorPos).write(EscapeSequences::ShowTheCursor).flush(output);
 }
 
 /**
