@@ -22,10 +22,19 @@
  */
 
 #include "Editor/screen_buffer/screen_buffer.hpp"
+#include "Terminal/File.hpp"
 #include <cstring>
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
+#include <system_error>
 
 namespace Kilo::editor {
+
+class MockFile : public terminal::File
+{
+public:
+  MOCK_METHOD(std::size_t, write, (int, void const*, std::size_t));
+};
 
 class ScreenBufferTest : public ::testing::Test
 {
@@ -52,6 +61,29 @@ TEST_F(ScreenBufferTest, c_strReturnsACStringRepresentationOfTheContentsOfTheBuf
   buf.write(str, std::strlen(str));
 
   ASSERT_STREQ(buf.c_str(), str);
+}
+
+TEST_F(ScreenBufferTest, flushReturnsTheNumberOfBytesWrittenOnSuccess)
+{
+  using namespace ::testing;
+
+  MockFile file;
+
+  EXPECT_CALL(file, write(_, _, _)).Times(1).WillOnce(Return(5));
+
+  auto rv = buf.flush(file);
+
+  ASSERT_THAT(rv, Eq(5));
+}
+
+TEST_F(ScreenBufferTest, flushThrowsAnExceptionOnFailure)
+{
+  using namespace ::testing;
+
+  MockFile file;
+  EXPECT_CALL(file, write(_, _, _)).Times(1).WillOnce(Throw(std::system_error {}));
+
+  ASSERT_THROW(buf.flush(file), std::system_error);
 }
 
 }   // namespace Kilo::editor
