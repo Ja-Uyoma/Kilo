@@ -23,12 +23,11 @@
 
 #include "Utilities.hpp"
 
-#include <cerrno>
-#include <cstring>
-#include <system_error>
 #include <unistd.h>
 
 namespace Kilo::utilities {
+
+/// @brief Clear the screen and reposition the cursor to the top-left corner
 void clearScreenAndRepositionCursor() noexcept
 {
   {
@@ -39,30 +38,4 @@ void clearScreenAndRepositionCursor() noexcept
   }
 }
 
-[[nodiscard]] long writeAll(int fd, void const* buf, long count)
-{
-  long totalWritten {};
-  auto const* ptr = static_cast<char const*>(buf);
-
-  while (totalWritten < count) {
-    long written = ::write(fd, ptr + totalWritten, count - totalWritten);
-
-    if (written == -1) {
-      if (errno == EINTR || errno == EAGAIN) {
-        continue;
-      }
-      else {
-        throw std::system_error(errno, std::system_category(), std::strerror(errno));
-      }
-    }
-
-    if (written == 0) {
-      break;
-    }
-
-    totalWritten += written;
-  }
-
-  return totalWritten;
-}
 }   // namespace Kilo::utilities
