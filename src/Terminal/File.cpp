@@ -24,6 +24,7 @@
 #include "File.hpp"
 
 #include <cerrno>
+#include <string>
 #include <system_error>
 #include <unistd.h>
 
@@ -38,10 +39,10 @@ namespace Kilo::terminal {
  * @throws std::system_error On read failure
  * @returns The number of bytes read
  */
-std::size_t File::read(int fd, void* buffer, std::size_t nbytes)
+std::size_t File::read(int fd, std::string& buffer, std::size_t nbytes)
 {
   errno = 0;
-  auto result = ::read(fd, buffer, nbytes);
+  auto result = ::read(fd, &buffer[0], nbytes);
 
   if (result < 0) {
     throw std::system_error(errno, std::system_category());
@@ -59,10 +60,10 @@ std::size_t File::read(int fd, void* buffer, std::size_t nbytes)
  * @throws std::system_error On write failure
  * @returns The number of bytes written
  */
-std::size_t File::write(int fd, void const* buffer, std::size_t nbytes)
+std::size_t File::write(int fd, std::string const& buffer, std::size_t nbytes)
 {
   errno = 0;
-  auto result = ::write(fd, buffer, nbytes);
+  auto result = ::write(fd, buffer.c_str(), nbytes);
 
   if (result < 0) {
     throw std::system_error(errno, std::system_category());

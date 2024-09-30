@@ -26,6 +26,7 @@
 #include <cstring>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+#include <string>
 #include <system_error>
 
 namespace Kilo::editor {
@@ -33,7 +34,7 @@ namespace Kilo::editor {
 class MockFile : public terminal::File
 {
 public:
-  MOCK_METHOD(std::size_t, write, (int, void const*, std::size_t));
+  MOCK_METHOD(std::size_t, write, (int, std::string const&, std::size_t));
 };
 
 class ScreenBufferTest : public ::testing::Test

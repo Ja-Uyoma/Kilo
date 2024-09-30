@@ -25,6 +25,7 @@
 #define FILE_HPP
 
 #include <cstddef>
+#include <string>
 
 namespace Kilo::terminal {
 
@@ -39,7 +40,7 @@ public:
    * @param nbytes The number of bytes to read
    * @returns The number of bytes read
    */
-  virtual std::size_t read(int fd, void* buffer, std::size_t nbytes) = 0;
+  virtual std::size_t read(int fd, std::string& buffer, std::size_t nbytes) = 0;
 
   /**
    * @brief Write n bytes of buffer to fd
@@ -49,7 +50,7 @@ public:
    * @param nbytes The number of bytes to be written
    * @returns The number of bytes written
    */
-  virtual std::size_t write(int fd, void const* buffer, std::size_t nbytes) = 0;
+  virtual std::size_t write(int fd, std::string const& buffer, std::size_t nbytes) = 0;
 
   /**
    * @brief Destructor
@@ -72,7 +73,7 @@ public:
    * @throws std::system_error On read failure
    * @returns The number of bytes read
    */
-  std::size_t read(int fd, void* buffer, std::size_t nbytes) override;
+  std::size_t read(int fd, std::string& buffer, std::size_t nbytes) override;
 
   /**
    * @brief Write n bytes of buffer to fd
@@ -83,7 +84,7 @@ public:
    * @throws std::system_error On write failure
    * @returns The number of bytes written
    */
-  std::size_t write(int fd, void const* buffer, std::size_t nbytes) override;
+  std::size_t write(int fd, std::string const& buffer, std::size_t nbytes) override;
 };
 
 }   // namespace Kilo::terminal
