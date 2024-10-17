@@ -17,12 +17,6 @@ class Config
 public:
   explicit Config();
 
-  Config(Config const&) = delete;
-  Config& operator=(Config const&) = delete;
-
-  Config(Config&&) noexcept = delete;
-  Config operator=(Config&&) noexcept = delete;
-
   /**
    * @brief Position the cursor within the visible window
    *
