@@ -11,7 +11,7 @@ namespace Kilo::editor {
 Config::Config()
 {
   try {
-    m_state.setRawMode();
+    m_mode->setRawMode();
   }
   catch (std::system_error const& err) {
     std::cerr << err.code() << ": " << err.what() << '\n';
@@ -27,7 +27,7 @@ Config::~Config()
   // solution is to use RAII with a static object whose resources must be
   // cleaned up at program exit
 
-  m_state.reset();
+  // m_state.reset();
 }
 
 /**

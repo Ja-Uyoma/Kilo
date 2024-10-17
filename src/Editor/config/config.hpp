@@ -7,6 +7,7 @@
 #include "Terminal/mode/terminal_mode.hpp"
 #include "Terminal/window/window.hpp"
 #include <filesystem>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -56,7 +57,18 @@ public:
   bool open(std::filesystem::path const& path);
 
 private:
-  terminal::TerminalMode m_state {};
+  class TerminalModeDeleter
+  {
+  public:
+    void operator()(terminal::TerminalMode* modePtr) const
+    {
+      modePtr->reset();
+    }
+  };
+
+  [[no_unique_address]] TerminalModeDeleter const deleter;
+  std::unique_ptr<terminal::TerminalMode, TerminalModeDeleter> m_mode {new terminal::TerminalMode(), deleter};
+
   std::vector<std::string> m_row;
   std::vector<std::string> m_render;
   Cursor m_cursor {};
