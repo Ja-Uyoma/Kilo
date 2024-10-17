@@ -60,7 +60,7 @@ private:
   };
 
   [[no_unique_address]] TerminalModeDeleter const deleter;
-  std::unique_ptr<terminal::TerminalMode, TerminalModeDeleter> m_mode {new terminal::TerminalMode(), deleter};
+  std::unique_ptr<terminal::TerminalMode, TerminalModeDeleter const&> m_mode {new terminal::TerminalMode(), deleter};
 
   std::vector<std::string> m_row;
   std::vector<std::string> m_render;
