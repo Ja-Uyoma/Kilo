@@ -4,6 +4,9 @@
 #include "Editor/constants/constants.hpp"
 #include "Terminal/File.hpp"
 #include "Terminal/Terminal.hpp"
+#include "Utilities/Utilities.hpp"
+#include <cstddef>
+#include <cstdlib>
 #include <iostream>
 #include <system_error>
 
@@ -55,7 +58,28 @@ void Config::processKeypress()
 {
   auto const keyPressed = terminal::readKey();
 
-  editor::processKeypress(keyPressed, m_cursor, m_window, m_row);
+  if (keyPressed == utilities::ctrlKey('q')) {
+    utilities::clearScreenAndRepositionCursor();
+    std::exit(EXIT_SUCCESS);
+  }
+
+  using enum utilities::EditorKey;
+  auto const key = static_cast<utilities::EditorKey>(keyPressed);
+
+  if (key == Home) {
+    m_cursor.x = 0;
+  }
+  else if (key == End) {
+    m_cursor.x = m_window.cols() - 1;
+  }
+  else if (key == PageUp or key == PageDown) {
+    for (std::size_t i = m_window.rows(); i > 0; --i) {
+      moveCursor(key == PageUp ? ArrowUp : ArrowDown, m_cursor, m_row);
+    }
+  }
+  else if (key == ArrowLeft or key == ArrowRight or key == ArrowUp or key == ArrowDown) {
+    moveCursor(key, m_cursor, m_row);
+  }
 }
 
 /**
