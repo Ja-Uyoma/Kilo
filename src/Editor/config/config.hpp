@@ -16,7 +16,6 @@ class Config
 {
 public:
   explicit Config();
-  ~Config();
 
   Config(Config const&) = delete;
   Config& operator=(Config const&) = delete;
