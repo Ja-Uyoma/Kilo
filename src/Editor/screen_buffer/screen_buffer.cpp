@@ -34,7 +34,7 @@ namespace Kilo::editor {
 /// \throws `std::system_error` if the operation failed
 std::size_t ScreenBuffer::flush(terminal::File& file) const
 {
-  return file.write(STDOUT_FILENO, m_buffer.c_str(), size());
+  return file.write(STDOUT_FILENO, m_buffer.c_str());
 }
 
 }   // namespace Kilo::editor

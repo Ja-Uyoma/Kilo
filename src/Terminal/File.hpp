@@ -37,20 +37,18 @@ public:
    *
    * @param fd The file being read from
    * @param buffer The buffer being read to
-   * @param nbytes The number of bytes to read
    * @returns The number of bytes read
    */
-  virtual std::size_t read(int fd, std::string& buffer, std::size_t nbytes) = 0;
+  virtual std::size_t read(int fd, std::string& buffer) = 0;
 
   /**
    * @brief Write n bytes of buffer to fd
    *
    * @param fd The file descriptor being written to
    * @param buffer The buffer being written from
-   * @param nbytes The number of bytes to be written
    * @returns The number of bytes written
    */
-  virtual std::size_t write(int fd, std::string const& buffer, std::size_t nbytes) = 0;
+  virtual std::size_t write(int fd, std::string const& buffer) = 0;
 
   /**
    * @brief Destructor
@@ -69,22 +67,20 @@ public:
    *
    * @param fd The file being read from
    * @param buffer The buffer being read to
-   * @param nbytes The number of bytes to read
    * @throws std::system_error On read failure
    * @returns The number of bytes read
    */
-  std::size_t read(int fd, std::string& buffer, std::size_t nbytes) override;
+  std::size_t read(int fd, std::string& buffer) override;
 
   /**
    * @brief Write n bytes of buffer to fd
    *
    * @param fd The file descriptor being written to
    * @param buffer The buffer being written from
-   * @param nbytes The number of bytes to be written
    * @throws std::system_error On write failure
    * @returns The number of bytes written
    */
-  std::size_t write(int fd, std::string const& buffer, std::size_t nbytes) override;
+  std::size_t write(int fd, std::string const& buffer) override;
 };
 
 }   // namespace Kilo::terminal

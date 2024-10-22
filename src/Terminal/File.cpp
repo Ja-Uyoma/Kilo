@@ -35,14 +35,13 @@ namespace Kilo::terminal {
  *
  * @param fd The file being read from
  * @param buffer The buffer being read to
- * @param nbytes The number of bytes to read
  * @throws std::system_error On read failure
  * @returns The number of bytes read
  */
-std::size_t File::read(int fd, std::string& buffer, std::size_t nbytes)
+std::size_t File::read(int fd, std::string& buffer)
 {
   errno = 0;
-  auto result = ::read(fd, &buffer[0], nbytes);
+  auto result = ::read(fd, &buffer[0], buffer.length());
 
   if (result < 0) {
     throw std::system_error(errno, std::system_category());
@@ -56,14 +55,13 @@ std::size_t File::read(int fd, std::string& buffer, std::size_t nbytes)
  *
  * @param fd The file descriptor being written to
  * @param buffer The buffer being written from
- * @param nbytes The number of bytes to be written
  * @throws std::system_error On write failure
  * @returns The number of bytes written
  */
-std::size_t File::write(int fd, std::string const& buffer, std::size_t nbytes)
+std::size_t File::write(int fd, std::string const& buffer)
 {
   errno = 0;
-  auto result = ::write(fd, buffer.c_str(), nbytes);
+  auto result = ::write(fd, buffer.c_str(), buffer.length());
 
   if (result < 0) {
     throw std::system_error(errno, std::system_category());
