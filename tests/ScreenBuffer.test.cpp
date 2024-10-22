@@ -34,7 +34,7 @@ namespace Kilo::editor {
 class MockFile : public terminal::File
 {
 public:
-  MOCK_METHOD(std::size_t, write, (int, std::string const&, std::size_t));
+  MOCK_METHOD(std::size_t, write, (int, std::string const&));
 };
 
 class ScreenBufferTest : public ::testing::Test
@@ -70,7 +70,7 @@ TEST_F(ScreenBufferTest, flushReturnsTheNumberOfBytesWrittenOnSuccess)
 
   MockFile file;
 
-  EXPECT_CALL(file, write(_, _, _)).Times(1).WillOnce(Return(5));
+  EXPECT_CALL(file, write(_, _)).Times(1).WillOnce(Return(5));
 
   auto rv = buf.flush(file);
 
@@ -82,7 +82,7 @@ TEST_F(ScreenBufferTest, flushThrowsAnExceptionOnFailure)
   using namespace ::testing;
 
   MockFile file;
-  EXPECT_CALL(file, write(_, _, _)).Times(1).WillOnce(Throw(std::system_error {}));
+  EXPECT_CALL(file, write(_, _)).Times(1).WillOnce(Throw(std::system_error {}));
 
   ASSERT_THROW(buf.flush(file), std::system_error);
 }
