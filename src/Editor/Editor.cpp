@@ -34,6 +34,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <filesystem>
 #include <fmt/format.h>
 #include <fstream>
 #include <iostream>
@@ -147,6 +148,10 @@ void moveCursor(utilities::EditorKey key, Cursor& cursor, std::vector<std::strin
  */
 bool open(std::filesystem::path const& path, std::vector<std::string>& document, std::vector<std::string>& rendered)
 {
+  if (!std::filesystem::is_regular_file(path)) {
+    return false;
+  }
+
   std::ifstream infile(path);
 
   if (!infile) {
