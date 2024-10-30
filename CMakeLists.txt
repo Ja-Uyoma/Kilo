@@ -18,7 +18,18 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 include(cmake/EnforceOutOfSourceBuilds.cmake)
 include(cmake/StandardProjectSettings.cmake)
 
-enable_testing()
-
 add_subdirectory(src)
-add_subdirectory(tests)
+
+# Don't consider testing if we're not the top-level project
+if (NOT PROJECT_IS_TOP_LEVEL)
+    return()
+endif()
+
+# Include the CTest module
+include(CTest)
+
+if (BUILD_TESTING)
+    message("Adding tests...")
+    add_subdirectory(tests)
+endif()
+
