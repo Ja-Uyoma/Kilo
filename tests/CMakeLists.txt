@@ -62,8 +62,8 @@ target_compile_features(tests
 )
 
 target_compile_options(tests
-    PRIVATE
-        -Wall -Wextra -Werror -Wpedantic
+    PRIVATE $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-Wall -Wextra -Werror -Wpedantic>
+    PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/Wall>
 )
 
 add_test(NAME tests COMMAND tests)
