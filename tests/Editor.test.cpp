@@ -23,7 +23,7 @@
 
 #include "Editor/Editor.hpp"
 
-#include "Editor/cursor/cursor.hpp"
+#include "Cursor/Cursor.hpp"
 #include "Editor/offset/offset.hpp"
 #include "Editor/screen_buffer/screen_buffer.hpp"
 #include "Terminal/window/window.hpp"

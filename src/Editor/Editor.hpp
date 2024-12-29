@@ -24,9 +24,9 @@
 #ifndef EDITOR_HPP
 #define EDITOR_HPP
 
+#include "Cursor/Cursor.hpp"
 #include "Terminal/window/window.hpp"
 #include "Utilities/Utilities.hpp"
-#include "cursor/cursor.hpp"
 #include "offset/offset.hpp"
 #include <cassert>
 #include <filesystem>
