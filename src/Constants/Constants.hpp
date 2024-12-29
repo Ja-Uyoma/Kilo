@@ -21,6 +21,9 @@
  * SOFTWARE.
  */
 
+#ifndef CONSTANTS_HPP
+#define CONSTANTS_HPP
+
 #include <string_view>
 
 namespace Kilo::editor {
@@ -34,3 +37,5 @@ struct EscapeSequences
 };
 
 }   // namespace Kilo::editor
+
+#endif
