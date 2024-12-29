@@ -36,6 +36,29 @@ struct EscapeSequences
   static constexpr std::string_view ErasePartOfLineToTheRightOfCursor {"\x1b[K"};
 };
 
+// The current version of the application
+inline constexpr std::string_view KiloVersion {"0.0.1"};
+
+// The size of a tab character
+inline constexpr int KiloTabStop = 8;
+
+// The keys supported by the application
+// We choose a representation for the arrow keys that does not conflict with the [w, a, s, d] keys.
+// We give them a large integer value that is outside the range of a char, so that they don't
+// conflict with ordinary keypresses.
+enum class EditorKey
+{
+  ArrowLeft = 1000,
+  ArrowRight,
+  ArrowUp,
+  ArrowDown,
+  Delete,
+  Home,
+  End,
+  PageUp,
+  PageDown
+};
+
 }   // namespace Kilo::editor
 
 #endif
