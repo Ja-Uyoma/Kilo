@@ -2,8 +2,8 @@
 #define EDITOR_CONFIG_HPP
 
 #include "Cursor/Cursor.hpp"
-#include "Editor/offset/offset.hpp"
 #include "Editor/screen_buffer/screen_buffer.hpp"
+#include "Offset/Offset.hpp"
 #include "Terminal/mode/terminal_mode.hpp"
 #include "Terminal/window/window.hpp"
 #include <filesystem>

@@ -25,10 +25,10 @@
 
 #include "Constants/Constants.hpp"
 #include "Cursor/Cursor.hpp"
+#include "Offset/Offset.hpp"
 #include "Terminal/File.hpp"
 #include "Terminal/window/window.hpp"
 #include "Utilities/Utilities.hpp"
-#include "offset/offset.hpp"
 #include "screen_buffer/screen_buffer.hpp"
 #include <algorithm>
 #include <cstdio>
