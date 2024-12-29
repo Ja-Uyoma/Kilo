@@ -26,31 +26,6 @@
 
 namespace Kilo::utilities {
 
-/// @brief The version number of the application
-inline constexpr char const* KILO_VERSION = "0.0.1";
-
-/**
- * @brief The length of a tab stop
- *
- */
-inline constexpr int KILO_TAB_STOP {8};
-
-// We choose a representation for arrow keys that doesn't conflict with w, a, s,
-// d. We give them a large integer value that is out of the range of a char, so
-// that they don't conflict with ordinary keypresses.
-enum class EditorKey : int
-{
-  ArrowLeft = 1000,
-  ArrowRight,
-  ArrowUp,
-  ArrowDown,
-  Delete,
-  Home,
-  End,
-  PageUp,
-  PageDown
-};
-
 /// @brief Clear the screen and reposition the cursor to the top-left corner
 void clearScreenAndRepositionCursor() noexcept;
 
