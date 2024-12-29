@@ -1,7 +1,30 @@
-#include "config.hpp"
+/**
+ * MIT License
+ * Copyright (c) 2023 Jimmy Givans
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 
+#include "Application.hpp"
+
+#include "Constants/Constants.hpp"
 #include "Editor/Editor.hpp"
-#include "Editor/constants/constants.hpp"
 #include "Terminal/File.hpp"
 #include "Terminal/Terminal.hpp"
 #include "Utilities/Utilities.hpp"
@@ -11,7 +34,7 @@
 #include <system_error>
 
 namespace Kilo::editor {
-Config::Config()
+Application::Application()
 {
   try {
     m_mode->setRawMode();
@@ -26,7 +49,7 @@ Config::Config()
  * @brief Position the cursor within the visible window
  *
  */
-void Config::scroll() noexcept
+void Application::scroll() noexcept
 {
   editor::scroll(m_cursor, m_off, m_window);
 }
@@ -35,7 +58,7 @@ void Config::scroll() noexcept
  * @brief Perform a screen refresh
  *
  */
-void Config::refreshScreen()
+void Application::refreshScreen()
 {
   /*
    * Hide the cursor when painting and then move it to the home position
@@ -54,7 +77,7 @@ void Config::refreshScreen()
  * @brief Process the result of calling readKey
  *
  */
-void Config::processKeypress()
+void Application::processKeypress()
 {
   auto const keyPressed = terminal::readKey();
 
@@ -63,8 +86,8 @@ void Config::processKeypress()
     std::exit(EXIT_SUCCESS);
   }
 
-  using enum utilities::EditorKey;
-  auto const key = static_cast<utilities::EditorKey>(keyPressed);
+  using enum editor::EditorKey;
+  auto const key = static_cast<editor::EditorKey>(keyPressed);
 
   if (key == Home) {
     m_cursor.x = 0;
@@ -85,7 +108,7 @@ void Config::processKeypress()
 /**
  * @brief Draw each row of the buffer of text being edited, plus a tilde at the beginning
  */
-void Config::drawRows()
+void Application::drawRows()
 {
   editor::drawRows(m_window, m_off, m_row, m_buffer, m_render);
 }
@@ -97,7 +120,7 @@ void Config::drawRows()
  * @return true If the operation was successful
  * @return false If the operation failed
  */
-bool Config::open(std::filesystem::path const& path)
+bool Application::open(std::filesystem::path const& path)
 {
   return editor::open(path, m_row, m_render);
 }

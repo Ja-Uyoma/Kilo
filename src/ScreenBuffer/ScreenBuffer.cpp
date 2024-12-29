@@ -21,48 +21,20 @@
  * SOFTWARE.
  */
 
-#include "Application/Application.hpp"
-#include "Utilities/Utilities.hpp"
-#include <cstdlib>
-#include <iostream>
-#include <system_error>
+#include "ScreenBuffer.hpp"
 
-using namespace Kilo;
+#include <cerrno>
+#include <unistd.h>
 
-/**
- * @brief Handles the processing of keypresses and repainting the screen on
- * every refresh
- *
- */
-[[noreturn]] void Main(editor::Application& app) noexcept
+namespace Kilo::editor {
+
+/// \brief Flush the buffer by writing its contents to a file
+/// \param[in] file The file being written to
+/// \returns The number of bytes written
+/// \throws `std::system_error` if the operation failed
+std::size_t ScreenBuffer::flush(terminal::File& file) const
 {
-  while (true) {
-    try {
-      app.scroll();
-      app.refreshScreen();
-      app.processKeypress();
-    }
-    catch (std::system_error const& e) {
-      /*
-       * Clear the screen and reset the cursor as a fallback in case an error
-       * occurs in the middle of rendering the screen. We would otherwise have
-       * garbage and/or errors printed wherever the cursor happens to be.
-       */
-      utilities::clearScreenAndRepositionCursor();
-      std::cerr << e.code() << ": " << e.what() << '\n';
-    }
-  }
+  return file.write(STDOUT_FILENO, m_buffer.c_str());
 }
 
-int main(int argc, char const* argv[])
-{
-  static editor::Application app;
-
-  if (argc >= 2 && !app.open(argv[1])) {
-    return EXIT_FAILURE;
-  }
-
-  Main(app);
-
-  return EXIT_SUCCESS;
-}
+}   // namespace Kilo::editor

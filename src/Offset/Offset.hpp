@@ -21,16 +21,17 @@
  * SOFTWARE.
  */
 
-#include <string_view>
+#ifndef OFFSET_HPP
+#define OFFSET_HPP
 
 namespace Kilo::editor {
 
-struct EscapeSequences
+struct Offset
 {
-  static constexpr std::string_view HideCursorWhenRepainting {"\x1b[?25l"};
-  static constexpr std::string_view MoveCursorToHomePosition {"\x1b[H"};
-  static constexpr std::string_view ShowTheCursor {"\x1b[?25h"};
-  static constexpr std::string_view ErasePartOfLineToTheRightOfCursor {"\x1b[K"};
+  int row {};
+  int col {};
 };
 
 }   // namespace Kilo::editor
+
+#endif

@@ -21,20 +21,17 @@
  * SOFTWARE.
  */
 
-#include "screen_buffer.hpp"
-
-#include <cerrno>
-#include <unistd.h>
+#ifndef CURSOR_HPP
+#define CURSOR_HPP
 
 namespace Kilo::editor {
 
-/// \brief Flush the buffer by writing its contents to a file
-/// \param[in] file The file being written to
-/// \returns The number of bytes written
-/// \throws `std::system_error` if the operation failed
-std::size_t ScreenBuffer::flush(terminal::File& file) const
+struct Cursor
 {
-  return file.write(STDOUT_FILENO, m_buffer.c_str());
-}
+  int x {};
+  int y {};
+};
 
 }   // namespace Kilo::editor
+
+#endif

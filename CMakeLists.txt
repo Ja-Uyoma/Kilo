@@ -16,7 +16,7 @@ endif()
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 include(cmake/EnforceOutOfSourceBuilds.cmake)
-include(cmake/StandardProjectSettings.cmake)
+include(ProjectOptions.cmake)
 
 add_subdirectory(src)
 

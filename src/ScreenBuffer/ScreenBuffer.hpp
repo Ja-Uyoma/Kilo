@@ -21,8 +21,8 @@
  * SOFTWARE.
  */
 
-#ifndef WRITE_BUFFER_HPP
-#define WRITE_BUFFER_HPP
+#ifndef SCREEN_BUFFER_HPP
+#define SCREEN_BUFFER_HPP
 
 #include "Terminal/File.hpp"
 #include <string>

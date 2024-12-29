@@ -21,18 +21,9 @@ target_include_directories(tests
 
 target_sources(tests
     PRIVATE
-        "${PROJECT_SOURCE_DIR}/src/Editor/cursor/cursor.hpp"
-        Cursor.test.cpp
-
         "${PROJECT_SOURCE_DIR}/src/Editor/Editor.hpp"
         "${PROJECT_SOURCE_DIR}/src/Editor/Editor.cpp"
         Editor.test.cpp
-
-        "${PROJECT_SOURCE_DIR}/src/Editor/config/config.hpp"
-        "${PROJECT_SOURCE_DIR}/src/Editor/config/config.cpp"
-
-        "${PROJECT_SOURCE_DIR}/src/Editor/offset/offset.hpp"
-        Offset.test.cpp
 
         "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.hpp"
         "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.cpp"
@@ -47,8 +38,8 @@ target_sources(tests
         "${PROJECT_SOURCE_DIR}/src/Terminal/File.hpp"
         "${PROJECT_SOURCE_DIR}/src/Terminal/File.cpp"
 
-        "${PROJECT_SOURCE_DIR}/src/Editor/screen_buffer/screen_buffer.hpp"
-        "${PROJECT_SOURCE_DIR}/src/Editor/screen_buffer/screen_buffer.cpp"
+        "${PROJECT_SOURCE_DIR}/src/ScreenBuffer/ScreenBuffer.hpp"
+        "${PROJECT_SOURCE_DIR}/src/ScreenBuffer/ScreenBuffer.cpp"
         ScreenBuffer.test.cpp
         
         "${PROJECT_SOURCE_DIR}/src/Terminal/window/window.hpp"

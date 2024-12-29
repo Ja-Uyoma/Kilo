@@ -21,48 +21,44 @@
  * SOFTWARE.
  */
 
-#include "Application/Application.hpp"
-#include "Utilities/Utilities.hpp"
-#include <cstdlib>
-#include <iostream>
-#include <system_error>
+#ifndef CONSTANTS_HPP
+#define CONSTANTS_HPP
 
-using namespace Kilo;
+#include <string_view>
 
-/**
- * @brief Handles the processing of keypresses and repainting the screen on
- * every refresh
- *
- */
-[[noreturn]] void Main(editor::Application& app) noexcept
+namespace Kilo::editor {
+
+struct EscapeSequences
 {
-  while (true) {
-    try {
-      app.scroll();
-      app.refreshScreen();
-      app.processKeypress();
-    }
-    catch (std::system_error const& e) {
-      /*
-       * Clear the screen and reset the cursor as a fallback in case an error
-       * occurs in the middle of rendering the screen. We would otherwise have
-       * garbage and/or errors printed wherever the cursor happens to be.
-       */
-      utilities::clearScreenAndRepositionCursor();
-      std::cerr << e.code() << ": " << e.what() << '\n';
-    }
-  }
-}
+  static constexpr std::string_view HideCursorWhenRepainting {"\x1b[?25l"};
+  static constexpr std::string_view MoveCursorToHomePosition {"\x1b[H"};
+  static constexpr std::string_view ShowTheCursor {"\x1b[?25h"};
+  static constexpr std::string_view ErasePartOfLineToTheRightOfCursor {"\x1b[K"};
+};
 
-int main(int argc, char const* argv[])
+// The current version of the application
+inline constexpr std::string_view KiloVersion {"0.0.1"};
+
+// The size of a tab character
+inline constexpr int KiloTabStop = 8;
+
+// The keys supported by the application
+// We choose a representation for the arrow keys that does not conflict with the [w, a, s, d] keys.
+// We give them a large integer value that is outside the range of a char, so that they don't
+// conflict with ordinary keypresses.
+enum class EditorKey
 {
-  static editor::Application app;
+  ArrowLeft = 1000,
+  ArrowRight,
+  ArrowUp,
+  ArrowDown,
+  Delete,
+  Home,
+  End,
+  PageUp,
+  PageDown
+};
 
-  if (argc >= 2 && !app.open(argv[1])) {
-    return EXIT_FAILURE;
-  }
+}   // namespace Kilo::editor
 
-  Main(app);
-
-  return EXIT_SUCCESS;
-}
+#endif

@@ -12,15 +12,16 @@ target_include_directories(kilo
 
 target_sources(kilo
     PRIVATE
-        "${PROJECT_SOURCE_DIR}/src/Editor/cursor/cursor.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Constants/Constants.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Cursor/Cursor.hpp"
 
         "${PROJECT_SOURCE_DIR}/src/Editor/Editor.hpp"
         "${PROJECT_SOURCE_DIR}/src/Editor/Editor.cpp"
         
-        "${PROJECT_SOURCE_DIR}/src/Editor/config/config.hpp"
-        "${PROJECT_SOURCE_DIR}/src/Editor/config/config.cpp"
+        "${PROJECT_SOURCE_DIR}/src/Application/Application.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Application/Application.cpp"
 
-        "${PROJECT_SOURCE_DIR}/src/Editor/offset/offset.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Offset/Offset.hpp"
 
         "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.hpp"
         "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.cpp"
@@ -37,8 +38,8 @@ target_sources(kilo
         "${PROJECT_SOURCE_DIR}/src/Terminal/window/window.hpp"
         "${PROJECT_SOURCE_DIR}/src/Terminal/window/window.cpp"
 
-        "${PROJECT_SOURCE_DIR}/src/Editor/screen_buffer/screen_buffer.hpp"
-        "${PROJECT_SOURCE_DIR}/src/Editor/screen_buffer/screen_buffer.cpp"
+        "${PROJECT_SOURCE_DIR}/src/ScreenBuffer/ScreenBuffer.hpp"
+        "${PROJECT_SOURCE_DIR}/src/ScreenBuffer/ScreenBuffer.cpp"
     
         main.cpp
 )

@@ -23,13 +23,13 @@
 
 #include "Editor.hpp"
 
+#include "Constants/Constants.hpp"
+#include "Cursor/Cursor.hpp"
+#include "Offset/Offset.hpp"
+#include "ScreenBuffer/ScreenBuffer.hpp"
 #include "Terminal/File.hpp"
 #include "Terminal/window/window.hpp"
 #include "Utilities/Utilities.hpp"
-#include "constants/constants.hpp"
-#include "cursor/cursor.hpp"
-#include "offset/offset.hpp"
-#include "screen_buffer/screen_buffer.hpp"
 #include <algorithm>
 #include <cstdio>
 #include <cstdlib>
@@ -59,7 +59,7 @@ void processKeypress(int const keyPressed, Cursor& cursor, terminal::Window cons
 {
   detail::processKeypressHelper(keyPressed);
 
-  using utilities::EditorKey;
+  using editor::EditorKey;
   auto key = static_cast<EditorKey>(keyPressed);
 
   detail::processKeypressHelper(key, cursor, window, document);
@@ -125,7 +125,7 @@ void drawRows(terminal::Window const& window, Offset const& offset, std::vector<
  * @param cursor The editor cursor
  * @param row The document which is currently open
  */
-void moveCursor(utilities::EditorKey key, Cursor& cursor, std::vector<std::string> const& row)
+void moveCursor(editor::EditorKey key, Cursor& cursor, std::vector<std::string> const& row)
 {
   detail::moveCursorHelper(cursor, key, row);
 
@@ -203,7 +203,7 @@ void scroll(Cursor const& cursor, Offset& offset, terminal::Window const& window
 
 void updateRow(std::string_view row, std::string& render)
 {
-  using utilities::KILO_TAB_STOP;
+  using editor::KiloTabStop;
 
   [[maybe_unused]]
   auto tabs = std::ranges::count_if(row, [](unsigned char c) { return c == '\t'; });
@@ -215,7 +215,7 @@ void updateRow(std::string_view row, std::string& render)
       render[idx] = ' ';
       idx++;
 
-      while (idx % KILO_TAB_STOP != 0) {
+      while (idx % KiloTabStop != 0) {
         render[idx] = ' ';
         idx++;
       }
@@ -300,7 +300,7 @@ void writePaddingToScreenBuffer(long padding, ScreenBuffer& buf)
  */
 void printWelcomeMessage(int windowWidth, ScreenBuffer& buffer)
 {
-  auto msg = createWelcomeMessage(utilities::KILO_VERSION);
+  auto msg = createWelcomeMessage(editor::KiloVersion);
   resizeWelcomeMessage(msg, windowWidth);
 
   /*
@@ -341,10 +341,10 @@ void processKeypressHelper(unsigned const keyPressed) noexcept
  * @param[in] cursor The position of the cursor in the terminal window
  * @param[in] window The terminal window
  */
-void processKeypressHelper(utilities::EditorKey keyPressed, Cursor& cursor, terminal::Window const& window,
+void processKeypressHelper(editor::EditorKey keyPressed, Cursor& cursor, terminal::Window const& window,
                            std::vector<std::string> const& document) noexcept
 {
-  using enum utilities::EditorKey;
+  using enum editor::EditorKey;
 
   if (keyPressed == Home) {
     cursor.x = 0;
