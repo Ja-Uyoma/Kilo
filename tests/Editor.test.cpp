@@ -45,8 +45,8 @@ TEST(processKeypress, TerminatesTheProgramIfQIsPressed)
 
 TEST(processKeypress, MovesCursorToStartOfLineIfHomeButtonIsPressed)
 {
+  using editor::EditorKey;
   using terminal::Window;
-  using utilities::EditorKey;
 
   EditorKey const key = EditorKey::Home;
   Cursor cursor {100, 100};
@@ -60,8 +60,8 @@ TEST(processKeypress, MovesCursorToStartOfLineIfHomeButtonIsPressed)
 
 TEST(processKeypress, MovesCursorToEndOfLineIfEndButtonIsPressed)
 {
+  using editor::EditorKey;
   using terminal::Window;
-  using utilities::EditorKey;
 
   EditorKey const key = EditorKey::End;
   Cursor cursor {100, 100};
@@ -129,7 +129,7 @@ TEST(getCurrentRow, ReturnsAnEmptyOptionalIfTheRowsObjectIsEmpty)
 
 TEST(moveCursorHelper, ArrowLeftMovesTheCursorLeftOneByPosition)
 {
-  using utilities::EditorKey;
+  using editor::EditorKey;
   using enum EditorKey;
 
   Cursor cursor {.x = 1, .y = 0};
@@ -143,7 +143,7 @@ TEST(moveCursorHelper, ArrowLeftMovesTheCursorLeftOneByPosition)
 
 TEST(moveCursorHelper, ArrowLeftMovesTheCursorToTheEndOfTheLine)
 {
-  using utilities::EditorKey;
+  using editor::EditorKey;
   using enum EditorKey;
 
   Cursor cursor {.x = 0, .y = 1};
@@ -158,7 +158,7 @@ TEST(moveCursorHelper, ArrowLeftMovesTheCursorToTheEndOfTheLine)
 
 TEST(moveCursorHelper, ArrowRightMovesTheCursorRightByOnePosition)
 {
-  using utilities::EditorKey;
+  using editor::EditorKey;
   using enum EditorKey;
 
   Cursor cursor {.x = 2, .y = 1};
@@ -173,7 +173,7 @@ TEST(moveCursorHelper, ArrowRightMovesTheCursorRightByOnePosition)
 
 TEST(moveCursorHelper, ArrowRightMovesTheCursorToTheNextLine)
 {
-  using utilities::EditorKey;
+  using editor::EditorKey;
   using enum EditorKey;
 
   Cursor cursor;
@@ -190,7 +190,7 @@ TEST(moveCursorHelper, ArrowRightMovesTheCursorToTheNextLine)
 
 TEST(moveCursorHelper, ArrowUpMovesTheCursorUpByOnePosition)
 {
-  using utilities::EditorKey;
+  using editor::EditorKey;
   using enum EditorKey;
 
   Cursor cursor {.x = 2, .y = 4};
@@ -205,7 +205,7 @@ TEST(moveCursorHelper, ArrowUpMovesTheCursorUpByOnePosition)
 
 TEST(moveCursorHelper, ArrowUpIsANoOpIfTheCursorIsAtTheTopOfTheDocument)
 {
-  using utilities::EditorKey;
+  using editor::EditorKey;
   using enum EditorKey;
 
   Cursor cursor {.x = 2, .y = 0};
@@ -220,7 +220,7 @@ TEST(moveCursorHelper, ArrowUpIsANoOpIfTheCursorIsAtTheTopOfTheDocument)
 
 TEST(moveCursorHelper, ArrowDownMovesTheCursorDownByOnePosition)
 {
-  using utilities::EditorKey;
+  using editor::EditorKey;
   using enum EditorKey;
 
   Cursor cursor {.x = 2, .y = 1};
@@ -235,7 +235,7 @@ TEST(moveCursorHelper, ArrowDownMovesTheCursorDownByOnePosition)
 
 TEST(moveCursorHelper, ArrowDownIsANoOpIfTheCursorIsAtTheBottomOfTheDocument)
 {
-  using utilities::EditorKey;
+  using editor::EditorKey;
   using enum EditorKey;
 
   Cursor cursor {.x = 2, .y = 2};

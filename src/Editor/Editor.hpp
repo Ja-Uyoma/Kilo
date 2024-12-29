@@ -24,10 +24,10 @@
 #ifndef EDITOR_HPP
 #define EDITOR_HPP
 
+#include "Constants/Constants.hpp"
 #include "Cursor/Cursor.hpp"
 #include "Offset/Offset.hpp"
 #include "Terminal/window/window.hpp"
-#include "Utilities/Utilities.hpp"
 #include <cassert>
 #include <filesystem>
 #include <optional>
@@ -83,7 +83,7 @@ void drawRows(terminal::Window const& window, Offset const& offset, std::vector<
  * @param cursor The editor cursor
  * @param row The document which is currently open
  */
-void moveCursor(utilities::EditorKey key, Cursor& cursor, std::vector<std::string> const& row);
+void moveCursor(editor::EditorKey key, Cursor& cursor, std::vector<std::string> const& row);
 
 /**
  * @brief Open a file and write its contents to memory
@@ -197,11 +197,11 @@ constexpr std::optional<std::string> getCurrentRow(int const cursorY, std::vecto
  * @param keyPressed The key press determining how the cursor is to be moved
  * @param document The document within which the cursor is located
  */
-constexpr void moveCursorHelper(Cursor& cursor, utilities::EditorKey const& keyPressed,
+constexpr void moveCursorHelper(Cursor& cursor, editor::EditorKey const& keyPressed,
                                 std::vector<std::string> const& document) noexcept
 {
   switch (keyPressed) {
-    using enum utilities::EditorKey;
+    using enum editor::EditorKey;
 
     case ArrowLeft:
       if (cursor.x != 0) {
@@ -272,7 +272,7 @@ void processKeypressHelper(unsigned const keyPressed) noexcept;
  * @param[in] cursor The position of the cursor in the terminal window
  * @param[in] window The terminal window
  */
-void processKeypressHelper(utilities::EditorKey keyPressed, Cursor& cursor, terminal::Window const& window,
+void processKeypressHelper(editor::EditorKey keyPressed, Cursor& cursor, terminal::Window const& window,
                            std::vector<std::string> const& document) noexcept;
 
 /**

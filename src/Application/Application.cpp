@@ -86,8 +86,8 @@ void Application::processKeypress()
     std::exit(EXIT_SUCCESS);
   }
 
-  using enum utilities::EditorKey;
-  auto const key = static_cast<utilities::EditorKey>(keyPressed);
+  using enum editor::EditorKey;
+  auto const key = static_cast<editor::EditorKey>(keyPressed);
 
   if (key == Home) {
     m_cursor.x = 0;

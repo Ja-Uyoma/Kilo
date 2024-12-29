@@ -23,7 +23,7 @@
 
 #include "Terminal.hpp"
 
-#include "Utilities/Utilities.hpp"
+#include "Constants/Constants.hpp"
 #include "window/window_size.hpp"
 #include <array>
 #include <cerrno>
@@ -121,7 +121,7 @@ unsigned handleEscapeSequences() noexcept
   }
 
   if (seq[0] == '[') {
-    using enum Kilo::utilities::EditorKey;
+    using enum Kilo::editor::EditorKey;
 
     /*
      * If the byte after [ is a digit, we read another byte expecting it to be
@@ -182,7 +182,7 @@ unsigned handleEscapeSequences() noexcept
     }
   }
   else if (seq[0] == 'O') {
-    using enum Kilo::utilities::EditorKey;
+    using enum Kilo::editor::EditorKey;
 
     switch (seq[1]) {
       case 'H':
