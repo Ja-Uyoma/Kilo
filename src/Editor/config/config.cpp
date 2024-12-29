@@ -1,7 +1,7 @@
 #include "config.hpp"
 
+#include "Constants/Constants.hpp"
 #include "Editor/Editor.hpp"
-#include "Editor/constants/constants.hpp"
 #include "Terminal/File.hpp"
 #include "Terminal/Terminal.hpp"
 #include "Utilities/Utilities.hpp"

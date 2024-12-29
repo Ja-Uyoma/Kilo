@@ -23,10 +23,10 @@
 
 #include "Editor.hpp"
 
+#include "Constants/Constants.hpp"
 #include "Terminal/File.hpp"
 #include "Terminal/window/window.hpp"
 #include "Utilities/Utilities.hpp"
-#include "constants/constants.hpp"
 #include "cursor/cursor.hpp"
 #include "offset/offset.hpp"
 #include "screen_buffer/screen_buffer.hpp"
