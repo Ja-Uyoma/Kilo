@@ -21,13 +21,9 @@ target_include_directories(tests
 
 target_sources(tests
     PRIVATE
-        "${PROJECT_SOURCE_DIR}/src/Cursor/Cursor.hpp"
-
         "${PROJECT_SOURCE_DIR}/src/Editor/Editor.hpp"
         "${PROJECT_SOURCE_DIR}/src/Editor/Editor.cpp"
         Editor.test.cpp
-
-        "${PROJECT_SOURCE_DIR}/src/Offset/Offset.hpp"
 
         "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.hpp"
         "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.cpp"
