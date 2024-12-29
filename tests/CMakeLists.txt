@@ -27,9 +27,6 @@ target_sources(tests
         "${PROJECT_SOURCE_DIR}/src/Editor/Editor.cpp"
         Editor.test.cpp
 
-        "${PROJECT_SOURCE_DIR}/src/Application/Application.hpp"
-        "${PROJECT_SOURCE_DIR}/src/Application/Application.cpp"
-
         "${PROJECT_SOURCE_DIR}/src/Offset/Offset.hpp"
 
         "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.hpp"
