@@ -24,8 +24,8 @@
 #include "Editor/Editor.hpp"
 
 #include "Cursor/Cursor.hpp"
-#include "Editor/screen_buffer/screen_buffer.hpp"
 #include "Offset/Offset.hpp"
+#include "ScreenBuffer/ScreenBuffer.hpp"
 #include "Terminal/window/window.hpp"
 #include "Utilities/Utilities.hpp"
 #include "gmock/gmock.h"

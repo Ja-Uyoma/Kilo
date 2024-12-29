@@ -45,8 +45,8 @@ target_sources(tests
         "${PROJECT_SOURCE_DIR}/src/Terminal/File.hpp"
         "${PROJECT_SOURCE_DIR}/src/Terminal/File.cpp"
 
-        "${PROJECT_SOURCE_DIR}/src/Editor/screen_buffer/screen_buffer.hpp"
-        "${PROJECT_SOURCE_DIR}/src/Editor/screen_buffer/screen_buffer.cpp"
+        "${PROJECT_SOURCE_DIR}/src/ScreenBuffer/ScreenBuffer.hpp"
+        "${PROJECT_SOURCE_DIR}/src/ScreenBuffer/ScreenBuffer.cpp"
         ScreenBuffer.test.cpp
         
         "${PROJECT_SOURCE_DIR}/src/Terminal/window/window.hpp"

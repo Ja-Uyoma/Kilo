@@ -21,7 +21,8 @@
  * SOFTWARE.
  */
 
-#include "Editor/screen_buffer/screen_buffer.hpp"
+#include "ScreenBuffer/ScreenBuffer.hpp"
+
 #include "Terminal/File.hpp"
 #include <cstring>
 #include <gmock/gmock.h>

@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-#include "screen_buffer.hpp"
+#include "ScreenBuffer.hpp"
 
 #include <cerrno>
 #include <unistd.h>
