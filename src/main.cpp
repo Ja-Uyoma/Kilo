@@ -34,7 +34,7 @@ using namespace Kilo;
  * every refresh
  *
  */
-[[noreturn]] void Main(editor::Config& app) noexcept
+[[noreturn]] void Main(editor::Application& app) noexcept
 {
   while (true) {
     try {
@@ -56,7 +56,7 @@ using namespace Kilo;
 
 int main(int argc, char const* argv[])
 {
-  static editor::Config app;
+  static editor::Application app;
 
   if (argc >= 2 && !app.open(argv[1])) {
     return EXIT_FAILURE;

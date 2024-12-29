@@ -11,7 +11,7 @@
 #include <system_error>
 
 namespace Kilo::editor {
-Config::Config()
+Application::Application()
 {
   try {
     m_mode->setRawMode();
@@ -26,7 +26,7 @@ Config::Config()
  * @brief Position the cursor within the visible window
  *
  */
-void Config::scroll() noexcept
+void Application::scroll() noexcept
 {
   editor::scroll(m_cursor, m_off, m_window);
 }
@@ -35,7 +35,7 @@ void Config::scroll() noexcept
  * @brief Perform a screen refresh
  *
  */
-void Config::refreshScreen()
+void Application::refreshScreen()
 {
   /*
    * Hide the cursor when painting and then move it to the home position
@@ -54,7 +54,7 @@ void Config::refreshScreen()
  * @brief Process the result of calling readKey
  *
  */
-void Config::processKeypress()
+void Application::processKeypress()
 {
   auto const keyPressed = terminal::readKey();
 
@@ -85,7 +85,7 @@ void Config::processKeypress()
 /**
  * @brief Draw each row of the buffer of text being edited, plus a tilde at the beginning
  */
-void Config::drawRows()
+void Application::drawRows()
 {
   editor::drawRows(m_window, m_off, m_row, m_buffer, m_render);
 }
@@ -97,7 +97,7 @@ void Config::drawRows()
  * @return true If the operation was successful
  * @return false If the operation failed
  */
-bool Config::open(std::filesystem::path const& path)
+bool Application::open(std::filesystem::path const& path)
 {
   return editor::open(path, m_row, m_render);
 }

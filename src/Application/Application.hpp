@@ -12,10 +12,10 @@
 #include <vector>
 
 namespace Kilo::editor {
-class Config
+class Application
 {
 public:
-  explicit Config();
+  explicit Application();
 
   /**
    * @brief Position the cursor within the visible window
