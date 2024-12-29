@@ -1,5 +1,5 @@
-#ifndef EDITOR_CONFIG_HPP
-#define EDITOR_CONFIG_HPP
+#ifndef APPLICATION_HPP
+#define APPLICATION_HPP
 
 #include "Cursor/Cursor.hpp"
 #include "Offset/Offset.hpp"
