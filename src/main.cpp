@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-#include "Editor/config/config.hpp"
+#include "Application/Application.hpp"
 #include "Utilities/Utilities.hpp"
 #include <cstdlib>
 #include <iostream>
