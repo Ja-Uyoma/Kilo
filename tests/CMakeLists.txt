@@ -31,7 +31,6 @@ target_sources(tests
         "${PROJECT_SOURCE_DIR}/src/Editor/config/config.cpp"
 
         "${PROJECT_SOURCE_DIR}/src/Offset/Offset.hpp"
-        Offset.test.cpp
 
         "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.hpp"
         "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.cpp"
