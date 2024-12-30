@@ -38,7 +38,7 @@ namespace Kilo::editor {
 class Application
 {
 public:
-  explicit Application();
+  explicit Application() = default;
 
   /**
    * @brief Position the cursor within the visible window

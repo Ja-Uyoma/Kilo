@@ -34,16 +34,6 @@
 #include <system_error>
 
 namespace Kilo::editor {
-Application::Application()
-{
-  try {
-    m_mode->setRawMode();
-  }
-  catch (std::system_error const& err) {
-    std::cerr << err.code() << ": " << err.what() << '\n';
-    std::exit(EXIT_FAILURE);
-  }
-}
 
 /**
  * @brief Position the cursor within the visible window
