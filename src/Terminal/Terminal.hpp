@@ -36,13 +36,6 @@ namespace Kilo::Terminal {
 struct WindowSize;
 
 /**
- * @brief Read key input from stdin
- * @return The character read
- * @throws std::system_error if an error occured during read
- */
-int readKey();
-
-/**
  * @brief Get the size of the terminal window and write them to @param rows and
  * @param cols
  * @param[inout] rows The number of rows of the terminal window
@@ -59,8 +52,6 @@ void getWindowSize(int* const rows, int* const cols);
 WindowSize getWindowSize(::winsize const& winsize);
 
 namespace detail {
-
-unsigned handleEscapeSequences() noexcept;
 
 void writeCursorPositionToBuffer(std::array<char, 32>& buf) noexcept;
 
