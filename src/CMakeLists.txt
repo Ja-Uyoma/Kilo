@@ -54,7 +54,6 @@ target_compile_features(kilo
 
 target_compile_options(kilo
     PRIVATE $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-Wall -Wextra -Werror -Wpedantic>
-    PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/Wall>
 )
 
 target_compile_definitions(kilo
