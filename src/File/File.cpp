@@ -25,7 +25,6 @@
 
 #include <cerrno>
 #include <string>
-#include <system_error>
 #include <unistd.h>
 
 namespace Kilo::IO {
