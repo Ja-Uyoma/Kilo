@@ -37,6 +37,11 @@ TerminalMode::TerminalMode()
   setRawMode();
 }
 
+TerminalMode::~TerminalMode()
+{
+  reset();
+}
+
 void TerminalMode::setRawMode() &
 {
   if (m_state == ttystate::Raw) {
