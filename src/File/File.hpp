@@ -29,7 +29,35 @@
 
 namespace Kilo::IO {
 
-class File
+class FileInterface
+{
+public:
+  /**
+   * @brief Read nbytes from fd into buffer
+   *
+   * @param fd The file being read from
+   * @param buffer The buffer being read to
+   * @returns The number of bytes read
+   */
+  virtual std::size_t read(int fd, std::string& buffer) = 0;
+
+  /**
+   * @brief Write n bytes of buffer to fd
+   *
+   * @param fd The file descriptor being written to
+   * @param buffer The buffer being written from
+   * @returns The number of bytes written
+   */
+  virtual std::size_t write(int fd, std::string const& buffer) = 0;
+
+  /**
+   * @brief Destructor
+   *
+   */
+  virtual ~FileInterface() = default;
+};
+
+class File : public FileInterface
 {
 public:
   explicit File() noexcept = default;
@@ -42,7 +70,7 @@ public:
    * @throws std::system_error On read failure
    * @returns The number of bytes read
    */
-  std::size_t read(int fd, std::string& buffer);
+  std::size_t read(int fd, std::string& buffer) override;
 
   /**
    * @brief Write n bytes of buffer to fd
@@ -52,7 +80,7 @@ public:
    * @throws std::system_error On write failure
    * @returns The number of bytes written
    */
-  std::size_t write(int fd, std::string const& buffer);
+  std::size_t write(int fd, std::string const& buffer) override;
 };
 
 }   // namespace Kilo::IO
