@@ -39,6 +39,12 @@ public:
   explicit TerminalMode();
 
   /**
+   * @brief Destructor. Sets the terminal driver back in canonical mode
+   *
+   */
+  ~TerminalMode();
+
+  /**
    * @brief Set the terminal driver to raw (or non-canonical) mode
    *
    */
