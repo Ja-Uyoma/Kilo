@@ -26,7 +26,6 @@
 #include "Termios/Termios.hpp"
 #include <cassert>
 #include <cerrno>
-#include <system_error>
 #include <termios.h>
 #include <unistd.h>
 
