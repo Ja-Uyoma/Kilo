@@ -32,9 +32,8 @@ namespace Kilo::IO {
 /**
  * @brief Read nbytes from fd into buffer
  *
- * @param fd The file being read from
- * @param buffer The buffer being read to
- * @throws std::system_error On read failure
+ * @param[in] fd The file being read from
+ * @param[inout] buffer The buffer being read to
  * @returns The number of bytes read
  */
 std::size_t File::read(int fd, std::string& buffer) noexcept
@@ -45,8 +44,8 @@ std::size_t File::read(int fd, std::string& buffer) noexcept
 /**
  * @brief Write n bytes of buffer to fd
  *
- * @param fd The file descriptor being written to
- * @param buffer The buffer being written from
+ * @param[in] fd The file descriptor being written to
+ * @param[in] buffer The buffer being written from
  * @returns The number of bytes written
  */
 std::size_t File::write(int fd, std::string const& buffer) noexcept
