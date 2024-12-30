@@ -39,7 +39,7 @@ public:
    * @param buffer The buffer being read to
    * @returns The number of bytes read
    */
-  virtual std::size_t read(int fd, std::string& buffer) = 0;
+  virtual std::size_t read(int fd, std::string& buffer) noexcept = 0;
 
   /**
    * @brief Write n bytes of buffer to fd
@@ -48,7 +48,7 @@ public:
    * @param buffer The buffer being written from
    * @returns The number of bytes written
    */
-  virtual std::size_t write(int fd, std::string const& buffer) = 0;
+  virtual std::size_t write(int fd, std::string const& buffer) noexcept = 0;
 
   /**
    * @brief Destructor
@@ -67,20 +67,18 @@ public:
    *
    * @param fd The file being read from
    * @param buffer The buffer being read to
-   * @throws std::system_error On read failure
    * @returns The number of bytes read
    */
-  std::size_t read(int fd, std::string& buffer) override;
+  std::size_t read(int fd, std::string& buffer) noexcept override;
 
   /**
    * @brief Write n bytes of buffer to fd
    *
    * @param fd The file descriptor being written to
    * @param buffer The buffer being written from
-   * @throws std::system_error On write failure
    * @returns The number of bytes written
    */
-  std::size_t write(int fd, std::string const& buffer) override;
+  std::size_t write(int fd, std::string const& buffer) noexcept override;
 };
 
 }   // namespace Kilo::IO
