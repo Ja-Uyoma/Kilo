@@ -34,6 +34,7 @@ namespace Kilo::Terminal {
 TerminalMode::TerminalMode()
 {
   getTerminalDriverSettings(STDIN_FILENO, m_termios);
+  setRawMode();
 }
 
 void TerminalMode::setRawMode() &
