@@ -27,7 +27,6 @@
 #include "Editor/Editor.hpp"
 #include "IO/IO.hpp"
 #include "Terminal/File.hpp"
-#include "Terminal/Terminal.hpp"
 #include "Utilities/Utilities.hpp"
 #include <cstddef>
 #include <cstdlib>

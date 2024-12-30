@@ -23,7 +23,6 @@
 
 #include "Terminal.hpp"
 
-#include "Constants/Constants.hpp"
 #include "window/window_size.hpp"
 #include <array>
 #include <cerrno>
