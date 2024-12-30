@@ -32,7 +32,7 @@ class TerminalMode
 {
 public:
   /**
-   * @brief Construct a new Terminal State object
+   * @brief Create a default TerminalMode object. Sets the terminal driver in raw mode
    * @throws std::system_error An exception describing what went wrong
    *
    */
