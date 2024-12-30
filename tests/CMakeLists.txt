@@ -48,6 +48,7 @@ target_sources(tests
 
         "${PROJECT_SOURCE_DIR}/src/Termios/Termios.hpp"
         "${PROJECT_SOURCE_DIR}/src/Termios/Termios.cpp"
+        Termios/Termios.test.cpp
 )
 
 target_compile_features(tests
