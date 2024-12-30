@@ -22,6 +22,7 @@
  */
 
 #include "Terminal/mode/terminal_mode.hpp"
+#include "Termios/Termios.hpp"
 #include <gsl/util>
 #include <gtest/gtest.h>
 #include <system_error>
