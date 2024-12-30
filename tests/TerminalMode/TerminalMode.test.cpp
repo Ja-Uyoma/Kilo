@@ -21,7 +21,8 @@
  * SOFTWARE.
  */
 
-#include "Terminal/mode/terminal_mode.hpp"
+#include "TerminalMode/TerminalMode.hpp"
+
 #include <gsl/util>
 #include <gtest/gtest.h>
 

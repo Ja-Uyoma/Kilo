@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-#include "terminal_mode.hpp"
+#include "TerminalMode.hpp"
 
 #include "Termios/Termios.hpp"
 #include <cassert>

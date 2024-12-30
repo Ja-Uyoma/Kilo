@@ -28,8 +28,8 @@ target_sources(tests
         "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.hpp"
         "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.cpp"
 
-        "${PROJECT_SOURCE_DIR}/src/Terminal/mode/terminal_mode.hpp"
-        "${PROJECT_SOURCE_DIR}/src/Terminal/mode/terminal_mode.cpp"
+        "${PROJECT_SOURCE_DIR}/src/TerminalMode/TerminalMode.hpp"
+        "${PROJECT_SOURCE_DIR}/src/TerminalMode/TerminalMode.cpp"
         TerminalMode/TerminalMode.test.cpp
 
         "${PROJECT_SOURCE_DIR}/src/Utilities/Utilities.hpp"
