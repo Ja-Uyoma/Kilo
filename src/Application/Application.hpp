@@ -73,17 +73,7 @@ public:
   bool open(std::filesystem::path const& path);
 
 private:
-  class TerminalModeDeleter
-  {
-  public:
-    void operator()(Terminal::TerminalMode* modePtr) const
-    {
-      modePtr->reset();
-    }
-  };
-
-  [[no_unique_address]] TerminalModeDeleter const deleter {};
-  std::unique_ptr<Terminal::TerminalMode, TerminalModeDeleter const&> m_mode {new Terminal::TerminalMode(), deleter};
+  Terminal::TerminalMode m_mode;
 
   std::vector<std::string> m_row;
   std::vector<std::string> m_render;
