@@ -49,7 +49,7 @@ void getWindowSize(int* const rows, int* const cols);
  * @throws std::system_error if the terminal window size could not be retrieved
  * @returns The size of the terminal window
  */
-WindowSize getWindowSize(::winsize const& winsize);
+WindowSize getWindowSize(::winsize& winsize);
 
 namespace detail {
 
