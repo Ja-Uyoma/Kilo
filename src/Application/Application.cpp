@@ -25,6 +25,7 @@
 
 #include "Constants/Constants.hpp"
 #include "Editor/Editor.hpp"
+#include "IO/IO.hpp"
 #include "Terminal/File.hpp"
 #include "Terminal/Terminal.hpp"
 #include "Utilities/Utilities.hpp"
@@ -67,7 +68,7 @@ void Application::refreshScreen()
  */
 void Application::processKeypress()
 {
-  auto const keyPressed = Terminal::readKey();
+  auto const keyPressed = IO::readKey();
 
   if (keyPressed == utilities::ctrlKey('q')) {
     utilities::clearScreenAndRepositionCursor();
