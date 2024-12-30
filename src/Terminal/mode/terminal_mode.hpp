@@ -26,7 +26,7 @@
 
 #include <termios.h>
 
-namespace Kilo::terminal {
+namespace Kilo::Terminal {
 
 class TerminalMode
 {
@@ -89,7 +89,7 @@ void ttyRaw(int fd, termios const& buf, termios& copy);
  */
 void ttyReset(int fd, termios const& buf);
 
-}   // namespace Kilo::terminal
+}   // namespace Kilo::Terminal
 
 #endif
 

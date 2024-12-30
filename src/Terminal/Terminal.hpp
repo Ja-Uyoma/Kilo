@@ -30,7 +30,7 @@
 /* Forward declaration to the winsize struct */
 struct winsize;
 
-namespace Kilo::terminal {
+namespace Kilo::Terminal {
 
 /* Forward declaration to the WindowSize struct */
 struct WindowSize;
@@ -82,6 +82,6 @@ WindowSize getCursorPosition();
 
 }   // namespace detail
 
-}   // namespace Kilo::terminal
+}   // namespace Kilo::Terminal
 
 #endif

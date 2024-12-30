@@ -29,7 +29,7 @@
 #include <termios.h>
 #include <unistd.h>
 
-namespace Kilo::terminal {
+namespace Kilo::Terminal {
 
 TerminalMode::TerminalMode()
 {
@@ -134,4 +134,4 @@ void ttyReset(int fd, termios const& buf)
   }
 }
 
-}   // namespace Kilo::terminal
+}   // namespace Kilo::Terminal

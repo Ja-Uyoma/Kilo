@@ -26,7 +26,7 @@
 
 #include "window_size.hpp"
 
-namespace Kilo::terminal {
+namespace Kilo::Terminal {
 
 class Window
 {
@@ -68,6 +68,6 @@ private:
   explicit Window();
 };
 
-}   // namespace Kilo::terminal
+}   // namespace Kilo::Terminal
 
 #endif

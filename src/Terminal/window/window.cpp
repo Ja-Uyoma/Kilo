@@ -28,7 +28,7 @@
 #include <sys/ioctl.h>
 #include <system_error>
 
-namespace Kilo::terminal {
+namespace Kilo::Terminal {
 
 /**
  * @brief Create a static Window instance and return a reference to it
@@ -46,7 +46,7 @@ Window::Window()
   ::winsize ws;
 
   try {
-    m_winsize = terminal::getWindowSize(ws);
+    m_winsize = Terminal::getWindowSize(ws);
   }
   catch (std::system_error const& err) {
     std::cerr << err.code() << ": " << err.what() << '\n';
@@ -56,4 +56,4 @@ Window::Window()
   }
 }
 
-}   // namespace Kilo::terminal
+}   // namespace Kilo::Terminal

@@ -46,7 +46,7 @@ TEST(processKeypress, TerminatesTheProgramIfQIsPressed)
 TEST(processKeypress, MovesCursorToStartOfLineIfHomeButtonIsPressed)
 {
   using editor::EditorKey;
-  using terminal::Window;
+  using Terminal::Window;
 
   EditorKey const key = EditorKey::Home;
   Cursor cursor {100, 100};
@@ -61,7 +61,7 @@ TEST(processKeypress, MovesCursorToStartOfLineIfHomeButtonIsPressed)
 TEST(processKeypress, MovesCursorToEndOfLineIfEndButtonIsPressed)
 {
   using editor::EditorKey;
-  using terminal::Window;
+  using Terminal::Window;
 
   EditorKey const key = EditorKey::End;
   Cursor cursor {100, 100};
@@ -329,7 +329,7 @@ TEST(printWelcomeMessageOrTilde, PrintsATildeIfTheDocumentIsNotEmpty)
 {
   bool documentIsEmpty = false;
   ScreenBuffer buf;
-  terminal::Window window = terminal::Window::create();
+  Terminal::Window window = Terminal::Window::create();
   int currentRow = window.rows() / 3;
 
   printWelcomeMessageOrTilde(documentIsEmpty, currentRow, buf, window);
@@ -341,7 +341,7 @@ TEST(printWelcomeMessageOrTilde, PrintsATildeIfTheCurrentRowIsNotAThirdOfTheWind
 {
   bool documentIsEmpty = true;
   ScreenBuffer buf;
-  terminal::Window window = terminal::Window::create();
+  Terminal::Window window = Terminal::Window::create();
   int currentRow = 0;
 
   printWelcomeMessageOrTilde(documentIsEmpty, currentRow, buf, window);
@@ -356,7 +356,7 @@ TEST(printWelcomeMessageOrTilde, PrintsTheWelcomeMessage)
 
   bool documentIsEmpty = true;
   ScreenBuffer buffer;
-  terminal::Window window = terminal::Window::create();
+  Terminal::Window window = Terminal::Window::create();
   auto currentRow = window.rows() / 3;
 
   printWelcomeMessageOrTilde(documentIsEmpty, currentRow, buffer, window);

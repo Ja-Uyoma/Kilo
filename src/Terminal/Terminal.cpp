@@ -33,7 +33,7 @@
 #include <system_error>
 #include <unistd.h>
 
-namespace Kilo::terminal {
+namespace Kilo::Terminal {
 
 int readKey()
 {
@@ -280,4 +280,4 @@ WindowSize getCursorPosition()
 
 }   // namespace detail
 
-}   // namespace Kilo::terminal
+}   // namespace Kilo::Terminal

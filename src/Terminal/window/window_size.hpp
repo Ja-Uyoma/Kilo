@@ -24,7 +24,7 @@
 #ifndef WINDOW_SIZE_HPP
 #define WINDOW_SIZE_HPP
 
-namespace Kilo::terminal {
+namespace Kilo::Terminal {
 
 struct WindowSize
 {
@@ -32,6 +32,6 @@ struct WindowSize
   int rows;
 };
 
-}   // namespace Kilo::terminal
+}   // namespace Kilo::Terminal
 
 #endif

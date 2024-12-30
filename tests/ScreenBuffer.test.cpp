@@ -32,7 +32,7 @@
 
 namespace Kilo::editor {
 
-class MockFile : public terminal::File
+class MockFile : public Terminal::File
 {
 public:
   MOCK_METHOD(std::size_t, write, (int, std::string const&));

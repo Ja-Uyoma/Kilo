@@ -54,7 +54,7 @@ namespace Kilo::editor {
  * @param[in] cursor The position of the cursor in the terminal window
  * @param[in] window The terminal window
  */
-void processKeypress(int const keyPressed, Cursor& cursor, terminal::Window const& window,
+void processKeypress(int const keyPressed, Cursor& cursor, Terminal::Window const& window,
                      std::vector<std::string> const& document) noexcept
 {
   detail::processKeypressHelper(keyPressed);
@@ -74,7 +74,7 @@ void processKeypress(int const keyPressed, Cursor& cursor, terminal::Window cons
  * @param cursor The cursor
  * @param offset The offset from the window to the open document
  */
-void refreshScreen(ScreenBuffer& buffer, Cursor const& cursor, Offset const& offset, terminal::Window const& window,
+void refreshScreen(ScreenBuffer& buffer, Cursor const& cursor, Offset const& offset, Terminal::Window const& window,
                    std::vector<std::string> const& document, std::vector<std::string> const& renderedDoc)
 {
   /*
@@ -83,7 +83,7 @@ void refreshScreen(ScreenBuffer& buffer, Cursor const& cursor, Offset const& off
 
   buffer.write(EscapeSequences::HideCursorWhenRepainting).write(EscapeSequences::MoveCursorToHomePosition);
 
-  terminal::File output;
+  Terminal::File output;
 
   drawRows(window, offset, document, buffer, renderedDoc);
   auto const cursorPos = detail::setExactPositionToMoveCursorTo(cursor, offset);
@@ -99,7 +99,7 @@ void refreshScreen(ScreenBuffer& buffer, Cursor const& cursor, Offset const& off
  * @param buffer The screen buffer
  * @param renderedDoc The version of the document being edited that is actually rendered
  */
-void drawRows(terminal::Window const& window, Offset const& offset, std::vector<std::string> const& doc,
+void drawRows(Terminal::Window const& window, Offset const& offset, std::vector<std::string> const& doc,
               ScreenBuffer& buffer, std::vector<std::string> const& renderedDoc)
 {
   for (std::size_t currentRow = 0; std::cmp_less(currentRow, window.rows()); currentRow++) {
@@ -176,7 +176,7 @@ bool open(std::filesystem::path const& path, std::vector<std::string>& document,
  * @param[in] offset The position the user is currently scrolled to in the document
  * @param[in] window The terminal window
  */
-void scroll(Cursor const& cursor, Offset& offset, terminal::Window const& window) noexcept
+void scroll(Cursor const& cursor, Offset& offset, Terminal::Window const& window) noexcept
 {
   /*
    * Check if the cursor has moved outside of the visible window.
@@ -341,7 +341,7 @@ void processKeypressHelper(unsigned const keyPressed) noexcept
  * @param[in] cursor The position of the cursor in the terminal window
  * @param[in] window The terminal window
  */
-void processKeypressHelper(editor::EditorKey keyPressed, Cursor& cursor, terminal::Window const& window,
+void processKeypressHelper(editor::EditorKey keyPressed, Cursor& cursor, Terminal::Window const& window,
                            std::vector<std::string> const& document) noexcept
 {
   using enum editor::EditorKey;
@@ -371,7 +371,7 @@ void processKeypressHelper(editor::EditorKey keyPressed, Cursor& cursor, termina
  * @param window The terminal window
  */
 void printWelcomeMessageOrTilde(bool documentIsEmpty, int currentRow, ScreenBuffer& buffer,
-                                terminal::Window const& window)
+                                Terminal::Window const& window)
 {
   if (documentIsEmpty && currentRow == window.rows() / 3) {
     detail::printWelcomeMessage(window.cols(), buffer);
