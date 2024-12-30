@@ -40,6 +40,9 @@ target_sources(kilo
 
         "${PROJECT_SOURCE_DIR}/src/ScreenBuffer/ScreenBuffer.hpp"
         "${PROJECT_SOURCE_DIR}/src/ScreenBuffer/ScreenBuffer.cpp"
+
+        "${PROJECT_SOURCE_DIR}/src/Termios/Termios.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Termios/Termios.cpp"
     
         main.cpp
 )
