@@ -25,8 +25,8 @@
 
 #include "Constants/Constants.hpp"
 #include "Editor/Editor.hpp"
+#include "File/File.hpp"
 #include "IO/IO.hpp"
-#include "Terminal/File.hpp"
 #include "Utilities/Utilities.hpp"
 #include <cstddef>
 #include <cstdlib>

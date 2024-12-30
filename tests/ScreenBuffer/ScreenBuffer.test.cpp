@@ -23,7 +23,7 @@
 
 #include "ScreenBuffer/ScreenBuffer.hpp"
 
-#include "Terminal/File.hpp"
+#include "File/File.hpp"
 #include <cstring>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>

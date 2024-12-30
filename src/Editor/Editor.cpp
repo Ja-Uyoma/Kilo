@@ -25,9 +25,9 @@
 
 #include "Constants/Constants.hpp"
 #include "Cursor/Cursor.hpp"
+#include "File/File.hpp"
 #include "Offset/Offset.hpp"
 #include "ScreenBuffer/ScreenBuffer.hpp"
-#include "Terminal/File.hpp"
 #include "Terminal/window/window.hpp"
 #include "Utilities/Utilities.hpp"
 #include <algorithm>
