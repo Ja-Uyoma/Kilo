@@ -43,4 +43,24 @@ TEST(ttyRaw, Succeeds_When_Passed_A_Valid_File_Descriptor)
   ASSERT_NO_THROW(ttyRaw(fd, buf, copy));
 }
 
+TEST(ttyReset, Throws_An_Exception_When_Passed_An_Invalid_File_Descriptor)
+{
+  ::termios buf;
+  int fd = STDOUT_FILENO;
+
+  getTerminalDriverSettings(fd, buf);
+
+  ASSERT_THROW(ttyReset(-fd, buf), std::system_error);
+}
+
+TEST(ttyReset, Succeeds_When_Passed_A_Valid_File_Descriptor)
+{
+  ::termios buf;
+  int fd = STDOUT_FILENO;
+
+  getTerminalDriverSettings(fd, buf);
+
+  ASSERT_NO_THROW(ttyReset(fd, buf));
+}
+
 }   // namespace Kilo::Terminal
