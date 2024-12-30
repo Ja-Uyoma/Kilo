@@ -23,14 +23,14 @@ target_sources(tests
     PRIVATE
         "${PROJECT_SOURCE_DIR}/src/Editor/Editor.hpp"
         "${PROJECT_SOURCE_DIR}/src/Editor/Editor.cpp"
-        Editor.test.cpp
+        Editor/Editor.test.cpp
 
         "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.hpp"
         "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.cpp"
 
         "${PROJECT_SOURCE_DIR}/src/Terminal/mode/terminal_mode.hpp"
         "${PROJECT_SOURCE_DIR}/src/Terminal/mode/terminal_mode.cpp"
-        TerminalMode.test.cpp
+        TerminalMode/TerminalMode.test.cpp
 
         "${PROJECT_SOURCE_DIR}/src/Utilities/Utilities.hpp"
         "${PROJECT_SOURCE_DIR}/src/Utilities/Utilities.cpp"
@@ -40,11 +40,11 @@ target_sources(tests
 
         "${PROJECT_SOURCE_DIR}/src/ScreenBuffer/ScreenBuffer.hpp"
         "${PROJECT_SOURCE_DIR}/src/ScreenBuffer/ScreenBuffer.cpp"
-        ScreenBuffer.test.cpp
+        ScreenBuffer/ScreenBuffer.test.cpp
         
         "${PROJECT_SOURCE_DIR}/src/Terminal/window/window.hpp"
         "${PROJECT_SOURCE_DIR}/src/Terminal/window/window.cpp"
-        Window.test.cpp
+        Window/Window.test.cpp
 
         "${PROJECT_SOURCE_DIR}/src/Termios/Termios.hpp"
         "${PROJECT_SOURCE_DIR}/src/Termios/Termios.cpp"
