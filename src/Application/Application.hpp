@@ -30,7 +30,6 @@
 #include "Terminal/window/window.hpp"
 #include "TerminalMode/TerminalMode.hpp"
 #include <filesystem>
-#include <memory>
 #include <string>
 #include <vector>
 
