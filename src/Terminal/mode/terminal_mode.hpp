@@ -62,33 +62,6 @@ private:
   ttystate m_state {ttystate::Reset};
 };
 
-/**
- * @brief Query fd and write its settings to buf
- *
- * @param fd The file descriptor to be queried
- * @param buf Where the settings are written to
- * @details Actually a wrapper around tcgetattr
- * @throw std::system_error In case querying the file descriptor failed
- */
-void getTerminalDriverSettings(int fd, termios& buf);
-
-/**
- * @brief Set the terminal driver in raw mode
- *
- * @param fd The terminal driver's file descriptor
- * @param buf The buffer to which the terminal driver's settings are to be written
- * @param copy A copy of the settings stored in buf in case we need to roll back
- */
-void ttyRaw(int fd, termios const& buf, termios& copy);
-
-/**
- * @brief Set the terminal driver in canonical mode
- *
- * @param fd The terminal driver's file descriptor
- * @param buf The buffer from which the desired settings are to be read from
- */
-void ttyReset(int fd, termios const& buf);
-
 }   // namespace Kilo::Terminal
 
 #endif
