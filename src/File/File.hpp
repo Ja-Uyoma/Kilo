@@ -27,7 +27,7 @@
 #include <cstddef>
 #include <string>
 
-namespace Kilo::Terminal {
+namespace Kilo::IO {
 
 class FileInterface
 {
@@ -83,6 +83,6 @@ public:
   std::size_t write(int fd, std::string const& buffer) override;
 };
 
-}   // namespace Kilo::Terminal
+}   // namespace Kilo::IO
 
 #endif

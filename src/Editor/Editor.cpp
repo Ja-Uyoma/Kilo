@@ -83,7 +83,7 @@ void refreshScreen(ScreenBuffer& buffer, Cursor const& cursor, Offset const& off
 
   buffer.write(EscapeSequences::HideCursorWhenRepainting).write(EscapeSequences::MoveCursorToHomePosition);
 
-  Terminal::File output;
+  IO::File output;
 
   drawRows(window, offset, document, buffer, renderedDoc);
   auto const cursorPos = detail::setExactPositionToMoveCursorTo(cursor, offset);

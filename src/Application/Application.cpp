@@ -57,7 +57,7 @@ void Application::refreshScreen()
   this->drawRows();
   auto const cursorPos = detail::setExactPositionToMoveCursorTo(m_cursor, m_off);
 
-  Terminal::File output;
+  IO::File output;
   m_buffer.write(cursorPos).write(EscapeSequences::ShowTheCursor).flush(output);
 }
 
