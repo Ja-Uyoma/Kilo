@@ -43,6 +43,9 @@ target_sources(kilo
 
         "${PROJECT_SOURCE_DIR}/src/Termios/Termios.hpp"
         "${PROJECT_SOURCE_DIR}/src/Termios/Termios.cpp"
+
+        IO/IO.hpp
+        IO/IO.cpp
     
         main.cpp
 )
