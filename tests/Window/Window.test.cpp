@@ -3,7 +3,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-namespace Kilo::terminal {
+namespace Kilo::Terminal {
 
 TEST(Window, RowsReturnsAPositiveNumberOfRows)
 {
@@ -19,4 +19,4 @@ TEST(Window, ColsReturnsAPositiveNumberOfColumns)
   ASSERT_THAT(w.cols(), ::testing::Gt(0));
 }
 
-}   // namespace Kilo::terminal
+}   // namespace Kilo::Terminal

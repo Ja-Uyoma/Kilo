@@ -78,7 +78,7 @@ public:
   /// \param[in] file The file being written to
   /// \returns The number of bytes written
   /// \throws `std::system_error` if the operation failed
-  std::size_t flush(terminal::File& file) const;
+  std::size_t flush(Terminal::File& file) const;
 
 private:
   std::string m_buffer;

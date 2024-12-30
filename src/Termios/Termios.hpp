@@ -21,46 +21,12 @@
  * SOFTWARE.
  */
 
-#ifndef TERMINAL_STATE_HPP
-#define TERMINAL_STATE_HPP
+#ifndef TERMIOS_HPP
+#define TERMIOS_HPP
 
 #include <termios.h>
 
-namespace Kilo::terminal {
-
-class TerminalMode
-{
-public:
-  /**
-   * @brief Construct a new Terminal State object
-   * @throws std::system_error An exception describing what went wrong
-   *
-   */
-  explicit TerminalMode();
-
-  /**
-   * @brief Set the terminal driver to raw (or non-canonical) mode
-   *
-   */
-  void setRawMode() &;
-
-  /**
-   * @brief Set the terminal driver to canonical mode
-   *
-   */
-  void reset() &;
-
-private:
-  enum class ttystate
-  {
-    Raw,
-    Reset
-  };
-
-  termios m_termios {};
-  termios m_copy {};
-  ttystate m_state {ttystate::Reset};
-};
+namespace Kilo::Terminal {
 
 /**
  * @brief Query fd and write its settings to buf
@@ -89,7 +55,6 @@ void ttyRaw(int fd, termios const& buf, termios& copy);
  */
 void ttyReset(int fd, termios const& buf);
 
-}   // namespace Kilo::terminal
+}   // namespace Kilo::Terminal
 
 #endif
-

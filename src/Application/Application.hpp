@@ -27,8 +27,8 @@
 #include "Cursor/Cursor.hpp"
 #include "Offset/Offset.hpp"
 #include "ScreenBuffer/ScreenBuffer.hpp"
-#include "Terminal/mode/terminal_mode.hpp"
 #include "Terminal/window/window.hpp"
+#include "TerminalMode/TerminalMode.hpp"
 #include <filesystem>
 #include <memory>
 #include <string>
@@ -76,20 +76,20 @@ private:
   class TerminalModeDeleter
   {
   public:
-    void operator()(terminal::TerminalMode* modePtr) const
+    void operator()(Terminal::TerminalMode* modePtr) const
     {
       modePtr->reset();
     }
   };
 
   [[no_unique_address]] TerminalModeDeleter const deleter {};
-  std::unique_ptr<terminal::TerminalMode, TerminalModeDeleter const&> m_mode {new terminal::TerminalMode(), deleter};
+  std::unique_ptr<Terminal::TerminalMode, TerminalModeDeleter const&> m_mode {new Terminal::TerminalMode(), deleter};
 
   std::vector<std::string> m_row;
   std::vector<std::string> m_render;
   Cursor m_cursor {};
   Offset m_off {};
-  terminal::Window m_window = terminal::Window::create();
+  Terminal::Window m_window = Terminal::Window::create();
   [[maybe_unused]] int m_rx {};
   ScreenBuffer m_buffer {};
 };

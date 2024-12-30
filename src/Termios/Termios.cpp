@@ -21,52 +21,37 @@
  * SOFTWARE.
  */
 
-#include "terminal_mode.hpp"
+#include "Termios.hpp"
 
-#include <cassert>
 #include <cerrno>
 #include <system_error>
-#include <termios.h>
-#include <unistd.h>
 
-namespace Kilo::terminal {
+namespace Kilo::Terminal {
 
-TerminalMode::TerminalMode()
-{
-  getTerminalDriverSettings(STDIN_FILENO, m_termios);
-}
-
-void TerminalMode::setRawMode() &
-{
-  if (m_state == ttystate::Raw) {
-    return;
-  }
-
-  assert(m_state == ttystate::Reset && "Terminal driver currently in canonical mode");
-  ttyRaw(STDIN_FILENO, m_termios, m_copy);
-  m_state = ttystate::Raw;
-}
-
-void TerminalMode::reset() &
-{
-  if (m_state == ttystate::Reset) {
-    return;
-  }
-
-  assert(m_state == ttystate::Raw && "Terminal driver currently in raw mode");
-  ttyReset(STDIN_FILENO, m_termios);
-  m_state = ttystate::Reset;
-}
-
+/**
+ * @brief Query fd and write its settings to buf
+ *
+ * @param fd The file descriptor to be queried
+ * @param buf Where the settings are written to
+ * @details Actually a wrapper around tcgetattr
+ * @throw std::system_error In case querying the file descriptor failed
+ */
 void getTerminalDriverSettings(int fd, termios& buf)
 {
   errno = 0;
 
-  if (tcgetattr(fd, &buf) == -1) {
+  if (::tcgetattr(fd, &buf) == -1) {
     throw std::system_error(errno, std::system_category(), "Could not retrieve terminal driver settings");
   }
 }
 
+/**
+ * @brief Set the terminal driver in raw mode
+ *
+ * @param fd The terminal driver's file descriptor
+ * @param buf The buffer to which the terminal driver's settings are to be written
+ * @param copy A copy of the settings stored in buf in case we need to roll back
+ */
 void ttyRaw(int fd, termios const& buf, termios& copy)
 {
   copy = buf;
@@ -94,7 +79,7 @@ void ttyRaw(int fd, termios const& buf, termios& copy)
 
   errno = 0;
 
-  if (tcsetattr(fd, TCSAFLUSH, &copy) == -1) {
+  if (::tcsetattr(fd, TCSAFLUSH, &copy) == -1) {
     throw std::system_error(errno, std::system_category(), "Failed to set terminal driver to raw mode");
   }
 
@@ -104,8 +89,8 @@ void ttyRaw(int fd, termios const& buf, termios& copy)
 
   errno = 0;
 
-  if (tcgetattr(fd, &copy) == -1) {
-    tcsetattr(fd, TCSAFLUSH, &buf);
+  if (::tcgetattr(fd, &copy) == -1) {
+    ::tcsetattr(fd, TCSAFLUSH, &buf);
     throw std::system_error(errno, std::system_category(), "Error while writing terminal driver settings to buffer");
   }
 
@@ -120,18 +105,25 @@ void ttyRaw(int fd, termios const& buf, termios& copy)
    */
 
   if (verify()) {
-    tcsetattr(fd, TCSAFLUSH, &buf);
+    ::tcsetattr(fd, TCSAFLUSH, &buf);
     throw std::system_error(EINVAL, std::system_category(), "Setting driver to raw mode only partially successful");
   }
 }
 
+/**
+ * @brief Set the terminal driver in canonical mode
+ *
+ * @param fd The terminal driver's file descriptor
+ * @param buf The buffer from which the desired settings are to be read from
+ */
 void ttyReset(int fd, termios const& buf)
 {
   errno = 0;
 
-  if (tcsetattr(fd, TCSAFLUSH, &buf) == -1) {
+  if (::tcsetattr(fd, TCSAFLUSH, &buf) == -1) {
     throw std::system_error(errno, std::system_category(), "Failed to reset terminal driver to canonical mode");
   }
 }
 
-}   // namespace Kilo::terminal
+}   // namespace Kilo::Terminal
+

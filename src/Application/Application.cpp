@@ -69,7 +69,7 @@ void Application::refreshScreen()
   this->drawRows();
   auto const cursorPos = detail::setExactPositionToMoveCursorTo(m_cursor, m_off);
 
-  terminal::File output;
+  Terminal::File output;
   m_buffer.write(cursorPos).write(EscapeSequences::ShowTheCursor).flush(output);
 }
 
@@ -79,7 +79,7 @@ void Application::refreshScreen()
  */
 void Application::processKeypress()
 {
-  auto const keyPressed = terminal::readKey();
+  auto const keyPressed = Terminal::readKey();
 
   if (keyPressed == utilities::ctrlKey('q')) {
     utilities::clearScreenAndRepositionCursor();

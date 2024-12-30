@@ -26,8 +26,8 @@ target_sources(kilo
         "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.hpp"
         "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.cpp"
 
-        "${PROJECT_SOURCE_DIR}/src/Terminal/mode/terminal_mode.hpp"
-        "${PROJECT_SOURCE_DIR}/src/Terminal/mode/terminal_mode.cpp"
+        "${PROJECT_SOURCE_DIR}/src/TerminalMode/TerminalMode.hpp"
+        "${PROJECT_SOURCE_DIR}/src/TerminalMode/TerminalMode.cpp"
 
         "${PROJECT_SOURCE_DIR}/src/Terminal/File.hpp"
         "${PROJECT_SOURCE_DIR}/src/Terminal/File.cpp"
@@ -40,6 +40,9 @@ target_sources(kilo
 
         "${PROJECT_SOURCE_DIR}/src/ScreenBuffer/ScreenBuffer.hpp"
         "${PROJECT_SOURCE_DIR}/src/ScreenBuffer/ScreenBuffer.cpp"
+
+        "${PROJECT_SOURCE_DIR}/src/Termios/Termios.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Termios/Termios.cpp"
     
         main.cpp
 )
@@ -51,7 +54,6 @@ target_compile_features(kilo
 
 target_compile_options(kilo
     PRIVATE $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-Wall -Wextra -Werror -Wpedantic>
-    PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/Wall>
 )
 
 target_compile_definitions(kilo

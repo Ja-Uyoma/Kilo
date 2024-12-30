@@ -49,7 +49,7 @@ class ScreenBuffer;
  * @param[in] cursor The position of the cursor in the terminal window
  * @param[in] window The terminal window
  */
-void processKeypress(int const keyPressed, Cursor& cursor, terminal::Window const& window,
+void processKeypress(int const keyPressed, Cursor& cursor, Terminal::Window const& window,
                      std::vector<std::string> const& document) noexcept;
 
 /**
@@ -61,7 +61,7 @@ void processKeypress(int const keyPressed, Cursor& cursor, terminal::Window cons
  * @param cursor The cursor
  * @param offset The offset from the window to the open document
  */
-void refreshScreen(ScreenBuffer& buffer, Cursor const& cursor, Offset const& offset, terminal::Window const& window,
+void refreshScreen(ScreenBuffer& buffer, Cursor const& cursor, Offset const& offset, Terminal::Window const& window,
                    std::vector<std::string> const& document, std::vector<std::string> const& renderedDoc);
 
 /**
@@ -73,7 +73,7 @@ void refreshScreen(ScreenBuffer& buffer, Cursor const& cursor, Offset const& off
  * @param buffer The screen buffer
  * @param renderedDoc The version of the document being edited that is actually rendered
  */
-void drawRows(terminal::Window const& window, Offset const& offset, std::vector<std::string> const& doc,
+void drawRows(Terminal::Window const& window, Offset const& offset, std::vector<std::string> const& doc,
               ScreenBuffer& buffer, std::vector<std::string> const& renderedDoc);
 
 /**
@@ -103,7 +103,7 @@ bool open(std::filesystem::path const& path, std::vector<std::string>& document,
  * @param[in] offset The position the user is currently scrolled to in the document
  * @param[in] window The terminal window
  */
-void scroll(Cursor const& cursor, Offset& offset, terminal::Window const& window) noexcept;
+void scroll(Cursor const& cursor, Offset& offset, Terminal::Window const& window) noexcept;
 
 /**
  * @brief Copies the contents of the source string into the destination string
@@ -272,7 +272,7 @@ void processKeypressHelper(unsigned const keyPressed) noexcept;
  * @param[in] cursor The position of the cursor in the terminal window
  * @param[in] window The terminal window
  */
-void processKeypressHelper(editor::EditorKey keyPressed, Cursor& cursor, terminal::Window const& window,
+void processKeypressHelper(editor::EditorKey keyPressed, Cursor& cursor, Terminal::Window const& window,
                            std::vector<std::string> const& document) noexcept;
 
 /**
@@ -284,7 +284,7 @@ void processKeypressHelper(editor::EditorKey keyPressed, Cursor& cursor, termina
  * @param window The terminal window
  */
 void printWelcomeMessageOrTilde(bool documentIsEmpty, int currentRow, ScreenBuffer& buffer,
-                                terminal::Window const& window);
+                                Terminal::Window const& window);
 
 /**
  * @brief Print a line of text from the open document to the screen

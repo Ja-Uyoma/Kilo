@@ -21,39 +21,41 @@
  * SOFTWARE.
  */
 
-#include "window.hpp"
+#include "TerminalMode.hpp"
 
-#include "Terminal/Terminal.hpp"
-#include <iostream>
-#include <sys/ioctl.h>
-#include <system_error>
+#include "Termios/Termios.hpp"
+#include <cassert>
+#include <cerrno>
+#include <termios.h>
+#include <unistd.h>
 
 namespace Kilo::Terminal {
 
-/**
- * @brief Create a static Window instance and return a reference to it
- *
- * @return Window& A reference to the static Window instance
- */
-Window& Window::create()
+TerminalMode::TerminalMode()
 {
-  static Window window;
-  return window;
+  getTerminalDriverSettings(STDIN_FILENO, m_termios);
 }
 
-Window::Window()
+void TerminalMode::setRawMode() &
 {
-  ::winsize ws;
-
-  try {
-    m_winsize = Terminal::getWindowSize(ws);
+  if (m_state == ttystate::Raw) {
+    return;
   }
-  catch (std::system_error const& err) {
-    std::cerr << err.code() << ": " << err.what() << '\n';
-    m_winsize = {0, 0};
 
-    throw;
+  assert(m_state == ttystate::Reset && "Terminal driver currently in canonical mode");
+  ttyRaw(STDIN_FILENO, m_termios, m_copy);
+  m_state = ttystate::Raw;
+}
+
+void TerminalMode::reset() &
+{
+  if (m_state == ttystate::Reset) {
+    return;
   }
+
+  assert(m_state == ttystate::Raw && "Terminal driver currently in raw mode");
+  ttyReset(STDIN_FILENO, m_termios);
+  m_state = ttystate::Reset;
 }
 
 }   // namespace Kilo::Terminal

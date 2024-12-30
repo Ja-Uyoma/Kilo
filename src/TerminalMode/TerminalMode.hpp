@@ -21,39 +21,48 @@
  * SOFTWARE.
  */
 
-#include "window.hpp"
+#ifndef TERMINAL_STATE_HPP
+#define TERMINAL_STATE_HPP
 
-#include "Terminal/Terminal.hpp"
-#include <iostream>
-#include <sys/ioctl.h>
-#include <system_error>
+#include <termios.h>
 
 namespace Kilo::Terminal {
 
-/**
- * @brief Create a static Window instance and return a reference to it
- *
- * @return Window& A reference to the static Window instance
- */
-Window& Window::create()
+class TerminalMode
 {
-  static Window window;
-  return window;
-}
+public:
+  /**
+   * @brief Construct a new Terminal State object
+   * @throws std::system_error An exception describing what went wrong
+   *
+   */
+  explicit TerminalMode();
 
-Window::Window()
-{
-  ::winsize ws;
+  /**
+   * @brief Set the terminal driver to raw (or non-canonical) mode
+   *
+   */
+  void setRawMode() &;
 
-  try {
-    m_winsize = Terminal::getWindowSize(ws);
-  }
-  catch (std::system_error const& err) {
-    std::cerr << err.code() << ": " << err.what() << '\n';
-    m_winsize = {0, 0};
+  /**
+   * @brief Set the terminal driver to canonical mode
+   *
+   */
+  void reset() &;
 
-    throw;
-  }
-}
+private:
+  enum class ttystate
+  {
+    Raw,
+    Reset
+  };
+
+  termios m_termios {};
+  termios m_copy {};
+  ttystate m_state {ttystate::Reset};
+};
 
 }   // namespace Kilo::Terminal
+
+#endif
+
