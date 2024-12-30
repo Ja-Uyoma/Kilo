@@ -28,7 +28,7 @@
 #include <system_error>
 #include <unistd.h>
 
-namespace Kilo::Terminal {
+namespace Kilo::IO {
 
 /**
  * @brief Read nbytes from fd into buffer
@@ -70,4 +70,4 @@ std::size_t File::write(int fd, std::string const& buffer)
   return result;
 }
 
-}   // namespace Kilo::Terminal
+}   // namespace Kilo::IO
