@@ -35,7 +35,7 @@ namespace Kilo::editor {
 class MockFile : public IO::File
 {
 public:
-  MOCK_METHOD(std::size_t, write, (int, std::string const&));
+  MOCK_METHOD(std::size_t, write, (int, std::string const&), (noexcept));
 };
 
 class ScreenBufferTest : public ::testing::Test
