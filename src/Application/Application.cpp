@@ -30,8 +30,6 @@
 #include "Utilities/Utilities.hpp"
 #include <cstddef>
 #include <cstdlib>
-#include <iostream>
-#include <system_error>
 
 namespace Kilo::editor {
 
