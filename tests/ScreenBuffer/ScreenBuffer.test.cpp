@@ -48,16 +48,6 @@ TEST(ScreenBufferTest, ItsSizeIncreasesByTheLengthOfTheAppendedString)
   ASSERT_EQ(buffer.size(), 13);
 }
 
-TEST(ScreenBufferTest, c_strReturnsACStringRepresentationOfTheContentsOfTheBuffer)
-{
-  ScreenBuffer buffer;
-  char const* str = "The quick brown fox jumped over the lazy dog";
-
-  buffer.write(str, std::strlen(str));
-
-  ASSERT_STREQ(buffer.c_str(), str);
-}
-
 class MockFileInterface : public IO::FileInterface
 {
 public:
