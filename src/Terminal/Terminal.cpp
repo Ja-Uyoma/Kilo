@@ -57,10 +57,12 @@ void getWindowSize(int* const rows, int* const cols)
  * @throws std::system_error if the terminal window size could not be retrieved
  * @returns The size of the terminal window
  */
-WindowSize getWindowSize(::winsize const& winsize)
+WindowSize getWindowSize(::winsize& winsize)
 {
   if (::ioctl(STDOUT_FILENO, TIOCGWINSZ, &winsize) == -1 or winsize.ws_col == 0) {
-    if (errno = 0; ::write(STDOUT_FILENO, "\x1b[999c\x1b[999B", 12) != 12) {
+    errno = 0;
+
+    if (::write(STDOUT_FILENO, "\x1b[999c\x1b[999B", 12) != 12) {
       throw std::system_error(errno, std::system_category(),
                               "Could not move the cursor to the bottom-right of the screen");
     }
@@ -131,7 +133,9 @@ void getCursorPosition(int* const rows, int* const cols)
 WindowSize getCursorPosition()
 {
   // Get the position of the cursor
-  if (errno = 0; ::write(STDOUT_FILENO, "\x1b[6n", 4) != 4) {
+  errno = 0;
+
+  if (::write(STDOUT_FILENO, "\x1b[6n", 4) != 4) {
     throw std::system_error(errno, std::system_category(), "Could not get cursor position");
   }
 

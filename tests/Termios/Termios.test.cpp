@@ -28,7 +28,7 @@
 
 namespace Kilo::Terminal {
 
-TEST(getTerminalDriverSettings, Throws_An_Exception_When_Passed_An_Invalid_File_Descriptor)
+TEST(getTerminalDriverSettings, ThrowsAnExceptionWhenPassedAnInvalidFileDescriptor)
 {
   ::termios buf;
   int fd = -STDOUT_FILENO;
@@ -36,7 +36,7 @@ TEST(getTerminalDriverSettings, Throws_An_Exception_When_Passed_An_Invalid_File_
   ASSERT_THROW(getTerminalDriverSettings(fd, buf), std::system_error);
 }
 
-TEST(getTerminalDriverSettings, Runs_Successfully_When_Passed_A_Valid_File_Descriptor)
+TEST(getTerminalDriverSettings, RunsSuccessfullyWhenPassedAValidFileDescriptor)
 {
   ::termios buf;
   int fd = STDIN_FILENO;
@@ -44,7 +44,7 @@ TEST(getTerminalDriverSettings, Runs_Successfully_When_Passed_A_Valid_File_Descr
   ASSERT_NO_THROW(getTerminalDriverSettings(fd, buf));
 }
 
-TEST(ttyRaw, Throws_An_Exception_When_Passed_An_Invalid_File_Descriptor)
+TEST(ttyRaw, ThrowsAnExceptionWhenPassedAnInvalidFileDescriptor)
 {
   ::termios buf;
   ::termios copy;
@@ -54,7 +54,7 @@ TEST(ttyRaw, Throws_An_Exception_When_Passed_An_Invalid_File_Descriptor)
   ASSERT_THROW(ttyRaw(-fd, buf, copy), std::system_error);
 }
 
-TEST(ttyRaw, Succeeds_When_Passed_A_Valid_File_Descriptor)
+TEST(ttyRaw, SucceedsWhenPassedAValidFileDescriptor)
 {
   ::termios buf;
   ::termios copy;
@@ -66,7 +66,7 @@ TEST(ttyRaw, Succeeds_When_Passed_A_Valid_File_Descriptor)
   ASSERT_NO_THROW(ttyRaw(fd, buf, copy));
 }
 
-TEST(ttyReset, Throws_An_Exception_When_Passed_An_Invalid_File_Descriptor)
+TEST(ttyReset, ThrowsAnExceptionWhenPassedAnInvalidFileDescriptor)
 {
   ::termios buf;
   int fd = STDOUT_FILENO;
@@ -76,7 +76,7 @@ TEST(ttyReset, Throws_An_Exception_When_Passed_An_Invalid_File_Descriptor)
   ASSERT_THROW(ttyReset(-fd, buf), std::system_error);
 }
 
-TEST(ttyReset, Succeeds_When_Passed_A_Valid_File_Descriptor)
+TEST(ttyReset, SucceedsWhenPassedAValidFileDescriptor)
 {
   ::termios buf;
   int fd = STDOUT_FILENO;

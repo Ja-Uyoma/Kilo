@@ -23,7 +23,9 @@
 
 #include "ScreenBuffer.hpp"
 
+#include <cassert>
 #include <cerrno>
+#include <system_error>
 #include <unistd.h>
 
 namespace Kilo::editor {
@@ -32,9 +34,33 @@ namespace Kilo::editor {
 /// \param[in] file The file being written to
 /// \returns The number of bytes written
 /// \throws `std::system_error` if the operation failed
-std::size_t ScreenBuffer::flush(IO::File& file) const
+std::size_t ScreenBuffer::flush(IO::FileInterface& file) const
 {
-  return file.write(STDOUT_FILENO, m_buffer.c_str());
+  std::size_t totalWritten = 0;
+
+  while (totalWritten < m_buffer.length()) {
+    errno = 0;
+    long result = file.write(STDOUT_FILENO, m_buffer.substr(0 + totalWritten, m_buffer.length() - totalWritten));
+
+    if (result == -1) {
+      if (errno == EINTR or errno == EAGAIN) {
+        continue;
+      }
+      else {
+        throw std::system_error(errno, std::system_category());
+      }
+    }
+
+    if (result == 0) {
+      break;
+    }
+
+    totalWritten += result;
+  }
+
+  assert(totalWritten == m_buffer.length()
+         or totalWritten == 0 && "The total number of bytes written is unequal to the size of the buffer");
+  return totalWritten;
 }
 
 }   // namespace Kilo::editor

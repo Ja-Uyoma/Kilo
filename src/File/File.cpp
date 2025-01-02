@@ -25,7 +25,6 @@
 
 #include <cerrno>
 #include <string>
-#include <system_error>
 #include <unistd.h>
 
 namespace Kilo::IO {
@@ -33,41 +32,25 @@ namespace Kilo::IO {
 /**
  * @brief Read nbytes from fd into buffer
  *
- * @param fd The file being read from
- * @param buffer The buffer being read to
- * @throws std::system_error On read failure
+ * @param[in] fd The file being read from
+ * @param[inout] buffer The buffer being read to
  * @returns The number of bytes read
  */
-std::size_t File::read(int fd, std::string& buffer)
+std::size_t File::read(int fd, std::string& buffer) noexcept
 {
-  errno = 0;
-  auto result = ::read(fd, &buffer[0], buffer.length());
-
-  if (result < 0) {
-    throw std::system_error(errno, std::system_category());
-  }
-
-  return result;
+  return ::read(fd, &buffer[0], buffer.length());
 }
 
 /**
  * @brief Write n bytes of buffer to fd
  *
- * @param fd The file descriptor being written to
- * @param buffer The buffer being written from
- * @throws std::system_error On write failure
+ * @param[in] fd The file descriptor being written to
+ * @param[in] buffer The buffer being written from
  * @returns The number of bytes written
  */
-std::size_t File::write(int fd, std::string const& buffer)
+std::size_t File::write(int fd, std::string const& buffer) noexcept
 {
-  errno = 0;
-  auto result = ::write(fd, buffer.c_str(), buffer.length());
-
-  if (result < 0) {
-    throw std::system_error(errno, std::system_category());
-  }
-
-  return result;
+  return ::write(fd, buffer.c_str(), buffer.length());
 }
 
 }   // namespace Kilo::IO

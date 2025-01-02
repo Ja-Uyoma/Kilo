@@ -32,60 +32,92 @@
 
 namespace Kilo::editor {
 
-class MockFile : public IO::File
+TEST(ScreenBufferTest, IsEmptyWhenCreated)
 {
-public:
-  MOCK_METHOD(std::size_t, write, (int, std::string const&));
-};
-
-class ScreenBufferTest : public ::testing::Test
-{
-public:
-  ScreenBuffer buf;
-};
-
-TEST_F(ScreenBufferTest, IsEmptyWhenCreated)
-{
-  ASSERT_EQ(buf.size(), 0);
+  ScreenBuffer buffer;
+  ASSERT_EQ(buffer.size(), 0);
 }
 
-TEST_F(ScreenBufferTest, ItsSizeIncreasesByTheLengthOfTheAppendedString)
+TEST(ScreenBufferTest, ItsSizeIncreasesByTheLengthOfTheAppendedString)
 {
+  ScreenBuffer buffer;
   char const* str = "Hello, World!";
-  buf.write(str, std::strlen(str));
 
-  ASSERT_EQ(buf.size(), 13);
+  buffer.write(str, std::strlen(str));
+
+  ASSERT_EQ(buffer.size(), 13);
 }
 
-TEST_F(ScreenBufferTest, c_strReturnsACStringRepresentationOfTheContentsOfTheBuffer)
+class MockFileInterface : public IO::FileInterface
 {
-  char const* str = "The quick brown fox jumped over the lazy dog";
-  buf.write(str, std::strlen(str));
+public:
+  MOCK_METHOD(std::size_t, write, (int, std::string const&), (noexcept, override));
+  MOCK_METHOD(std::size_t, read, (int, std::string&), (noexcept, override));
+};
 
-  ASSERT_STREQ(buf.c_str(), str);
-}
-
-TEST_F(ScreenBufferTest, flushReturnsTheNumberOfBytesWrittenOnSuccess)
-{
-  using namespace ::testing;
-
-  MockFile file;
-
-  EXPECT_CALL(file, write(_, _)).Times(1).WillOnce(Return(5));
-
-  auto rv = buf.flush(file);
-
-  ASSERT_THAT(rv, Eq(5));
-}
-
-TEST_F(ScreenBufferTest, flushThrowsAnExceptionOnFailure)
+TEST(ScreenBufferTest, flushReturnsTheNumberOfBytesWrittenOnSuccess)
 {
   using namespace ::testing;
 
-  MockFile file;
-  EXPECT_CALL(file, write(_, _)).Times(1).WillOnce(Throw(std::system_error {}));
+  MockFileInterface file;
+  ScreenBuffer buffer;
+  buffer.write("Hello, world!");
 
-  ASSERT_THROW(buf.flush(file), std::system_error);
+  EXPECT_CALL(file, write(STDOUT_FILENO, std::string("Hello, world!"))).WillOnce(Return(13));
+  auto rv = buffer.flush(file);
+
+  ASSERT_THAT(rv, Eq(13));
+}
+
+TEST(ScreenBufferTest, flushThrowsAnExceptionOnFailure)
+{
+  using namespace ::testing;
+
+  MockFileInterface file;
+  ScreenBuffer buffer;
+  buffer.write("Non-retryable error example");
+
+  EXPECT_CALL(file, write(STDOUT_FILENO, std::string("Non-retryable error example")))
+    .WillOnce([](int, std::string const&) {
+      errno = EBADF;
+      return -1;
+    });
+
+  ASSERT_THROW(buffer.flush(file), std::system_error);
+}
+
+TEST(ScreenBufferTest, FlushHandlesEINTR)
+{
+  MockFileInterface mockFile;
+  ScreenBuffer buffer;
+  buffer.write("Retryable error example");
+
+  // Simulate EINTR error example, followed by a successful write
+  EXPECT_CALL(mockFile, write(STDOUT_FILENO, std::string("Retryable error example")))
+    .WillOnce([](int, std::string const&) {
+      errno = EINTR;
+      return -1;
+    })
+    .WillOnce(testing::Return(23));
+
+  auto rv = buffer.flush(mockFile);
+
+  ASSERT_THAT(rv, testing::Eq(23));
+}
+
+TEST(ScreenBufferTest, FlushStopsOnZeroBytesWritten)
+{
+  MockFileInterface mockFile;
+  ScreenBuffer buffer;
+  buffer.write("Buffer that cannot be fully written");
+
+  // Simulate zero bytes written
+  EXPECT_CALL(mockFile, write(STDOUT_FILENO, std::string("Buffer that cannot be fully written")))
+    .WillOnce(testing::Return(0));
+
+  auto rv = buffer.flush(mockFile);
+
+  ASSERT_THAT(rv, testing::Eq(0));
 }
 
 }   // namespace Kilo::editor
