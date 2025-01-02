@@ -105,4 +105,19 @@ TEST(ScreenBufferTest, FlushHandlesEINTR)
   ASSERT_THAT(rv, testing::Eq(23));
 }
 
+TEST(ScreenBufferTest, FlushStopsOnZeroBytesWritten)
+{
+  MockFileInterface mockFile;
+  ScreenBuffer buffer;
+  buffer.write("Buffer that cannot be fully written");
+
+  // Simulate zero bytes written
+  EXPECT_CALL(mockFile, write(STDOUT_FILENO, std::string("Buffer that cannot be fully written")))
+    .WillOnce(testing::Return(0));
+
+  auto rv = buffer.flush(mockFile);
+
+  ASSERT_THAT(rv, testing::Eq(0));
+}
+
 }   // namespace Kilo::editor
