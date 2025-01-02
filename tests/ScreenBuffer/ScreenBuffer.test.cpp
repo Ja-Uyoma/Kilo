@@ -32,13 +32,6 @@
 
 namespace Kilo::editor {
 
-class MockFile : public IO::FileInterface
-{
-public:
-  MOCK_METHOD(std::size_t, write, (int, std::string const&), (noexcept, override));
-  MOCK_METHOD(std::size_t, read, (int, std::string&), (noexcept, override));
-};
-
 TEST(ScreenBufferTest, IsEmptyWhenCreated)
 {
   ScreenBuffer buffer;
@@ -64,6 +57,13 @@ TEST(ScreenBufferTest, c_strReturnsACStringRepresentationOfTheContentsOfTheBuffe
 
   ASSERT_STREQ(buffer.c_str(), str);
 }
+
+class MockFile : public IO::FileInterface
+{
+public:
+  MOCK_METHOD(std::size_t, write, (int, std::string const&), (noexcept, override));
+  MOCK_METHOD(std::size_t, read, (int, std::string&), (noexcept, override));
+};
 
 TEST(ScreenBufferTest, flushReturnsTheNumberOfBytesWrittenOnSuccess)
 {
