@@ -34,7 +34,7 @@ namespace Kilo::editor {
 /// \param[in] file The file being written to
 /// \returns The number of bytes written
 /// \throws `std::system_error` if the operation failed
-std::size_t ScreenBuffer::flush(IO::File& file) const
+std::size_t ScreenBuffer::flush(IO::FileInterface& file) const
 {
   std::size_t totalWritten = 0;
 
