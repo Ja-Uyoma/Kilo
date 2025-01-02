@@ -39,54 +39,56 @@ public:
   MOCK_METHOD(std::size_t, read, (int, std::string&), (noexcept, override));
 };
 
-class ScreenBufferTest : public ::testing::Test
+TEST(ScreenBufferTest, IsEmptyWhenCreated)
 {
-public:
-  ScreenBuffer buf;
-};
-
-TEST_F(ScreenBufferTest, IsEmptyWhenCreated)
-{
-  ASSERT_EQ(buf.size(), 0);
+  ScreenBuffer buffer;
+  ASSERT_EQ(buffer.size(), 0);
 }
 
-TEST_F(ScreenBufferTest, ItsSizeIncreasesByTheLengthOfTheAppendedString)
+TEST(ScreenBufferTest, ItsSizeIncreasesByTheLengthOfTheAppendedString)
 {
+  ScreenBuffer buffer;
   char const* str = "Hello, World!";
-  buf.write(str, std::strlen(str));
 
-  ASSERT_EQ(buf.size(), 13);
+  buffer.write(str, std::strlen(str));
+
+  ASSERT_EQ(buffer.size(), 13);
 }
 
-TEST_F(ScreenBufferTest, c_strReturnsACStringRepresentationOfTheContentsOfTheBuffer)
+TEST(ScreenBufferTest, c_strReturnsACStringRepresentationOfTheContentsOfTheBuffer)
 {
+  ScreenBuffer buffer;
   char const* str = "The quick brown fox jumped over the lazy dog";
-  buf.write(str, std::strlen(str));
 
-  ASSERT_STREQ(buf.c_str(), str);
+  buffer.write(str, std::strlen(str));
+
+  ASSERT_STREQ(buffer.c_str(), str);
 }
 
-TEST_F(ScreenBufferTest, flushReturnsTheNumberOfBytesWrittenOnSuccess)
+TEST(ScreenBufferTest, flushReturnsTheNumberOfBytesWrittenOnSuccess)
 {
   using namespace ::testing;
 
+  ScreenBuffer buffer;
   MockFile file;
 
   EXPECT_CALL(file, write(_, _)).Times(1).WillOnce(Return(5));
 
-  auto rv = buf.flush(file);
+  auto rv = buffer.flush(file);
 
   ASSERT_THAT(rv, Eq(5));
 }
 
-TEST_F(ScreenBufferTest, flushThrowsAnExceptionOnFailure)
+TEST(ScreenBufferTest, flushThrowsAnExceptionOnFailure)
 {
   using namespace ::testing;
 
+  ScreenBuffer buffer;
   MockFile file;
+
   EXPECT_CALL(file, write(_, _)).Times(1).WillOnce(Throw(std::system_error {}));
 
-  ASSERT_THROW(buf.flush(file), std::system_error);
+  ASSERT_THROW(buffer.flush(file), std::system_error);
 }
 
 }   // namespace Kilo::editor
