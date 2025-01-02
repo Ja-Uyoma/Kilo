@@ -36,6 +36,7 @@ class MockFile : public IO::File
 {
 public:
   MOCK_METHOD(std::size_t, write, (int, std::string const&), (noexcept));
+  MOCK_METHOD(std::size_t, read, (int, std::string&), (noexcept, override));
 };
 
 class ScreenBufferTest : public ::testing::Test
