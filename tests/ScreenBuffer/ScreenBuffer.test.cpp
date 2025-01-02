@@ -69,14 +69,14 @@ TEST(ScreenBufferTest, flushReturnsTheNumberOfBytesWrittenOnSuccess)
 {
   using namespace ::testing;
 
-  ScreenBuffer buffer;
   MockFileInterface file;
+  ScreenBuffer buffer;
+  buffer.write("Hello, world!");
 
-  EXPECT_CALL(file, write(_, _)).Times(1).WillOnce(Return(5));
-
+  EXPECT_CALL(file, write(STDOUT_FILENO, std::string("Hello, world!"))).WillOnce(Return(13));
   auto rv = buffer.flush(file);
 
-  ASSERT_THAT(rv, Eq(5));
+  ASSERT_THAT(rv, Eq(13));
 }
 
 TEST(ScreenBufferTest, flushThrowsAnExceptionOnFailure)
