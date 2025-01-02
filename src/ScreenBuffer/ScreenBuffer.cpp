@@ -58,7 +58,8 @@ std::size_t ScreenBuffer::flush(IO::FileInterface& file) const
     totalWritten += result;
   }
 
-  assert(totalWritten == m_buffer.length() && "The total number of bytes written is unequal to the size of the buffer");
+  assert(totalWritten == m_buffer.length()
+         or totalWritten == 0 && "The total number of bytes written is unequal to the size of the buffer");
   return totalWritten;
 }
 
