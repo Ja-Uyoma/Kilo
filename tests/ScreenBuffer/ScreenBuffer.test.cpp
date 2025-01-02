@@ -86,4 +86,23 @@ TEST(ScreenBufferTest, flushThrowsAnExceptionOnFailure)
   ASSERT_THROW(buffer.flush(file), std::system_error);
 }
 
+TEST(ScreenBufferTest, FlushHandlesEINTR)
+{
+  MockFileInterface mockFile;
+  ScreenBuffer buffer;
+  buffer.write("Retryable error example");
+
+  // Simulate EINTR error example, followed by a successful write
+  EXPECT_CALL(mockFile, write(STDOUT_FILENO, std::string("Retryable error example")))
+    .WillOnce([](int, std::string const&) {
+      errno = EINTR;
+      return -1;
+    })
+    .WillOnce(testing::Return(23));
+
+  auto rv = buffer.flush(mockFile);
+
+  ASSERT_THAT(rv, testing::Eq(23));
+}
+
 }   // namespace Kilo::editor
