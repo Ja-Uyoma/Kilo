@@ -58,7 +58,7 @@ TEST(ScreenBufferTest, c_strReturnsACStringRepresentationOfTheContentsOfTheBuffe
   ASSERT_STREQ(buffer.c_str(), str);
 }
 
-class MockFile : public IO::FileInterface
+class MockFileInterface : public IO::FileInterface
 {
 public:
   MOCK_METHOD(std::size_t, write, (int, std::string const&), (noexcept, override));
@@ -70,7 +70,7 @@ TEST(ScreenBufferTest, flushReturnsTheNumberOfBytesWrittenOnSuccess)
   using namespace ::testing;
 
   ScreenBuffer buffer;
-  MockFile file;
+  MockFileInterface file;
 
   EXPECT_CALL(file, write(_, _)).Times(1).WillOnce(Return(5));
 
@@ -84,7 +84,7 @@ TEST(ScreenBufferTest, flushThrowsAnExceptionOnFailure)
   using namespace ::testing;
 
   ScreenBuffer buffer;
-  MockFile file;
+  MockFileInterface file;
 
   EXPECT_CALL(file, write(_, _)).Times(1).WillOnce(Throw(std::system_error {}));
 
