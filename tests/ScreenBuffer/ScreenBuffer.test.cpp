@@ -73,10 +73,15 @@ TEST(ScreenBufferTest, flushThrowsAnExceptionOnFailure)
 {
   using namespace ::testing;
 
-  ScreenBuffer buffer;
   MockFileInterface file;
+  ScreenBuffer buffer;
+  buffer.write("Non-retryable error example");
 
-  EXPECT_CALL(file, write(_, _)).Times(1).WillOnce(Throw(std::system_error {}));
+  EXPECT_CALL(file, write(STDOUT_FILENO, std::string("Non-retryable error example")))
+    .WillOnce([](int, std::string const&) {
+      errno = EBADF;
+      return -1;
+    });
 
   ASSERT_THROW(buffer.flush(file), std::system_error);
 }
