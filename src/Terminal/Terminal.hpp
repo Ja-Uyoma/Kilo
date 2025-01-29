@@ -53,8 +53,6 @@ WindowSize getWindowSize(::winsize& winsize);
 
 namespace detail {
 
-void writeCursorPositionToBuffer(std::array<char, 32>& buf) noexcept;
-
 /**
  * @brief Get the position of the cursor and write them to @param rows and
  * @param cols

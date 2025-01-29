@@ -77,8 +77,15 @@ WindowSize getWindowSize(::winsize& winsize)
 
 namespace detail {
 
-void writeCursorPositionToBuffer(std::array<char, 32>& buf) noexcept
+void getCursorPosition(int* const rows, int* const cols)
 {
+  // Get the position of the cursor
+  if (::write(STDOUT_FILENO, "\x1b[6n", 4) != 4) {
+    throw std::system_error(errno, std::system_category(), "Could not get cursor position");
+  }
+
+  std::array<char, 32> buf {};
+
   /*
    * Read the reply from stdin and store it in a buffer
    * We do this until we encounter a 'R' character
@@ -96,18 +103,6 @@ void writeCursorPositionToBuffer(std::array<char, 32>& buf) noexcept
    */
 
   buf.back() = '\0';
-}
-
-void getCursorPosition(int* const rows, int* const cols)
-{
-  // Get the position of the cursor
-  if (::write(STDOUT_FILENO, "\x1b[6n", 4) != 4) {
-    throw std::system_error(errno, std::system_category(), "Could not get cursor position");
-  }
-
-  std::array<char, 32> buf {};
-
-  detail::writeCursorPositionToBuffer(buf);
 
   // First make sure ::read responded with an escape sequence
   if (buf[0] != '\x1b' || buf[1] != '[') {
@@ -141,7 +136,23 @@ WindowSize getCursorPosition()
 
   std::array<char, 32> buf {};
 
-  detail::writeCursorPositionToBuffer(buf);
+  /*
+   * Read the reply from stdin and store it in a buffer
+   * We do this until we encounter a 'R' character
+   */
+
+  for (std::size_t i {}; i < buf.size() - 1; i++) {
+    if (::read(STDIN_FILENO, &buf[i], 1) != 1 or buf[i] == 'R') {
+      break;
+    }
+  }
+
+  /*
+   * Assign the null-termination character to the the final byte of buf because
+   * C-strings should end with a zero byte
+   */
+
+  buf.back() = '\0';
 
   // First make sure ::read responded with an escape sequence
   if (buf[0] != '\x1b' || buf[1] != '[') {
