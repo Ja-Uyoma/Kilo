@@ -32,53 +32,67 @@ namespace Kilo::IO {
 class FileInterface
 {
 public:
-  /**
-   * @brief Read nbytes from fd into buffer
-   *
-   * @param fd The file being read from
-   * @param buffer The buffer being read to
-   * @returns The number of bytes read
-   */
+  /// Read all bytes from fd into buffer
+  /// \param[in] fd The file being read from
+  /// \param[in] buffer The buffer being read to
+  /// \returns The number of bytes read
   virtual std::size_t read(int fd, std::string& buffer) noexcept = 0;
 
-  /**
-   * @brief Write n bytes of buffer to fd
-   *
-   * @param fd The file descriptor being written to
-   * @param buffer The buffer being written from
-   * @returns The number of bytes written
-   */
+  /// Read nbytes from fd into buffer
+  /// \param[in] fd The file being read from
+  /// \param[in] buffer The buffer being read to
+  /// \param[in] nbytes The number of bytes to read
+  /// \returns The number of bytes read
+  virtual std::size_t read(int fd, std::string& buffer, std::size_t nbytes) = 0;
+
+  /// Write all bytes of buffer to fd
+  /// \param[in] fd The file descriptor being written to
+  /// \param[in] buffer The buffer being written from
+  /// \returns The number of bytes written
   virtual std::size_t write(int fd, std::string const& buffer) noexcept = 0;
 
-  /**
-   * @brief Destructor
-   *
-   */
+  /// Write nbytes of buffer to fd
+  /// \param[in] fd The file descriptor being written to
+  /// \param[in] buffer The buffer being written from
+  /// \param[in] nbytes The number of bytes to write
+  /// \returns The number of bytes written
+  virtual std::size_t write(int fd, std::string const& buffer, std::size_t nbytes) = 0;
+
+  /// Virtual destructor
   virtual ~FileInterface() = default;
 };
 
 class File : public FileInterface
 {
 public:
+  /// Default constructor
   explicit File() noexcept = default;
 
-  /**
-   * @brief Read nbytes from fd into buffer
-   *
-   * @param fd The file being read from
-   * @param buffer The buffer being read to
-   * @returns The number of bytes read
-   */
+  /// Read all bytes from fd into buffer
+  /// \param[in] fd The file being read from
+  /// \param[in] buffer The buffer being read to
+  /// \returns The number of bytes read
   std::size_t read(int fd, std::string& buffer) noexcept override;
 
-  /**
-   * @brief Write n bytes of buffer to fd
-   *
-   * @param fd The file descriptor being written to
-   * @param buffer The buffer being written from
-   * @returns The number of bytes written
-   */
+  /// Read nbytes from fd into buffer
+  /// \param[in] fd The file being read from
+  /// \param[in] buffer The buffer being read to
+  /// \param[in] nbytes The number of bytes to read
+  /// \returns The number of bytes read
+  std::size_t read(int fd, std::string& buffer, std::size_t nbytes) noexcept override;
+
+  /// Write all bytes of buffer to fd
+  /// \param[in] fd The file descriptor being written to
+  /// \param[in] buffer The buffer being written from
+  /// \returns The number of bytes written
   std::size_t write(int fd, std::string const& buffer) noexcept override;
+
+  /// Write nbytes of buffer to fd
+  /// \param[in] fd The file descriptor being written to
+  /// \param[in] buffer The buffer being written from
+  /// \param[in] nbytes The number of bytes to write
+  /// \returns The number of bytes written
+  std::size_t write(int fd, std::string const& buffer, std::size_t nbytes) noexcept override;
 };
 
 }   // namespace Kilo::IO
