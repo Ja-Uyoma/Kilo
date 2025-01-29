@@ -24,7 +24,6 @@
 #ifndef TERMINAL_HPP
 #define TERMINAL_HPP
 
-#include <array>
 #include <termios.h>
 
 /* Forward declaration to the winsize struct */
