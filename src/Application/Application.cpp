@@ -30,8 +30,19 @@
 #include "Utilities/Utilities.hpp"
 #include <cstddef>
 #include <cstdlib>
+#include <iostream>
 
 namespace Kilo::editor {
+
+/// Default constructor
+Application::Application() noexcept
+try : m_mode() {
+  // Nothing to do here...
+}
+catch (std::system_error const& err) {
+  std::cerr << err.what() << '\n';
+  std::exit(EXIT_FAILURE);
+}
 
 /**
  * @brief Position the cursor within the visible window
