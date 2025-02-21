@@ -32,6 +32,12 @@ class Window
 {
 public:
   /**
+   * @brief Construct a new Window object
+   *
+   */
+  explicit Window();
+
+  /**
    * @brief Create a static Window instance and return a reference to it
    *
    * @return Window& A reference to the static Window instance
@@ -60,12 +66,6 @@ public:
 
 private:
   WindowSize m_winsize;
-
-  /**
-   * @brief Construct a new Window object
-   *
-   */
-  explicit Window();
 };
 
 }   // namespace Kilo::Terminal
