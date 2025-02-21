@@ -38,13 +38,6 @@ public:
   explicit Window();
 
   /**
-   * @brief Create a static Window instance and return a reference to it
-   *
-   * @return Window& A reference to the static Window instance
-   */
-  static Window& create();
-
-  /**
    * @brief Get the number of columns of the terminal window
    *
    * @return The number of columns of the terminal window

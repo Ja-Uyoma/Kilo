@@ -79,7 +79,7 @@ private:
   std::vector<std::string> m_render;
   Cursor m_cursor {};
   Offset m_off {};
-  Terminal::Window m_window = Terminal::Window::create();
+  Terminal::Window m_window;
   [[maybe_unused]] int m_rx {};
   ScreenBuffer m_buffer {};
 };
