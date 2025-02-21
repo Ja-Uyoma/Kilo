@@ -74,12 +74,12 @@ public:
 
 private:
   Terminal::TerminalMode m_mode;
+  Terminal::Window m_window;
 
   std::vector<std::string> m_row;
   std::vector<std::string> m_render;
   Cursor m_cursor {};
   Offset m_off {};
-  Terminal::Window m_window;
   [[maybe_unused]] int m_rx {};
   ScreenBuffer m_buffer {};
 };
