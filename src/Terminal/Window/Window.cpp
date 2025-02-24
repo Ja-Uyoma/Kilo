@@ -31,9 +31,11 @@
 
 namespace Kilo::Terminal {
 
-Window::Window() : m_winsize(getWindowSize())
+Window::Window() : m_winsize(detail::getWindowSize())
 {
 }
+
+namespace detail {
 
 /// Get the size of the open terminal window
 /// \throws std::system_error on failure
@@ -57,8 +59,6 @@ WindowSize getWindowSize()
 
   return WindowSize {ws.ws_col, ws.ws_row};
 }
-
-namespace detail {
 
 /// Get the position of the cursor in the terminal window
 /// \throws std::system_error on failure
