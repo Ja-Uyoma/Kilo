@@ -52,7 +52,9 @@ class MockFileInterface : public IO::FileInterface
 {
 public:
   MOCK_METHOD(std::size_t, write, (int, std::string const&), (noexcept, override));
+  MOCK_METHOD(std::size_t, write, (int, std::string const&, std::size_t), (noexcept, override));
   MOCK_METHOD(std::size_t, read, (int, std::string&), (noexcept, override));
+  MOCK_METHOD(std::size_t, read, (int, std::string&, std::size_t), (noexcept, override));
 };
 
 TEST(ScreenBufferTest, flushReturnsTheNumberOfBytesWrittenOnSuccess)

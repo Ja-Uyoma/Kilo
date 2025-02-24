@@ -21,21 +21,51 @@
  * SOFTWARE.
  */
 
-#include "Termios.hpp"
+#include "TerminalMode.hpp"
 
+#include <cassert>
 #include <cerrno>
 #include <system_error>
+#include <termios.h>
+#include <unistd.h>
 
 namespace Kilo::Terminal {
 
-/**
- * @brief Query fd and write its settings to buf
- *
- * @param fd The file descriptor to be queried
- * @param buf Where the settings are written to
- * @details Actually a wrapper around tcgetattr
- * @throw std::system_error In case querying the file descriptor failed
- */
+TerminalMode::TerminalMode()
+{
+  detail::getTerminalDriverSettings(STDIN_FILENO, m_termios);
+  setRawMode();
+}
+
+TerminalMode::~TerminalMode()
+{
+  reset();
+}
+
+void TerminalMode::setRawMode() &
+{
+  if (m_state == ttystate::Raw) {
+    return;
+  }
+
+  assert(m_state == ttystate::Reset && "Terminal driver currently in canonical mode");
+  detail::ttyRaw(STDIN_FILENO, m_termios, m_copy);
+  m_state = ttystate::Raw;
+}
+
+void TerminalMode::reset() &
+{
+  if (m_state == ttystate::Reset) {
+    return;
+  }
+
+  assert(m_state == ttystate::Raw && "Terminal driver currently in raw mode");
+  detail::ttyReset(STDIN_FILENO, m_termios);
+  m_state = ttystate::Reset;
+}
+
+namespace detail {
+
 void getTerminalDriverSettings(int fd, termios& buf)
 {
   errno = 0;
@@ -45,13 +75,6 @@ void getTerminalDriverSettings(int fd, termios& buf)
   }
 }
 
-/**
- * @brief Set the terminal driver in raw mode
- *
- * @param fd The terminal driver's file descriptor
- * @param buf The buffer to which the terminal driver's settings are to be written
- * @param copy A copy of the settings stored in buf in case we need to roll back
- */
 void ttyRaw(int fd, termios const& buf, termios& copy)
 {
   copy = buf;
@@ -110,12 +133,6 @@ void ttyRaw(int fd, termios const& buf, termios& copy)
   }
 }
 
-/**
- * @brief Set the terminal driver in canonical mode
- *
- * @param fd The terminal driver's file descriptor
- * @param buf The buffer from which the desired settings are to be read from
- */
 void ttyReset(int fd, termios const& buf)
 {
   errno = 0;
@@ -125,5 +142,6 @@ void ttyReset(int fd, termios const& buf)
   }
 }
 
-}   // namespace Kilo::Terminal
+}   // namespace detail
 
+}   // namespace Kilo::Terminal

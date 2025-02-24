@@ -29,28 +29,42 @@
 
 namespace Kilo::IO {
 
-/**
- * @brief Read nbytes from fd into buffer
- *
- * @param[in] fd The file being read from
- * @param[inout] buffer The buffer being read to
- * @returns The number of bytes read
- */
+/// Read all bytes from fd into buffer
+/// \param[in] fd The file being read from
+/// \param[in] buffer The buffer being read to
+/// \returns The number of bytes read
 std::size_t File::read(int fd, std::string& buffer) noexcept
 {
   return ::read(fd, &buffer[0], buffer.length());
 }
 
-/**
- * @brief Write n bytes of buffer to fd
- *
- * @param[in] fd The file descriptor being written to
- * @param[in] buffer The buffer being written from
- * @returns The number of bytes written
- */
+/// Read nbytes from fd into buffer
+/// \param[in] fd The file being read from
+/// \param[in] buffer The buffer being read to
+/// \param[in] nbytes The number of bytes to read
+/// \returns The number of bytes read
+std::size_t File::read(int fd, std::string& buffer, std::size_t nbytes) noexcept
+{
+  return ::read(fd, &buffer[0], nbytes);
+}
+
+/// Write all bytes of buffer to fd
+/// \param[in] fd The file descriptor being written to
+/// \param[in] buffer The buffer being written from
+/// \returns The number of bytes written
 std::size_t File::write(int fd, std::string const& buffer) noexcept
 {
   return ::write(fd, buffer.c_str(), buffer.length());
+}
+
+/// Write nbytes of buffer to fd
+/// \param[in] fd The file descriptor being written to
+/// \param[in] buffer The buffer being written from
+/// \param[in] nbytes The number of bytes to write
+/// \returns The number of bytes written
+std::size_t File::write(int fd, std::string const& buffer, std::size_t nbytes) noexcept
+{
+  return ::write(fd, buffer.c_str(), nbytes);
 }
 
 }   // namespace Kilo::IO

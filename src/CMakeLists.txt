@@ -23,11 +23,8 @@ target_sources(kilo
 
         "${PROJECT_SOURCE_DIR}/src/Offset/Offset.hpp"
 
-        "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.hpp"
-        "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.cpp"
-
-        "${PROJECT_SOURCE_DIR}/src/TerminalMode/TerminalMode.hpp"
-        "${PROJECT_SOURCE_DIR}/src/TerminalMode/TerminalMode.cpp"
+        "${PROJECT_SOURCE_DIR}/src/Terminal/TerminalMode/TerminalMode.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Terminal/TerminalMode/TerminalMode.cpp"
 
         "${PROJECT_SOURCE_DIR}/src/File/File.hpp"
         "${PROJECT_SOURCE_DIR}/src/File/File.cpp"
@@ -35,14 +32,11 @@ target_sources(kilo
         "${PROJECT_SOURCE_DIR}/src/Utilities/Utilities.hpp"
         "${PROJECT_SOURCE_DIR}/src/Utilities/Utilities.cpp"
         
-        "${PROJECT_SOURCE_DIR}/src/Terminal/window/window.hpp"
-        "${PROJECT_SOURCE_DIR}/src/Terminal/window/window.cpp"
+        "${PROJECT_SOURCE_DIR}/src/Terminal/Window/Window.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Terminal/Window/Window.cpp"
 
         "${PROJECT_SOURCE_DIR}/src/ScreenBuffer/ScreenBuffer.hpp"
         "${PROJECT_SOURCE_DIR}/src/ScreenBuffer/ScreenBuffer.cpp"
-
-        "${PROJECT_SOURCE_DIR}/src/Termios/Termios.hpp"
-        "${PROJECT_SOURCE_DIR}/src/Termios/Termios.cpp"
 
         IO/IO.hpp
         IO/IO.cpp

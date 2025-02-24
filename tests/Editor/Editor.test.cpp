@@ -26,7 +26,7 @@
 #include "Cursor/Cursor.hpp"
 #include "Offset/Offset.hpp"
 #include "ScreenBuffer/ScreenBuffer.hpp"
-#include "Terminal/window/window.hpp"
+#include "Terminal/Window/Window.hpp"
 #include "Utilities/Utilities.hpp"
 #include "gmock/gmock.h"
 #include <cstring>
@@ -50,7 +50,7 @@ TEST(processKeypress, MovesCursorToStartOfLineIfHomeButtonIsPressed)
 
   EditorKey const key = EditorKey::Home;
   Cursor cursor {100, 100};
-  Window const window = Window::create();
+  Window const window;
   std::vector<std::string> const& doc {};
 
   detail::processKeypressHelper(key, cursor, window, doc);
@@ -65,7 +65,7 @@ TEST(processKeypress, MovesCursorToEndOfLineIfEndButtonIsPressed)
 
   EditorKey const key = EditorKey::End;
   Cursor cursor {100, 100};
-  Window const window = Window::create();
+  Window const window;
   std::vector<std::string> const& doc {};
 
   detail::processKeypressHelper(key, cursor, window, doc);
@@ -329,7 +329,7 @@ TEST(printWelcomeMessageOrTilde, PrintsATildeIfTheDocumentIsNotEmpty)
 {
   bool documentIsEmpty = false;
   ScreenBuffer buf;
-  Terminal::Window window = Terminal::Window::create();
+  Terminal::Window window;
   int currentRow = window.rows() / 3;
 
   printWelcomeMessageOrTilde(documentIsEmpty, currentRow, buf, window);
@@ -341,7 +341,7 @@ TEST(printWelcomeMessageOrTilde, PrintsATildeIfTheCurrentRowIsNotAThirdOfTheWind
 {
   bool documentIsEmpty = true;
   ScreenBuffer buf;
-  Terminal::Window window = Terminal::Window::create();
+  Terminal::Window window;
   int currentRow = 0;
 
   printWelcomeMessageOrTilde(documentIsEmpty, currentRow, buf, window);
@@ -356,7 +356,7 @@ TEST(printWelcomeMessageOrTilde, PrintsTheWelcomeMessage)
 
   bool documentIsEmpty = true;
   ScreenBuffer buffer;
-  Terminal::Window window = Terminal::Window::create();
+  Terminal::Window window;
   auto currentRow = window.rows() / 3;
 
   printWelcomeMessageOrTilde(documentIsEmpty, currentRow, buffer, window);

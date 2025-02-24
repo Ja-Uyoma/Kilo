@@ -25,11 +25,8 @@ target_sources(tests
         "${PROJECT_SOURCE_DIR}/src/Editor/Editor.cpp"
         Editor/Editor.test.cpp
 
-        "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.hpp"
-        "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.cpp"
-
-        "${PROJECT_SOURCE_DIR}/src/TerminalMode/TerminalMode.hpp"
-        "${PROJECT_SOURCE_DIR}/src/TerminalMode/TerminalMode.cpp"
+        "${PROJECT_SOURCE_DIR}/src/Terminal/TerminalMode/TerminalMode.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Terminal/TerminalMode/TerminalMode.cpp"
         TerminalMode/TerminalMode.test.cpp
 
         "${PROJECT_SOURCE_DIR}/src/Utilities/Utilities.hpp"
@@ -42,13 +39,8 @@ target_sources(tests
         "${PROJECT_SOURCE_DIR}/src/ScreenBuffer/ScreenBuffer.cpp"
         ScreenBuffer/ScreenBuffer.test.cpp
         
-        "${PROJECT_SOURCE_DIR}/src/Terminal/window/window.hpp"
-        "${PROJECT_SOURCE_DIR}/src/Terminal/window/window.cpp"
-        Window/Window.test.cpp
-
-        "${PROJECT_SOURCE_DIR}/src/Termios/Termios.hpp"
-        "${PROJECT_SOURCE_DIR}/src/Termios/Termios.cpp"
-        Termios/Termios.test.cpp
+        "${PROJECT_SOURCE_DIR}/src/Terminal/Window/Window.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Terminal/Window/Window.cpp"
 )
 
 target_compile_features(tests

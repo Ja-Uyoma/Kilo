@@ -27,8 +27,8 @@
 #include "Cursor/Cursor.hpp"
 #include "Offset/Offset.hpp"
 #include "ScreenBuffer/ScreenBuffer.hpp"
-#include "Terminal/window/window.hpp"
-#include "TerminalMode/TerminalMode.hpp"
+#include "Terminal/TerminalMode/TerminalMode.hpp"
+#include "Terminal/Window/Window.hpp"
 #include <filesystem>
 #include <string>
 #include <vector>
@@ -37,7 +37,8 @@ namespace Kilo::editor {
 class Application
 {
 public:
-  explicit Application() = default;
+  /// Default constructor
+  explicit Application() noexcept;
 
   /**
    * @brief Position the cursor within the visible window
@@ -73,12 +74,12 @@ public:
 
 private:
   Terminal::TerminalMode m_mode;
+  Terminal::Window m_window;
 
   std::vector<std::string> m_row;
   std::vector<std::string> m_render;
   Cursor m_cursor {};
   Offset m_off {};
-  Terminal::Window m_window = Terminal::Window::create();
   [[maybe_unused]] int m_rx {};
   ScreenBuffer m_buffer {};
 };

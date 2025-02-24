@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-#include "TerminalMode/TerminalMode.hpp"
+#include "Terminal/TerminalMode/TerminalMode.hpp"
 
 #include <gsl/util>
 #include <gtest/gtest.h>
@@ -49,5 +49,67 @@ TEST(TerminalState, ResetRestoresTerminalSettingsToCanonicalMode)
 
   ASSERT_NO_THROW(tstate.reset());
 }
+
+namespace detail {
+
+TEST(getTerminalDriverSettings, ThrowsAnExceptionWhenPassedAnInvalidFileDescriptor)
+{
+  ::termios buf;
+  int fd = -STDOUT_FILENO;
+
+  ASSERT_THROW(getTerminalDriverSettings(fd, buf), std::system_error);
+}
+
+TEST(getTerminalDriverSettings, RunsSuccessfullyWhenPassedAValidFileDescriptor)
+{
+  ::termios buf;
+  int fd = STDIN_FILENO;
+
+  ASSERT_NO_THROW(getTerminalDriverSettings(fd, buf));
+}
+
+TEST(ttyRaw, ThrowsAnExceptionWhenPassedAnInvalidFileDescriptor)
+{
+  ::termios buf;
+  ::termios copy;
+  int fd = STDOUT_FILENO;
+
+  getTerminalDriverSettings(fd, buf);
+  ASSERT_THROW(ttyRaw(-fd, buf, copy), std::system_error);
+}
+
+TEST(ttyRaw, SucceedsWhenPassedAValidFileDescriptor)
+{
+  ::termios buf;
+  ::termios copy;
+  int fd = STDIN_FILENO;
+  auto cleanup = gsl::finally([&fd, &buf] { ttyReset(fd, buf); });
+
+  getTerminalDriverSettings(fd, buf);
+
+  ASSERT_NO_THROW(ttyRaw(fd, buf, copy));
+}
+
+TEST(ttyReset, ThrowsAnExceptionWhenPassedAnInvalidFileDescriptor)
+{
+  ::termios buf;
+  int fd = STDOUT_FILENO;
+
+  getTerminalDriverSettings(fd, buf);
+
+  ASSERT_THROW(ttyReset(-fd, buf), std::system_error);
+}
+
+TEST(ttyReset, SucceedsWhenPassedAValidFileDescriptor)
+{
+  ::termios buf;
+  int fd = STDOUT_FILENO;
+
+  getTerminalDriverSettings(fd, buf);
+
+  ASSERT_NO_THROW(ttyReset(fd, buf));
+}
+
+}   // namespace detail
 
 }   // namespace Kilo::Terminal

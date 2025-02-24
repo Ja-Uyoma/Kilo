@@ -21,39 +21,56 @@
  * SOFTWARE.
  */
 
-#ifndef TERMIOS_HPP
-#define TERMIOS_HPP
+#ifndef WINDOW_HPP
+#define WINDOW_HPP
 
-#include <termios.h>
+#include "File/File.hpp"
 
 namespace Kilo::Terminal {
 
-/**
- * @brief Query fd and write its settings to buf
- *
- * @param fd The file descriptor to be queried
- * @param buf Where the settings are written to
- * @details Actually a wrapper around tcgetattr
- * @throw std::system_error In case querying the file descriptor failed
- */
-void getTerminalDriverSettings(int fd, termios& buf);
+struct WindowSize
+{
+  int cols;
+  int rows;
+};
 
-/**
- * @brief Set the terminal driver in raw mode
- *
- * @param fd The terminal driver's file descriptor
- * @param buf The buffer to which the terminal driver's settings are to be written
- * @param copy A copy of the settings stored in buf in case we need to roll back
- */
-void ttyRaw(int fd, termios const& buf, termios& copy);
+class Window
+{
+public:
+  /// Create a new Window object
+  explicit Window();
 
-/**
- * @brief Set the terminal driver in canonical mode
- *
- * @param fd The terminal driver's file descriptor
- * @param buf The buffer from which the desired settings are to be read from
- */
-void ttyReset(int fd, termios const& buf);
+  /// Get the number of columns of the terminal window
+  /// \returns The number of columns of the terminal window
+  constexpr auto cols() const noexcept
+  {
+    return m_winsize.cols;
+  }
+
+  /// Get the number of rows of the terminal window
+  /// \returns The number of rows of the terminal window
+  constexpr auto rows() const noexcept
+  {
+    return m_winsize.rows;
+  }
+
+private:
+  WindowSize m_winsize;
+};
+
+namespace detail {
+
+/// Get the size of the open terminal window
+/// \throws std::system_error on failure
+/// \returns The size of the terminal window as a WindowSize instance on success
+WindowSize getWindowSize();
+
+/// Get the position of the cursor in the terminal window
+/// \throws std::system_error on failure
+/// \returns The position of the cursor as a WindowSize instance
+WindowSize getCursorPosition(IO::FileInterface& file);
+
+}   // namespace detail
 
 }   // namespace Kilo::Terminal
 
