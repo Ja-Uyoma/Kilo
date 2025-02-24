@@ -27,7 +27,7 @@
 #include "Cursor/Cursor.hpp"
 #include "Offset/Offset.hpp"
 #include "ScreenBuffer/ScreenBuffer.hpp"
-#include "Terminal/Window/window.hpp"
+#include "Terminal/Window/Window.hpp"
 #include "TerminalMode/TerminalMode.hpp"
 #include <filesystem>
 #include <string>

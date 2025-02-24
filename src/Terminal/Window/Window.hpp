@@ -21,28 +21,46 @@
  * SOFTWARE.
  */
 
-#include "window.hpp"
+#ifndef WINDOW_HPP
+#define WINDOW_HPP
 
-#include "Terminal/Terminal.hpp"
-#include <iostream>
-#include <sys/ioctl.h>
-#include <system_error>
+#include "WindowSize.hpp"
 
 namespace Kilo::Terminal {
 
-Window::Window()
+class Window
 {
-  ::winsize ws;
+public:
+  /**
+   * @brief Construct a new Window object
+   *
+   */
+  explicit Window();
 
-  try {
-    m_winsize = Terminal::getWindowSize(ws);
+  /**
+   * @brief Get the number of columns of the terminal window
+   *
+   * @return The number of columns of the terminal window
+   */
+  constexpr auto cols() const noexcept
+  {
+    return m_winsize.cols;
   }
-  catch (std::system_error const& err) {
-    std::cerr << err.code() << ": " << err.what() << '\n';
-    m_winsize = {0, 0};
 
-    throw;
+  /**
+   * @brief Get the number of rows of the terminal window
+   *
+   * @return The number of rows of the terminal window
+   */
+  constexpr auto rows() const noexcept
+  {
+    return m_winsize.rows;
   }
-}
+
+private:
+  WindowSize m_winsize;
+};
 
 }   // namespace Kilo::Terminal
+
+#endif

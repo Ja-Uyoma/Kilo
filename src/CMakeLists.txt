@@ -35,8 +35,8 @@ target_sources(kilo
         "${PROJECT_SOURCE_DIR}/src/Utilities/Utilities.hpp"
         "${PROJECT_SOURCE_DIR}/src/Utilities/Utilities.cpp"
         
-        "${PROJECT_SOURCE_DIR}/src/Terminal/Window/window.hpp"
-        "${PROJECT_SOURCE_DIR}/src/Terminal/Window/window.cpp"
+        "${PROJECT_SOURCE_DIR}/src/Terminal/Window/Window.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Terminal/Window/Window.cpp"
 
         "${PROJECT_SOURCE_DIR}/src/ScreenBuffer/ScreenBuffer.hpp"
         "${PROJECT_SOURCE_DIR}/src/ScreenBuffer/ScreenBuffer.cpp"
