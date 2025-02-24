@@ -31,27 +31,18 @@ namespace Kilo::Terminal {
 class Window
 {
 public:
-  /**
-   * @brief Construct a new Window object
-   *
-   */
+  /// Create a new Window object
   explicit Window();
 
-  /**
-   * @brief Get the number of columns of the terminal window
-   *
-   * @return The number of columns of the terminal window
-   */
+  /// Get the number of columns of the terminal window
+  /// \returns The number of columns of the terminal window
   constexpr auto cols() const noexcept
   {
     return m_winsize.cols;
   }
 
-  /**
-   * @brief Get the number of rows of the terminal window
-   *
-   * @return The number of rows of the terminal window
-   */
+  /// Get the number of rows of the terminal window
+  /// \returns The number of rows of the terminal window
   constexpr auto rows() const noexcept
   {
     return m_winsize.rows;
