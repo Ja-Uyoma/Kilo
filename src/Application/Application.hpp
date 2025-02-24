@@ -72,6 +72,9 @@ public:
    */
   bool open(std::filesystem::path const& path);
 
+  /// Run the application
+  void run();
+
 private:
   Terminal::TerminalMode m_mode;
   Terminal::Window m_window;

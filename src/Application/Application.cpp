@@ -32,6 +32,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <stdexcept>
+#include <system_error>
 
 namespace Kilo::editor {
 
@@ -131,6 +132,19 @@ void Application::drawRows()
 bool Application::open(std::filesystem::path const& path)
 {
   return editor::open(path, m_row, m_render);
+}
+
+void Application::run()
+try {
+  while (true) {
+    scroll();
+    refreshScreen();
+    processKeypress();
+  }
+}
+catch (std::system_error const& err) {
+  utilities::clearScreenAndRepositionCursor();
+  std::cerr << err.code() << ": " << err.what() << '\n';
 }
 
 }   // namespace Kilo::editor
