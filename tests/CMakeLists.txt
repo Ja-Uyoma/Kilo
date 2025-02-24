@@ -44,8 +44,8 @@ target_sources(tests
         "${PROJECT_SOURCE_DIR}/src/Terminal/Window/Window.hpp"
         "${PROJECT_SOURCE_DIR}/src/Terminal/Window/Window.cpp"
 
-        "${PROJECT_SOURCE_DIR}/src/Termios/Termios.hpp"
-        "${PROJECT_SOURCE_DIR}/src/Termios/Termios.cpp"
+        "${PROJECT_SOURCE_DIR}/src/Terminal/Termios/Termios.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Terminal/Termios/Termios.cpp"
         Termios/Termios.test.cpp
 )
 

@@ -23,7 +23,7 @@
 
 #include "TerminalMode.hpp"
 
-#include "Termios/Termios.hpp"
+#include "Terminal/Termios/Termios.hpp"
 #include <cassert>
 #include <cerrno>
 #include <termios.h>
