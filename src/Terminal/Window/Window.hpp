@@ -24,6 +24,7 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
+#include "File/File.hpp"
 #include "WindowSize.hpp"
 
 namespace Kilo::Terminal {
@@ -51,6 +52,20 @@ public:
 private:
   WindowSize m_winsize;
 };
+
+/// Get the size of the open terminal window
+/// \throws std::system_error on failure
+/// \returns The size of the terminal window as a WindowSize instance on success
+WindowSize getWindowSize();
+
+namespace detail {
+
+/// Get the position of the cursor in the terminal window
+/// \throws std::system_error on failure
+/// \returns The position of the cursor as a WindowSize instance
+WindowSize getCursorPosition(IO::FileInterface& file);
+
+}   // namespace detail
 
 }   // namespace Kilo::Terminal
 
