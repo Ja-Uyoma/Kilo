@@ -27,7 +27,7 @@
 #include "Constants/Constants.hpp"
 #include "Cursor/Cursor.hpp"
 #include "Offset/Offset.hpp"
-#include "Terminal/window/window.hpp"
+#include "Terminal/Window/window.hpp"
 #include <cassert>
 #include <filesystem>
 #include <optional>

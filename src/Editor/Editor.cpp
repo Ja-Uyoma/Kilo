@@ -28,7 +28,7 @@
 #include "File/File.hpp"
 #include "Offset/Offset.hpp"
 #include "ScreenBuffer/ScreenBuffer.hpp"
-#include "Terminal/window/window.hpp"
+#include "Terminal/Window/window.hpp"
 #include "Utilities/Utilities.hpp"
 #include <algorithm>
 #include <cstdio>
