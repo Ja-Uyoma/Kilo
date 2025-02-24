@@ -26,6 +26,7 @@
 #include "Terminal/Termios/Termios.hpp"
 #include <cassert>
 #include <cerrno>
+#include <system_error>
 #include <termios.h>
 #include <unistd.h>
 
@@ -33,7 +34,7 @@ namespace Kilo::Terminal {
 
 TerminalMode::TerminalMode()
 {
-  getTerminalDriverSettings(STDIN_FILENO, m_termios);
+  detail::getTerminalDriverSettings(STDIN_FILENO, m_termios);
   setRawMode();
 }
 
@@ -49,7 +50,7 @@ void TerminalMode::setRawMode() &
   }
 
   assert(m_state == ttystate::Reset && "Terminal driver currently in canonical mode");
-  ttyRaw(STDIN_FILENO, m_termios, m_copy);
+  detail::ttyRaw(STDIN_FILENO, m_termios, m_copy);
   m_state = ttystate::Raw;
 }
 
@@ -60,8 +61,88 @@ void TerminalMode::reset() &
   }
 
   assert(m_state == ttystate::Raw && "Terminal driver currently in raw mode");
-  ttyReset(STDIN_FILENO, m_termios);
+  detail::ttyReset(STDIN_FILENO, m_termios);
   m_state = ttystate::Reset;
 }
+
+namespace detail {
+
+void getTerminalDriverSettings(int fd, termios& buf)
+{
+  errno = 0;
+
+  if (::tcgetattr(fd, &buf) == -1) {
+    throw std::system_error(errno, std::system_category(), "Could not retrieve terminal driver settings");
+  }
+}
+
+void ttyRaw(int fd, termios const& buf, termios& copy)
+{
+  copy = buf;
+
+  /*
+   * No SIGINT on BREAK, CR-to-NL off, input parity check off, don't strip 8th bit on input, output
+   * flow control off
+   */
+  copy.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
+
+  /* Output processing off */
+  copy.c_oflag &= ~OPOST;
+
+  /* Set 8 bits per char */
+  copy.c_cflag |= CS8;
+
+  /* Echo off, canonical mode off, extended input processing off, signal chars off */
+  copy.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
+
+  /* Read 1 byte at a time */
+  copy.c_cc[VMIN] = 0;
+
+  /* No timer */
+  copy.c_cc[VTIME] = 1;
+
+  errno = 0;
+
+  if (::tcsetattr(fd, TCSAFLUSH, &copy) == -1) {
+    throw std::system_error(errno, std::system_category(), "Failed to set terminal driver to raw mode");
+  }
+
+  /*
+   * Verify that the changes stuck since tcsetattr can return 0 on partial success
+   */
+
+  errno = 0;
+
+  if (::tcgetattr(fd, &copy) == -1) {
+    ::tcsetattr(fd, TCSAFLUSH, &buf);
+    throw std::system_error(errno, std::system_category(), "Error while writing terminal driver settings to buffer");
+  }
+
+  auto const verify = [&copy] {
+    return (copy.c_iflag & (BRKINT | ICRNL | INPCK | ISTRIP | IXON)) || (copy.c_oflag & OPOST)
+        || ((copy.c_cflag & CS8) != CS8) || (copy.c_lflag & (ECHO | ICANON | IEXTEN | ISIG)) || (copy.c_cc[VMIN] != 0)
+        || (copy.c_cc[VTIME] != 1);
+  };
+
+  /*
+   * Only some of the changes stuck. Restore the original settings
+   */
+
+  if (verify()) {
+    ::tcsetattr(fd, TCSAFLUSH, &buf);
+    throw std::system_error(EINVAL, std::system_category(), "Setting driver to raw mode only partially successful");
+  }
+}
+
+void ttyReset(int fd, termios const& buf)
+{
+  errno = 0;
+
+  if (::tcsetattr(fd, TCSAFLUSH, &buf) == -1) {
+    throw std::system_error(errno, std::system_category(), "Failed to reset terminal driver to canonical mode");
+  }
+}
+
+}   // namespace detail
 
 }   // namespace Kilo::Terminal
