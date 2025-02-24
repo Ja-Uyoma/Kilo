@@ -24,51 +24,7 @@
 #ifndef TERMINAL_HPP
 #define TERMINAL_HPP
 
-#include <termios.h>
-
-/* Forward declaration to the winsize struct */
-struct winsize;
-
 namespace Kilo::Terminal {
-
-/* Forward declaration to the WindowSize struct */
-struct WindowSize;
-
-/**
- * @brief Get the size of the terminal window and write them to @param rows and
- * @param cols
- * @param[inout] rows The number of rows of the terminal window
- * @param[inout] cols The number of columns of the terminal window
- * @throws std::system_error if the terminal window size could not be retrieved
- */
-void getWindowSize(int* const rows, int* const cols);
-
-/**
- * @brief Get the size of the terminal window
- * @throws std::system_error if the terminal window size could not be retrieved
- * @returns The size of the terminal window
- */
-WindowSize getWindowSize(::winsize& winsize);
-
-namespace detail {
-
-/**
- * @brief Get the position of the cursor and write them to @param rows and
- * @param cols
- * @param[inout] rows The number of rows of the terminal window
- * @param[inout] cols The number of columns of the terminal window
- */
-void getCursorPosition(int* const rows, int* const cols);
-
-/**
- * @brief Get the position of the cursor
- *
- * @throws std::system_error If we could not determine the position of the cursor
- * @returns The position of the cursor
- */
-WindowSize getCursorPosition();
-
-}   // namespace detail
 
 }   // namespace Kilo::Terminal
 
