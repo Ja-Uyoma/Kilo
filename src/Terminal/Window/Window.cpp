@@ -25,7 +25,6 @@
 
 #include "Terminal/Terminal.hpp"
 #include <array>
-#include <iostream>
 #include <stdexcept>
 #include <sys/ioctl.h>
 #include <system_error>
@@ -33,19 +32,8 @@
 
 namespace Kilo::Terminal {
 
-Window::Window()
+Window::Window() : m_winsize(getWindowSize())
 {
-  ::winsize ws;
-
-  try {
-    m_winsize = Terminal::getWindowSize(ws);
-  }
-  catch (std::system_error const& err) {
-    std::cerr << err.code() << ": " << err.what() << '\n';
-    m_winsize = {0, 0};
-
-    throw;
-  }
 }
 
 /// Get the size of the open terminal window
