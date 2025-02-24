@@ -25,9 +25,14 @@
 #define WINDOW_HPP
 
 #include "File/File.hpp"
-#include "WindowSize.hpp"
 
 namespace Kilo::Terminal {
+
+struct WindowSize
+{
+  int cols;
+  int rows;
+};
 
 class Window
 {
