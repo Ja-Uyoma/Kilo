@@ -23,7 +23,6 @@
 
 #include "Window.hpp"
 
-#include "Terminal/Terminal.hpp"
 #include <array>
 #include <stdexcept>
 #include <sys/ioctl.h>
