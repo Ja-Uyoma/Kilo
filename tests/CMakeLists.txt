@@ -26,7 +26,6 @@ target_sources(tests
         Editor/Editor.test.cpp
 
         "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.hpp"
-        "${PROJECT_SOURCE_DIR}/src/Terminal/Terminal.cpp"
 
         "${PROJECT_SOURCE_DIR}/src/TerminalMode/TerminalMode.hpp"
         "${PROJECT_SOURCE_DIR}/src/TerminalMode/TerminalMode.cpp"
