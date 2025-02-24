@@ -52,8 +52,3 @@ target_compile_features(kilo
 target_compile_options(kilo
     PRIVATE $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-Wall -Wextra -Werror -Wpedantic>
 )
-
-target_compile_definitions(kilo
-    PRIVATE
-        $<IF:$<CONFIG:Debug>,DEBUG,>
-)
