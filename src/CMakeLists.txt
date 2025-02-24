@@ -21,7 +21,7 @@ target_sources(kilo
         "${PROJECT_SOURCE_DIR}/src/Application/Application.hpp"
         "${PROJECT_SOURCE_DIR}/src/Application/Application.cpp"
 
-        "${PROJECT_SOURCE_DIR}/src/Offset/Offset.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Editor/Offset/Offset.hpp"
 
         "${PROJECT_SOURCE_DIR}/src/Terminal/TerminalMode/TerminalMode.hpp"
         "${PROJECT_SOURCE_DIR}/src/Terminal/TerminalMode/TerminalMode.cpp"

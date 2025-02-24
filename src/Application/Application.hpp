@@ -25,8 +25,8 @@
 #define APPLICATION_HPP
 
 #include "Editor/Cursor/Cursor.hpp"
+#include "Editor/Offset/Offset.hpp"
 #include "Editor/ScreenBuffer/ScreenBuffer.hpp"
-#include "Offset/Offset.hpp"
 #include "Terminal/TerminalMode/TerminalMode.hpp"
 #include "Terminal/Window/Window.hpp"
 #include <filesystem>
