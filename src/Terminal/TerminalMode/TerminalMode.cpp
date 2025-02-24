@@ -23,7 +23,6 @@
 
 #include "TerminalMode.hpp"
 
-#include "Terminal/Termios/Termios.hpp"
 #include <cassert>
 #include <cerrno>
 #include <system_error>
