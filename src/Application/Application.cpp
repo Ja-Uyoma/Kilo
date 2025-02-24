@@ -31,6 +31,7 @@
 #include <cstddef>
 #include <cstdlib>
 #include <iostream>
+#include <stdexcept>
 
 namespace Kilo::editor {
 
@@ -40,6 +41,14 @@ try : m_mode(), m_window() {
   // Nothing to do here...
 }
 catch (std::system_error const& err) {
+  std::cerr << err.what() << '\n';
+  std::exit(EXIT_FAILURE);
+}
+catch (std::invalid_argument const& err) {
+  std::cerr << err.what() << '\n';
+  std::exit(EXIT_FAILURE);
+}
+catch (std::runtime_error const& err) {
   std::cerr << err.what() << '\n';
   std::exit(EXIT_FAILURE);
 }
