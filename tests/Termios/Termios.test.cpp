@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-#include "Termios/Termios.hpp"
+#include "Terminal/Termios/Termios.hpp"
 
 #include <gsl/util>
 #include <gtest/gtest.h>

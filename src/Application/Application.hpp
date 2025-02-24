@@ -27,8 +27,8 @@
 #include "Cursor/Cursor.hpp"
 #include "Offset/Offset.hpp"
 #include "ScreenBuffer/ScreenBuffer.hpp"
+#include "Terminal/TerminalMode/TerminalMode.hpp"
 #include "Terminal/Window/Window.hpp"
-#include "TerminalMode/TerminalMode.hpp"
 #include <filesystem>
 #include <string>
 #include <vector>
