@@ -35,8 +35,8 @@ target_sources(kilo
         "${PROJECT_SOURCE_DIR}/src/Terminal/Window/Window.hpp"
         "${PROJECT_SOURCE_DIR}/src/Terminal/Window/Window.cpp"
 
-        "${PROJECT_SOURCE_DIR}/src/ScreenBuffer/ScreenBuffer.hpp"
-        "${PROJECT_SOURCE_DIR}/src/ScreenBuffer/ScreenBuffer.cpp"
+        "${PROJECT_SOURCE_DIR}/src/Editor/ScreenBuffer/ScreenBuffer.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Editor/ScreenBuffer/ScreenBuffer.cpp"
 
         IO/IO.hpp
         IO/IO.cpp

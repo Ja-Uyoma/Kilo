@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-#include "ScreenBuffer/ScreenBuffer.hpp"
+#include "Editor/ScreenBuffer/ScreenBuffer.hpp"
 
 #include "File/File.hpp"
 #include <cstring>
