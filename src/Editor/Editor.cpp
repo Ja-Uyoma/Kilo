@@ -348,25 +348,6 @@ void printWelcomeMessage(int windowWidth, ScreenBuffer& buffer)
 }
 
 /**
- * @brief Print the welcome message or a tilde to the window
- *
- * @param documentIsEmpty A boolean value representing whether the document is empty or not
- * @param currentRow The row we are currently scrolled to in the open document
- * @param buffer The ScreenBuffer
- * @param window The terminal window
- */
-void printWelcomeMessageOrTilde(bool documentIsEmpty, int currentRow, ScreenBuffer& buffer,
-                                Terminal::Window const& window)
-{
-  if (documentIsEmpty && currentRow == window.rows() / 3) {
-    detail::printWelcomeMessage(window.cols(), buffer);
-  }
-  else {
-    buffer.write("~");
-  }
-}
-
-/**
  * @brief Print a line of text from the open document to the screen
  *
  * @param line The line to be printed

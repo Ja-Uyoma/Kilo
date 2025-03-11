@@ -130,45 +130,6 @@ TEST(printWelcomeMessage, TruncatesTheMessageIfItsTooLong)
   ASSERT_THAT(buf.c_str(), ::testing::Eq(truncatedMsg));
 }
 
-TEST(printWelcomeMessageOrTilde, PrintsATildeIfTheDocumentIsNotEmpty)
-{
-  bool documentIsEmpty = false;
-  ScreenBuffer buf;
-  Terminal::Window window;
-  int currentRow = window.rows() / 3;
-
-  printWelcomeMessageOrTilde(documentIsEmpty, currentRow, buf, window);
-
-  ASSERT_THAT(buf.size(), ::testing::Eq(1));
-}
-
-TEST(printWelcomeMessageOrTilde, PrintsATildeIfTheCurrentRowIsNotAThirdOfTheWindowHeight)
-{
-  bool documentIsEmpty = true;
-  ScreenBuffer buf;
-  Terminal::Window window;
-  int currentRow = 0;
-
-  printWelcomeMessageOrTilde(documentIsEmpty, currentRow, buf, window);
-
-  ASSERT_THAT(buf.size(), ::testing::Eq(1));
-}
-
-TEST(printWelcomeMessageOrTilde, PrintsTheWelcomeMessage)
-{
-  // This is not a good test
-  // Try rewriting this using EXPECT_CALL
-
-  bool documentIsEmpty = true;
-  ScreenBuffer buffer;
-  Terminal::Window window;
-  auto currentRow = window.rows() / 3;
-
-  printWelcomeMessageOrTilde(documentIsEmpty, currentRow, buffer, window);
-
-  ASSERT_THAT(buffer.size(), ::testing::Gt(1));
-}
-
 TEST(printLineOfDocument, PrintsNothingWhenTheLineLengthIsLessThanTheColumnOffset)
 {
   std::string const line {"The quick brown fox jumped over the lazy doggo"};
