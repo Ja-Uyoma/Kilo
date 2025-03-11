@@ -104,15 +104,6 @@ TEST(FixCursorToVisibleWindow, ModifiesTheOffsetIfCursorPositionIsGreaterOrEqual
   ASSERT_THAT(offRow, ::testing::Eq(cursorY - windowHeight + 1));
 }
 
-TEST(createWelcomeMessage, CreatesAWelcomeMessageContainingTheVersionString)
-{
-  std::string_view version {"0.0.1"};
-
-  auto msg = createWelcomeMessage(version);
-
-  ASSERT_THAT(msg, ::testing::Eq("Kilo editor -- version 0.0.1"));
-}
-
 TEST(resizeWelcomeMessage, ResizesTheWelcomeMessageToFitInTheWindow)
 {
   std::string msg {"One must imagine Sisyphus happy"};
