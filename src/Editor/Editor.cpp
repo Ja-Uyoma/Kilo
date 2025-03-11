@@ -37,6 +37,7 @@
 #include <filesystem>
 #include <fmt/format.h>
 #include <fstream>
+#include <functional>
 #include <iostream>
 #include <optional>
 #include <string>
