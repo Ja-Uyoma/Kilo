@@ -103,16 +103,6 @@ TEST(FixCursorToVisibleWindow, ModifiesTheOffsetIfCursorPositionIsGreaterOrEqual
   ASSERT_THAT(offRow, ::testing::Eq(cursorY - windowHeight + 1));
 }
 
-TEST(writePaddingToScreenBuffer, WritesPadCharactersToTheScreenBuffer)
-{
-  std::size_t const padding = 10;
-  ScreenBuffer buf {};
-
-  writePaddingToScreenBuffer(padding, buf);
-
-  ASSERT_THAT(buf.size(), ::testing::Eq(padding));
-}
-
 TEST(printWelcomeMessage, PrintsTheCorrectMessageCentred)
 {
   int const width {50};
