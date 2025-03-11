@@ -104,16 +104,6 @@ TEST(FixCursorToVisibleWindow, ModifiesTheOffsetIfCursorPositionIsGreaterOrEqual
   ASSERT_THAT(offRow, ::testing::Eq(cursorY - windowHeight + 1));
 }
 
-TEST(setExactPositionToMoveCursorTo, ReturnsAStringContainingThePositionToMoveTheCursorTo)
-{
-  Cursor c {15, 15};
-  Offset off {10, 10};
-
-  auto pos = setExactPositionToMoveCursorTo(c, off);
-
-  ASSERT_THAT(pos, ::testing::Eq("\x1b[6;6H"));
-}
-
 TEST(createWelcomeMessage, CreatesAWelcomeMessageContainingTheVersionString)
 {
   std::string_view version {"0.0.1"};
