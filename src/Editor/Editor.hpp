@@ -122,25 +122,6 @@ namespace Kilo::editor::detail {
 void printWelcomeMessage(int windowWidth, ScreenBuffer& buffer);
 
 /**
- * @brief Check if the cursor has moved outside of the visible window and adjust the offset to fix it if so
- *
- * @param cursorPos The current position of the cursor
- * @param offOf An offset from the window into the open document
- * @param windowDimension A dimension of the terminal window
- */
-constexpr void fixCursorToVisibleWindow(int const cursorPos, int& offOf, int const windowDimension) noexcept
-{
-  if (cursorPos < offOf) {
-    offOf = cursorPos;
-  }
-  else if (cursorPos >= offOf + windowDimension) {
-    offOf = cursorPos - windowDimension + 1;
-  }
-
-  assert(offOf == cursorPos or offOf == cursorPos - windowDimension + 1);
-};
-
-/**
  * @brief Print a line of text from the open document to the screen
  *
  * @param line The line to be printed

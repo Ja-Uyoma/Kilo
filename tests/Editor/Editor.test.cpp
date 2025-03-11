@@ -81,28 +81,6 @@ TEST(processKeypress, MovesCursorToEndOfLineIfEndButtonIsPressed)
 
 namespace detail {
 
-TEST(FixCursorToVisibleWindow, ModifiesTheOffsetIfCursorPositionIsLessThanOffsetValue)
-{
-  int cursorY {10};
-  int offRow {20};
-  int windowHeight {0};
-
-  fixCursorToVisibleWindow(cursorY, offRow, windowHeight);
-
-  ASSERT_THAT(offRow, ::testing::Eq(cursorY));
-}
-
-TEST(FixCursorToVisibleWindow, ModifiesTheOffsetIfCursorPositionIsGreaterOrEqualToSumOfOffsetValueAndWindowDimension)
-{
-  int cursorY {30};
-  int offRow {20};
-  int windowHeight {0};
-
-  fixCursorToVisibleWindow(cursorY, offRow, windowHeight);
-
-  ASSERT_THAT(offRow, ::testing::Eq(cursorY - windowHeight + 1));
-}
-
 TEST(printWelcomeMessage, PrintsTheCorrectMessageCentred)
 {
   int const width {50};
