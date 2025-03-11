@@ -171,7 +171,14 @@ void moveCursor(editor::EditorKey key, Cursor& cursor, std::vector<std::string> 
       return;
   }
 
-  auto currRow = detail::getCurrentRow(cursor.y, row);
+  auto currRow = std::invoke([&cursor, &row]() -> std::optional<std::string> {
+    if (cursor.y >= std::ssize(row)) {
+      return std::nullopt;
+    }
+
+    return std::make_optional(row[cursor.y]);
+  });
+
   auto rowlen = currRow ? currRow->length() : 0;
 
   if (std::cmp_greater_equal(cursor.x, rowlen)) {
