@@ -129,7 +129,12 @@ void drawRows(Terminal::Window const& window, Offset const& offset, std::vector<
 {
   for (std::size_t currentRow = 0; std::cmp_less(currentRow, window.rows()); currentRow++) {
     if (auto fileRow = currentRow + offset.row; fileRow >= doc.size()) {
-      detail::printWelcomeMessageOrTilde(doc.empty(), currentRow, buffer, window);
+      if (doc.empty() and std::cmp_equal(currentRow, window.rows() / 3)) {
+        detail::printWelcomeMessage(window.cols(), buffer);
+      }
+      else {
+        buffer.write("~");
+      }
     }
     else {
       detail::printLineOfDocument(renderedDoc[fileRow], buffer, window.cols(), offset.col);
