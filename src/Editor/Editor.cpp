@@ -107,7 +107,11 @@ void refreshScreen(ScreenBuffer& buffer, Cursor const& cursor, Offset const& off
   IO::File output;
 
   drawRows(window, offset, document, buffer, renderedDoc);
-  auto const cursorPos = detail::setExactPositionToMoveCursorTo(cursor, offset);
+
+  // We add 1 to cursor.x and cursor.y to convert from 0-indexed values to the
+  // 1-indexed values that the terminal uses
+  auto const cursorPos = fmt::format("\x1b[{};{}H", (cursor.y - offset.row) + 1, (cursor.x - offset.col) + 1);
+
   buffer.write(cursorPos).write(EscapeSequences::ShowTheCursor).flush(output);
 }
 
