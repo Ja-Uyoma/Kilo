@@ -30,6 +30,7 @@
 #include "Terminal/Window/Window.hpp"
 #include <cassert>
 #include <filesystem>
+#include <functional>
 #include <optional>
 #include <string_view>
 #include <utility>
@@ -213,7 +214,13 @@ constexpr void moveCursorHelper(Cursor& cursor, editor::EditorKey const& keyPres
       }
       break;
     case ArrowRight: {
-      auto currentRow = detail::getCurrentRow(cursor.y, document);
+      auto currentRow = std::invoke([cy = cursor.y, &document]() -> std::optional<std::string> {
+        if (cy >= std::ssize(document)) {
+          return std::nullopt;
+        }
+
+        return std::make_optional(document[cy]);
+      });
 
       if (currentRow && std::cmp_less(cursor.x, currentRow->size())) {
         cursor.x++;
