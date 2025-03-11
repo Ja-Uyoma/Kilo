@@ -127,7 +127,49 @@ void drawRows(Terminal::Window const& window, Offset const& offset, std::vector<
  */
 void moveCursor(editor::EditorKey key, Cursor& cursor, std::vector<std::string> const& row)
 {
-  detail::moveCursorHelper(cursor, key, row);
+  using enum editor::EditorKey;
+
+  switch (key) {
+    case ArrowLeft:
+      if (cursor.x != 0) {
+        cursor.x--;
+      }
+      else if (cursor.y > 0) {
+        cursor.y--;
+        cursor.x = std::ssize(row[cursor.y]);
+      }
+      break;
+    case ArrowRight: {
+      auto currentRow = std::invoke([cy = cursor.y, &row]() -> std::optional<std::string> {
+        if (cy >= std::ssize(row)) {
+          return std::nullopt;
+        }
+
+        return std::make_optional(row[cy]);
+      });
+
+      if (currentRow && std::cmp_less(cursor.x, currentRow->size())) {
+        cursor.x++;
+      }
+      else if (currentRow && std::cmp_equal(cursor.x, currentRow->size())) {
+        cursor.y++;
+        cursor.x = 0;
+      }
+      break;
+    }
+    case ArrowUp:
+      if (cursor.y != 0) {
+        cursor.y--;
+      }
+      break;
+    case ArrowDown:
+      if (std::cmp_less(cursor.y, row.size())) {
+        cursor.y++;
+      }
+      break;
+    default:
+      return;
+  }
 
   auto currRow = detail::getCurrentRow(cursor.y, row);
   auto rowlen = currRow ? currRow->length() : 0;
