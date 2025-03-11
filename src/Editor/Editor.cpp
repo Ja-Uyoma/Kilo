@@ -378,22 +378,6 @@ void printWelcomeMessage(int windowWidth, ScreenBuffer& buffer)
  * @brief Perform an editor operation depending on the key pressed
  *
  * @param[in] keyPressed The key pressed by the user
- */
-void processKeypressHelper(unsigned const keyPressed) noexcept
-{
-  using utilities::clearScreenAndRepositionCursor;
-  using utilities::ctrlKey;
-
-  if (keyPressed == ctrlKey('q')) {
-    clearScreenAndRepositionCursor();
-    std::exit(EXIT_SUCCESS);
-  }
-}
-
-/**
- * @brief Perform an editor operation depending on the key pressed
- *
- * @param[in] keyPressed The key pressed by the user
  * @param[in] cursor The position of the cursor in the terminal window
  * @param[in] window The terminal window
  */
