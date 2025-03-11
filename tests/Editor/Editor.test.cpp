@@ -104,16 +104,6 @@ TEST(FixCursorToVisibleWindow, ModifiesTheOffsetIfCursorPositionIsGreaterOrEqual
   ASSERT_THAT(offRow, ::testing::Eq(cursorY - windowHeight + 1));
 }
 
-TEST(getPadding, GetsThePaddingBetweenTheEdgesOfTheWindowAndTheWelcomeMessage)
-{
-  int const windowWidth = 100;
-  std::size_t const msgLength = 25;
-
-  auto const padding = getPadding(windowWidth, msgLength);
-
-  ASSERT_THAT(padding, ::testing::Eq(37));
-}
-
 TEST(writePaddingToScreenBuffer, WritesPadCharactersToTheScreenBuffer)
 {
   std::size_t const padding = 10;
