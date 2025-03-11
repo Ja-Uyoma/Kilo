@@ -30,6 +30,7 @@
 #include "Utilities/Utilities.hpp"
 #include <cstddef>
 #include <cstdlib>
+#include <fmt/format.h>
 #include <iostream>
 #include <stdexcept>
 #include <system_error>
@@ -76,7 +77,10 @@ void Application::refreshScreen()
   m_buffer.write(EscapeSequences::HideCursorWhenRepainting).write(EscapeSequences::MoveCursorToHomePosition);
 
   this->drawRows();
-  auto const cursorPos = detail::setExactPositionToMoveCursorTo(m_cursor, m_off);
+
+  // We add 1 to cursor.x and cursor.y to convert from 0-indexed values to the
+  // 1-indexed values that the terminal uses
+  auto const cursorPos = fmt::format("\x1b[{};{}H", (m_cursor.y - m_off.row) + 1, (m_cursor.x - m_off.col) + 1);
 
   IO::File output;
   m_buffer.write(cursorPos).write(EscapeSequences::ShowTheCursor).flush(output);
