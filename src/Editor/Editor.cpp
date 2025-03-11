@@ -346,7 +346,7 @@ void printWelcomeMessage(int windowWidth, ScreenBuffer& buffer)
    * characters, except for the first character, which should be a tilde
    */
 
-  auto padding = getPadding(windowWidth, msg.length());
+  auto padding = (windowWidth - msg.length()) / 2;
 
   writePaddingToScreenBuffer(padding, buffer);
 
