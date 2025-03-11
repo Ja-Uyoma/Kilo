@@ -347,7 +347,11 @@ void writePaddingToScreenBuffer(long padding, ScreenBuffer& buf)
 void printWelcomeMessage(int windowWidth, ScreenBuffer& buffer)
 {
   auto msg = fmt::format("Kilo editor -- version {}", editor::KiloVersion);
-  resizeWelcomeMessage(msg, windowWidth);
+
+  // If the message is longer than the window's width, resize it to fit
+  if (std::cmp_greater(msg.length(), windowWidth)) {
+    msg.resize(windowWidth);
+  }
 
   /*
    * Center the string
