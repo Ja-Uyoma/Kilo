@@ -114,23 +114,6 @@ void updateRow(std::string_view row, std::string& render);
 namespace Kilo::editor::detail {
 
 /**
- * @brief Create a welcome message by interpolating two strings
- *
- * @param versionString The version of the application
- * @return std::string The welcome message
- */
-std::string createWelcomeMessage(std::string_view versionString) noexcept;
-
-/**
- * @brief Resizes the message string to be equal to the window width if it exceeds it
- *
- * @param message The message string to be resized
- * @param windowWidth The unit determining how much the string should be resized
- * @pre windowWidth must be >= 0
- */
-void resizeWelcomeMessage(std::string& message, int windowWidth) noexcept;
-
-/**
  * @brief Write the welcome message to the screen buffer
  *
  * @param windowWidth The width of the window in which the message is to be displayed
