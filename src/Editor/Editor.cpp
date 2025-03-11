@@ -58,18 +58,32 @@ namespace Kilo::editor {
 void processKeypress(int const keyPressed, Cursor& cursor, Terminal::Window const& window,
                      std::vector<std::string> const& document) noexcept
 {
+  using editor::EditorKey;
   using utilities::clearScreenAndRepositionCursor;
   using utilities::ctrlKey;
+  using enum editor::EditorKey;
 
   if (keyPressed == ctrlKey('q')) {
     clearScreenAndRepositionCursor();
     std::exit(EXIT_SUCCESS);
   }
 
-  using editor::EditorKey;
   auto key = static_cast<EditorKey>(keyPressed);
 
-  detail::processKeypressHelper(key, cursor, window, document);
+  if (key == Home) {
+    cursor.x = 0;
+  }
+  else if (key == End) {
+    cursor.x = window.cols() - 1;
+  }
+  else if (key == PageUp or key == PageDown) {
+    for (auto i = window.rows(); i > 0; i--) {
+      moveCursor(key == PageUp ? ArrowUp : ArrowDown, cursor, document);
+    }
+  }
+  else if (key == ArrowLeft or key == ArrowRight or key == ArrowUp or key == ArrowDown) {
+    moveCursor(key, cursor, document);
+  }
 }
 
 /**
