@@ -30,10 +30,7 @@
 #include "Terminal/Window/Window.hpp"
 #include <cassert>
 #include <filesystem>
-#include <functional>
-#include <optional>
 #include <string_view>
-#include <utility>
 #include <vector>
 
 namespace Kilo::editor {
