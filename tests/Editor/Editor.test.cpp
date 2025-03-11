@@ -24,7 +24,6 @@
 #include "Editor/Editor.hpp"
 
 #include "Editor/Cursor/Cursor.hpp"
-#include "Editor/Offset/Offset.hpp"
 #include "Editor/ScreenBuffer/ScreenBuffer.hpp"
 #include "Terminal/Window/Window.hpp"
 #include "Utilities/Utilities.hpp"
