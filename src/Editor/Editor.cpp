@@ -346,9 +346,17 @@ void printWelcomeMessage(int windowWidth, ScreenBuffer& buffer)
    * characters, except for the first character, which should be a tilde
    */
 
-  auto padding = (windowWidth - msg.length()) / 2;
+  auto padding = (windowWidth - std::ssize(msg)) / 2;
 
-  writePaddingToScreenBuffer(padding, buffer);
+  if (padding > 0) {
+    buffer.write("~");
+    padding--;
+  }
+
+  while (padding > 0) {
+    buffer.write(" ");
+    padding--;
+  }
 
   buffer.write(msg);
 }
