@@ -357,7 +357,7 @@ void writePaddingToScreenBuffer(long padding, ScreenBuffer& buf)
  */
 void printWelcomeMessage(int windowWidth, ScreenBuffer& buffer)
 {
-  auto msg = createWelcomeMessage(editor::KiloVersion);
+  auto msg = fmt::format("Kilo editor -- version {}", editor::KiloVersion);
   resizeWelcomeMessage(msg, windowWidth);
 
   /*
