@@ -141,23 +141,6 @@ constexpr void fixCursorToVisibleWindow(int const cursorPos, int& offOf, int con
 };
 
 /**
- * @brief Perform an editor operation depending on the key pressed
- *
- * @param[in] keyPressed The key pressed by the user
- */
-void processKeypressHelper(unsigned const keyPressed) noexcept;
-
-/**
- * @brief Perform an editor operation depending on the key pressed
- *
- * @param[in] keyPressed The key pressed by the user
- * @param[in] cursor The position of the cursor in the terminal window
- * @param[in] window The terminal window
- */
-void processKeypressHelper(editor::EditorKey keyPressed, Cursor& cursor, Terminal::Window const& window,
-                           std::vector<std::string> const& document) noexcept;
-
-/**
  * @brief Print a line of text from the open document to the screen
  *
  * @param line The line to be printed
