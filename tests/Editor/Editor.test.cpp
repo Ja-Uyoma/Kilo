@@ -39,8 +39,15 @@ namespace Kilo::editor {
 
 TEST(processKeypress, TerminatesTheProgramIfQIsPressed)
 {
+  using editor::EditorKey;
+  using Terminal::Window;
+
+  Cursor cursor {100, 100};
+  Window const window;
+  std::vector<std::string> const& doc {};
+
   auto key = utilities::ctrlKey('q');
-  ASSERT_EXIT(detail::processKeypressHelper(key), ::testing::ExitedWithCode(0), ::testing::Eq(""));
+  ASSERT_EXIT(processKeypress(key, cursor, window, doc), ::testing::ExitedWithCode(0), ::testing::Eq(""));
 }
 
 TEST(processKeypress, MovesCursorToStartOfLineIfHomeButtonIsPressed)
@@ -53,7 +60,7 @@ TEST(processKeypress, MovesCursorToStartOfLineIfHomeButtonIsPressed)
   Window const window;
   std::vector<std::string> const& doc {};
 
-  detail::processKeypressHelper(key, cursor, window, doc);
+  processKeypress(static_cast<int>(key), cursor, window, doc);
 
   ASSERT_THAT(cursor.x, ::testing::Eq(0));
 }
@@ -68,7 +75,7 @@ TEST(processKeypress, MovesCursorToEndOfLineIfEndButtonIsPressed)
   Window const window;
   std::vector<std::string> const& doc {};
 
-  detail::processKeypressHelper(key, cursor, window, doc);
+  processKeypress(static_cast<int>(key), cursor, window, doc);
 
   ASSERT_THAT(cursor.x, ::testing::Eq(window.cols() - 1));
 }
