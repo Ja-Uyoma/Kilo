@@ -389,34 +389,6 @@ void printWelcomeMessage(int windowWidth, ScreenBuffer& buffer)
 }
 
 /**
- * @brief Perform an editor operation depending on the key pressed
- *
- * @param[in] keyPressed The key pressed by the user
- * @param[in] cursor The position of the cursor in the terminal window
- * @param[in] window The terminal window
- */
-void processKeypressHelper(editor::EditorKey keyPressed, Cursor& cursor, Terminal::Window const& window,
-                           std::vector<std::string> const& document) noexcept
-{
-  using enum editor::EditorKey;
-
-  if (keyPressed == Home) {
-    cursor.x = 0;
-  }
-  else if (keyPressed == End) {
-    cursor.x = window.cols() - 1;
-  }
-  else if (keyPressed == PageUp or keyPressed == PageDown) {
-    for (auto i = window.rows(); i > 0; i--) {
-      moveCursor(keyPressed == PageUp ? ArrowUp : ArrowDown, cursor, document);
-    }
-  }
-  else if (keyPressed == ArrowLeft or keyPressed == ArrowRight or keyPressed == ArrowUp or keyPressed == ArrowDown) {
-    moveCursor(keyPressed, cursor, document);
-  }
-}
-
-/**
  * @brief Print the welcome message or a tilde to the window
  *
  * @param documentIsEmpty A boolean value representing whether the document is empty or not
