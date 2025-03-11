@@ -209,7 +209,7 @@ constexpr void moveCursorHelper(Cursor& cursor, editor::EditorKey const& keyPres
       }
       else if (cursor.y > 0) {
         cursor.y--;
-        cursor.x = (int)document[cursor.y].size();
+        cursor.x = std::ssize(document[cursor.y]);
       }
       break;
     case ArrowRight: {
