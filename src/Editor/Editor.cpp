@@ -58,7 +58,13 @@ namespace Kilo::editor {
 void processKeypress(int const keyPressed, Cursor& cursor, Terminal::Window const& window,
                      std::vector<std::string> const& document) noexcept
 {
-  detail::processKeypressHelper(keyPressed);
+  using utilities::clearScreenAndRepositionCursor;
+  using utilities::ctrlKey;
+
+  if (keyPressed == ctrlKey('q')) {
+    clearScreenAndRepositionCursor();
+    std::exit(EXIT_SUCCESS);
+  }
 
   using editor::EditorKey;
   auto key = static_cast<EditorKey>(keyPressed);
