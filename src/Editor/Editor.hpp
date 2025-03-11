@@ -131,14 +131,6 @@ std::string createWelcomeMessage(std::string_view versionString) noexcept;
 void resizeWelcomeMessage(std::string& message, int windowWidth) noexcept;
 
 /**
- * @brief Write padding characters to the screen buffer
- *
- * @param padding The number of characters to be written to the screen buffer
- * @param buf The screen buffer being written to
- */
-void writePaddingToScreenBuffer(long padding, ScreenBuffer& buf);
-
-/**
  * @brief Write the welcome message to the screen buffer
  *
  * @param windowWidth The width of the window in which the message is to be displayed

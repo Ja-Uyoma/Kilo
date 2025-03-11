@@ -305,25 +305,6 @@ void updateRow(std::string_view row, std::string& render)
 namespace Kilo::editor::detail {
 
 /**
- * @brief Write padding characters to the screen buffer
- *
- * @param padding The number of characters to be written to the screen buffer
- * @param buf The screen buffer being written to
- */
-void writePaddingToScreenBuffer(long padding, ScreenBuffer& buf)
-{
-  if (padding > 0) {
-    buf.write("~");
-    padding--;
-  }
-
-  while (padding > 0) {
-    buf.write(" ");
-    padding--;
-  }
-}
-
-/**
  * @brief Write the welcome message to the screen buffer
  *
  * @param windowWidth The width of the window in which the message is to be displayed
