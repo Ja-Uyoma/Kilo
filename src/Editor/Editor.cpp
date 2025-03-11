@@ -305,23 +305,6 @@ void updateRow(std::string_view row, std::string& render)
 namespace Kilo::editor::detail {
 
 /**
- * @brief Specify the exact position we want the cursor to move to
- *
- * @param cursor The current position of the cursor
- * @param offset The offset from the terminal window to the currently-open document
- * @return std::string
- */
-std::string setExactPositionToMoveCursorTo(Cursor const& cursor, Offset const& offset)
-{
-  /*
-   * We add 1 to cursor.x and cursor.y to convert from 0-indexed values to the
-   * 1-indexed values that the terminal uses
-   */
-
-  return fmt::format("\x1b[{};{}H", (cursor.y - offset.row) + 1, (cursor.x - offset.col) + 1);
-}
-
-/**
  * @brief Create a welcome message by interpolating two strings
  *
  * @param versionString The version of the application
