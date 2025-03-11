@@ -128,7 +128,7 @@ void drawRows(Terminal::Window const& window, Offset const& offset, std::vector<
               ScreenBuffer& buffer, std::vector<std::string> const& renderedDoc)
 {
   for (std::size_t currentRow = 0; std::cmp_less(currentRow, window.rows()); currentRow++) {
-    if (auto fileRow = currentRow + offset.row; std::cmp_greater_equal(fileRow, doc.size())) {
+    if (auto fileRow = currentRow + offset.row; fileRow >= doc.size()) {
       detail::printWelcomeMessageOrTilde(doc.empty(), currentRow, buffer, window);
     }
     else {
