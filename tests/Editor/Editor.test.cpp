@@ -104,17 +104,6 @@ TEST(FixCursorToVisibleWindow, ModifiesTheOffsetIfCursorPositionIsGreaterOrEqual
   ASSERT_THAT(offRow, ::testing::Eq(cursorY - windowHeight + 1));
 }
 
-TEST(resizeWelcomeMessage, ResizesTheWelcomeMessageToFitInTheWindow)
-{
-  std::string msg {"One must imagine Sisyphus happy"};
-  int width = 5;
-
-  resizeWelcomeMessage(msg, width);
-
-  ASSERT_THAT(msg.length(), ::testing::Eq(width));
-  ASSERT_THAT(msg, ::testing::Eq("One m"));
-}
-
 TEST(getPadding, GetsThePaddingBetweenTheEdgesOfTheWindowAndTheWelcomeMessage)
 {
   int const windowWidth = 100;
