@@ -122,7 +122,7 @@ TEST(printWelcomeMessage, PrintsTheCorrectMessageCentred)
   printWelcomeMessage(width, buf);
 
   std::string const msg {"Kilo editor -- version 0.0.1"};
-  auto padding = getPadding(width, msg.length());
+  auto padding = (width - msg.length()) / 2;
   std::string output = "~" + std::string(padding - 1, ' ') + msg;
 
   ASSERT_THAT(buf.c_str(), ::testing::Eq(output));
