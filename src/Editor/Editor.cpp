@@ -305,21 +305,6 @@ void updateRow(std::string_view row, std::string& render)
 namespace Kilo::editor::detail {
 
 /**
- * @brief Resizes the message string to be equal to the window width if it exceeds it
- *
- * @param message The message string to be resized
- * @param windowWidth The unit determining how much the string should be resized
- */
-void resizeWelcomeMessage(std::string& message, int windowWidth) noexcept
-{
-  assert(windowWidth >= 0 and "Window width cannot be less than zero");
-
-  if (std::cmp_greater(message.length(), windowWidth)) {
-    message.resize(windowWidth);
-  }
-}
-
-/**
  * @brief Write padding characters to the screen buffer
  *
  * @param padding The number of characters to be written to the screen buffer
