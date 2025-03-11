@@ -124,9 +124,9 @@ void drawRows(Terminal::Window const& window, Offset const& offset, std::vector<
  *
  * @param key The key pressed
  * @param cursor The editor cursor
- * @param row The document which is currently open
+ * @param document The document which is currently open
  */
-void moveCursor(editor::EditorKey key, Cursor& cursor, std::vector<std::string> const& row)
+void moveCursor(editor::EditorKey key, Cursor& cursor, std::vector<std::string> const& document)
 {
   using enum editor::EditorKey;
 
@@ -137,16 +137,16 @@ void moveCursor(editor::EditorKey key, Cursor& cursor, std::vector<std::string> 
       }
       else if (cursor.y > 0) {
         cursor.y--;
-        cursor.x = std::ssize(row[cursor.y]);
+        cursor.x = std::ssize(document[cursor.y]);
       }
       break;
     case ArrowRight: {
-      auto currentRow = std::invoke([cy = cursor.y, &row]() -> std::optional<std::string> {
-        if (cy >= std::ssize(row)) {
+      auto currentRow = std::invoke([cy = cursor.y, &document]() -> std::optional<std::string> {
+        if (cy >= std::ssize(document)) {
           return std::nullopt;
         }
 
-        return std::make_optional(row[cy]);
+        return std::make_optional(document[cy]);
       });
 
       if (currentRow && std::cmp_less(cursor.x, currentRow->size())) {
@@ -164,7 +164,7 @@ void moveCursor(editor::EditorKey key, Cursor& cursor, std::vector<std::string> 
       }
       break;
     case ArrowDown:
-      if (std::cmp_less(cursor.y, row.size())) {
+      if (std::cmp_less(cursor.y, document.size())) {
         cursor.y++;
       }
       break;
@@ -172,12 +172,12 @@ void moveCursor(editor::EditorKey key, Cursor& cursor, std::vector<std::string> 
       return;
   }
 
-  auto currRow = std::invoke([&cursor, &row]() -> std::optional<std::string> {
-    if (cursor.y >= std::ssize(row)) {
+  auto currRow = std::invoke([&cursor, &document]() -> std::optional<std::string> {
+    if (cursor.y >= std::ssize(document)) {
       return std::nullopt;
     }
 
-    return std::make_optional(row[cursor.y]);
+    return std::make_optional(document[cursor.y]);
   });
 
   auto rowlen = currRow ? currRow->length() : 0;
