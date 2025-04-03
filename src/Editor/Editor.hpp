@@ -47,7 +47,7 @@ class ScreenBuffer;
  * @param[in] cursor The position of the cursor in the terminal window
  * @param[in] window The terminal window
  */
-void processKeypress(int const keyPressed, Cursor& cursor, Terminal::Window const& window,
+void processKeypress(int keyPressed, Cursor& cursor, Terminal::Window const& window,
                      std::vector<std::string> const& document) noexcept;
 
 /**
@@ -130,7 +130,7 @@ void printWelcomeMessage(int windowWidth, ScreenBuffer& buffer);
  * @param columnOffset The column offset between the terminal window width and the document width
  * @pre The column offset must be non-negative
  */
-void printLineOfDocument(std::string const& line, ScreenBuffer& buffer, int const windowWidth, int const columnOffset);
+void printLineOfDocument(std::string const& line, ScreenBuffer& buffer, int windowWidth, int columnOffset);
 
 }   // namespace Kilo::editor::detail
 
