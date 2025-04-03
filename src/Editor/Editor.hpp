@@ -92,7 +92,7 @@ void moveCursor(editor::EditorKey key, Cursor& cursor, std::vector<std::string> 
  * @return true If the operation was successful
  * @return false If the operation failed
  */
-bool open(std::filesystem::path const& path, std::vector<std::string>& document, std::vector<std::string>& rendered);
+auto open(std::filesystem::path const& path, std::vector<std::string>& document, std::vector<std::string>& rendered) -> bool;
 
 /**
  * @brief Fit the cursor in the visible window

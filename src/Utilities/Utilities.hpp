@@ -32,7 +32,7 @@ void clearScreenAndRepositionCursor() noexcept;
 /// @brief Map characters to control keys
 /// @param key The ASCII character to be mapped to a control key
 /// @return A control key
-constexpr unsigned ctrlKey(unsigned char key) noexcept
+constexpr auto ctrlKey(unsigned char key) noexcept -> unsigned
 {
   key &= 0x1f;
   return key;

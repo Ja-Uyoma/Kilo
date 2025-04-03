@@ -36,27 +36,27 @@ public:
   /// \param[in] fd The file being read from
   /// \param[in] buffer The buffer being read to
   /// \returns The number of bytes read
-  virtual std::size_t read(int fd, std::string& buffer) noexcept = 0;
+  virtual auto read(int fd, std::string& buffer) noexcept -> std::size_t = 0;
 
   /// Read nbytes from fd into buffer
   /// \param[in] fd The file being read from
   /// \param[in] buffer The buffer being read to
   /// \param[in] nbytes The number of bytes to read
   /// \returns The number of bytes read
-  virtual std::size_t read(int fd, std::string& buffer, std::size_t nbytes) = 0;
+  virtual auto read(int fd, std::string& buffer, std::size_t nbytes) -> std::size_t = 0;
 
   /// Write all bytes of buffer to fd
   /// \param[in] fd The file descriptor being written to
   /// \param[in] buffer The buffer being written from
   /// \returns The number of bytes written
-  virtual std::size_t write(int fd, std::string const& buffer) noexcept = 0;
+  virtual auto write(int fd, std::string const& buffer) noexcept -> std::size_t = 0;
 
   /// Write nbytes of buffer to fd
   /// \param[in] fd The file descriptor being written to
   /// \param[in] buffer The buffer being written from
   /// \param[in] nbytes The number of bytes to write
   /// \returns The number of bytes written
-  virtual std::size_t write(int fd, std::string const& buffer, std::size_t nbytes) = 0;
+  virtual auto write(int fd, std::string const& buffer, std::size_t nbytes) -> std::size_t = 0;
 
   /// Virtual destructor
   virtual ~FileInterface() = default;
@@ -72,27 +72,27 @@ public:
   /// \param[in] fd The file being read from
   /// \param[in] buffer The buffer being read to
   /// \returns The number of bytes read
-  std::size_t read(int fd, std::string& buffer) noexcept override;
+  auto read(int fd, std::string& buffer) noexcept -> std::size_t override;
 
   /// Read nbytes from fd into buffer
   /// \param[in] fd The file being read from
   /// \param[in] buffer The buffer being read to
   /// \param[in] nbytes The number of bytes to read
   /// \returns The number of bytes read
-  std::size_t read(int fd, std::string& buffer, std::size_t nbytes) noexcept override;
+  auto read(int fd, std::string& buffer, std::size_t nbytes) noexcept -> std::size_t override;
 
   /// Write all bytes of buffer to fd
   /// \param[in] fd The file descriptor being written to
   /// \param[in] buffer The buffer being written from
   /// \returns The number of bytes written
-  std::size_t write(int fd, std::string const& buffer) noexcept override;
+  auto write(int fd, std::string const& buffer) noexcept -> std::size_t override;
 
   /// Write nbytes of buffer to fd
   /// \param[in] fd The file descriptor being written to
   /// \param[in] buffer The buffer being written from
   /// \param[in] nbytes The number of bytes to write
   /// \returns The number of bytes written
-  std::size_t write(int fd, std::string const& buffer, std::size_t nbytes) noexcept override;
+  auto write(int fd, std::string const& buffer, std::size_t nbytes) noexcept -> std::size_t override;
 };
 
 }   // namespace Kilo::IO

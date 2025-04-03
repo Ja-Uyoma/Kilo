@@ -45,9 +45,9 @@ public:
   ~TerminalMode();
 
   TerminalMode(TerminalMode const&) = delete;
-  TerminalMode& operator=(TerminalMode const&) = delete;
+  auto operator=(TerminalMode const&) -> TerminalMode& = delete;
   TerminalMode(TerminalMode&&) = delete;
-  TerminalMode& operator=(TerminalMode&&) = delete;
+  auto operator=(TerminalMode&&) -> TerminalMode& = delete;
 
   /**
    * @brief Set the terminal driver to raw (or non-canonical) mode

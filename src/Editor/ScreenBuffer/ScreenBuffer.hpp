@@ -43,7 +43,7 @@ public:
   /// @brief Append the given C-string to the buffer
   /// @param[in] str The string to be appended to the buffer
   /// @param[in] length The length of the string
-  constexpr ScreenBuffer& write(char const* str, std::size_t length)
+  constexpr auto write(char const* str, std::size_t length) -> ScreenBuffer&
   {
     m_buffer.append(str, length);
     return *this;
@@ -54,7 +54,7 @@ public:
    *
    * @param[in] str The string to be appended to the string buffer
    */
-  constexpr ScreenBuffer& write(std::string_view str)
+  constexpr auto write(std::string_view str) -> ScreenBuffer&
   {
     m_buffer.append(str);
     return *this;
@@ -62,14 +62,14 @@ public:
 
   /// @brief Get the size of the buffer
   /// @returns The size of the buffer
-  constexpr std::size_t size() const noexcept
+  constexpr auto size() const noexcept -> std::size_t
   {
     return m_buffer.length();
   }
 
   /// @brief Get a  C-string representation of the buffer
   /// @returns A constant C-string representation of the buffer
-  constexpr char const* c_str() const noexcept
+  constexpr auto c_str() const noexcept -> char const*
   {
     return m_buffer.c_str();
   }
@@ -78,7 +78,7 @@ public:
   /// \param[in] file The file being written to
   /// \returns The number of bytes written
   /// \throws `std::system_error` if the operation failed
-  std::size_t flush(IO::FileInterface& file) const;
+  auto flush(IO::FileInterface& file) const -> std::size_t;
 
 private:
   std::string m_buffer;

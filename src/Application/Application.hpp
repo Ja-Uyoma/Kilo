@@ -70,7 +70,7 @@ public:
    * @return true If the operation was successful
    * @return false If the operation failed
    */
-  bool open(std::filesystem::path const& path);
+  auto open(std::filesystem::path const& path) -> bool;
 
   /// Run the application
   void run();

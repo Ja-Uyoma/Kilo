@@ -63,12 +63,12 @@ namespace detail {
 /// Get the size of the open terminal window
 /// \throws std::system_error on failure
 /// \returns The size of the terminal window as a WindowSize instance on success
-WindowSize getWindowSize();
+auto getWindowSize() -> WindowSize;
 
 /// Get the position of the cursor in the terminal window
 /// \throws std::system_error on failure
 /// \returns The position of the cursor as a WindowSize instance
-WindowSize getCursorPosition(IO::FileInterface& file);
+auto getCursorPosition(IO::FileInterface& file) -> WindowSize;
 
 }   // namespace detail
 

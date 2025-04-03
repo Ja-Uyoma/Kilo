@@ -133,7 +133,7 @@ void Application::drawRows()
  * @return true If the operation was successful
  * @return false If the operation failed
  */
-bool Application::open(std::filesystem::path const& path)
+auto Application::open(std::filesystem::path const& path) -> bool
 {
   return editor::open(path, m_row, m_render);
 }
