@@ -32,31 +32,31 @@ namespace Kilo::IO {
 class FileInterface
 {
 public:
-  /// Read all bytes from fd into buffer
-  /// \param[in] fd The file being read from
+  /// Read all bytes from fileDescriptor into buffer
+  /// \param[in] fileDescriptor The file being read from
   /// \param[in] buffer The buffer being read to
   /// \returns The number of bytes read
-  virtual auto read(int fd, std::string& buffer) noexcept -> std::size_t = 0;
+  virtual auto read(int fileDescriptor, std::string& buffer) noexcept -> std::size_t = 0;
 
-  /// Read nbytes from fd into buffer
-  /// \param[in] fd The file being read from
+  /// Read nbytes from fileDescriptor into buffer
+  /// \param[in] fileDescriptor The file being read from
   /// \param[in] buffer The buffer being read to
   /// \param[in] nbytes The number of bytes to read
   /// \returns The number of bytes read
-  virtual auto read(int fd, std::string& buffer, std::size_t nbytes) -> std::size_t = 0;
+  virtual auto read(int fileDescriptor, std::string& buffer, std::size_t nbytes) -> std::size_t = 0;
 
-  /// Write all bytes of buffer to fd
-  /// \param[in] fd The file descriptor being written to
+  /// Write all bytes of buffer to fileDescriptor
+  /// \param[in] fileDescriptor The file descriptor being written to
   /// \param[in] buffer The buffer being written from
   /// \returns The number of bytes written
-  virtual auto write(int fd, std::string const& buffer) noexcept -> std::size_t = 0;
+  virtual auto write(int fileDescriptor, std::string const& buffer) noexcept -> std::size_t = 0;
 
-  /// Write nbytes of buffer to fd
-  /// \param[in] fd The file descriptor being written to
+  /// Write nbytes of buffer to fileDescriptor
+  /// \param[in] fileDescriptor The file descriptor being written to
   /// \param[in] buffer The buffer being written from
   /// \param[in] nbytes The number of bytes to write
   /// \returns The number of bytes written
-  virtual auto write(int fd, std::string const& buffer, std::size_t nbytes) -> std::size_t = 0;
+  virtual auto write(int fileDescriptor, std::string const& buffer, std::size_t nbytes) -> std::size_t = 0;
 
   /// Virtual destructor
   virtual ~FileInterface() = default;
@@ -68,31 +68,31 @@ public:
   /// Default constructor
   explicit File() noexcept = default;
 
-  /// Read all bytes from fd into buffer
-  /// \param[in] fd The file being read from
+  /// Read all bytes from fileDescriptor into buffer
+  /// \param[in] fileDescriptor The file being read from
   /// \param[in] buffer The buffer being read to
   /// \returns The number of bytes read
-  auto read(int fd, std::string& buffer) noexcept -> std::size_t override;
+  auto read(int fileDescriptor, std::string& buffer) noexcept -> std::size_t override;
 
-  /// Read nbytes from fd into buffer
-  /// \param[in] fd The file being read from
+  /// Read nbytes from fileDescriptor into buffer
+  /// \param[in] fileDescriptor The file being read from
   /// \param[in] buffer The buffer being read to
   /// \param[in] nbytes The number of bytes to read
   /// \returns The number of bytes read
-  auto read(int fd, std::string& buffer, std::size_t nbytes) noexcept -> std::size_t override;
+  auto read(int fileDescriptor, std::string& buffer, std::size_t nbytes) noexcept -> std::size_t override;
 
-  /// Write all bytes of buffer to fd
-  /// \param[in] fd The file descriptor being written to
+  /// Write all bytes of buffer to fileDescriptor
+  /// \param[in] fileDescriptor The file descriptor being written to
   /// \param[in] buffer The buffer being written from
   /// \returns The number of bytes written
-  auto write(int fd, std::string const& buffer) noexcept -> std::size_t override;
+  auto write(int fileDescriptor, std::string const& buffer) noexcept -> std::size_t override;
 
-  /// Write nbytes of buffer to fd
-  /// \param[in] fd The file descriptor being written to
+  /// Write nbytes of buffer to fileDescriptor
+  /// \param[in] fileDescriptor The file descriptor being written to
   /// \param[in] buffer The buffer being written from
   /// \param[in] nbytes The number of bytes to write
   /// \returns The number of bytes written
-  auto write(int fd, std::string const& buffer, std::size_t nbytes) noexcept -> std::size_t override;
+  auto write(int fileDescriptor, std::string const& buffer, std::size_t nbytes) noexcept -> std::size_t override;
 };
 
 }   // namespace Kilo::IO
