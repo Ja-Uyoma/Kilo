@@ -84,7 +84,7 @@ private:
   Cursor m_cursor {};
   Offset m_off {};
   [[maybe_unused]] int m_rx {};
-  ScreenBuffer m_buffer {};
+  ScreenBuffer m_buffer;
 };
 }   // namespace Kilo::editor
 
