@@ -76,22 +76,22 @@ private:
 
 namespace detail {
 
-/// Query fd and write its settings to buf
-/// \param[in] fd The file descriptor to be queried
+/// Query fileDescriptor and write its settings to buf
+/// \param[in] fileDescriptor The file descriptor to be queried
 /// \param[in] buf Where the settings are written to
 /// \throws std::system_error on failure
-void getTerminalDriverSettings(int fd, termios& buf);
+void getTerminalDriverSettings(int fileDescriptor, termios& buf);
 
 /// Set the terminal driver in raw mode
-/// \param[in] fd The terminal driver's file descriptor
+/// \param[in] fileDescriptor The terminal driver's file descriptor
 /// \param[in] buf The buffer to which the terminal driver's settings are to be written
 /// \param[in] copy A copy of the settings stored in buf in case we need to roll back
-void ttyRaw(int fd, termios const& buf, termios& copy);
+void ttyRaw(int fileDescriptor, termios const& buf, termios& copy);
 
 /// Set the terminal driver in canonical mode
-/// \param[in] fd The terminal driver's file descriptor
+/// \param[in] fileDescriptor The terminal driver's file descriptor
 /// \param[in] buf The buffer from which the desired settings are to be read from
-void ttyReset(int fd, termios const& buf);
+void ttyReset(int fileDescriptor, termios const& buf);
 
 }   // namespace detail
 
