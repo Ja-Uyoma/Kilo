@@ -42,14 +42,14 @@ public:
 
   /// Get the number of columns of the terminal window
   /// \returns The number of columns of the terminal window
-  constexpr auto cols() const noexcept
+  [[nodiscard]] constexpr auto cols() const noexcept
   {
     return m_winsize.cols;
   }
 
   /// Get the number of rows of the terminal window
   /// \returns The number of rows of the terminal window
-  constexpr auto rows() const noexcept
+  [[nodiscard]] constexpr auto rows() const noexcept
   {
     return m_winsize.rows;
   }

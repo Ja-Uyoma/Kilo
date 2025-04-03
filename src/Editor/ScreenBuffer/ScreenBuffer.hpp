@@ -62,14 +62,14 @@ public:
 
   /// @brief Get the size of the buffer
   /// @returns The size of the buffer
-  constexpr auto size() const noexcept -> std::size_t
+  [[nodiscard]] constexpr auto size() const noexcept -> std::size_t
   {
     return m_buffer.length();
   }
 
   /// @brief Get a  C-string representation of the buffer
   /// @returns A constant C-string representation of the buffer
-  constexpr auto c_str() const noexcept -> char const*
+  [[nodiscard]] constexpr auto c_str() const noexcept -> char const*
   {
     return m_buffer.c_str();
   }
