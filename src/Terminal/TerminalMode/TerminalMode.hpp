@@ -25,6 +25,7 @@
 #define TERMINAL_STATE_HPP
 
 #include <termios.h>
+#include <cstdint>
 
 namespace Kilo::Terminal {
 
@@ -62,7 +63,7 @@ public:
   void reset() &;
 
 private:
-  enum class ttystate
+  enum class ttystate : std::uint8_t
   {
     Raw,
     Reset
