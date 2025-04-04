@@ -24,6 +24,7 @@
 #ifndef CONSTANTS_HPP
 #define CONSTANTS_HPP
 
+#include <cstdint>
 #include <string_view>
 
 namespace Kilo::editor {
@@ -46,7 +47,7 @@ inline constexpr int KiloTabStop = 8;
 // We choose a representation for the arrow keys that does not conflict with the [w, a, s, d] keys.
 // We give them a large integer value that is outside the range of a char, so that they don't
 // conflict with ordinary keypresses.
-enum class EditorKey
+enum class EditorKey : std::uint16_t
 {
   ArrowLeft = 1000,
   ArrowRight,
