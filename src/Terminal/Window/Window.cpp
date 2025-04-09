@@ -28,6 +28,10 @@
 #include <sys/ioctl.h>
 #include <system_error>
 #include <unistd.h>
+#include <cerrno>
+#include "File/File.hpp"
+#include <string>
+#include <cstdlib>
 
 namespace Kilo::Terminal {
 
