@@ -45,11 +45,6 @@ public:
    */
   ~TerminalMode();
 
-  TerminalMode(TerminalMode const&) = delete;
-  auto operator=(TerminalMode const&) -> TerminalMode& = delete;
-  TerminalMode(TerminalMode&&) = delete;
-  auto operator=(TerminalMode&&) -> TerminalMode& = delete;
-
   /**
    * @brief Set the terminal driver to raw (or non-canonical) mode
    *
@@ -72,6 +67,11 @@ private:
   termios m_termios {};
   termios m_copy {};
   ttystate m_state {ttystate::Reset};
+
+  TerminalMode(TerminalMode const&) = delete;
+  auto operator=(TerminalMode const&) -> TerminalMode& = delete;
+  TerminalMode(TerminalMode&&) = delete;
+  auto operator=(TerminalMode&&) -> TerminalMode& = delete;
 };
 
 namespace detail {
