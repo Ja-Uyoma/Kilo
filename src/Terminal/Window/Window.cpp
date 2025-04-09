@@ -56,9 +56,8 @@ auto getWindowSize() -> WindowSize
       throw std::system_error(errno, std::system_category(),
                               "Could not move the cursor to the bottom-right of the screen");
     }
-    else {
-      return detail::getCursorPosition(file);
-    }
+    
+    return detail::getCursorPosition(file);
   }
 
   return WindowSize { .cols = ws.ws_col, .rows = ws.ws_row};
