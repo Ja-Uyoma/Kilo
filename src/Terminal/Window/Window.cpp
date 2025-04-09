@@ -57,7 +57,7 @@ auto getWindowSize() -> WindowSize
     }
   }
 
-  return WindowSize {ws.ws_col, ws.ws_row};
+  return WindowSize { .cols = ws.ws_col, .rows = ws.ws_row};
 }
 
 /// Get the position of the cursor in the terminal window
@@ -89,7 +89,7 @@ auto getCursorPosition(IO::FileInterface& file) -> WindowSize
     throw std::invalid_argument("An invalid byte sequence was encountered where an escape sequence was expected");
   }
 
-  WindowSize result;
+  WindowSize result { .cols = 0, .rows = 0 };
 
   // At this point, we are passing a string of the form "35;76" to sscanf
   // We tell it to parse the 2 integers separated by a ';' and write the value
