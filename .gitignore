@@ -9,3 +9,6 @@ CMakeUserPresets.json
 
 # Ignore cached clangd files
 .cache
+
+# Ignore all KDevelop files
+*.kdev*
