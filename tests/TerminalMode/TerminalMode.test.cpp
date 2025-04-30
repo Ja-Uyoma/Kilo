@@ -37,7 +37,7 @@ TEST(TerminalState, SetRawModePutsTheTerminalDriverInRawMode)
 {
   TerminalMode state {};
 
-  auto cleanup = gsl::finally([&state] { state.reset(); });
+  auto cleanup = gsl::finally([&state] { state.setCanonicalMode(); });
 
   ASSERT_NO_THROW(state.setRawMode());
 }
@@ -47,7 +47,7 @@ TEST(TerminalState, ResetRestoresTerminalSettingsToCanonicalMode)
   TerminalMode tstate {};
   tstate.setRawMode();
 
-  ASSERT_NO_THROW(tstate.reset());
+  ASSERT_NO_THROW(tstate.setCanonicalMode());
 }
 
 namespace detail {

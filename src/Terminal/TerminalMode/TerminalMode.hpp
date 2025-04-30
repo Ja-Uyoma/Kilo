@@ -60,7 +60,7 @@ public:
    * @brief Set the terminal driver to canonical mode
    *
    */
-  void reset() &;
+  void setCanonicalMode() &;
 
 private:
   enum class ttystate : std::uint8_t
