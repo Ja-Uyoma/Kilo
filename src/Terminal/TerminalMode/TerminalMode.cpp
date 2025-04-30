@@ -48,14 +48,14 @@ void TerminalMode::setRawMode() &
     return;
   }
 
-  assert(m_state == ttystate::Reset && "Terminal driver currently in canonical mode");
+  assert(m_state == ttystate::Canonical && "Terminal driver currently in canonical mode");
   detail::ttyRaw(STDIN_FILENO, m_termios, m_copy);
   m_state = ttystate::Raw;
 }
 
 void TerminalMode::setCanonicalMode() &
 {
-  if (m_state == ttystate::Reset) {
+  if (m_state == ttystate::Canonical) {
     return;
   }
 
@@ -63,7 +63,7 @@ void TerminalMode::setCanonicalMode() &
 
   try {
     detail::ttyCanonicalMode(STDIN_FILENO, m_termios);
-    m_state = ttystate::Reset;
+    m_state = ttystate::Canonical;
   }
   catch (std::system_error const& err) {
     std::cerr << err.code().message() << ": " << err.what() << '\n';

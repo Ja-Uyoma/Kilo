@@ -66,12 +66,12 @@ private:
   enum class ttystate : std::uint8_t
   {
     Raw,
-    Reset
+    Canonical
   };
 
   termios m_termios {};
   termios m_copy {};
-  ttystate m_state {ttystate::Reset};
+  ttystate m_state {ttystate::Canonical};
 };
 
 namespace detail {
