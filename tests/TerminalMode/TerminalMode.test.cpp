@@ -62,10 +62,8 @@ TEST(getTerminalDriverSettings, TerminatesWhenPassedAnInvalidFileDescriptor)
 
 TEST(getTerminalDriverSettings, RunsSuccessfullyWhenPassedAValidFileDescriptor)
 {
-  ::termios buf;
-  int fd = STDIN_FILENO;
-
-  ASSERT_NO_THROW(getTerminalDriverSettings(fd, buf));
+  termios buf;
+  ASSERT_NO_THROW(getTerminalDriverSettings(STDIN_FILENO, buf));
 }
 
 TEST(ttyRaw, ThrowsAnExceptionWhenPassedAnInvalidFileDescriptor)
