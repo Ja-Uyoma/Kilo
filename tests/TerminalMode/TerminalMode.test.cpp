@@ -62,7 +62,7 @@ TEST(getTerminalDriverSettings, TerminatesWhenPassedAnInvalidFileDescriptor)
 
 TEST(getTerminalDriverSettings, RunsSuccessfullyWhenPassedAValidFileDescriptor)
 {
-  termios buf;
+  termios buf {};
   ASSERT_NO_THROW(getTerminalDriverSettings(STDIN_FILENO, buf));
 }
 
@@ -76,8 +76,8 @@ TEST(ttyRaw, TerminatesWhenPassedAnInvalidFileDescriptor)
 
 TEST(ttyRaw, SucceedsWhenPassedAValidFileDescriptor)
 {
-  ::termios buf;
-  ::termios copy;
+  termios buf {};
+  termios copy {};
   int fd = STDIN_FILENO;
   auto cleanup = gsl::finally([&fd, &buf] { ttyCanonicalMode(fd, buf); });
 
@@ -88,7 +88,7 @@ TEST(ttyRaw, SucceedsWhenPassedAValidFileDescriptor)
 
 TEST(ttyCanonicalMode, ThrowsAnExceptionWhenPassedAnInvalidFileDescriptor)
 {
-  ::termios buf;
+  termios buf {};
   int fd = STDOUT_FILENO;
 
   getTerminalDriverSettings(fd, buf);
@@ -98,7 +98,7 @@ TEST(ttyCanonicalMode, ThrowsAnExceptionWhenPassedAnInvalidFileDescriptor)
 
 TEST(ttyCanonicalMode, SucceedsWhenPassedAValidFileDescriptor)
 {
-  ::termios buf;
+  termios buf {};
   int fd = STDOUT_FILENO;
 
   getTerminalDriverSettings(fd, buf);
