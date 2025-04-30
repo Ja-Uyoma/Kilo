@@ -94,11 +94,9 @@ TEST(ttyCanonicalMode, TerminatesWhenPassedAnInvalidFileDescriptor)
 TEST(ttyCanonicalMode, SucceedsWhenPassedAValidFileDescriptor)
 {
   termios buf {};
-  int fd = STDOUT_FILENO;
+  getTerminalDriverSettings(STDIN_FILENO, buf);
 
-  getTerminalDriverSettings(fd, buf);
-
-  ASSERT_NO_THROW(ttyCanonicalMode(fd, buf));
+  ASSERT_NO_THROW(ttyCanonicalMode(STDIN_FILENO, buf));
 }
 
 }   // namespace detail
