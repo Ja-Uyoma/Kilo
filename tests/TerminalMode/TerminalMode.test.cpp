@@ -30,7 +30,7 @@
 
 namespace Kilo::Terminal {
 
-TEST(TerminalState, SetRawModePutsTheTerminalDriverInRawMode)
+TEST(TerminalMode, SetRawModePutsTheTerminalDriverInRawMode)
 {
   TerminalMode state {};
 
@@ -39,7 +39,7 @@ TEST(TerminalState, SetRawModePutsTheTerminalDriverInRawMode)
   ASSERT_NO_THROW(state.setRawMode());
 }
 
-TEST(TerminalState, ResetRestoresTerminalSettingsToCanonicalMode)
+TEST(TerminalMode, ResetRestoresTerminalSettingsToCanonicalMode)
 {
   TerminalMode tstate {};
   tstate.setRawMode();
