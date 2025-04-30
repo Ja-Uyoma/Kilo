@@ -52,12 +52,10 @@ TEST(TerminalState, ResetRestoresTerminalSettingsToCanonicalMode)
 
 namespace detail {
 
-TEST(getTerminalDriverSettings, ThrowsAnExceptionWhenPassedAnInvalidFileDescriptor)
+TEST(getTerminalDriverSettings, TerminatesWhenPassedAnInvalidFileDescriptor)
 {
-  ::termios buf;
-  int fd = -STDOUT_FILENO;
-
-  ASSERT_THROW(getTerminalDriverSettings(fd, buf), std::system_error);
+  termios buf {};
+  ASSERT_DEATH(getTerminalDriverSettings(STDOUT_FILENO, buf), "File descriptor must be STDIN_FILENO");
 }
 
 TEST(getTerminalDriverSettings, RunsSuccessfullyWhenPassedAValidFileDescriptor)
