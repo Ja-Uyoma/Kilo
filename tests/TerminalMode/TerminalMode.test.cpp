@@ -78,12 +78,11 @@ TEST(ttyRaw, SucceedsWhenPassedAValidFileDescriptor)
 {
   termios buf {};
   termios copy {};
-  int fd = STDIN_FILENO;
-  auto cleanup = gsl::finally([&fd, &buf] { ttyCanonicalMode(fd, buf); });
 
-  getTerminalDriverSettings(fd, buf);
+  auto cleanup = gsl::finally([&buf] { ttyCanonicalMode(STDIN_FILENO, buf); });
+  getTerminalDriverSettings(STDIN_FILENO, buf);
 
-  ASSERT_NO_THROW(ttyRaw(fd, buf, copy));
+  ASSERT_NO_THROW(ttyRaw(STDIN_FILENO, buf, copy));
 }
 
 TEST(ttyCanonicalMode, ThrowsAnExceptionWhenPassedAnInvalidFileDescriptor)
