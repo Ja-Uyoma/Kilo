@@ -85,14 +85,10 @@ TEST(ttyRaw, SucceedsWhenPassedAValidFileDescriptor)
   ASSERT_NO_THROW(ttyRaw(STDIN_FILENO, buf, copy));
 }
 
-TEST(ttyCanonicalMode, ThrowsAnExceptionWhenPassedAnInvalidFileDescriptor)
+TEST(ttyCanonicalMode, TerminatesWhenPassedAnInvalidFileDescriptor)
 {
-  termios buf {};
-  int fd = STDOUT_FILENO;
-
-  getTerminalDriverSettings(fd, buf);
-
-  ASSERT_THROW(ttyCanonicalMode(-fd, buf), std::system_error);
+  termios const buf {};
+  ASSERT_DEATH(ttyCanonicalMode(STDOUT_FILENO, buf), "File descriptor must be STDIN_FILENO");
 }
 
 TEST(ttyCanonicalMode, SucceedsWhenPassedAValidFileDescriptor)
