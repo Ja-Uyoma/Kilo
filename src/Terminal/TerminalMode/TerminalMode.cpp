@@ -25,6 +25,7 @@
 
 #include <cassert>
 #include <cerrno>
+#include <iostream>
 #include <system_error>
 #include <termios.h>
 #include <unistd.h>
@@ -59,8 +60,15 @@ void TerminalMode::setCanonicalMode() &
   }
 
   assert(m_state == ttystate::Raw && "Terminal driver currently in raw mode");
-  detail::ttyCanonicalMode(STDIN_FILENO, m_termios);
-  m_state = ttystate::Reset;
+
+  try {
+    detail::ttyCanonicalMode(STDIN_FILENO, m_termios);
+    m_state = ttystate::Reset;
+  }
+  catch (std::system_error const& err) {
+    std::cerr << err.code().message() << ": " << err.what() << '\n';
+    m_state = ttystate::Raw;
+  }
 }
 
 namespace detail {
