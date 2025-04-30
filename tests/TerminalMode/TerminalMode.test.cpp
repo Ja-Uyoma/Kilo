@@ -25,6 +25,7 @@
 
 #include <gsl/util>
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
 #include <unistd.h>
 #include <termios.h>
 
@@ -37,6 +38,7 @@ TEST(TerminalMode, SetRawModePutsTheTerminalDriverInRawMode)
   auto cleanup = gsl::finally([&state] { state.setCanonicalMode(); });
 
   ASSERT_NO_THROW(state.setRawMode());
+  ASSERT_THAT(state.getState(), testing::Eq(TerminalMode::ttystate::Raw));
 }
 
 TEST(TerminalMode, ResetRestoresTerminalSettingsToCanonicalMode)
@@ -45,6 +47,7 @@ TEST(TerminalMode, ResetRestoresTerminalSettingsToCanonicalMode)
   tstate.setRawMode();
 
   ASSERT_NO_THROW(tstate.setCanonicalMode());
+  ASSERT_THAT(tstate.getState(), testing::Eq(TerminalMode::ttystate::Canonical));
 }
 
 namespace detail {
