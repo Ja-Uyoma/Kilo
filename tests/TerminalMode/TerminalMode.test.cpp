@@ -25,6 +25,8 @@
 
 #include <gsl/util>
 #include <gtest/gtest.h>
+#include <unistd.h>
+#include <termios.h>
 
 namespace Kilo::Terminal {
 
