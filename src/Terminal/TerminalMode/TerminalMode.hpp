@@ -38,17 +38,10 @@ public:
     Canonical
   };
 
-  /**
-   * @brief Create a default TerminalMode object. Sets the terminal driver in raw mode
-   * @throws std::system_error An exception describing what went wrong
-   *
-   */
+  /// Default constructor
   explicit TerminalMode();
 
-  /**
-   * @brief Destructor. Sets the terminal driver back in canonical mode
-   *
-   */
+  /// Destructor
   ~TerminalMode();
 
   TerminalMode(TerminalMode const&) = delete;
