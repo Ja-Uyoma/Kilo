@@ -68,7 +68,7 @@ TEST(getTerminalDriverSettings, RunsSuccessfullyWhenPassedAValidFileDescriptor)
 
 TEST(ttyRaw, TerminatesWhenPassedAnInvalidFileDescriptor)
 {
-  termios buf {};
+  termios const buf {};
   termios copy {};
 
   ASSERT_DEATH(ttyRaw(STDOUT_FILENO, buf, copy), "File descriptor must be STDIN_FILENO");
