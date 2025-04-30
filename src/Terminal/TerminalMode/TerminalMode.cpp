@@ -85,7 +85,7 @@ void getTerminalDriverSettings(int fileDescriptor, termios& buf)
 {
   errno = 0;
 
-  if (::tcgetattr(fileDescriptor, &buf) == -1) {
+  if (::tcgetattr(fileDescriptor, &buf) == -1) [[unlikely]] {
     throw std::system_error(errno, std::system_category(), "Could not retrieve terminal driver settings");
   }
 }
@@ -117,7 +117,7 @@ void ttyRaw(int fileDescriptor, termios const& buf, termios& copy)
 
   errno = 0;
 
-  if (::tcsetattr(fileDescriptor, TCSAFLUSH, &copy) == -1) {
+  if (::tcsetattr(fileDescriptor, TCSAFLUSH, &copy) == -1) [[unlikely]] {
     throw std::system_error(errno, std::system_category(), "Failed to set terminal driver to raw mode");
   }
 
@@ -127,7 +127,7 @@ void ttyRaw(int fileDescriptor, termios const& buf, termios& copy)
 
   errno = 0;
 
-  if (::tcgetattr(fileDescriptor, &copy) == -1) {
+  if (::tcgetattr(fileDescriptor, &copy) == -1) [[unlikely]] {
     ::tcsetattr(fileDescriptor, TCSAFLUSH, &buf);
     throw std::system_error(errno, std::system_category(), "Error while writing terminal driver settings to buffer");
   }
@@ -152,7 +152,7 @@ void ttyCanonicalMode(int fileDescriptor, termios const& buf)
 {
   errno = 0;
 
-  if (::tcsetattr(fileDescriptor, TCSAFLUSH, &buf) == -1) {
+  if (::tcsetattr(fileDescriptor, TCSAFLUSH, &buf) == -1) [[unlikely]] {
     throw std::system_error(errno, std::system_category(), "Failed to reset terminal driver to canonical mode");
   }
 }

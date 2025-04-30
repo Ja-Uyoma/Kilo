@@ -24,13 +24,21 @@
 #include "Application/Application.hpp"
 #include "Terminal/TerminalMode/TerminalMode.hpp"
 #include <cstdlib>
+#include <iostream>
 
 using namespace Kilo;
 
 int main(int argc, char const* argv[])
 {
-  static Terminal::TerminalMode terminalMode;
-  terminalMode.setRawMode();
+  try {
+    static Terminal::TerminalMode terminalMode;
+    terminalMode.setRawMode();
+  }
+  catch (std::system_error const& err) {
+    std::cerr << err.code().message() << ": " << err.what() << '\n';
+    return EXIT_FAILURE;
+  }
+  
   editor::Application app;
 
   if (argc >= 2 && !app.open(argv[1])) {
