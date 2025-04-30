@@ -39,7 +39,7 @@ namespace Kilo::editor {
 
 /// Default constructor
 Application::Application() noexcept
-try : m_mode(), m_window() {
+try : m_window() {
   // Nothing to do here...
 }
 catch (std::system_error const& err) {

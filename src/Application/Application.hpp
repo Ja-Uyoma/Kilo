@@ -27,7 +27,6 @@
 #include "Editor/Cursor/Cursor.hpp"
 #include "Editor/Offset/Offset.hpp"
 #include "Editor/ScreenBuffer/ScreenBuffer.hpp"
-#include "Terminal/TerminalMode/TerminalMode.hpp"
 #include "Terminal/Window/Window.hpp"
 #include <filesystem>
 #include <string>
@@ -76,7 +75,6 @@ public:
   void run();
 
 private:
-  Terminal::TerminalMode m_mode;
   Terminal::Window m_window;
 
   std::vector<std::string> m_row;

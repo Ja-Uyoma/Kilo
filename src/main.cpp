@@ -22,13 +22,15 @@
  */
 
 #include "Application/Application.hpp"
+#include "Terminal/TerminalMode/TerminalMode.hpp"
 #include <cstdlib>
 
 using namespace Kilo;
 
 int main(int argc, char const* argv[])
 {
-  static editor::Application app;
+  static Terminal::TerminalMode const terminalMode;
+  editor::Application app;
 
   if (argc >= 2 && !app.open(argv[1])) {
     return EXIT_FAILURE;
