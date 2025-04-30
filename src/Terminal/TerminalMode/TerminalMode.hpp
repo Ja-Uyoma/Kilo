@@ -32,6 +32,12 @@ namespace Kilo::Terminal {
 class TerminalMode
 {
 public:
+  enum class ttystate : std::uint8_t
+  {
+    Raw,
+    Canonical
+  };
+
   /**
    * @brief Create a default TerminalMode object. Sets the terminal driver in raw mode
    * @throws std::system_error An exception describing what went wrong
@@ -62,13 +68,14 @@ public:
    */
   void setCanonicalMode() &;
 
-private:
-  enum class ttystate : std::uint8_t
+  /// Get the current state of the terminal
+  /// \returns ttystate::Raw if the terminal is in raw mode, ttystate::Canonical otherwise
+  constexpr ttystate getState() const noexcept
   {
-    Raw,
-    Canonical
-  };
+    return m_state;
+  }
 
+private:
   termios m_termios {};
   termios m_copy {};
   ttystate m_state {ttystate::Canonical};
