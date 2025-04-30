@@ -29,7 +29,8 @@ using namespace Kilo;
 
 int main(int argc, char const* argv[])
 {
-  static Terminal::TerminalMode const terminalMode;
+  static Terminal::TerminalMode terminalMode;
+  terminalMode.setRawMode();
   editor::Application app;
 
   if (argc >= 2 && !app.open(argv[1])) {
