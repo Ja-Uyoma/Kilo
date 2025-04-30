@@ -83,31 +83,31 @@ TEST(ttyRaw, SucceedsWhenPassedAValidFileDescriptor)
   ::termios buf;
   ::termios copy;
   int fd = STDIN_FILENO;
-  auto cleanup = gsl::finally([&fd, &buf] { ttyReset(fd, buf); });
+  auto cleanup = gsl::finally([&fd, &buf] { ttyCanonicalMode(fd, buf); });
 
   getTerminalDriverSettings(fd, buf);
 
   ASSERT_NO_THROW(ttyRaw(fd, buf, copy));
 }
 
-TEST(ttyReset, ThrowsAnExceptionWhenPassedAnInvalidFileDescriptor)
+TEST(ttyCanonicalMode, ThrowsAnExceptionWhenPassedAnInvalidFileDescriptor)
 {
   ::termios buf;
   int fd = STDOUT_FILENO;
 
   getTerminalDriverSettings(fd, buf);
 
-  ASSERT_THROW(ttyReset(-fd, buf), std::system_error);
+  ASSERT_THROW(ttyCanonicalMode(-fd, buf), std::system_error);
 }
 
-TEST(ttyReset, SucceedsWhenPassedAValidFileDescriptor)
+TEST(ttyCanonicalMode, SucceedsWhenPassedAValidFileDescriptor)
 {
   ::termios buf;
   int fd = STDOUT_FILENO;
 
   getTerminalDriverSettings(fd, buf);
 
-  ASSERT_NO_THROW(ttyReset(fd, buf));
+  ASSERT_NO_THROW(ttyCanonicalMode(fd, buf));
 }
 
 }   // namespace detail

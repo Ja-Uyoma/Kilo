@@ -91,7 +91,7 @@ void ttyRaw(int fileDescriptor, termios const& buf, termios& copy);
 /// Set the terminal driver in canonical mode
 /// \param[in] fileDescriptor The terminal driver's file descriptor
 /// \param[in] buf The buffer from which the desired settings are to be read from
-void ttyReset(int fileDescriptor, termios const& buf);
+void ttyCanonicalMode(int fileDescriptor, termios const& buf);
 
 }   // namespace detail
 

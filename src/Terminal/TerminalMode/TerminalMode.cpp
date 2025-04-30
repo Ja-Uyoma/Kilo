@@ -59,7 +59,7 @@ void TerminalMode::setCanonicalMode() &
   }
 
   assert(m_state == ttystate::Raw && "Terminal driver currently in raw mode");
-  detail::ttyReset(STDIN_FILENO, m_termios);
+  detail::ttyCanonicalMode(STDIN_FILENO, m_termios);
   m_state = ttystate::Reset;
 }
 
@@ -132,7 +132,7 @@ void ttyRaw(int fileDescriptor, termios const& buf, termios& copy)
   }
 }
 
-void ttyReset(int fileDescriptor, termios const& buf)
+void ttyCanonicalMode(int fileDescriptor, termios const& buf)
 {
   errno = 0;
 
