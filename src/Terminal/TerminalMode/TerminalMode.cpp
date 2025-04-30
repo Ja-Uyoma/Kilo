@@ -83,6 +83,8 @@ namespace detail {
 
 void getTerminalDriverSettings(int fileDescriptor, termios& buf)
 {
+  assert(fileDescriptor == STDIN_FILENO and "File descriptor must be STDIN_FILENO");
+
   errno = 0;
 
   if (::tcgetattr(fileDescriptor, &buf) == -1) [[unlikely]] {
@@ -92,6 +94,8 @@ void getTerminalDriverSettings(int fileDescriptor, termios& buf)
 
 void ttyRaw(int fileDescriptor, termios const& buf, termios& copy)
 {
+  assert(fileDescriptor == STDIN_FILENO and "File descriptor must be STDIN_FILENO");
+
   copy = buf;
 
   /*
@@ -150,6 +154,8 @@ void ttyRaw(int fileDescriptor, termios const& buf, termios& copy)
 
 void ttyCanonicalMode(int fileDescriptor, termios const& buf)
 {
+  assert(fileDescriptor == STDIN_FILENO and "File descriptor must be STDIN_FILENO");
+
   errno = 0;
 
   if (::tcsetattr(fileDescriptor, TCSAFLUSH, &buf) == -1) [[unlikely]] {
