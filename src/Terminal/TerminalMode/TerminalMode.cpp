@@ -132,7 +132,7 @@ void ttyRaw(int fileDescriptor, termios const& buf, termios& copy)
     throw std::system_error(errno, std::system_category(), "Error while writing terminal driver settings to buffer");
   }
 
-  auto const verify = [&copy] {
+  auto const changesDidNotStick = [&copy] {
     return (copy.c_iflag & (BRKINT | ICRNL | INPCK | ISTRIP | IXON) != 0) || (copy.c_oflag & OPOST) != 0
         || ((copy.c_cflag & CS8) != CS8) || (copy.c_lflag & (ECHO | ICANON | IEXTEN | ISIG) != 0) || (copy.c_cc[VMIN] != 0)
         || (copy.c_cc[VTIME] != 1);
@@ -142,7 +142,7 @@ void ttyRaw(int fileDescriptor, termios const& buf, termios& copy)
    * Only some of the changes stuck. Restore the original settings
    */
 
-  if (verify()) {
+  if (changesDidNotStick()) {
     ::tcsetattr(fileDescriptor, TCSAFLUSH, &buf);
     throw std::system_error(EINVAL, std::system_category(), "Setting driver to raw mode only partially successful");
   }
