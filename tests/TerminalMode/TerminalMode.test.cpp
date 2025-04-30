@@ -30,11 +30,6 @@
 
 namespace Kilo::Terminal {
 
-TEST(TerminalState, EachInstanceIsWellFormed)
-{
-  ASSERT_NO_THROW(TerminalMode tstate {});
-}
-
 TEST(TerminalState, SetRawModePutsTheTerminalDriverInRawMode)
 {
   TerminalMode state {};
