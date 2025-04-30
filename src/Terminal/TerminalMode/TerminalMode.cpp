@@ -133,8 +133,8 @@ void ttyRaw(int fileDescriptor, termios const& buf, termios& copy)
   }
 
   auto const verify = [&copy] {
-    return (copy.c_iflag & (BRKINT | ICRNL | INPCK | ISTRIP | IXON)) || (copy.c_oflag & OPOST)
-        || ((copy.c_cflag & CS8) != CS8) || (copy.c_lflag & (ECHO | ICANON | IEXTEN | ISIG)) || (copy.c_cc[VMIN] != 0)
+    return (copy.c_iflag & (BRKINT | ICRNL | INPCK | ISTRIP | IXON) != 0) || (copy.c_oflag & OPOST) != 0
+        || ((copy.c_cflag & CS8) != CS8) || (copy.c_lflag & (ECHO | ICANON | IEXTEN | ISIG) != 0) || (copy.c_cc[VMIN] != 0)
         || (copy.c_cc[VTIME] != 1);
   };
 
