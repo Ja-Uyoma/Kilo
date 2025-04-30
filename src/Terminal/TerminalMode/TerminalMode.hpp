@@ -49,21 +49,17 @@ public:
   TerminalMode(TerminalMode&&) = delete;
   auto operator=(TerminalMode&&) -> TerminalMode& = delete;
 
-  /**
-   * @brief Set the terminal driver to raw (or non-canonical) mode
-   *
-   */
+  /// Set the terminal driver to raw (or non-canonical) mode
+  /// \throws std::system_error on failure
   void setRawMode() &;
 
-  /**
-   * @brief Set the terminal driver to canonical mode
-   *
-   */
+  /// Set the terminal driver to canonical mode
   void setCanonicalMode() &;
 
   /// Get the current state of the terminal
   /// \returns ttystate::Raw if the terminal is in raw mode, ttystate::Canonical otherwise
-  constexpr ttystate getState() const noexcept
+  [[nodiscard]]
+  constexpr auto getState() const noexcept -> ttystate
   {
     return m_state;
   }
