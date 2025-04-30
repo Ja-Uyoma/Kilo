@@ -66,14 +66,12 @@ TEST(getTerminalDriverSettings, RunsSuccessfullyWhenPassedAValidFileDescriptor)
   ASSERT_NO_THROW(getTerminalDriverSettings(STDIN_FILENO, buf));
 }
 
-TEST(ttyRaw, ThrowsAnExceptionWhenPassedAnInvalidFileDescriptor)
+TEST(ttyRaw, TerminatesWhenPassedAnInvalidFileDescriptor)
 {
-  ::termios buf;
-  ::termios copy;
-  int fd = STDOUT_FILENO;
+  termios buf {};
+  termios copy {};
 
-  getTerminalDriverSettings(fd, buf);
-  ASSERT_THROW(ttyRaw(-fd, buf, copy), std::system_error);
+  ASSERT_DEATH(ttyRaw(STDOUT_FILENO, buf, copy), "File descriptor must be STDIN_FILENO");
 }
 
 TEST(ttyRaw, SucceedsWhenPassedAValidFileDescriptor)
