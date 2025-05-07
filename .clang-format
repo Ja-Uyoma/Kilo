@@ -24,10 +24,7 @@ AlignConsecutiveShortCaseStatements:
 AlignEscapedNewlines: Left
 AlignOperands: AlignAfterOperator
 
-AlignTrailingComments:
-  Kind: Always
-  OverEmptyLines: 1
-
+AlignTrailingComments: true
 AllowBreakBeforeNoexceptSpecifier: OnlyWithParen
 AllowShortBlocksOnASingleLine: Never
 AllowShortCaseLabelsOnASingleLine: false
