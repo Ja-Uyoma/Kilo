@@ -24,10 +24,12 @@
 #include "Terminal/TerminalMode/TerminalMode.hpp"
 
 #include <gsl/util>
-#include <gtest/gtest.h>
+
 #include <gmock/gmock.h>
-#include <unistd.h>
+#include <gtest/gtest.h>
+
 #include <termios.h>
+#include <unistd.h>
 
 namespace Kilo::Terminal {
 

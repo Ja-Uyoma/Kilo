@@ -24,11 +24,13 @@
 #include "Editor/ScreenBuffer/ScreenBuffer.hpp"
 
 #include "File/File.hpp"
-#include <cstring>
+#include <system_error>
+
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+
+#include <cstring>
 #include <string>
-#include <system_error>
 
 namespace Kilo::editor {
 

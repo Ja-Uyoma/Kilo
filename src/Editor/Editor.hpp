@@ -28,9 +28,10 @@
 #include "Cursor/Cursor.hpp"
 #include "Offset/Offset.hpp"
 #include "Terminal/Window/Window.hpp"
+#include <string_view>
+
 #include <cassert>
 #include <filesystem>
-#include <string_view>
 #include <vector>
 
 namespace Kilo::editor {
@@ -92,7 +93,8 @@ void moveCursor(editor::EditorKey key, Cursor& cursor, std::vector<std::string> 
  * @return true If the operation was successful
  * @return false If the operation failed
  */
-auto open(std::filesystem::path const& path, std::vector<std::string>& document, std::vector<std::string>& rendered) -> bool;
+auto open(std::filesystem::path const& path, std::vector<std::string>& document, std::vector<std::string>& rendered)
+  -> bool;
 
 /**
  * @brief Fit the cursor in the visible window

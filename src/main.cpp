@@ -23,6 +23,7 @@
 
 #include "Application/Application.hpp"
 #include "Terminal/TerminalMode/TerminalMode.hpp"
+
 #include <cstdlib>
 #include <iostream>
 
@@ -38,7 +39,7 @@ int main(int argc, char const* argv[])
     std::cerr << err.code().message() << ": " << err.what() << '\n';
     return EXIT_FAILURE;
   }
-  
+
   editor::Application app;
 
   if (argc >= 2 && !app.open(argv[1])) {

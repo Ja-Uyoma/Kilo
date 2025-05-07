@@ -28,6 +28,7 @@
 #include "Editor/Offset/Offset.hpp"
 #include "Editor/ScreenBuffer/ScreenBuffer.hpp"
 #include "Terminal/Window/Window.hpp"
+
 #include <filesystem>
 #include <string>
 #include <vector>

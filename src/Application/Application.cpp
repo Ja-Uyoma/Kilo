@@ -28,12 +28,13 @@
 #include "File/File.hpp"
 #include "IO/IO.hpp"
 #include "Utilities/Utilities.hpp"
+#include <fmt/format.h>
+#include <system_error>
+
 #include <cstddef>
 #include <cstdlib>
-#include <fmt/format.h>
 #include <iostream>
 #include <stdexcept>
-#include <system_error>
 
 namespace Kilo::editor {
 

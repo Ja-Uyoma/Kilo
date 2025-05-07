@@ -30,18 +30,19 @@
 #include "ScreenBuffer/ScreenBuffer.hpp"
 #include "Terminal/Window/Window.hpp"
 #include "Utilities/Utilities.hpp"
+#include <fmt/format.h>
+#include <string_view>
+
 #include <algorithm>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <filesystem>
-#include <fmt/format.h>
 #include <fstream>
 #include <functional>
 #include <iostream>
 #include <optional>
 #include <string>
-#include <string_view>
 #include <unistd.h>
 #include <utility>
 #include <vector>
@@ -284,8 +285,7 @@ void updateRow(std::string_view row, std::string& render)
 {
   using editor::KiloTabStop;
 
-  [[maybe_unused]]
-  auto tabs = std::ranges::count_if(row, [](unsigned char c) { return c == '\t'; });
+  [[maybe_unused]] auto tabs = std::ranges::count_if(row, [](unsigned char c) { return c == '\t'; });
 
   int idx {};
 

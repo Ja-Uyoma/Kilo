@@ -23,15 +23,16 @@
 
 #include "Window.hpp"
 
-#include <array>
-#include <stdexcept>
+#include "File/File.hpp"
 #include <sys/ioctl.h>
 #include <system_error>
-#include <unistd.h>
+
+#include <array>
 #include <cerrno>
-#include "File/File.hpp"
-#include <string>
 #include <cstdlib>
+#include <stdexcept>
+#include <string>
+#include <unistd.h>
 
 namespace Kilo::Terminal {
 
@@ -56,11 +57,11 @@ auto getWindowSize() -> WindowSize
       throw std::system_error(errno, std::system_category(),
                               "Could not move the cursor to the bottom-right of the screen");
     }
-    
+
     return detail::getCursorPosition(file);
   }
 
-  return WindowSize { .cols = ws.ws_col, .rows = ws.ws_row};
+  return WindowSize {.cols = ws.ws_col, .rows = ws.ws_row};
 }
 
 /// Get the position of the cursor in the terminal window
@@ -89,10 +90,11 @@ auto getCursorPosition(IO::FileInterface& file) -> WindowSize
 
   // First make sure read() responded with an escape sequence
   if (buf[0] != '\x1b' or buf[1] != '[') {
-    throw std::invalid_argument("An invalid byte sequence was encountered where an escape sequence was expected");
+    throw std::invalid_argument("An invalid byte sequence was encountered "
+                                "where an escape sequence was expected");
   }
 
-  WindowSize result { .cols = 0, .rows = 0 };
+  WindowSize result {.cols = 0, .rows = 0};
 
   // At this point, we are passing a string of the form "35;76" to sscanf
   // We tell it to parse the 2 integers separated by a ';' and write the value

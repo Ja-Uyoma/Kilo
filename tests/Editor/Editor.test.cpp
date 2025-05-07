@@ -27,10 +27,12 @@
 #include "Editor/ScreenBuffer/ScreenBuffer.hpp"
 #include "Terminal/Window/Window.hpp"
 #include "Utilities/Utilities.hpp"
+
 #include "gmock/gmock.h"
-#include <cstring>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+
+#include <cstring>
 #include <string>
 #include <vector>
 

@@ -24,9 +24,10 @@
 #include "IO.hpp"
 
 #include "Constants/Constants.hpp"
+#include <system_error>
+
 #include <array>
 #include <cerrno>
-#include <system_error>
 #include <unistd.h>
 
 namespace Kilo::IO {
