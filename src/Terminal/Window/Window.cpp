@@ -79,7 +79,7 @@ auto getCursorPosition(IO::FileInterface& file) -> WindowSize
   std::array<char, 32> buf;
 
   for (std::size_t i = 0; i < buf.size() - 1; ++i) {
-    if (::read(STDIN_FILENO, &buf[0], 1) != 1 or buf[i] == 'R') {
+    if (::read(STDIN_FILENO, &buf[i], 1) != 1 or buf[i] == 'R') {
       break;
     }
   }
