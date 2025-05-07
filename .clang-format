@@ -1,28 +1,33 @@
 ---
-Language: Cpp
+BasedOnStyle: LLVM
+IndentWidth: 2
+TabWidth: 2
+UseTab: Never
 AccessModifierOffset: -2
 AlignAfterOpenBracket: Align
 AlignArrayOfStructures: Left
-AlignConsecutiveAssignments:
-  Enabled: false
+
 AlignConsecutiveBitFields:
   Enabled: true
+
 AlignConsecutiveDeclarations:
   Enabled: false
+
 AlignConsecutiveMacros:
   Enabled: true
+
 AlignConsecutiveShortCaseStatements:
   Enabled: true
   AcrossEmptyLines: true
   AcrossComments: true
-  AlignCaseColons: false
+
 AlignEscapedNewlines: Left
 AlignOperands: AlignAfterOperator
+
 AlignTrailingComments:
   Kind: Always
   OverEmptyLines: 1
-AllowAllArgumentsOnNextLine: true
-AllowAllParametersOfDeclarationOnNextLine: true
+
 AllowBreakBeforeNoexceptSpecifier: OnlyWithParen
 AllowShortBlocksOnASingleLine: Never
 AllowShortCaseLabelsOnASingleLine: false
@@ -32,15 +37,12 @@ AllowShortFunctionsOnASingleLine: None
 AllowShortIfStatementsOnASingleLine: Never
 AllowShortLambdasOnASingleLine: Inline
 AllowShortLoopsOnASingleLine: false
-AlwaysBreakAfterReturnType: None
-AlwaysBreakBeforeMultilineStrings: false
+
 AlwaysBreakTemplateDeclarations: Yes
-BinPackArguments: true
-BinPackParameters: true
 BitFieldColonSpacing: Both
+
 BreakBeforeBraces: Custom
 BraceWrapping:
-  AfterCaseLabel: false
   AfterClass: true
   AfterControlStatement: Never
   AfterEnum: true
@@ -48,7 +50,6 @@ BraceWrapping:
   AfterNamespace: false
   AfterStruct: true
   AfterUnion: true
-  AfterExternBlock: false
   BeforeCatch: true
   BeforeElse: true
   BeforeLambdaBody: false
@@ -57,37 +58,35 @@ BraceWrapping:
   SplitEmptyFunction: true
   SplitEmptyRecord: true
   SplitEmptyNamespace: true
+
 BracedInitializerIndentWidth: 2
-BreakAdjacentStringLiterals: true
-BreakAfterAttributes: Leave
-BreakAfterJavaFieldAnnotations: true
-BreakBeforeBinaryOperators: NonAssignment
 BreakBeforeConceptDeclarations: Always
-BreakBeforeTernaryOperators: true
 BreakConstructorInitializers: BeforeComma
-BreakStringLiterals: true
+
 ColumnLimit: 120
 CompactNamespaces: false
 ConstructorInitializerIndentWidth: 2
 ContinuationIndentWidth: 2
-Cpp11BracedListStyle: true
+
 DerivePointerAlignment: false
 EmptyLineAfterAccessModifier: Never
 EmptyLineBeforeAccessModifier: LogicalBlock
 FixNamespaceComments: true
+
 IncludeBlocks: Regroup
 IncludeCategories:
-  - Regex: "'^\"(llvm|llvm-c|clang|clang-c)/'"
+  - Regex: '^"(llvm|llvm-c|clang|clang-c)/"'
     Priority: 2
     SortPriority: 2
     CaseSensitive: true
-  - Regex: "'^((<|\")(gtest|gmock|isl|json)/)'"
+  - Regex: '^((<|")(gtest|gmock|isl|json)/)'
     Priority: 3
-  - Regex: "'<[[:alnum:].]+>'"
+  - Regex: '^<[[:alnum:].]+>'
     Priority: 4
-  - Regex: "'.*'"
+  - Regex: '.*'
     Priority: 1
     SortPriority: 1
+
 IndentAccessModifiers: false
 IndentCaseBlocks: false
 IndentCaseLabels: true
@@ -95,10 +94,8 @@ IndentExternBlock: Indent
 IndentGotoLabels: false
 IndentPPDirectives: BeforeHash
 IndentRequiresClause: true
-IndentWidth: 2
 IndentWrappedFunctionNames: false
-InsertBraces: false
-InsertNewlineAtEOF: true
+
 IntegerLiteralSeparator:
   Binary: 4
   BinaryMinDigits: 7
@@ -106,28 +103,28 @@ IntegerLiteralSeparator:
   DecimalMinDigits: 5
   Hex: 2
   HexMinDigits: 6
-KeepEmptyLinesAtEOF: true
-KeepEmptyLinesAtTheStartOfBlocks: true
-Language: Cpp
+
 LambdaBodyIndentation: Signature
 MaxEmptyLinesToKeep: 1
 NamespaceIndentation: None
 PPIndentWidth: 1
 PackConstructorInitializers: NextLine
+
 PointerAlignment: Left
 QualifierAlignment: Right
 ReferenceAlignment: Pointer
-ReflowComments: true
+
 RemoveBracesLLVM: false
 RemoveParentheses: Leave
 RemoveSemicolon: false
+
 RequiresClausePosition: WithPreceding
 RequiresExpressionIndentation: OuterScope
+
 SeparateDefinitionBlocks: Leave
 ShortNamespaceLines: 1
 SkipMacroDefinitionBody: false
-SortIncludes: CaseSensitive
-SortUsingDeclarations: Lexicographic
+
 SpaceAfterCStyleCast: false
 SpaceAfterLogicalNot: false
 SpaceAfterTemplateKeyword: false
@@ -138,6 +135,7 @@ SpaceBeforeCpp11BracedList: true
 SpaceBeforeCtorInitializerColon: true
 SpaceBeforeInheritanceColon: true
 SpaceBeforeJsonColon: false
+
 SpaceBeforeParensOptions:
   AfterControlStatements: true
   AfterForeachMacros: false
@@ -149,17 +147,20 @@ SpaceBeforeParensOptions:
   AfterRequiresInClause: false
   AfterRequiresInExpression: false
   BeforeNonEmptyParentheses: false
+
 SpaceBeforeRangeBasedForLoopColon: true
 SpaceBeforeSquareBrackets: false
 SpaceInEmptyBlock: false
+
 SpacesBeforeTrailingComments: 3
 SpacesInAngles: Never
 SpacesInContainerLiterals: false
+
 SpacesInLineCommentPrefix:
   Minimum: 1
   Maximum: -2
+
 SpacesInParens: Never
 SpacesInSquareBrackets: false
+
 Standard: c++20
-TabWidth: 2
-UseTab: Never
