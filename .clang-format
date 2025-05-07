@@ -16,19 +16,12 @@ AlignConsecutiveDeclarations:
 AlignConsecutiveMacros:
   Enabled: true
 
-AlignConsecutiveShortCaseStatements:
-  Enabled: true
-  AcrossEmptyLines: true
-  AcrossComments: true
-
 AlignEscapedNewlines: Left
 AlignOperands: AlignAfterOperator
 
 AlignTrailingComments: true
-AllowBreakBeforeNoexceptSpecifier: OnlyWithParen
 AllowShortBlocksOnASingleLine: Never
 AllowShortCaseLabelsOnASingleLine: false
-AllowShortCompoundRequirementOnASingleLine: true
 AllowShortEnumsOnASingleLine: true
 AllowShortFunctionsOnASingleLine: None
 AllowShortIfStatementsOnASingleLine: Never
@@ -56,7 +49,6 @@ BraceWrapping:
   SplitEmptyRecord: true
   SplitEmptyNamespace: true
 
-BracedInitializerIndentWidth: 2
 BreakBeforeConceptDeclarations: Always
 BreakConstructorInitializers: BeforeComma
 
@@ -93,14 +85,6 @@ IndentPPDirectives: BeforeHash
 IndentRequiresClause: true
 IndentWrappedFunctionNames: false
 
-IntegerLiteralSeparator:
-  Binary: 4
-  BinaryMinDigits: 7
-  Decimal: 3
-  DecimalMinDigits: 5
-  Hex: 2
-  HexMinDigits: 6
-
 LambdaBodyIndentation: Signature
 MaxEmptyLinesToKeep: 1
 NamespaceIndentation: None
@@ -112,15 +96,11 @@ QualifierAlignment: Right
 ReferenceAlignment: Pointer
 
 RemoveBracesLLVM: false
-RemoveParentheses: Leave
-RemoveSemicolon: false
 
 RequiresClausePosition: WithPreceding
-RequiresExpressionIndentation: OuterScope
 
 SeparateDefinitionBlocks: Leave
 ShortNamespaceLines: 1
-SkipMacroDefinitionBody: false
 
 SpaceAfterCStyleCast: false
 SpaceAfterLogicalNot: false
@@ -131,7 +111,6 @@ SpaceBeforeCaseColon: false
 SpaceBeforeCpp11BracedList: true
 SpaceBeforeCtorInitializerColon: true
 SpaceBeforeInheritanceColon: true
-SpaceBeforeJsonColon: false
 
 SpaceBeforeParensOptions:
   AfterControlStatements: true
@@ -140,7 +119,6 @@ SpaceBeforeParensOptions:
   AfterFunctionDefinitionName: false
   AfterIfMacros: false
   AfterOverloadedOperator: false
-  AfterPlacementOperator: false
   AfterRequiresInClause: false
   AfterRequiresInExpression: false
   BeforeNonEmptyParentheses: false
@@ -157,7 +135,7 @@ SpacesInLineCommentPrefix:
   Minimum: 1
   Maximum: -2
 
-SpacesInParens: Never
+SpacesInParentheses: false
 SpacesInSquareBrackets: false
 
 Standard: c++20
