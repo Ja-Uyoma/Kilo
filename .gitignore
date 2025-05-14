@@ -12,3 +12,5 @@ CMakeUserPresets.json
 
 # Ignore all KDevelop files
 *.kdev*
+
+.idea
