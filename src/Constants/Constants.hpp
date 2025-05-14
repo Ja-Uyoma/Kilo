@@ -21,32 +21,46 @@
  * SOFTWARE.
  */
 
-#include "Application/Application.hpp"
-#include "Terminal/TerminalMode/TerminalMode.hpp"
+#ifndef CONSTANTS_HPP
+#define CONSTANTS_HPP
 
-#include <cstdlib>
-#include <iostream>
+#include <string_view>
 
-using namespace Kilo;
+#include <cstdint>
 
-int main(int argc, char const* argv[])
+namespace Kilo::editor {
+
+struct EscapeSequences
 {
-  try {
-    static Terminal::TerminalMode terminalMode;
-    terminalMode.setRawMode();
-  }
-  catch (std::system_error const& err) {
-    std::cerr << err.code().message() << ": " << err.what() << '\n';
-    return EXIT_FAILURE;
-  }
+  static constexpr std::string_view HideCursorWhenRepainting {"\x1b[?25l"};
+  static constexpr std::string_view MoveCursorToHomePosition {"\x1b[H"};
+  static constexpr std::string_view ShowTheCursor {"\x1b[?25h"};
+  static constexpr std::string_view ErasePartOfLineToTheRightOfCursor {"\x1b[K"};
+};
 
-  editor::Application app;
+// The current version of the application
+inline constexpr std::string_view KiloVersion {"0.0.1"};
 
-  if (argc >= 2 && !app.open(argv[1])) {
-    return EXIT_FAILURE;
-  }
+// The size of a tab character
+inline constexpr int KiloTabStop = 8;
 
-  app.run();
+// The keys supported by the application
+// We choose a representation for the arrow keys that does not conflict with the [w, a, s, d] keys.
+// We give them a large integer value that is outside the range of a char, so that they don't
+// conflict with ordinary keypresses.
+enum class EditorKey : std::uint16_t
+{
+  ArrowLeft = 1000,
+  ArrowRight,
+  ArrowUp,
+  ArrowDown,
+  Delete,
+  Home,
+  End,
+  PageUp,
+  PageDown
+};
 
-  return EXIT_SUCCESS;
-}
+}   // namespace Kilo::editor
+
+#endif

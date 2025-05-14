@@ -21,32 +21,29 @@
  * SOFTWARE.
  */
 
-#include "Application/Application.hpp"
-#include "Terminal/TerminalMode/TerminalMode.hpp"
+#ifndef IO_HPP
+#define IO_HPP
 
-#include <cstdlib>
-#include <iostream>
+namespace Kilo::IO {
 
-using namespace Kilo;
+/**
+ * \brief Read key input from stdin
+ * \return The character read
+ * \throws std::system_error if an error occured during read
+ */
+auto readKey() -> int;
 
-int main(int argc, char const* argv[])
-{
-  try {
-    static Terminal::TerminalMode terminalMode;
-    terminalMode.setRawMode();
-  }
-  catch (std::system_error const& err) {
-    std::cerr << err.code().message() << ": " << err.what() << '\n';
-    return EXIT_FAILURE;
-  }
+namespace detail {
 
-  editor::Application app;
+/**
+ * \brief Handle the processing of escape sequences read in from stdin
+ *
+ * \return unsigned The key representing the input escape sequence
+ */
+auto handleEscapeSequences() noexcept -> unsigned;
 
-  if (argc >= 2 && !app.open(argv[1])) {
-    return EXIT_FAILURE;
-  }
+}   // namespace detail
 
-  app.run();
+}   // namespace Kilo::IO
 
-  return EXIT_SUCCESS;
-}
+#endif

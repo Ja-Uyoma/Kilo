@@ -21,32 +21,21 @@
  * SOFTWARE.
  */
 
-#include "Application/Application.hpp"
-#include "Terminal/TerminalMode/TerminalMode.hpp"
+#include "Utilities.hpp"
 
-#include <cstdlib>
-#include <iostream>
+#include <unistd.h>
 
-using namespace Kilo;
+namespace Kilo::utilities {
 
-int main(int argc, char const* argv[])
+/// @brief Clear the screen and reposition the cursor to the top-left corner
+void clearScreenAndRepositionCursor() noexcept
 {
-  try {
-    static Terminal::TerminalMode terminalMode;
-    terminalMode.setRawMode();
+  {
+    [[maybe_unused]] auto&& rv = ::write(STDOUT_FILENO, "\x1b[2J", 4);
   }
-  catch (std::system_error const& err) {
-    std::cerr << err.code().message() << ": " << err.what() << '\n';
-    return EXIT_FAILURE;
+  {
+    [[maybe_unused]] auto&& rv = ::write(STDOUT_FILENO, "\x1b[H", 3);
   }
-
-  editor::Application app;
-
-  if (argc >= 2 && !app.open(argv[1])) {
-    return EXIT_FAILURE;
-  }
-
-  app.run();
-
-  return EXIT_SUCCESS;
 }
+
+}   // namespace Kilo::utilities

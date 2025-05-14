@@ -21,32 +21,23 @@
  * SOFTWARE.
  */
 
-#include "Application/Application.hpp"
-#include "Terminal/TerminalMode/TerminalMode.hpp"
+#ifndef UTILITIES_HPP
+#define UTILITIES_HPP
 
-#include <cstdlib>
-#include <iostream>
+namespace Kilo::utilities {
 
-using namespace Kilo;
+/// @brief Clear the screen and reposition the cursor to the top-left corner
+void clearScreenAndRepositionCursor() noexcept;
 
-int main(int argc, char const* argv[])
+/// @brief Map characters to control keys
+/// @param key The ASCII character to be mapped to a control key
+/// @return A control key
+constexpr auto ctrlKey(unsigned char key) noexcept -> unsigned
 {
-  try {
-    static Terminal::TerminalMode terminalMode;
-    terminalMode.setRawMode();
-  }
-  catch (std::system_error const& err) {
-    std::cerr << err.code().message() << ": " << err.what() << '\n';
-    return EXIT_FAILURE;
-  }
-
-  editor::Application app;
-
-  if (argc >= 2 && !app.open(argv[1])) {
-    return EXIT_FAILURE;
-  }
-
-  app.run();
-
-  return EXIT_SUCCESS;
+  key &= 0x1f;
+  return key;
 }
+
+}   // namespace Kilo::utilities
+
+#endif

@@ -1,31 +1,57 @@
-add_executable(kilo_tests)
+add_executable(tests)
 
-find_package(Catch2 REQUIRED)
+find_package(GTest REQUIRED)
+find_package(Microsoft.GSL REQUIRED)
+find_package(fmt REQUIRED)
 
-target_link_libraries(kilo_tests
+include(GoogleTest)
+
+target_link_libraries(tests
     PRIVATE
-        Catch2::Catch2WithMain
+        GTest::gtest_main
+        GTest::gmock_main
+        Microsoft.GSL::GSL
+        fmt::fmt
 )
 
-target_include_directories(kilo_tests
+target_include_directories(tests
     PRIVATE
-        "${CMAKE_SOURCE_DIR}/includes"
+        "${PROJECT_SOURCE_DIR}/src"
 )
 
-target_sources(kilo_tests
-    PUBLIC
-        "${CMAKE_SOURCE_DIR}/includes/TerminalSettings.hpp"
+target_sources(tests
     PRIVATE
-        main.cpp
-        "${CMAKE_SOURCE_DIR}/src/TerminalSettings.cpp"
+        "${PROJECT_SOURCE_DIR}/src/Editor/Editor.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Editor/Editor.cpp"
+        Editor/Editor.test.cpp
+
+        "${PROJECT_SOURCE_DIR}/src/Terminal/TerminalMode/TerminalMode.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Terminal/TerminalMode/TerminalMode.cpp"
+        TerminalMode/TerminalMode.test.cpp
+
+        "${PROJECT_SOURCE_DIR}/src/Utilities/Utilities.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Utilities/Utilities.cpp"
+
+        "${PROJECT_SOURCE_DIR}/src/File/File.hpp"
+        "${PROJECT_SOURCE_DIR}/src/File/File.cpp"
+
+        "${PROJECT_SOURCE_DIR}/src/Editor/ScreenBuffer/ScreenBuffer.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Editor/ScreenBuffer/ScreenBuffer.cpp"
+        ScreenBuffer/ScreenBuffer.test.cpp
+        
+        "${PROJECT_SOURCE_DIR}/src/Terminal/Window/Window.hpp"
+        "${PROJECT_SOURCE_DIR}/src/Terminal/Window/Window.cpp"
 )
 
-target_compile_features(kilo_tests
+target_compile_features(tests
     PRIVATE
         cxx_std_20
 )
 
-target_compile_options(kilo_tests
-    PRIVATE
-        -Wall -Wextra -Werror -Wpedantic
+target_compile_options(tests
+    PRIVATE $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-Wall -Wextra -Werror -Wpedantic>
 )
+
+add_test(NAME tests COMMAND tests)
+
+gtest_discover_tests(tests)
