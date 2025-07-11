@@ -48,7 +48,7 @@ namespace detail {
 /// \returns The size of the terminal window as a WindowSize instance on success
 auto getWindowSize() -> WindowSize
 {
-  ::winsize ws;
+  ::winsize ws {};
 
   if (IO::File file; ::ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == -1 or ws.ws_col == 0) {
     errno = 0;
