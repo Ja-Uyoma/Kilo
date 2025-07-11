@@ -47,6 +47,13 @@ struct EditorConfig
   std::vector<std::string> renderedDoc;
 };
 
+/*
+ * \brief Move the cursor in the open document depending on the key pressed
+ * \param[in] keyPressed The key pressed by the user
+ * \param[in] editor The current state of the editor
+ */
+void processKeypress(int keyPressed, EditorConfig& editorConfig);
+
 /**
  * @brief Performs an action depending on the key pressed
  *

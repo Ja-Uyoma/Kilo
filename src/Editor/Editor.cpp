@@ -49,6 +49,37 @@
 
 namespace Kilo::editor {
 
+/*
+ * \brief Move the cursor in the open document depending on the key pressed
+ * \param[in] keyPressed The key pressed by the user
+ * \param[in] editor The current state of the editor
+ */
+void processKeypress(int keyPressed, EditorConfig& editor)
+{
+  if (keyPressed == utilities::ctrlKey('q')) {
+    utilities::clearScreenAndRepositionCursor();
+    std::exit(EXIT_SUCCESS);
+  }
+
+  using enum EditorKey;
+
+  if (auto const key = static_cast<EditorKey>(keyPressed); key == Home) {
+    editor.cursor.x = 0;
+  }
+  else if (key == End) {
+    editor.cursor.x = editor.window.cols() - 1;
+  }
+  else if (key == PageUp or key == PageDown) {
+    for (int i = editor.window.rows(); i > 0; --i) {
+      moveCursor(key == PageUp ? ArrowUp : ArrowDown, editor.cursor, editor.openDoc);
+    }
+  }
+  else if (key == ArrowLeft or key == ArrowRight or key == ArrowUp or key == ArrowDown) {
+    moveCursor(key, editor.cursor, editor.openDoc);
+  }
+}
+
+
 /**
  * @brief Performs an action depending on the key pressed
  *
