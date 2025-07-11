@@ -77,7 +77,7 @@ auto getCursorPosition(IO::FileInterface& file) -> WindowSize
   // Read the reply from stdin and store it in a buffer
   // Do this until we encounter a 'R' character
 
-  std::array<char, 32> buf;
+  std::array<char, 32> buf = {};
 
   for (std::size_t i = 0; i < buf.size() - 1; ++i) {
     if (::read(STDIN_FILENO, &buf[i], 1) != 1 or buf[i] == 'R') {
