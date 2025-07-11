@@ -24,14 +24,16 @@
 #ifndef CURSOR_HPP
 #define CURSOR_HPP
 
+#include <cstdint>
+
 namespace Kilo::editor {
 
 struct Cursor
 {
-  int x {};
-  int y {};
+  std::int64_t x{};
+  std::int64_t y{};
 };
 
-}   // namespace Kilo::editor
+} // namespace Kilo::editor
 
 #endif

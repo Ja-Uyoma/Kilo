@@ -24,14 +24,16 @@
 #ifndef OFFSET_HPP
 #define OFFSET_HPP
 
+#include <cstdint>
+
 namespace Kilo::editor {
 
 struct Offset
 {
-  int row {};
-  int col {};
+  std::int64_t row{};
+  std::int64_t col{};
 };
 
-}   // namespace Kilo::editor
+} // namespace Kilo::editor
 
 #endif
