@@ -316,11 +316,13 @@ void updateRow(std::string_view row, std::string& render)
 {
   using editor::KiloTabStop;
 
-  [[maybe_unused]] auto tabs = std::ranges::count_if(row, [](unsigned char c) { return c == '\t'; });
+  [[maybe_unused]] auto tabs = std::ranges::count_if(row, [](unsigned char c) {
+    return c == '\t';
+  });
 
-  int idx {};
+  int idx{};
 
-  for (std::size_t j {}; j < row.length(); j++) {
+  for (std::size_t j{}; j < row.length(); j++) {
     if (row[j] == '\t') {
       render[idx] = ' ';
       idx++;
@@ -336,7 +338,7 @@ void updateRow(std::string_view row, std::string& render)
     }
   }
 }
-}   // namespace Kilo::editor
+} // namespace Kilo::editor
 
 namespace Kilo::editor::detail {
 
@@ -404,4 +406,4 @@ void printLineOfDocument(std::string const& line, ScreenBuffer& buffer, int cons
   buffer.write(&line[columnOffset], lineLen);
 }
 
-}   // namespace Kilo::editor::detail
+} // namespace Kilo::editor::detail
