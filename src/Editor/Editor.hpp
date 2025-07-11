@@ -26,6 +26,7 @@
 
 #include "Cursor/Cursor.hpp"
 #include "Offset/Offset.hpp"
+#include "ScreenBuffer/ScreenBuffer.hpp"
 #include "Terminal/Window/Window.hpp"
 #include "Utilities/Constants.hpp"
 #include <string_view>
@@ -36,10 +37,15 @@
 
 namespace Kilo::editor {
 
-/*
- * Forward declaration to the ScreenBuffer class
- */
-class ScreenBuffer;
+struct EditorConfig
+{
+  Terminal::Window window;
+  Cursor cursor;
+  Offset offset;
+  ScreenBuffer screenBuffer;
+  std::vector<std::string> openDoc;
+  std::vector<std::string> renderedDoc;
+};
 
 /**
  * @brief Performs an action depending on the key pressed
@@ -111,7 +117,7 @@ void scroll(Cursor const& cursor, Offset& offset, Terminal::Window const& window
  * @param[in] render The destination string
  */
 void updateRow(std::string_view row, std::string& render);
-}   // namespace Kilo::editor
+} // namespace Kilo::editor
 
 namespace Kilo::editor::detail {
 
@@ -134,6 +140,6 @@ void printWelcomeMessage(int windowWidth, ScreenBuffer& buffer);
  */
 void printLineOfDocument(std::string const& line, ScreenBuffer& buffer, int windowWidth, int columnOffset);
 
-}   // namespace Kilo::editor::detail
+} // namespace Kilo::editor::detail
 
 #endif
