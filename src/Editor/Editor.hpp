@@ -55,6 +55,12 @@ struct EditorConfig
 void processKeypress(int keyPressed, EditorConfig& editorConfig);
 
 /*
+ * \brief Perform a screen refresh
+ * \param[in] editor The current editor configuration
+ */
+void refreshScreen(EditorConfig& editor);
+
+/*
  * \brief Draw each row of the buffer of text being edited, plus a tilde at the beginning, or the welcome message
  * \param[in] editor The editor configuration
  */
