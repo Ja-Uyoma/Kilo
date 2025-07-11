@@ -79,6 +79,33 @@ void processKeypress(int keyPressed, EditorConfig& editor)
   }
 }
 
+/*
+ * \brief Draw each row of the buffer of text being edited, plus a tilde at the beginning, or the welcome message
+ * \param[in] editor The editor configuration
+ */
+void drawRows(EditorConfig& editor)
+{
+  for (int currentRow = 0; currentRow < editor.window.rows(); ++currentRow) {
+    if (int const fileRow = currentRow + editor.offset.row; fileRow >= editor.openDoc.size()) {
+      if (editor.openDoc.empty() and currentRow == editor.window.rows() / 3) {
+        detail::printWelcomeMessage(editor.window.cols(), editor.screenBuffer);
+      }
+      else {
+        editor.screenBuffer.write("~");
+      }
+    }
+    else {
+      detail::printLineOfDocument(editor.renderedDoc[fileRow], editor.screenBuffer, editor.window.cols(),
+                                  editor.offset.col);
+    }
+
+    editor.screenBuffer.write(EscapeSequences::ErasePartOfLineToTheRightOfCursor);
+
+    if (currentRow < editor.window.rows() - 1) {
+      editor.screenBuffer.write("\r\n");
+    }
+  }
+}
 
 /**
  * @brief Performs an action depending on the key pressed

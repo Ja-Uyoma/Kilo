@@ -54,6 +54,12 @@ struct EditorConfig
  */
 void processKeypress(int keyPressed, EditorConfig& editorConfig);
 
+/*
+ * \brief Draw each row of the buffer of text being edited, plus a tilde at the beginning, or the welcome message
+ * \param[in] editor The editor configuration
+ */
+void drawRows(EditorConfig& editor);
+
 /**
  * @brief Performs an action depending on the key pressed
  *
