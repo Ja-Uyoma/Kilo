@@ -49,9 +49,8 @@ namespace detail {
 auto getWindowSize() -> WindowSize
 {
   ::winsize ws;
-  IO::File file;
 
-  if (::ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == -1 or ws.ws_col == 0) {
+  if (IO::File file; ::ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == -1 or ws.ws_col == 0) {
     errno = 0;
 
     if (file.write(STDOUT_FILENO, std::string("\x1b[999c\x1b[999B")) != 12) {
