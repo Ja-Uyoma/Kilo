@@ -142,6 +142,76 @@ void drawRows(EditorConfig& editor)
   }
 }
 
+/*
+ * \brief Move the cursor in the direction of the key pressed
+ * \param[in] key The key pressed by the user
+ * \param[in] editor The current state of the editor
+ */
+void moveCursor(EditorKey const key, EditorConfig& editor)
+{
+  using enum EditorKey;
+
+  switch (key) {
+    case ArrowLeft:
+      if (editor.cursor.x != 0) {
+        --editor.cursor.x;
+      }
+      else if (editor.cursor.y > 0) {
+        --editor.cursor.y;
+        editor.cursor.x = std::ssize(editor.openDoc[editor.cursor.y]);
+      }
+      break;
+    case ArrowRight: {
+      auto const currRow = std::invoke([&editor] -> std::optional<std::string> {
+        if (editor.cursor.y >= std::ssize(editor.openDoc)) {
+          return std::nullopt;
+        }
+        else {
+          return std::make_optional(editor.openDoc[editor.cursor.y]);
+        }
+      });
+
+      if (currRow and editor.cursor.x < std::ssize(*currRow)) {
+        ++editor.cursor.x;
+      }
+      else if (currRow and editor.cursor.x == std::ssize(*currRow)) {
+        ++editor.cursor.y;
+        editor.cursor.x = 0;
+      }
+    }
+    break;
+
+    case ArrowUp:
+      if (editor.cursor.y != 0) {
+        --editor.cursor.y;
+      }
+      break;
+
+    case ArrowDown:
+      if (editor.cursor.y < std::ssize(editor.openDoc)) {
+        ++editor.cursor.y;
+      }
+
+    default:
+      return;
+  }
+
+  auto const currRow = std::invoke([&editor] -> std::optional<std::string> {
+    if (editor.cursor.y >= std::ssize(editor.openDoc)) {
+      return std::nullopt;
+    }
+    else {
+      return std::make_optional(editor.openDoc[editor.cursor.y]);
+    }
+  });
+
+  auto const rowLength = currRow ? std::ssize(*currRow) : 0;
+
+  if (editor.cursor.x >= rowLength) {
+    editor.cursor.x = rowLength;
+  }
+}
+
 /**
  * @brief Performs an action depending on the key pressed
  *

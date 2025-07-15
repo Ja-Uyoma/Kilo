@@ -66,6 +66,13 @@ void refreshScreen(EditorConfig& editor);
  */
 void drawRows(EditorConfig& editor);
 
+/*
+ * \brief Move the cursor in the direction of the key pressed
+ * \param[in] key The key pressed by the user
+ * \param[in] editor The current state of the editor
+ */
+void moveCursor(EditorKey key, EditorConfig& editor);
+
 /**
  * @brief Performs an action depending on the key pressed
  *
