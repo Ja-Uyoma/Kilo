@@ -26,12 +26,14 @@
 
 #include "File/File.hpp"
 
+#include <cstdint>
+
 namespace Kilo::Terminal {
 
 struct WindowSize
 {
-  int cols;
-  int rows;
+  std::int32_t cols;
+  std::int32_t rows;
 };
 
 class Window
@@ -70,8 +72,8 @@ auto getWindowSize() -> WindowSize;
 /// \returns The position of the cursor as a WindowSize instance
 auto getCursorPosition(IO::FileInterface& file) -> WindowSize;
 
-}   // namespace detail
+} // namespace detail
 
-}   // namespace Kilo::Terminal
+} // namespace Kilo::Terminal
 
 #endif
