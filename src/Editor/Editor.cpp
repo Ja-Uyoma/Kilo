@@ -212,6 +212,33 @@ void moveCursor(EditorKey const key, EditorConfig& editor)
   }
 }
 
+/*
+ * \brief Fix the cursor in the visible window while scrolling
+ * \param[in] editor The current state of the editor
+ */
+void scroll(EditorConfig& editor)
+{
+  // Check if the cursor has moved outside the visible window
+  // If so, adjust the editor.offset.row and/or editor.offset.col variable(s) so that the
+  // cursor is just inside the visible window
+
+  if (editor.cursor.y < editor.offset.row) {
+    editor.offset.row = editor.cursor.y;
+  }
+
+  if (editor.cursor.y >= editor.offset.row + editor.window.rows()) {
+    editor.offset.row = editor.cursor.y - editor.window.rows() + 1;
+  }
+
+  if (editor.cursor.x < editor.offset.col) {
+    editor.offset.col = editor.cursor.x;
+  }
+
+  if (editor.cursor.x >= editor.offset.col + editor.window.cols()) {
+    editor.offset.col = editor.cursor.x - editor.window.cols() + 1;
+  }
+}
+
 /**
  * @brief Performs an action depending on the key pressed
  *

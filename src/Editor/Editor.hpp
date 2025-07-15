@@ -73,6 +73,12 @@ void drawRows(EditorConfig& editor);
  */
 void moveCursor(EditorKey key, EditorConfig& editor);
 
+/*
+ * \brief Fix the cursor in the visible window while scrolling
+ * \param[in] editor The current state of the editor
+ */
+void scroll(EditorConfig& editor);
+
 /**
  * @brief Performs an action depending on the key pressed
  *
