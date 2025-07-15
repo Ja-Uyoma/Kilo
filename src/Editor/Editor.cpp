@@ -121,7 +121,7 @@ void refreshScreen(EditorConfig& editor)
 void drawRows(EditorConfig& editor)
 {
   for (int currentRow = 0; currentRow < editor.window.rows(); ++currentRow) {
-    if (int const fileRow = currentRow + editor.offset.row; fileRow >= editor.openDoc.size()) {
+    if (auto const fileRow = currentRow + editor.offset.row; fileRow >= std::ssize(editor.openDoc)) {
       if (editor.openDoc.empty() and currentRow == editor.window.rows() / 3) {
         detail::printWelcomeMessage(editor.window.cols(), editor.screenBuffer);
       }
