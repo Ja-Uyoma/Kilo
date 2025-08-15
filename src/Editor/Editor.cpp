@@ -23,12 +23,12 @@
 
 #include "Editor.hpp"
 
-#include "Constants/Constants.hpp"
 #include "Cursor/Cursor.hpp"
 #include "File/File.hpp"
 #include "Offset/Offset.hpp"
 #include "ScreenBuffer/ScreenBuffer.hpp"
 #include "Terminal/Window/Window.hpp"
+#include "Utilities/Constants.hpp"
 #include "Utilities/Utilities.hpp"
 #include <fmt/format.h>
 #include <string_view>

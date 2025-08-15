@@ -23,10 +23,10 @@
 
 #include "Application.hpp"
 
-#include "Constants/Constants.hpp"
 #include "Editor/Editor.hpp"
 #include "File/File.hpp"
 #include "IO/IO.hpp"
+#include "Utilities/Constants.hpp"
 #include "Utilities/Utilities.hpp"
 #include <fmt/format.h>
 #include <system_error>

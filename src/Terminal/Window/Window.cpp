@@ -29,6 +29,7 @@
 
 #include <array>
 #include <cerrno>
+#include <charconv>
 #include <cstdlib>
 #include <stdexcept>
 #include <string>
@@ -47,10 +48,9 @@ namespace detail {
 /// \returns The size of the terminal window as a WindowSize instance on success
 auto getWindowSize() -> WindowSize
 {
-  ::winsize ws;
-  IO::File file;
+  ::winsize ws {};
 
-  if (::ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == -1 or ws.ws_col == 0) {
+  if (IO::File file; ::ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == -1 or ws.ws_col == 0) {
     errno = 0;
 
     if (file.write(STDOUT_FILENO, std::string("\x1b[999c\x1b[999B")) != 12) {
@@ -77,7 +77,7 @@ auto getCursorPosition(IO::FileInterface& file) -> WindowSize
   // Read the reply from stdin and store it in a buffer
   // Do this until we encounter a 'R' character
 
-  std::array<char, 32> buf;
+  std::array<char, 32> buf = {};
 
   for (std::size_t i = 0; i < buf.size() - 1; ++i) {
     if (::read(STDIN_FILENO, &buf[i], 1) != 1 or buf[i] == 'R') {
@@ -96,11 +96,36 @@ auto getCursorPosition(IO::FileInterface& file) -> WindowSize
 
   WindowSize result {.cols = 0, .rows = 0};
 
-  // At this point, we are passing a string of the form "35;76" to sscanf
+  // At this point, we are passing a string of the form "35;76" to std::from_chars
   // We tell it to parse the 2 integers separated by a ';' and write the value
   // into the rows and cols variables
-  if (std::sscanf(&buf[2], "%d;%d", &result.rows, &result.cols) != 2) {
-    throw std::runtime_error("Failed to parse cursor position");
+
+  char const* parsePtr = &buf[2];
+  char const* endPtr = &buf.back();
+
+  // Parse rows
+  auto [rowEndPtr, rowEc] = std::from_chars(parsePtr, endPtr, result.rows);
+
+  // Check error if no characters consumed
+  if (rowEc != std::errc() or rowEndPtr == parsePtr) {
+    return {};    // failed to parse rows or row-string empty
+  }
+
+  // Check for semicolon
+  if (rowEndPtr == endPtr or *rowEndPtr != ';') {
+    return {};    // expected semicolon not found or end of string
+  }
+
+  // Skip semicolon
+  parsePtr = rowEndPtr + 1;
+
+  // Parse columns
+  auto [colEndPtr, colEc] = std::from_chars(parsePtr, endPtr, result.cols);
+
+  // Check error; no characters consumed, or not ending at 'R'
+  if (colEc != std::errc() or colEndPtr == parsePtr or colEndPtr != endPtr) {
+    // Failed to parse columns, or cols string empty, or extra characters encountered before 'R'
+    return {};
   }
 
   return result;

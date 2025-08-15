@@ -24,10 +24,10 @@
 #ifndef EDITOR_HPP
 #define EDITOR_HPP
 
-#include "Constants/Constants.hpp"
 #include "Cursor/Cursor.hpp"
 #include "Offset/Offset.hpp"
 #include "Terminal/Window/Window.hpp"
+#include "Utilities/Constants.hpp"
 #include <string_view>
 
 #include <cassert>
