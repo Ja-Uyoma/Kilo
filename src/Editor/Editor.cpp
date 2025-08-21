@@ -162,7 +162,7 @@ void moveCursor(EditorKey const key, EditorConfig& editor)
       }
       break;
     case ArrowRight: {
-      auto const currRow = std::invoke([&editor] -> std::optional<std::string> {
+      auto const currRow = std::invoke([&editor]() -> std::optional<std::string> {
         if (editor.cursor.y >= std::ssize(editor.openDoc)) {
           return std::nullopt;
         }
@@ -196,7 +196,7 @@ void moveCursor(EditorKey const key, EditorConfig& editor)
       return;
   }
 
-  auto const currRow = std::invoke([&editor] -> std::optional<std::string> {
+  auto const currRow = std::invoke([&editor]() -> std::optional<std::string> {
     if (editor.cursor.y >= std::ssize(editor.openDoc)) {
       return std::nullopt;
     }
