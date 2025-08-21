@@ -54,7 +54,7 @@ namespace Kilo::editor {
  * \param[in] keyPressed The key pressed by the user
  * \param[in] editor The current state of the editor
  */
-void processKeypress(int keyPressed, EditorConfig& editor)
+void processKeypress(int keyPressed, EditorConfig& editorConfig)
 {
   if (keyPressed == utilities::ctrlKey('q')) {
     utilities::clearScreenAndRepositionCursor();
@@ -64,18 +64,18 @@ void processKeypress(int keyPressed, EditorConfig& editor)
   using enum EditorKey;
 
   if (auto const key = static_cast<EditorKey>(keyPressed); key == Home) {
-    editor.cursor.x = 0;
+    editorConfig.cursor.x = 0;
   }
   else if (key == End) {
-    editor.cursor.x = editor.window.cols() - 1;
+    editorConfig.cursor.x = editorConfig.window.cols() - 1;
   }
   else if (key == PageUp or key == PageDown) {
-    for (int i = editor.window.rows(); i > 0; --i) {
-      moveCursor(key == PageUp ? ArrowUp : ArrowDown, editor.cursor, editor.openDoc);
+    for (int i = editorConfig.window.rows(); i > 0; --i) {
+      moveCursor(key == PageUp ? ArrowUp : ArrowDown, editorConfig.cursor, editorConfig.openDoc);
     }
   }
   else if (key == ArrowLeft or key == ArrowRight or key == ArrowUp or key == ArrowDown) {
-    moveCursor(key, editor.cursor, editor.openDoc);
+    moveCursor(key, editorConfig.cursor, editorConfig.openDoc);
   }
 }
 
@@ -236,106 +236,6 @@ void scroll(EditorConfig& editor)
 
   if (editor.cursor.x >= editor.offset.col + editor.window.cols()) {
     editor.offset.col = editor.cursor.x - editor.window.cols() + 1;
-  }
-}
-
-/**
- * @brief Performs an action depending on the key pressed
- *
- * @param[in] keyPressed The key pressed by the user
- * @param[in] cursor The position of the cursor in the terminal window
- * @param[in] window The terminal window
- */
-void processKeypress(int const keyPressed, Cursor& cursor, Terminal::Window const& window,
-                     std::vector<std::string> const& document) noexcept
-{
-  using editor::EditorKey;
-  using utilities::clearScreenAndRepositionCursor;
-  using utilities::ctrlKey;
-  using enum editor::EditorKey;
-
-  if (keyPressed == ctrlKey('q')) {
-    clearScreenAndRepositionCursor();
-    std::exit(EXIT_SUCCESS);
-  }
-
-  auto key = static_cast<EditorKey>(keyPressed);
-
-  if (key == Home) {
-    cursor.x = 0;
-  }
-  else if (key == End) {
-    cursor.x = window.cols() - 1;
-  }
-  else if (key == PageUp or key == PageDown) {
-    for (auto i = window.rows(); i > 0; i--) {
-      moveCursor(key == PageUp ? ArrowUp : ArrowDown, cursor, document);
-    }
-  }
-  else if (key == ArrowLeft or key == ArrowRight or key == ArrowUp or key == ArrowDown) {
-    moveCursor(key, cursor, document);
-  }
-}
-
-/**
- * @brief Perform a screen refresh
- *
- * @details Fit the cursor within the visible window and draw each row of the buffer of text being edited together with
- * the tildes
- * @param buffer The screen buffer
- * @param cursor The cursor
- * @param offset The offset from the window to the open document
- */
-void refreshScreen(ScreenBuffer& buffer, Cursor const& cursor, Offset const& offset, Terminal::Window const& window,
-                   std::vector<std::string> const& document, std::vector<std::string> const& renderedDoc)
-{
-  /*
-   * Hide the cursor when painting and then move it to the home position
-   */
-
-  buffer.write(EscapeSequences::HideCursorWhenRepainting).write(EscapeSequences::MoveCursorToHomePosition);
-
-  IO::File output;
-
-  drawRows(window, offset, document, buffer, renderedDoc);
-
-  // We add 1 to cursor.x and cursor.y to convert from 0-indexed values to the
-  // 1-indexed values that the terminal uses
-  auto const cursorPos = fmt::format("\x1b[{};{}H", (cursor.y - offset.row) + 1, (cursor.x - offset.col) + 1);
-
-  buffer.write(cursorPos).write(EscapeSequences::ShowTheCursor).flush(output);
-}
-
-/**
- * @brief Draw each row of the buffer of text being edited, plus a tilde at the beginning
- *
- * @param window The terminal window
- * @param offset The offset from the terminal window to the document
- * @param doc The document being edited
- * @param buffer The screen buffer
- * @param renderedDoc The version of the document being edited that is actually rendered
- */
-void drawRows(Terminal::Window const& window, Offset const& offset, std::vector<std::string> const& doc,
-              ScreenBuffer& buffer, std::vector<std::string> const& renderedDoc)
-{
-  for (std::size_t currentRow = 0; std::cmp_less(currentRow, window.rows()); currentRow++) {
-    if (auto fileRow = currentRow + offset.row; fileRow >= doc.size()) {
-      if (doc.empty() and std::cmp_equal(currentRow, window.rows() / 3)) {
-        detail::printWelcomeMessage(window.cols(), buffer);
-      }
-      else {
-        buffer.write("~");
-      }
-    }
-    else {
-      detail::printLineOfDocument(renderedDoc[fileRow], buffer, window.cols(), offset.col);
-    }
-
-    buffer.write(EscapeSequences::ErasePartOfLineToTheRightOfCursor);
-
-    if (std::cmp_less(currentRow, window.rows() - 1)) {
-      buffer.write("\r\n");
-    }
   }
 }
 

@@ -80,40 +80,6 @@ void moveCursor(EditorKey key, EditorConfig& editor);
 void scroll(EditorConfig& editor);
 
 /**
- * @brief Performs an action depending on the key pressed
- *
- * @param[in] keyPressed The key pressed by the user
- * @param[in] cursor The position of the cursor in the terminal window
- * @param[in] window The terminal window
- */
-void processKeypress(int keyPressed, Cursor& cursor, Terminal::Window const& window,
-                     std::vector<std::string> const& document) noexcept;
-
-/**
- * @brief Perform a screen refresh
- *
- * @details Fit the cursor within the visible window and draw each row of the buffer of text being edited together with
- * the tildes
- * @param buffer The screen buffer
- * @param cursor The cursor
- * @param offset The offset from the window to the open document
- */
-void refreshScreen(ScreenBuffer& buffer, Cursor const& cursor, Offset const& offset, Terminal::Window const& window,
-                   std::vector<std::string> const& document, std::vector<std::string> const& renderedDoc);
-
-/**
- * @brief Draw each row of the buffer of text being edited, plus a tilde at the beginning
- *
- * @param window The terminal window
- * @param offset The offset from the terminal window to the document
- * @param doc The document being edited
- * @param buffer The screen buffer
- * @param renderedDoc The version of the document being edited that is actually rendered
- */
-void drawRows(Terminal::Window const& window, Offset const& offset, std::vector<std::string> const& doc,
-              ScreenBuffer& buffer, std::vector<std::string> const& renderedDoc);
-
-/**
  * @brief Move the cursor in the direction of the key pressed
  *
  * @param key The key pressed
