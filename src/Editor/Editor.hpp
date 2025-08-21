@@ -80,15 +80,6 @@ void moveCursor(EditorKey key, EditorConfig& editor);
 void scroll(EditorConfig& editor);
 
 /**
- * @brief Move the cursor in the direction of the key pressed
- *
- * @param key The key pressed
- * @param cursor The editor cursor
- * @param row The document which is currently open
- */
-void moveCursor(editor::EditorKey key, Cursor& cursor, std::vector<std::string> const& row);
-
-/**
  * @brief Open a file and write its contents to memory
  *
  * @param[in] path The path to the file

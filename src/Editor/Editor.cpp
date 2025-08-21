@@ -71,11 +71,11 @@ void processKeypress(int keyPressed, EditorConfig& editorConfig)
   }
   else if (key == PageUp or key == PageDown) {
     for (int i = editorConfig.window.rows(); i > 0; --i) {
-      moveCursor(key == PageUp ? ArrowUp : ArrowDown, editorConfig.cursor, editorConfig.openDoc);
+      moveCursor(key == PageUp ? ArrowUp : ArrowDown, editorConfig);
     }
   }
   else if (key == ArrowLeft or key == ArrowRight or key == ArrowUp or key == ArrowDown) {
-    moveCursor(key, editorConfig.cursor, editorConfig.openDoc);
+    moveCursor(key, editorConfig);
   }
 }
 
@@ -236,74 +236,6 @@ void scroll(EditorConfig& editor)
 
   if (editor.cursor.x >= editor.offset.col + editor.window.cols()) {
     editor.offset.col = editor.cursor.x - editor.window.cols() + 1;
-  }
-}
-
-/**
- * @brief Move the cursor in the direction of the key pressed
- *
- * @param key The key pressed
- * @param cursor The editor cursor
- * @param document The document which is currently open
- */
-void moveCursor(editor::EditorKey key, Cursor& cursor, std::vector<std::string> const& document)
-{
-  using enum editor::EditorKey;
-
-  switch (key) {
-    case ArrowLeft:
-      if (cursor.x != 0) {
-        cursor.x--;
-      }
-      else if (cursor.y > 0) {
-        cursor.y--;
-        cursor.x = std::ssize(document[cursor.y]);
-      }
-      break;
-    case ArrowRight: {
-      auto currentRow = std::invoke([cy = cursor.y, &document]() -> std::optional<std::string> {
-        if (cy >= std::ssize(document)) {
-          return std::nullopt;
-        }
-
-        return std::make_optional(document[cy]);
-      });
-
-      if (currentRow && std::cmp_less(cursor.x, currentRow->size())) {
-        cursor.x++;
-      }
-      else if (currentRow && std::cmp_equal(cursor.x, currentRow->size())) {
-        cursor.y++;
-        cursor.x = 0;
-      }
-      break;
-    }
-    case ArrowUp:
-      if (cursor.y != 0) {
-        cursor.y--;
-      }
-      break;
-    case ArrowDown:
-      if (std::cmp_less(cursor.y, document.size())) {
-        cursor.y++;
-      }
-      break;
-    default:
-      return;
-  }
-
-  auto currRow = std::invoke([&cursor, &document]() -> std::optional<std::string> {
-    if (cursor.y >= std::ssize(document)) {
-      return std::nullopt;
-    }
-
-    return std::make_optional(document[cursor.y]);
-  });
-
-  auto rowlen = currRow ? currRow->length() : 0;
-
-  if (std::cmp_greater_equal(cursor.x, rowlen)) {
-    cursor.x = rowlen;
   }
 }
 
