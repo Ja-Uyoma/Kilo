@@ -34,6 +34,7 @@
 #include <string_view>
 
 #include <algorithm>
+#include <cassert>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -239,14 +240,13 @@ void scroll(EditorConfig& editor)
   }
 }
 
-/**
- * @brief Open a file and write its contents to memory
+/*
+ * \brief Open a file and write its contents to memory
  *
- * @param[in] path The path to the file
- * @param[in] document The buffer containing the file in memory
- * @param[in] rendered The document that is actually rendered to the window
- * @return true If the operation was successful
- * @return false If the operation failed
+ * \param[in] path The path to the file
+ * \param[in] document The buffer containing the file in memory
+ * \param[in] rendered The document that is actually rendered to the window
+ * \return true If the operation was successful, and false otherwise
  */
 bool open(std::filesystem::path const& path, std::vector<std::string>& document, std::vector<std::string>& rendered)
 {
@@ -301,13 +301,13 @@ void updateRow(std::string_view row, std::string& render)
 
 namespace Kilo::editor::detail {
 
-/**
- * @brief Write the welcome message to the screen buffer
+/*
+ * \brief Write the welcome message to the screen buffer
  *
- * @param windowWidth The width of the window in which the message is to be displayed
- * @param buffer The buffer to which the message is written before being displayed
+ * \param[in] windowWidth The width of the window in which the message is to be displayed
+ * \param[in] buffer The buffer to which the message is written before being displayed
  */
-void printWelcomeMessage(int windowWidth, ScreenBuffer& buffer)
+void printWelcomeMessage(int32_t const windowWidth, ScreenBuffer& buffer)
 {
   auto msg = fmt::format("Kilo editor -- version {}", editor::KiloVersion);
 
@@ -339,16 +339,17 @@ void printWelcomeMessage(int windowWidth, ScreenBuffer& buffer)
   buffer.write(msg);
 }
 
-/**
- * @brief Print a line of text from the open document to the screen
+/*
+ * \brief Print a line of text from the open document to the screen
  *
- * @param line The line to be printed
- * @param buffer The screen buffer
- * @param windowWidth The width of the terminal window
- * @param columnOffset The column offset between the terminal window width and the document width
- * @pre The column offset must be non-negative
+ * \param[in] line The line to be printed
+ * \param[in] buffer The screen buffer
+ * \param[in] windowWidth The width of the terminal window
+ * \param[in] columnOffset The column offset between the terminal window width and the document width
+ * \pre The column offset must be non-negative
  */
-void printLineOfDocument(std::string const& line, ScreenBuffer& buffer, int const windowWidth, int const columnOffset)
+void printLineOfDocument(std::string const& line, ScreenBuffer& buffer, int32_t const windowWidth,
+                         int64_t const columnOffset)
 {
   assert(columnOffset >= 0 and "Column offset must be non-negative");
 
