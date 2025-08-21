@@ -39,22 +39,7 @@
 namespace Kilo::editor {
 
 /// Default constructor
-Application::Application() noexcept
-try : m_window() {
-  // Nothing to do here...
-}
-catch (std::system_error const& err) {
-  std::cerr << err.what() << '\n';
-  std::exit(EXIT_FAILURE);
-}
-catch (std::invalid_argument const& err) {
-  std::cerr << err.what() << '\n';
-  std::exit(EXIT_FAILURE);
-}
-catch (std::runtime_error const& err) {
-  std::cerr << err.what() << '\n';
-  std::exit(EXIT_FAILURE);
-}
+Application::Application() noexcept = default;
 
 /**
  * @brief Position the cursor within the visible window
@@ -62,7 +47,7 @@ catch (std::runtime_error const& err) {
  */
 void Application::scroll() noexcept
 {
-  editor::scroll(m_cursor, m_off, m_window);
+  editor::scroll(editorConfig);
 }
 
 /**
@@ -71,20 +56,7 @@ void Application::scroll() noexcept
  */
 void Application::refreshScreen()
 {
-  /*
-   * Hide the cursor when painting and then move it to the home position
-   */
-
-  m_buffer.write(EscapeSequences::HideCursorWhenRepainting).write(EscapeSequences::MoveCursorToHomePosition);
-
-  this->drawRows();
-
-  // We add 1 to cursor.x and cursor.y to convert from 0-indexed values to the
-  // 1-indexed values that the terminal uses
-  auto const cursorPos = fmt::format("\x1b[{};{}H", (m_cursor.y - m_off.row) + 1, (m_cursor.x - m_off.col) + 1);
-
-  IO::File output;
-  m_buffer.write(cursorPos).write(EscapeSequences::ShowTheCursor).flush(output);
+  editor::refreshScreen(editorConfig);
 }
 
 /**
@@ -94,29 +66,7 @@ void Application::refreshScreen()
 void Application::processKeypress()
 {
   auto const keyPressed = IO::readKey();
-
-  if (keyPressed == utilities::ctrlKey('q')) {
-    utilities::clearScreenAndRepositionCursor();
-    std::exit(EXIT_SUCCESS);
-  }
-
-  using enum editor::EditorKey;
-  auto const key = static_cast<editor::EditorKey>(keyPressed);
-
-  if (key == Home) {
-    m_cursor.x = 0;
-  }
-  else if (key == End) {
-    m_cursor.x = m_window.cols() - 1;
-  }
-  else if (key == PageUp or key == PageDown) {
-    for (std::size_t i = m_window.rows(); i > 0; --i) {
-      moveCursor(key == PageUp ? ArrowUp : ArrowDown, m_cursor, m_row);
-    }
-  }
-  else if (key == ArrowLeft or key == ArrowRight or key == ArrowUp or key == ArrowDown) {
-    moveCursor(key, m_cursor, m_row);
-  }
+  editor::processKeypress(keyPressed, editorConfig);
 }
 
 /**
@@ -124,7 +74,7 @@ void Application::processKeypress()
  */
 void Application::drawRows()
 {
-  editor::drawRows(m_window, m_off, m_row, m_buffer, m_render);
+  editor::drawRows(editorConfig);
 }
 
 /**
@@ -136,7 +86,7 @@ void Application::drawRows()
  */
 auto Application::open(std::filesystem::path const& path) -> bool
 {
-  return editor::open(path, m_row, m_render);
+  return editor::open(path, editorConfig.openDoc, editorConfig.renderedDoc);
 }
 
 void Application::run()
@@ -152,4 +102,4 @@ catch (std::system_error const& err) {
   std::cerr << err.code() << ": " << err.what() << '\n';
 }
 
-}   // namespace Kilo::editor
+} // namespace Kilo::editor

@@ -24,14 +24,9 @@
 #ifndef APPLICATION_HPP
 #define APPLICATION_HPP
 
-#include "Editor/Cursor/Cursor.hpp"
-#include "Editor/Offset/Offset.hpp"
-#include "Editor/ScreenBuffer/ScreenBuffer.hpp"
-#include "Terminal/Window/Window.hpp"
+#include "Editor/Editor.hpp"
 
 #include <filesystem>
-#include <string>
-#include <vector>
 
 namespace Kilo::editor {
 class Application
@@ -76,15 +71,8 @@ public:
   void run();
 
 private:
-  Terminal::Window m_window;
-
-  std::vector<std::string> m_row;
-  std::vector<std::string> m_render;
-  Cursor m_cursor {};
-  Offset m_off {};
-  [[maybe_unused]] int m_rx {};
-  ScreenBuffer m_buffer;
+  editor::EditorConfig editorConfig;
 };
-}   // namespace Kilo::editor
+} // namespace Kilo::editor
 
 #endif
