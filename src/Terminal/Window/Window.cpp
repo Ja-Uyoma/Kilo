@@ -44,9 +44,11 @@ Window::Window() : m_winsize(detail::getWindowSize())
 
 namespace detail {
 
-/// Get the size of the open terminal window
-/// \throws std::system_error on failure
-/// \returns The size of the terminal window as a WindowSize instance on success
+/**
+ * \brief Get the dimensions of the terminal window
+ * \returns The dimensions of the terminal window
+ * \throws std::system_error on failure
+ */
 auto getWindowSize() -> WindowSize
 {
   ::winsize ws{};
@@ -65,9 +67,11 @@ auto getWindowSize() -> WindowSize
   return WindowSize{.cols = ws.ws_col, .rows = ws.ws_row};
 }
 
-/// Get the position of the cursor in the terminal window
-/// \throws std::system_error on failure
-/// \returns The position of the cursor as a WindowSize instance
+/**
+ * \brief Get the position of the cursor in the terminal window
+ * \returns The position of the cursor in the terminal window
+ * \throws std::system_error on failure
+ */
 auto getCursorPosition(IO::FileInterface& file) -> WindowSize
 {
   Expects(isatty(STDIN_FILENO) and "STDIN must be a terminal device");

@@ -42,15 +42,28 @@ public:
   /// Create a new Window object
   explicit Window();
 
-  /// Get the number of columns of the terminal window
-  /// \returns The number of columns of the terminal window
+  /**
+   * \brief Create a Window with the given dimensions
+   * \param[in] windowSize The dimensions of the new Window object
+   */
+  explicit constexpr Window(WindowSize const& windowSize) noexcept
+    : m_winsize(windowSize)
+  {
+  }
+
+  /**
+   * \brief Get the columns of the terminal window
+   * \returns The columns of the terminal window
+   */
   [[nodiscard]] constexpr auto cols() const noexcept
   {
     return m_winsize.cols;
   }
 
-  /// Get the number of rows of the terminal window
-  /// \returns The number of rows of the terminal window
+  /**
+   * \brief Get the rows of the terminal window
+   * \returns The rows of the terminal window
+   */
   [[nodiscard]] constexpr auto rows() const noexcept
   {
     return m_winsize.rows;
@@ -62,14 +75,18 @@ private:
 
 namespace detail {
 
-/// Get the size of the open terminal window
-/// \throws std::system_error on failure
-/// \returns The size of the terminal window as a WindowSize instance on success
+/**
+ * \brief Get the dimensions of the terminal window
+ * \returns The dimensions of the terminal window
+ * \throws std::system_error on failure
+ */
 auto getWindowSize() -> WindowSize;
 
-/// Get the position of the cursor in the terminal window
-/// \throws std::system_error on failure
-/// \returns The position of the cursor as a WindowSize instance
+/**
+ * \brief Get the position of the cursor in the terminal window
+ * \returns The position of the cursor in the terminal window
+ * \throws std::system_error on failure
+ */
 auto getCursorPosition(IO::FileInterface& file) -> WindowSize;
 
 } // namespace detail
