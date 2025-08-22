@@ -41,70 +41,61 @@ namespace Kilo::editor {
 TEST(processKeypress, TerminatesTheProgramIfQIsPressed)
 {
   using editor::EditorKey;
-  using Terminal::Window;
 
-  Cursor cursor {100, 100};
-  Window const window;
-  std::vector<std::string> const& doc {};
+  EditorConfig editorConfig;
+  constexpr auto key = utilities::ctrlKey('q');
 
-  auto key = utilities::ctrlKey('q');
-  ASSERT_EXIT(processKeypress(key, cursor, window, doc), ::testing::ExitedWithCode(0), ::testing::Eq(""));
+  ASSERT_EXIT(processKeypress(key, editorConfig), ::testing::ExitedWithCode(0), ::testing::Eq(""));
 }
 
 TEST(processKeypress, MovesCursorToStartOfLineIfHomeButtonIsPressed)
 {
   using editor::EditorKey;
-  using Terminal::Window;
 
-  EditorKey const key = EditorKey::Home;
-  Cursor cursor {100, 100};
-  Window const window;
-  std::vector<std::string> const& doc {};
+  constexpr auto key = EditorKey::Home;
+  EditorConfig editorConfig;
 
-  processKeypress(static_cast<int>(key), cursor, window, doc);
+  processKeypress(static_cast<int>(key), editorConfig);
 
-  ASSERT_THAT(cursor.x, ::testing::Eq(0));
+  ASSERT_THAT(editorConfig.cursor.x, ::testing::Eq(0));
 }
 
 TEST(processKeypress, MovesCursorToEndOfLineIfEndButtonIsPressed)
 {
   using editor::EditorKey;
-  using Terminal::Window;
 
-  EditorKey const key = EditorKey::End;
-  Cursor cursor {100, 100};
-  Window const window;
-  std::vector<std::string> const& doc {};
+  constexpr auto key = EditorKey::End;
+  EditorConfig editorConfig;
 
-  processKeypress(static_cast<int>(key), cursor, window, doc);
+  processKeypress(static_cast<int>(key), editorConfig);
 
-  ASSERT_THAT(cursor.x, ::testing::Eq(window.cols() - 1));
+  ASSERT_THAT(editorConfig.cursor.x, ::testing::Eq(editorConfig.window.cols() - 1));
 }
 
 namespace detail {
 
 TEST(printWelcomeMessage, PrintsTheCorrectMessageCentred)
 {
-  int const width {50};
-  ScreenBuffer buf {};
+  constexpr int width = 50;
+  ScreenBuffer buf{};
 
   printWelcomeMessage(width, buf);
 
-  std::string const msg {"Kilo editor -- version 0.0.1"};
-  auto padding = (width - msg.length()) / 2;
-  std::string output = "~" + std::string(padding - 1, ' ') + msg;
+  std::string const msg{"Kilo editor -- version 0.0.1"};
+  auto const padding = (width - msg.length()) / 2;
+  std::string const output = "~" + std::string(padding - 1, ' ') + msg;
 
   ASSERT_THAT(buf.c_str(), ::testing::Eq(output));
 }
 
 TEST(printWelcomeMessage, TruncatesTheMessageIfItsTooLong)
 {
-  int const width {25};
-  ScreenBuffer buf {};
+  constexpr int width = 25;
+  ScreenBuffer buf{};
 
   printWelcomeMessage(width, buf);
 
-  std::string const msg {"Kilo editor -- version 0.0.1"};
+  std::string const msg{"Kilo editor -- version 0.0.1"};
   std::string const truncatedMsg = msg.substr(0, width);
 
   ASSERT_THAT(buf.c_str(), ::testing::Eq(truncatedMsg));
@@ -112,9 +103,9 @@ TEST(printWelcomeMessage, TruncatesTheMessageIfItsTooLong)
 
 TEST(printLineOfDocument, PrintsNothingWhenTheLineLengthIsLessThanTheColumnOffset)
 {
-  std::string const line {"The quick brown fox jumped over the lazy doggo"};
-  int const windowWidth {20};
-  int const colOffset = std::ssize(line) + 5;
+  std::string const line{"The quick brown fox jumped over the lazy doggo"};
+  constexpr int windowWidth = 20;
+  auto const colOffset = std::ssize(line) + 5;
   ScreenBuffer buf;
 
   printLineOfDocument(line, buf, windowWidth, colOffset);
@@ -124,9 +115,9 @@ TEST(printLineOfDocument, PrintsNothingWhenTheLineLengthIsLessThanTheColumnOffse
 
 TEST(printLineOfDocument, TruncatesTheLineIfItsLongerThanWindowWidth)
 {
-  std::string const line {"The quick brown fox jumped over the lazy doggo"};
-  int const windowWidth {20};
-  int const colOffset = 5;
+  std::string const line{"The quick brown fox jumped over the lazy doggo"};
+  constexpr int windowWidth = 20;
+  constexpr int colOffset = 5;
   ScreenBuffer buf;
 
   printLineOfDocument(line, buf, windowWidth, colOffset);
@@ -134,6 +125,6 @@ TEST(printLineOfDocument, TruncatesTheLineIfItsLongerThanWindowWidth)
   ASSERT_THAT(buf.size(), ::testing::Eq(windowWidth));
 }
 
-}   // namespace detail
+} // namespace detail
 
-}   // namespace Kilo::editor
+} // namespace Kilo::editor
