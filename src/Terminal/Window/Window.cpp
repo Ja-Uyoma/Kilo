@@ -38,8 +38,11 @@
 
 namespace Kilo::Terminal {
 
-Window::Window() : m_winsize(detail::getWindowSize())
+Window::Window()
 {
+  auto [c, r] = detail::getWindowSize();
+  cols = c;
+  rows = r;
 }
 
 namespace detail {
