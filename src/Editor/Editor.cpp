@@ -68,10 +68,10 @@ void processKeypress(int keyPressed, EditorConfig& editorConfig)
     editorConfig.cursor.x = 0;
   }
   else if (key == End) {
-    editorConfig.cursor.x = editorConfig.window.cols - 1;
+    editorConfig.cursor.x = editorConfig.window.cols() - 1;
   }
   else if (key == PageUp or key == PageDown) {
-    for (int32_t i = editorConfig.window.rows; i > 0; --i) {
+    for (int32_t i = editorConfig.window.rows(); i > 0; --i) {
       moveCursor(key == PageUp ? ArrowUp : ArrowDown, editorConfig);
     }
   }
@@ -121,23 +121,23 @@ void refreshScreen(EditorConfig& editor)
  */
 void drawRows(EditorConfig& editor)
 {
-  for (int32_t currentRow = 0; currentRow < editor.window.rows; ++currentRow) {
+  for (int32_t currentRow = 0; currentRow < editor.window.rows(); ++currentRow) {
     if (auto const fileRow = currentRow + editor.offset.row; fileRow >= std::ssize(editor.openDoc)) {
-      if (editor.openDoc.empty() and currentRow == editor.window.rows / 3) {
-        detail::printWelcomeMessage(editor.window.cols, editor.screenBuffer);
+      if (editor.openDoc.empty() and currentRow == editor.window.rows() / 3) {
+        detail::printWelcomeMessage(editor.window.cols(), editor.screenBuffer);
       }
       else {
         editor.screenBuffer.write("~");
       }
     }
     else {
-      detail::printLineOfDocument(editor.renderedDoc[fileRow], editor.screenBuffer, editor.window.cols,
+      detail::printLineOfDocument(editor.renderedDoc[fileRow], editor.screenBuffer, editor.window.cols(),
                                   editor.offset.col);
     }
 
     editor.screenBuffer.write(EscapeSequences::ErasePartOfLineToTheRightOfCursor);
 
-    if (currentRow < editor.window.rows - 1) {
+    if (currentRow < editor.window.rows() - 1) {
       editor.screenBuffer.write("\r\n");
     }
   }
@@ -227,16 +227,16 @@ void scroll(EditorConfig& editor)
     editor.offset.row = editor.cursor.y;
   }
 
-  if (editor.cursor.y >= editor.offset.row + editor.window.rows) {
-    editor.offset.row = editor.cursor.y - editor.window.rows + 1;
+  if (editor.cursor.y >= editor.offset.row + editor.window.rows()) {
+    editor.offset.row = editor.cursor.y - editor.window.rows() + 1;
   }
 
   if (editor.cursor.x < editor.offset.col) {
     editor.offset.col = editor.cursor.x;
   }
 
-  if (editor.cursor.x >= editor.offset.col + editor.window.cols) {
-    editor.offset.col = editor.cursor.x - editor.window.cols + 1;
+  if (editor.cursor.x >= editor.offset.col + editor.window.cols()) {
+    editor.offset.col = editor.cursor.x - editor.window.cols() + 1;
   }
 }
 

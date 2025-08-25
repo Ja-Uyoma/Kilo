@@ -39,22 +39,38 @@ struct WindowSize
 class Window
 {
 public:
-  int32_t cols{};
-  int32_t rows{};
-
-  /**
-   * \brief Create a Window object
-   */
+  /// Create a new Window object
   explicit Window();
 
   /**
-   * \brief Create a Window object with the given dimensions
+   * \brief Create a Window with the given dimensions
    * \param[in] windowSize The dimensions of the new Window object
    */
   explicit constexpr Window(WindowSize const& windowSize) noexcept
-    : cols(windowSize.cols), rows(windowSize.rows)
+    : m_winsize(windowSize)
   {
   }
+
+  /**
+   * \brief Get the columns of the terminal window
+   * \returns The columns of the terminal window
+   */
+  [[nodiscard]] constexpr auto cols() const noexcept
+  {
+    return m_winsize.cols;
+  }
+
+  /**
+   * \brief Get the rows of the terminal window
+   * \returns The rows of the terminal window
+   */
+  [[nodiscard]] constexpr auto rows() const noexcept
+  {
+    return m_winsize.rows;
+  }
+
+private:
+  WindowSize m_winsize;
 };
 
 namespace detail {
