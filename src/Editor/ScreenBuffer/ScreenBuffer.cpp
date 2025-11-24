@@ -23,9 +23,10 @@
 
 #include "ScreenBuffer.hpp"
 
-#include <cassert>
-#include <cerrno>
+#include <gsl/assert>
 #include <system_error>
+
+#include <cerrno>
 #include <unistd.h>
 
 namespace Kilo::editor {
@@ -58,8 +59,8 @@ std::size_t ScreenBuffer::flush(IO::FileInterface& file) const
     totalWritten += result;
   }
 
-  assert(totalWritten == m_buffer.length()
-         or totalWritten == 0 && "The total number of bytes written is unequal to the size of the buffer");
+  Ensures((totalWritten == m_buffer.length() or totalWritten == 0) and
+          "The total number of bytes written is unequal to the size of the buffer");
   return totalWritten;
 }
 
