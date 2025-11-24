@@ -18,7 +18,7 @@ target_sources(Kilo_test
 
 target_link_libraries(Kilo_test
     PRIVATE
-        kilo_lib
+        Kilo_lib
         GTest::gtest_main
         GTest::gmock_main
 )
