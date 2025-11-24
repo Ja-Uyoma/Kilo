@@ -28,7 +28,6 @@
 #include "kilo/terminal/Window/Window.hpp"
 #include "kilo/utilities/Utilities.hpp"
 
-#include "gmock/gmock.h"
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
