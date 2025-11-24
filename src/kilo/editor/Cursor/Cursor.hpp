@@ -30,8 +30,8 @@ namespace kilo::editor {
 
 struct Cursor
 {
-  std::int64_t x{};
-  std::int64_t y{};
+  std::int64_t x {};
+  std::int64_t y {};
 };
 
 }   // namespace kilo::editor

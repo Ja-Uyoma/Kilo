@@ -30,8 +30,8 @@ namespace kilo::editor {
 
 struct Offset
 {
-  std::int64_t row{};
-  std::int64_t col{};
+  std::int64_t row {};
+  std::int64_t col {};
 };
 
 }   // namespace kilo::editor

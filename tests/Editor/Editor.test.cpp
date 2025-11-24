@@ -77,11 +77,11 @@ namespace detail {
 TEST(printWelcomeMessage, PrintsTheCorrectMessageCentred)
 {
   constexpr int width = 50;
-  ScreenBuffer buf{};
+  ScreenBuffer buf {};
 
   printWelcomeMessage(width, buf);
 
-  std::string const msg{"Kilo editor -- version 0.0.1"};
+  std::string const msg {"Kilo editor -- version 0.0.1"};
   auto const padding = (width - msg.length()) / 2;
   std::string const output = "~" + std::string(padding - 1, ' ') + msg;
 
@@ -91,11 +91,11 @@ TEST(printWelcomeMessage, PrintsTheCorrectMessageCentred)
 TEST(printWelcomeMessage, TruncatesTheMessageIfItsTooLong)
 {
   constexpr int width = 25;
-  ScreenBuffer buf{};
+  ScreenBuffer buf {};
 
   printWelcomeMessage(width, buf);
 
-  std::string const msg{"Kilo editor -- version 0.0.1"};
+  std::string const msg {"Kilo editor -- version 0.0.1"};
   std::string const truncatedMsg = msg.substr(0, width);
 
   ASSERT_THAT(buf.c_str(), ::testing::Eq(truncatedMsg));
@@ -103,7 +103,7 @@ TEST(printWelcomeMessage, TruncatesTheMessageIfItsTooLong)
 
 TEST(printLineOfDocument, PrintsNothingWhenTheLineLengthIsLessThanTheColumnOffset)
 {
-  std::string const line{"The quick brown fox jumped over the lazy doggo"};
+  std::string const line {"The quick brown fox jumped over the lazy doggo"};
   constexpr int windowWidth = 20;
   auto const colOffset = std::ssize(line) + 5;
   ScreenBuffer buf;
@@ -115,7 +115,7 @@ TEST(printLineOfDocument, PrintsNothingWhenTheLineLengthIsLessThanTheColumnOffse
 
 TEST(printLineOfDocument, TruncatesTheLineIfItsLongerThanWindowWidth)
 {
-  std::string const line{"The quick brown fox jumped over the lazy doggo"};
+  std::string const line {"The quick brown fox jumped over the lazy doggo"};
   constexpr int windowWidth = 20;
   constexpr int colOffset = 5;
   ScreenBuffer buf;
