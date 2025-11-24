@@ -1,35 +1,33 @@
-cmake_minimum_required(VERSION 3.25)
+cmake_minimum_required(VERSION 3.14)
+
+include(cmake/prelude.cmake)
 
 project(Kilo 
     VERSION 0.1.1
-    LANGUAGES CXX
     DESCRIPTION "A minimalistic, modal, text editor"
+    HOMEPAGE_URL "https://github.com/Ja-Uyoma/Kilo"
+    LANGUAGES CXX
 )
 
-# Only set the C++ standard if it has not been set by someone else
-if (NOT DEFINED CMAKE_CXX_STANDARD)
-    set(CMAKE_CXX_STANDARD 20)
-endif()
+include(cmake/project-is-top-level.cmake)
+include(cmake/variables.cmake)
 
-# Set globally to avoid conflicts between -Wpedantic being enabled and
-# -std=c++20 and -std=gnu++20, for example when compiling with PCH enabled
-set(CMAKE_CXX_EXTENSIONS OFF)
-
-include(cmake/EnforceOutOfSourceBuilds.cmake)
-include(ProjectOptions.cmake)
+# ---------- Declare library and executable -------------
 
 add_subdirectory(src)
 
-# Don't consider testing if we're not the top-level project
-if (NOT PROJECT_IS_TOP_LEVEL)
+# ---------- Install rules -------------
+
+if (NOT CMAKE_SKIP_INSTALL_RULES)
+    include(cmake/install-rules.cmake)
+endif()
+
+# ------------ Developer mode ---------------------
+
+if (NOT Kilo_DEVELOPER_MODE)
     return()
+elseif (NOT PROJECT_IS_TOP_LEVEL)
+    message(AUTHOR_WARNING "Developer mode is intended for developers of Kilo")
 endif()
 
-# Include the CTest module
-include(CTest)
-
-if (BUILD_TESTING)
-    message("Adding tests...")
-    add_subdirectory(tests)
-endif()
-
+include(cmake/dev-mode.cmake)

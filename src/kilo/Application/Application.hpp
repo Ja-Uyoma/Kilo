@@ -21,32 +21,58 @@
  * SOFTWARE.
  */
 
-#include "kilo/Application/Application.hpp"
-#include "kilo/terminal/TerminalMode/TerminalMode.hpp"
+#ifndef APPLICATION_HPP
+#define APPLICATION_HPP
 
-#include <cstdlib>
-#include <iostream>
+#include "kilo/editor/Editor.hpp"
 
-using namespace kilo;
+#include <filesystem>
 
-int main(int argc, char const* argv[])
+namespace kilo::editor {
+class Application
 {
-  try {
-    static terminal::TerminalMode terminalMode;
-    terminalMode.setRawMode();
-  }
-  catch (std::system_error const& err) {
-    std::cerr << err.code().message() << ": " << err.what() << '\n';
-    return EXIT_FAILURE;
-  }
+public:
+  /// Default constructor
+  explicit Application() noexcept;
 
-  editor::Application app;
+  /**
+   * @brief Position the cursor within the visible window
+   *
+   */
+  void scroll() noexcept;
 
-  if (argc >= 2 && !app.open(argv[1])) {
-    return EXIT_FAILURE;
-  }
+  /**
+   * @brief Perform a screen refresh
+   *
+   */
+  void refreshScreen();
 
-  app.run();
+  /**
+   * @brief Process the result of calling readKey
+   *
+   */
+  void processKeypress();
 
-  return EXIT_SUCCESS;
-}
+  /**
+   * @brief Draw each row of the buffer of text being edited, plus a tilde at the beginning
+   */
+  void drawRows();
+
+  /**
+   * @brief Open a file and write its contents to memory
+   *
+   * @param[in] path The path to the file
+   * @return true If the operation was successful
+   * @return false If the operation failed
+   */
+  auto open(std::filesystem::path const& path) -> bool;
+
+  /// Run the application
+  void run();
+
+private:
+  editor::EditorConfig editorConfig;
+};
+}   // namespace kilo::editor
+
+#endif

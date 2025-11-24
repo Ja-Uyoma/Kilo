@@ -21,32 +21,47 @@
  * SOFTWARE.
  */
 
-#include "kilo/Application/Application.hpp"
-#include "kilo/terminal/TerminalMode/TerminalMode.hpp"
+#include "ScreenBuffer.hpp"
 
-#include <cstdlib>
-#include <iostream>
+#include <gsl/assert>
+#include <system_error>
 
-using namespace kilo;
+#include <cerrno>
+#include <unistd.h>
 
-int main(int argc, char const* argv[])
+namespace kilo::editor {
+
+/// \brief Flush the buffer by writing its contents to a file
+/// \param[in] file The file being written to
+/// \returns The number of bytes written
+/// \throws `std::system_error` if the operation failed
+std::size_t ScreenBuffer::flush(io::FileInterface& file) const
 {
-  try {
-    static terminal::TerminalMode terminalMode;
-    terminalMode.setRawMode();
+  std::size_t totalWritten = 0;
+
+  while (totalWritten < m_buffer.length()) {
+    errno = 0;
+    long result = file.write(STDOUT_FILENO, m_buffer.substr(0 + totalWritten, m_buffer.length() - totalWritten));
+
+    if (result == -1) {
+      if (errno == EINTR or errno == EAGAIN) {
+        continue;
+      }
+      else {
+        throw std::system_error(errno, std::system_category());
+      }
+    }
+
+    if (result == 0) {
+      break;
+    }
+
+    totalWritten += result;
   }
-  catch (std::system_error const& err) {
-    std::cerr << err.code().message() << ": " << err.what() << '\n';
-    return EXIT_FAILURE;
-  }
 
-  editor::Application app;
-
-  if (argc >= 2 && !app.open(argv[1])) {
-    return EXIT_FAILURE;
-  }
-
-  app.run();
-
-  return EXIT_SUCCESS;
+  Ensures((totalWritten == m_buffer.length() or totalWritten == 0) and
+          "The total number of bytes written is unequal to the size of the buffer");
+  return totalWritten;
 }
+
+}   // namespace kilo::editor

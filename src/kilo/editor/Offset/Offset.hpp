@@ -21,32 +21,19 @@
  * SOFTWARE.
  */
 
-#include "kilo/Application/Application.hpp"
-#include "kilo/terminal/TerminalMode/TerminalMode.hpp"
+#ifndef OFFSET_HPP
+#define OFFSET_HPP
 
-#include <cstdlib>
-#include <iostream>
+#include <cstdint>
 
-using namespace kilo;
+namespace kilo::editor {
 
-int main(int argc, char const* argv[])
+struct Offset
 {
-  try {
-    static terminal::TerminalMode terminalMode;
-    terminalMode.setRawMode();
-  }
-  catch (std::system_error const& err) {
-    std::cerr << err.code().message() << ": " << err.what() << '\n';
-    return EXIT_FAILURE;
-  }
+  std::int64_t row {};
+  std::int64_t col {};
+};
 
-  editor::Application app;
+}   // namespace kilo::editor
 
-  if (argc >= 2 && !app.open(argv[1])) {
-    return EXIT_FAILURE;
-  }
-
-  app.run();
-
-  return EXIT_SUCCESS;
-}
+#endif
