@@ -6,20 +6,11 @@ add_library(kilo_lib OBJECT)
 add_subdirectory(Utilities)
 add_subdirectory(IO)
 add_subdirectory(Terminal)
+add_subdirectory(Editor)
 
 target_sources(kilo_lib PRIVATE
-    "${PROJECT_SOURCE_DIR}/src/Editor/Cursor/Cursor.hpp"
-
-    "${PROJECT_SOURCE_DIR}/src/Editor/Editor.hpp"
-    "${PROJECT_SOURCE_DIR}/src/Editor/Editor.cpp"
-
     "${PROJECT_SOURCE_DIR}/src/Application/Application.hpp"
     "${PROJECT_SOURCE_DIR}/src/Application/Application.cpp"
-
-    "${PROJECT_SOURCE_DIR}/src/Editor/Offset/Offset.hpp"
-
-    "${PROJECT_SOURCE_DIR}/src/Editor/ScreenBuffer/ScreenBuffer.hpp"
-    "${PROJECT_SOURCE_DIR}/src/Editor/ScreenBuffer/ScreenBuffer.cpp"
 )
 
 target_include_directories(kilo_lib
@@ -34,6 +25,7 @@ target_link_libraries(kilo_lib PRIVATE
     kilo_lib_utilities
     kilo_lib_io
     kilo_lib_terminal
+    kilo_lib_editor
 )
 
 target_compile_features(kilo_lib PUBLIC
