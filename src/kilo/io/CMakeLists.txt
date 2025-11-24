@@ -1,6 +1,6 @@
-add_library(kilo_lib_io OBJECT)
+add_library(Kilo_lib_io OBJECT)
 
-target_sources(kilo_lib_io
+target_sources(Kilo_lib_io
     PUBLIC
         File.hpp
         File.cpp
@@ -8,18 +8,18 @@ target_sources(kilo_lib_io
         IO.cpp
 )
 
-target_link_libraries(kilo_lib_io
+target_link_libraries(Kilo_lib_io
     PUBLIC
         kilo_lib_utilities
 )
 
-target_include_directories(kilo_lib_io
+target_include_directories(Kilo_lib_io
     ${warning_guard}
     PUBLIC
         "\$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>"
 )
 
-target_compile_features(kilo_lib_io
+target_compile_features(Kilo_lib_io
     PUBLIC
         cxx_std_20
 )

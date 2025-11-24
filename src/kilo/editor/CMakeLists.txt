@@ -1,6 +1,6 @@
-add_library(kilo_lib_editor OBJECT)
+add_library(Kilo_lib_editor OBJECT)
 
-target_sources(kilo_lib_editor
+target_sources(Kilo_lib_editor
     PUBLIC
         Cursor/Cursor.hpp
         Offset/Offset.hpp
@@ -10,7 +10,7 @@ target_sources(kilo_lib_editor
         Editor.cpp
 )
 
-target_link_libraries(kilo_lib_editor
+target_link_libraries(Kilo_lib_editor
     PUBLIC
         kilo_lib_io
         kilo_lib_terminal
@@ -18,7 +18,7 @@ target_link_libraries(kilo_lib_editor
         Microsoft.GSL::GSL
 )
 
-target_include_directories(kilo_lib_editor
+target_include_directories(Kilo_lib_editor
     ${warning_guard}
     PUBLIC
         "\$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>"
@@ -26,7 +26,7 @@ target_include_directories(kilo_lib_editor
         "\$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
 )
 
-target_compile_features(kilo_lib_editor
+target_compile_features(Kilo_lib_editor
     PUBLIC
         cxx_std_20
 )

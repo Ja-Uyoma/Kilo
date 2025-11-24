@@ -1,16 +1,14 @@
-# Build output files location
-build
-
-# Compilation database file location
-.vscode
-
-# CMake user presets file
-CMakeUserPresets.json
-
-# Ignore cached clangd files
+**/.DS_Store
+.idea/
+.vs/
+.vscode/
+build/
+cmake-build-*/
+conan/
+prefix/
+.clangd
 .cache
-
-# Ignore all KDevelop files
-*.kdev*
-
-.idea
+CMakeLists.txt.user
+CMakeUserPresets.json
+compile_commands.json
+conan_cache_*.tgz
