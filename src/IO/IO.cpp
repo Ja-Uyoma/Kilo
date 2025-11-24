@@ -84,7 +84,7 @@ unsigned handleEscapeSequences() noexcept
   }
 
   if (seq[0] == '[') {
-    using enum Kilo::editor::EditorKey;
+    using enum Kilo::utilities::EditorKey;
 
     /*
      * If the byte after [ is a digit, we read another byte expecting it to be
@@ -145,7 +145,7 @@ unsigned handleEscapeSequences() noexcept
     }
   }
   else if (seq[0] == 'O') {
-    using enum Kilo::editor::EditorKey;
+    using enum Kilo::utilities::EditorKey;
 
     switch (seq[1]) {
       case 'H':

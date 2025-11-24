@@ -28,7 +28,7 @@
 
 #include <cstdint>
 
-namespace Kilo::editor {
+namespace Kilo::utilities {
 
 struct EscapeSequences
 {
@@ -61,6 +61,6 @@ enum class EditorKey : std::uint16_t
   PageDown
 };
 
-}   // namespace Kilo::editor
+}   // namespace Kilo::utilities
 
 #endif

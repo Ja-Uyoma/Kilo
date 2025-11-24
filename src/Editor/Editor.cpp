@@ -62,9 +62,9 @@ void processKeypress(int keyPressed, EditorConfig& editorConfig)
     std::exit(EXIT_SUCCESS);
   }
 
-  using enum EditorKey;
+  using enum utilities::EditorKey;
 
-  if (auto const key = static_cast<EditorKey>(keyPressed); key == Home) {
+  if (auto const key = static_cast<utilities::EditorKey>(keyPressed); key == Home) {
     editorConfig.cursor.x = 0;
   }
   else if (key == End) {
@@ -87,7 +87,8 @@ void processKeypress(int keyPressed, EditorConfig& editorConfig)
 void refreshScreen(EditorConfig& editor)
 {
   // Hide the cursor when painting and then move it to the Home position
-  editor.screenBuffer.write(EscapeSequences::HideCursorWhenRepainting).write(EscapeSequences::MoveCursorToHomePosition);
+  editor.screenBuffer.write(utilities::EscapeSequences::HideCursorWhenRepainting)
+    .write(utilities::EscapeSequences::MoveCursorToHomePosition);
 
   // Draw the welcome message, or each row of the currently open document with a tilde at the beginning
   drawRows(editor);
@@ -104,7 +105,7 @@ void refreshScreen(EditorConfig& editor)
   // The file to which the screen buffer writes its contents when flushed (typically STDOUT)
   IO::File outputFile {};
 
-  editor.screenBuffer.write(cursorPos).write(EscapeSequences::ShowTheCursor).flush(outputFile);
+  editor.screenBuffer.write(cursorPos).write(utilities::EscapeSequences::ShowTheCursor).flush(outputFile);
 }
 
 /*
@@ -127,7 +128,7 @@ void drawRows(EditorConfig& editor)
                                   editor.offset.col);
     }
 
-    editor.screenBuffer.write(EscapeSequences::ErasePartOfLineToTheRightOfCursor);
+    editor.screenBuffer.write(utilities::EscapeSequences::ErasePartOfLineToTheRightOfCursor);
 
     if (currentRow < editor.window.rows() - 1) {
       editor.screenBuffer.write("\r\n");
@@ -140,9 +141,9 @@ void drawRows(EditorConfig& editor)
  * \param[in] key The key pressed by the user
  * \param[in] editor The current state of the editor
  */
-void moveCursor(EditorKey const key, EditorConfig& editor)
+void moveCursor(utilities::EditorKey const key, EditorConfig& editor)
 {
-  using enum EditorKey;
+  using enum utilities::EditorKey;
 
   switch (key) {
     case ArrowLeft:
@@ -264,7 +265,7 @@ bool open(std::filesystem::path const& path, std::vector<std::string>& document,
 
 void updateRow(std::string_view row, std::string& render)
 {
-  using editor::KiloTabStop;
+  using utilities::KiloTabStop;
 
   [[maybe_unused]] auto tabs = std::ranges::count_if(row, [](unsigned char c) { return c == '\t'; });
 
@@ -298,7 +299,7 @@ namespace Kilo::editor::detail {
  */
 void printWelcomeMessage(int32_t const windowWidth, ScreenBuffer& buffer)
 {
-  auto msg = fmt::format("Kilo editor -- version {}", editor::KiloVersion);
+  auto msg = fmt::format("Kilo editor -- version {}", utilities::KiloVersion);
 
   // If the message is longer than the window's width, resize it to fit
   if (std::cmp_greater(msg.length(), windowWidth)) {

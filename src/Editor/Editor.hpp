@@ -70,7 +70,7 @@ void drawRows(EditorConfig& editor);
  * \param[in] key The key pressed by the user
  * \param[in] editor The current state of the editor
  */
-void moveCursor(EditorKey key, EditorConfig& editor);
+void moveCursor(utilities::EditorKey key, EditorConfig& editor);
 
 /*
  * \brief Fix the cursor in the visible window while scrolling
@@ -95,7 +95,7 @@ auto open(std::filesystem::path const& path, std::vector<std::string>& document,
  * \param[in] render The destination string
  */
 void updateRow(std::string_view row, std::string& render);
-} // namespace Kilo::editor
+}   // namespace Kilo::editor
 
 namespace Kilo::editor::detail {
 
@@ -118,6 +118,6 @@ void printWelcomeMessage(int32_t windowWidth, ScreenBuffer& buffer);
  */
 void printLineOfDocument(std::string const& line, ScreenBuffer& buffer, int32_t windowWidth, int64_t columnOffset);
 
-} // namespace Kilo::editor::detail
+}   // namespace Kilo::editor::detail
 
 #endif
