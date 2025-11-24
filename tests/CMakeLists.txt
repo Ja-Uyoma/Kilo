@@ -21,26 +21,26 @@ target_include_directories(tests
 
 target_sources(tests
     PRIVATE
-        "${PROJECT_SOURCE_DIR}/src/editor/Editor.hpp"
-        "${PROJECT_SOURCE_DIR}/src/editor/Editor.cpp"
+        "${PROJECT_SOURCE_DIR}/src/kilo/editor/Editor.hpp"
+        "${PROJECT_SOURCE_DIR}/src/kilo/editor/Editor.cpp"
         Editor/Editor.test.cpp
 
-        "${PROJECT_SOURCE_DIR}/src/terminal/TerminalMode/TerminalMode.hpp"
-        "${PROJECT_SOURCE_DIR}/src/terminal/TerminalMode/TerminalMode.cpp"
+        "${PROJECT_SOURCE_DIR}/src/kilo/terminal/TerminalMode/TerminalMode.hpp"
+        "${PROJECT_SOURCE_DIR}/src/kilo/terminal/TerminalMode/TerminalMode.cpp"
         TerminalMode/TerminalMode.test.cpp
 
-        "${PROJECT_SOURCE_DIR}/src/utilities/Utilities.hpp"
-        "${PROJECT_SOURCE_DIR}/src/utilities/Utilities.cpp"
+        "${PROJECT_SOURCE_DIR}/src/kilo/utilities/Utilities.hpp"
+        "${PROJECT_SOURCE_DIR}/src/kilo/utilities/Utilities.cpp"
 
-        "${PROJECT_SOURCE_DIR}/src/io/File.hpp"
-        "${PROJECT_SOURCE_DIR}/src/io/File.cpp"
+        "${PROJECT_SOURCE_DIR}/src/kilo/io/File.hpp"
+        "${PROJECT_SOURCE_DIR}/src/kilo/io/File.cpp"
 
-        "${PROJECT_SOURCE_DIR}/src/editor/ScreenBuffer/ScreenBuffer.hpp"
-        "${PROJECT_SOURCE_DIR}/src/editor/ScreenBuffer/ScreenBuffer.cpp"
+        "${PROJECT_SOURCE_DIR}/src/kilo/editor/ScreenBuffer/ScreenBuffer.hpp"
+        "${PROJECT_SOURCE_DIR}/src/kilo/editor/ScreenBuffer/ScreenBuffer.cpp"
         ScreenBuffer/ScreenBuffer.test.cpp
         
-        "${PROJECT_SOURCE_DIR}/src/terminal/Window/Window.hpp"
-        "${PROJECT_SOURCE_DIR}/src/terminal/Window/Window.cpp"
+        "${PROJECT_SOURCE_DIR}/src/kilo/terminal/Window/Window.hpp"
+        "${PROJECT_SOURCE_DIR}/src/kilo/terminal/Window/Window.cpp"
 )
 
 target_compile_features(tests

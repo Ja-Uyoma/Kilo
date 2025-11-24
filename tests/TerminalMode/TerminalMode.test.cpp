@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-#include "terminal/TerminalMode/TerminalMode.hpp"
+#include "kilo/terminal/TerminalMode/TerminalMode.hpp"
 
 #include <gsl/util>
 

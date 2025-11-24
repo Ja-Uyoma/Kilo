@@ -24,7 +24,7 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
-#include "io/File.hpp"
+#include "kilo/io/File.hpp"
 
 #include <cstdint>
 

@@ -24,7 +24,7 @@
 #ifndef SCREEN_BUFFER_HPP
 #define SCREEN_BUFFER_HPP
 
-#include "io/File.hpp"
+#include "kilo/io/File.hpp"
 #include <string_view>
 
 #include <string>

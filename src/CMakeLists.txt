@@ -3,14 +3,14 @@ find_package(fmt REQUIRED)
 
 add_library(kilo_lib OBJECT)
 
-add_subdirectory(utilities)
-add_subdirectory(io)
-add_subdirectory(terminal)
-add_subdirectory(editor)
+add_subdirectory(kilo/utilities)
+add_subdirectory(kilo/io)
+add_subdirectory(kilo/terminal)
+add_subdirectory(kilo/editor)
 
 target_sources(kilo_lib PRIVATE
-    "${PROJECT_SOURCE_DIR}/src/Application/Application.hpp"
-    "${PROJECT_SOURCE_DIR}/src/Application/Application.cpp"
+    "${PROJECT_SOURCE_DIR}/src/kilo/Application/Application.hpp"
+    "${PROJECT_SOURCE_DIR}/src/kilo/Application/Application.cpp"
 )
 
 target_include_directories(kilo_lib

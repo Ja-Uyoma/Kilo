@@ -27,8 +27,8 @@
 #include "Cursor/Cursor.hpp"
 #include "Offset/Offset.hpp"
 #include "ScreenBuffer/ScreenBuffer.hpp"
-#include "terminal/Window/Window.hpp"
-#include "utilities/Constants.hpp"
+#include "kilo/terminal/Window/Window.hpp"
+#include "kilo/utilities/Constants.hpp"
 #include <string_view>
 
 #include <filesystem>

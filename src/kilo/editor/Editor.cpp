@@ -26,10 +26,10 @@
 #include "Cursor/Cursor.hpp"
 #include "Offset/Offset.hpp"
 #include "ScreenBuffer/ScreenBuffer.hpp"
-#include "io/File.hpp"
-#include "terminal/Window/Window.hpp"
-#include "utilities/Constants.hpp"
-#include "utilities/Utilities.hpp"
+#include "kilo/io/File.hpp"
+#include "kilo/terminal/Window/Window.hpp"
+#include "kilo/utilities/Constants.hpp"
+#include "kilo/utilities/Utilities.hpp"
 #include <fmt/format.h>
 #include <string_view>
 

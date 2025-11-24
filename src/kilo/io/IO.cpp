@@ -23,7 +23,7 @@
 
 #include "IO.hpp"
 
-#include "utilities/Constants.hpp"
+#include "kilo/utilities/Constants.hpp"
 #include <system_error>
 
 #include <array>

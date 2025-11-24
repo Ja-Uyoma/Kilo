@@ -21,8 +21,8 @@
  * SOFTWARE.
  */
 
-#include "Application/Application.hpp"
-#include "terminal/TerminalMode/TerminalMode.hpp"
+#include "kilo/Application/Application.hpp"
+#include "kilo/terminal/TerminalMode/TerminalMode.hpp"
 
 #include <cstdlib>
 #include <iostream>

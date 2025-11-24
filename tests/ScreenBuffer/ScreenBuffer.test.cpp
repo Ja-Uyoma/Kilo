@@ -21,9 +21,9 @@
  * SOFTWARE.
  */
 
-#include "editor/ScreenBuffer/ScreenBuffer.hpp"
+#include "kilo/editor/ScreenBuffer/ScreenBuffer.hpp"
 
-#include "io/File.hpp"
+#include "kilo/io/File.hpp"
 #include <system_error>
 
 #include <gmock/gmock.h>

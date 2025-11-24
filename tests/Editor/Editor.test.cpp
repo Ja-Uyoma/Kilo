@@ -21,12 +21,12 @@
  * SOFTWARE.
  */
 
-#include "editor/Editor.hpp"
+#include "kilo/editor/Editor.hpp"
 
-#include "editor/Cursor/Cursor.hpp"
-#include "editor/ScreenBuffer/ScreenBuffer.hpp"
-#include "terminal/Window/Window.hpp"
-#include "utilities/Utilities.hpp"
+#include "kilo/editor/Cursor/Cursor.hpp"
+#include "kilo/editor/ScreenBuffer/ScreenBuffer.hpp"
+#include "kilo/terminal/Window/Window.hpp"
+#include "kilo/utilities/Utilities.hpp"
 
 #include "gmock/gmock.h"
 #include <gmock/gmock.h>

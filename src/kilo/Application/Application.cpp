@@ -23,9 +23,9 @@
 
 #include "Application.hpp"
 
-#include "editor/Editor.hpp"
-#include "io/IO.hpp"
-#include "utilities/Utilities.hpp"
+#include "kilo/editor/Editor.hpp"
+#include "kilo/io/IO.hpp"
+#include "kilo/utilities/Utilities.hpp"
 #include <fmt/format.h>
 #include <system_error>
 

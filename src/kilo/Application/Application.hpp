@@ -24,7 +24,7 @@
 #ifndef APPLICATION_HPP
 #define APPLICATION_HPP
 
-#include "editor/Editor.hpp"
+#include "kilo/editor/Editor.hpp"
 
 #include <filesystem>
 
