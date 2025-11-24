@@ -19,13 +19,15 @@ target_include_directories(Kilo_lib
     "\$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>"
 )
 
-target_link_libraries(Kilo_lib PRIVATE
-    Microsoft.GSL::GSL
-    fmt::fmt
-    Kilo_lib_utilities
-    Kilo_lib_io
-    Kilo_lib_terminal
-    Kilo_lib_editor
+target_link_libraries(Kilo_lib
+    PRIVATE
+        Microsoft.GSL::GSL
+        fmt::fmt
+    PUBLIC
+        Kilo_lib_utilities
+        Kilo_lib_io
+        Kilo_lib_terminal
+        Kilo_lib_editor
 )
 
 target_compile_features(Kilo_lib PUBLIC
