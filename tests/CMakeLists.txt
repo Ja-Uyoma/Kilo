@@ -32,8 +32,8 @@ target_sources(tests
         "${PROJECT_SOURCE_DIR}/src/Utilities/Utilities.hpp"
         "${PROJECT_SOURCE_DIR}/src/Utilities/Utilities.cpp"
 
-        "${PROJECT_SOURCE_DIR}/src/File/File.hpp"
-        "${PROJECT_SOURCE_DIR}/src/File/File.cpp"
+        "${PROJECT_SOURCE_DIR}/src/IO/File.hpp"
+        "${PROJECT_SOURCE_DIR}/src/IO/File.cpp"
 
         "${PROJECT_SOURCE_DIR}/src/Editor/ScreenBuffer/ScreenBuffer.hpp"
         "${PROJECT_SOURCE_DIR}/src/Editor/ScreenBuffer/ScreenBuffer.cpp"

@@ -24,9 +24,10 @@
 #ifndef SCREEN_BUFFER_HPP
 #define SCREEN_BUFFER_HPP
 
-#include "File/File.hpp"
-#include <string>
+#include "IO/File.hpp"
 #include <string_view>
+
+#include <string>
 
 namespace Kilo::editor {
 // In order to avoid making multiple ::write() calls anytime we need to refresh

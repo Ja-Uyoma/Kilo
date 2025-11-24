@@ -23,7 +23,8 @@
 
 #include "Window.hpp"
 
-#include "File/File.hpp"
+#include "IO/File.hpp"
+#include <gsl/assert>
 #include <sys/ioctl.h>
 #include <system_error>
 
@@ -34,7 +35,6 @@
 #include <stdexcept>
 #include <string>
 #include <unistd.h>
-#include <gsl/assert>
 
 namespace Kilo::Terminal {
 
@@ -51,7 +51,7 @@ namespace detail {
  */
 auto getWindowSize() -> WindowSize
 {
-  ::winsize ws{};
+  ::winsize ws {};
 
   if (IO::File file; ::ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == -1 or ws.ws_col == 0) {
     errno = 0;
@@ -64,7 +64,7 @@ auto getWindowSize() -> WindowSize
     return detail::getCursorPosition(file);
   }
 
-  return WindowSize{.cols = ws.ws_col, .rows = ws.ws_row};
+  return WindowSize {.cols = ws.ws_col, .rows = ws.ws_row};
 }
 
 /**
@@ -99,10 +99,10 @@ auto getCursorPosition(IO::FileInterface& file) -> WindowSize
   // First make sure read() responded with an escape sequence
   if (buf[0] != '\x1b' or buf[1] != '[') {
     throw std::invalid_argument("An invalid byte sequence was encountered "
-      "where an escape sequence was expected");
+                                "where an escape sequence was expected");
   }
 
-  WindowSize result{.cols = 0, .rows = 0};
+  WindowSize result {.cols = 0, .rows = 0};
 
   // At this point, we are passing a string of the form "35;76" to std::from_chars
   // We tell it to parse the 2 integers separated by a ';' and write the value
@@ -116,12 +116,12 @@ auto getCursorPosition(IO::FileInterface& file) -> WindowSize
 
   // Check error if no characters consumed
   if (rowEc != std::errc() or rowEndPtr == parsePtr) {
-    return {}; // failed to parse rows or row-string empty
+    return {};   // failed to parse rows or row-string empty
   }
 
   // Check for semicolon
   if (rowEndPtr == endPtr or *rowEndPtr != ';') {
-    return {}; // expected semicolon not found or end of string
+    return {};   // expected semicolon not found or end of string
   }
 
   // Skip semicolon
@@ -139,6 +139,6 @@ auto getCursorPosition(IO::FileInterface& file) -> WindowSize
   return result;
 }
 
-} // namespace detail
+}   // namespace detail
 
-} // namespace Kilo::Terminal
+}   // namespace Kilo::Terminal

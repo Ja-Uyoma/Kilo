@@ -24,7 +24,7 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
-#include "File/File.hpp"
+#include "IO/File.hpp"
 
 #include <cstdint>
 
@@ -46,8 +46,7 @@ public:
    * \brief Create a Window with the given dimensions
    * \param[in] windowSize The dimensions of the new Window object
    */
-  explicit constexpr Window(WindowSize const& windowSize) noexcept
-    : m_winsize(windowSize)
+  explicit constexpr Window(WindowSize const& windowSize) noexcept : m_winsize(windowSize)
   {
   }
 
@@ -89,8 +88,8 @@ auto getWindowSize() -> WindowSize;
  */
 auto getCursorPosition(IO::FileInterface& file) -> WindowSize;
 
-} // namespace detail
+}   // namespace detail
 
-} // namespace Kilo::Terminal
+}   // namespace Kilo::Terminal
 
 #endif

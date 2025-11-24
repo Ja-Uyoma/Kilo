@@ -19,8 +19,8 @@ target_sources(kilo_lib PRIVATE
     "${PROJECT_SOURCE_DIR}/src/Terminal/TerminalMode/TerminalMode.hpp"
     "${PROJECT_SOURCE_DIR}/src/Terminal/TerminalMode/TerminalMode.cpp"
 
-    "${PROJECT_SOURCE_DIR}/src/File/File.hpp"
-    "${PROJECT_SOURCE_DIR}/src/File/File.cpp"
+    "${PROJECT_SOURCE_DIR}/src/IO/File.hpp"
+    "${PROJECT_SOURCE_DIR}/src/IO/File.cpp"
 
     "${PROJECT_SOURCE_DIR}/src/Terminal/Window/Window.hpp"
     "${PROJECT_SOURCE_DIR}/src/Terminal/Window/Window.cpp"

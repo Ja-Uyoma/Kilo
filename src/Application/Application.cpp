@@ -24,7 +24,7 @@
 #include "Application.hpp"
 
 #include "Editor/Editor.hpp"
-#include "File/File.hpp"
+#include "IO/File.hpp"
 #include "IO/IO.hpp"
 #include "Utilities/Constants.hpp"
 #include "Utilities/Utilities.hpp"
@@ -102,4 +102,4 @@ catch (std::system_error const& err) {
   std::cerr << err.code() << ": " << err.what() << '\n';
 }
 
-} // namespace Kilo::editor
+}   // namespace Kilo::editor
