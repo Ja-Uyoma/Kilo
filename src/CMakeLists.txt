@@ -3,8 +3,9 @@ find_package(fmt REQUIRED)
 
 add_library(kilo_lib OBJECT)
 
+add_subdirectory(Utilities)
+
 target_sources(kilo_lib PRIVATE
-    "${PROJECT_SOURCE_DIR}/src/Utilities/Constants.hpp"
     "${PROJECT_SOURCE_DIR}/src/Editor/Cursor/Cursor.hpp"
 
     "${PROJECT_SOURCE_DIR}/src/Editor/Editor.hpp"
@@ -20,9 +21,6 @@ target_sources(kilo_lib PRIVATE
 
     "${PROJECT_SOURCE_DIR}/src/File/File.hpp"
     "${PROJECT_SOURCE_DIR}/src/File/File.cpp"
-
-    "${PROJECT_SOURCE_DIR}/src/Utilities/Utilities.hpp"
-    "${PROJECT_SOURCE_DIR}/src/Utilities/Utilities.cpp"
 
     "${PROJECT_SOURCE_DIR}/src/Terminal/Window/Window.hpp"
     "${PROJECT_SOURCE_DIR}/src/Terminal/Window/Window.cpp"
@@ -43,6 +41,7 @@ target_include_directories(kilo_lib
 target_link_libraries(kilo_lib PRIVATE
     Microsoft.GSL::GSL
     fmt::fmt
+    kilo_lib_utilities
 )
 
 target_compile_features(kilo_lib PUBLIC
