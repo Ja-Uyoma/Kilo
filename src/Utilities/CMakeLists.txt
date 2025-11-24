@@ -8,6 +8,7 @@ target_sources(kilo_lib_utilities
 )
 
 target_include_directories(kilo_lib_utilities
+    ${warning_guard}
     PUBLIC
         "\$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>"
 )
