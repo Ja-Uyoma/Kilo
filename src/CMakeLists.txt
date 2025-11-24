@@ -40,6 +40,8 @@ target_sources(kilo_exe PRIVATE
 
 add_executable(kilo::exe ALIAS kilo_exe)
 
+set_property(TARGET kilo_exe PROPERTY OUTPUT_NAME kilo)
+
 target_link_libraries(kilo_exe PRIVATE
     kilo_lib
 )
