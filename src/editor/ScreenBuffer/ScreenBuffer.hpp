@@ -24,12 +24,12 @@
 #ifndef SCREEN_BUFFER_HPP
 #define SCREEN_BUFFER_HPP
 
-#include "IO/File.hpp"
+#include "io/File.hpp"
 #include <string_view>
 
 #include <string>
 
-namespace Kilo::editor {
+namespace kilo::editor {
 // In order to avoid making multiple ::write() calls anytime we need to refresh
 // the screen, we will do one big ::write() at the end to make sure the entire
 // screen updates at once. This is accomplished by the use of a buffer to which
@@ -79,11 +79,11 @@ public:
   /// \param[in] file The file being written to
   /// \returns The number of bytes written
   /// \throws `std::system_error` if the operation failed
-  auto flush(IO::FileInterface& file) const -> std::size_t;
+  auto flush(io::FileInterface& file) const -> std::size_t;
 
 private:
   std::string m_buffer;
 };
-}   // namespace Kilo::editor
+}   // namespace kilo::editor
 
 #endif

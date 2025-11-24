@@ -21,9 +21,9 @@
  * SOFTWARE.
  */
 
-#include "Editor/ScreenBuffer/ScreenBuffer.hpp"
+#include "editor/ScreenBuffer/ScreenBuffer.hpp"
 
-#include "File/File.hpp"
+#include "io/File.hpp"
 #include <system_error>
 
 #include <gmock/gmock.h>
@@ -32,7 +32,7 @@
 #include <cstring>
 #include <string>
 
-namespace Kilo::editor {
+namespace kilo::editor {
 
 TEST(ScreenBufferTest, IsEmptyWhenCreated)
 {
@@ -50,7 +50,7 @@ TEST(ScreenBufferTest, ItsSizeIncreasesByTheLengthOfTheAppendedString)
   ASSERT_EQ(buffer.size(), 13);
 }
 
-class MockFileInterface : public IO::FileInterface
+class MockFileInterface : public io::FileInterface
 {
 public:
   MOCK_METHOD(std::size_t, write, (int, std::string const&), (noexcept, override));
@@ -124,4 +124,4 @@ TEST(ScreenBufferTest, FlushStopsOnZeroBytesWritten)
   ASSERT_THAT(rv, testing::Eq(0));
 }
 
-}   // namespace Kilo::editor
+}   // namespace kilo::editor

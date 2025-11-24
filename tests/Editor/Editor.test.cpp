@@ -21,12 +21,12 @@
  * SOFTWARE.
  */
 
-#include "Editor/Editor.hpp"
+#include "editor/Editor.hpp"
 
-#include "Editor/Cursor/Cursor.hpp"
-#include "Editor/ScreenBuffer/ScreenBuffer.hpp"
-#include "Terminal/Window/Window.hpp"
-#include "Utilities/Utilities.hpp"
+#include "editor/Cursor/Cursor.hpp"
+#include "editor/ScreenBuffer/ScreenBuffer.hpp"
+#include "terminal/Window/Window.hpp"
+#include "utilities/Utilities.hpp"
 
 #include "gmock/gmock.h"
 #include <gmock/gmock.h>
@@ -36,11 +36,11 @@
 #include <string>
 #include <vector>
 
-namespace Kilo::editor {
+namespace kilo::editor {
 
 TEST(processKeypress, TerminatesTheProgramIfQIsPressed)
 {
-  using editor::EditorKey;
+  using utilities::EditorKey;
 
   EditorConfig editorConfig;
   constexpr auto key = utilities::ctrlKey('q');
@@ -50,7 +50,7 @@ TEST(processKeypress, TerminatesTheProgramIfQIsPressed)
 
 TEST(processKeypress, MovesCursorToStartOfLineIfHomeButtonIsPressed)
 {
-  using editor::EditorKey;
+  using utilities::EditorKey;
 
   constexpr auto key = EditorKey::Home;
   EditorConfig editorConfig;
@@ -62,7 +62,7 @@ TEST(processKeypress, MovesCursorToStartOfLineIfHomeButtonIsPressed)
 
 TEST(processKeypress, MovesCursorToEndOfLineIfEndButtonIsPressed)
 {
-  using editor::EditorKey;
+  using utilities::EditorKey;
 
   constexpr auto key = EditorKey::End;
   EditorConfig editorConfig;
@@ -125,6 +125,6 @@ TEST(printLineOfDocument, TruncatesTheLineIfItsLongerThanWindowWidth)
   ASSERT_THAT(buf.size(), ::testing::Eq(windowWidth));
 }
 
-} // namespace detail
+}   // namespace detail
 
-} // namespace Kilo::editor
+}   // namespace kilo::editor

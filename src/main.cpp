@@ -22,17 +22,17 @@
  */
 
 #include "Application/Application.hpp"
-#include "Terminal/TerminalMode/TerminalMode.hpp"
+#include "terminal/TerminalMode/TerminalMode.hpp"
 
 #include <cstdlib>
 #include <iostream>
 
-using namespace Kilo;
+using namespace kilo;
 
 int main(int argc, char const* argv[])
 {
   try {
-    static Terminal::TerminalMode terminalMode;
+    static terminal::TerminalMode terminalMode;
     terminalMode.setRawMode();
   }
   catch (std::system_error const& err) {

@@ -21,26 +21,26 @@ target_include_directories(tests
 
 target_sources(tests
     PRIVATE
-        "${PROJECT_SOURCE_DIR}/src/Editor/Editor.hpp"
-        "${PROJECT_SOURCE_DIR}/src/Editor/Editor.cpp"
+        "${PROJECT_SOURCE_DIR}/src/editor/Editor.hpp"
+        "${PROJECT_SOURCE_DIR}/src/editor/Editor.cpp"
         Editor/Editor.test.cpp
 
-        "${PROJECT_SOURCE_DIR}/src/Terminal/TerminalMode/TerminalMode.hpp"
-        "${PROJECT_SOURCE_DIR}/src/Terminal/TerminalMode/TerminalMode.cpp"
+        "${PROJECT_SOURCE_DIR}/src/terminal/TerminalMode/TerminalMode.hpp"
+        "${PROJECT_SOURCE_DIR}/src/terminal/TerminalMode/TerminalMode.cpp"
         TerminalMode/TerminalMode.test.cpp
 
-        "${PROJECT_SOURCE_DIR}/src/Utilities/Utilities.hpp"
-        "${PROJECT_SOURCE_DIR}/src/Utilities/Utilities.cpp"
+        "${PROJECT_SOURCE_DIR}/src/utilities/Utilities.hpp"
+        "${PROJECT_SOURCE_DIR}/src/utilities/Utilities.cpp"
 
-        "${PROJECT_SOURCE_DIR}/src/IO/File.hpp"
-        "${PROJECT_SOURCE_DIR}/src/IO/File.cpp"
+        "${PROJECT_SOURCE_DIR}/src/io/File.hpp"
+        "${PROJECT_SOURCE_DIR}/src/io/File.cpp"
 
-        "${PROJECT_SOURCE_DIR}/src/Editor/ScreenBuffer/ScreenBuffer.hpp"
-        "${PROJECT_SOURCE_DIR}/src/Editor/ScreenBuffer/ScreenBuffer.cpp"
+        "${PROJECT_SOURCE_DIR}/src/editor/ScreenBuffer/ScreenBuffer.hpp"
+        "${PROJECT_SOURCE_DIR}/src/editor/ScreenBuffer/ScreenBuffer.cpp"
         ScreenBuffer/ScreenBuffer.test.cpp
         
-        "${PROJECT_SOURCE_DIR}/src/Terminal/Window/Window.hpp"
-        "${PROJECT_SOURCE_DIR}/src/Terminal/Window/Window.cpp"
+        "${PROJECT_SOURCE_DIR}/src/terminal/Window/Window.hpp"
+        "${PROJECT_SOURCE_DIR}/src/terminal/Window/Window.cpp"
 )
 
 target_compile_features(tests

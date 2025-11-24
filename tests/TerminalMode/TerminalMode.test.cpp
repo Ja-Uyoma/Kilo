@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-#include "Terminal/TerminalMode/TerminalMode.hpp"
+#include "terminal/TerminalMode/TerminalMode.hpp"
 
 #include <gsl/util>
 
@@ -31,7 +31,7 @@
 #include <termios.h>
 #include <unistd.h>
 
-namespace Kilo::Terminal {
+namespace kilo::terminal {
 
 TEST(TerminalMode, SetRawModePutsTheTerminalDriverInRawMode)
 {
@@ -101,4 +101,4 @@ TEST(ttyCanonicalMode, SucceedsWhenPassedAValidFileDescriptor)
 
 }   // namespace detail
 
-}   // namespace Kilo::Terminal
+}   // namespace kilo::terminal

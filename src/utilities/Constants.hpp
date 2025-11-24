@@ -21,23 +21,46 @@
  * SOFTWARE.
  */
 
-#ifndef UTILITIES_HPP
-#define UTILITIES_HPP
+#ifndef CONSTANTS_HPP
+#define CONSTANTS_HPP
 
-namespace Kilo::utilities {
+#include <string_view>
 
-/// @brief Clear the screen and reposition the cursor to the top-left corner
-void clearScreenAndRepositionCursor() noexcept;
+#include <cstdint>
 
-/// @brief Map characters to control keys
-/// @param key The ASCII character to be mapped to a control key
-/// @return A control key
-constexpr auto ctrlKey(unsigned char key) noexcept -> unsigned
+namespace kilo::utilities {
+
+struct EscapeSequences
 {
-  key &= 0x1f;
-  return key;
-}
+  static constexpr std::string_view HideCursorWhenRepainting {"\x1b[?25l"};
+  static constexpr std::string_view MoveCursorToHomePosition {"\x1b[H"};
+  static constexpr std::string_view ShowTheCursor {"\x1b[?25h"};
+  static constexpr std::string_view ErasePartOfLineToTheRightOfCursor {"\x1b[K"};
+};
 
-}   // namespace Kilo::utilities
+// The current version of the application
+inline constexpr std::string_view KiloVersion {"0.0.1"};
+
+// The size of a tab character
+inline constexpr int KiloTabStop = 8;
+
+// The keys supported by the application
+// We choose a representation for the arrow keys that does not conflict with the [w, a, s, d] keys.
+// We give them a large integer value that is outside the range of a char, so that they don't
+// conflict with ordinary keypresses.
+enum class EditorKey : std::uint16_t
+{
+  ArrowLeft = 1000,
+  ArrowRight,
+  ArrowUp,
+  ArrowDown,
+  Delete,
+  Home,
+  End,
+  PageUp,
+  PageDown
+};
+
+}   // namespace kilo::utilities
 
 #endif

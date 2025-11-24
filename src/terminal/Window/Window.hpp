@@ -24,11 +24,11 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
-#include "IO/File.hpp"
+#include "io/File.hpp"
 
 #include <cstdint>
 
-namespace Kilo::Terminal {
+namespace kilo::terminal {
 
 struct WindowSize
 {
@@ -86,10 +86,10 @@ auto getWindowSize() -> WindowSize;
  * \returns The position of the cursor in the terminal window
  * \throws std::system_error on failure
  */
-auto getCursorPosition(IO::FileInterface& file) -> WindowSize;
+auto getCursorPosition(io::FileInterface& file) -> WindowSize;
 
 }   // namespace detail
 
-}   // namespace Kilo::Terminal
+}   // namespace kilo::terminal
 
 #endif

@@ -27,18 +27,18 @@
 #include "Cursor/Cursor.hpp"
 #include "Offset/Offset.hpp"
 #include "ScreenBuffer/ScreenBuffer.hpp"
-#include "Terminal/Window/Window.hpp"
-#include "Utilities/Constants.hpp"
+#include "terminal/Window/Window.hpp"
+#include "utilities/Constants.hpp"
 #include <string_view>
 
 #include <filesystem>
 #include <vector>
 
-namespace Kilo::editor {
+namespace kilo::editor {
 
 struct EditorConfig
 {
-  Terminal::Window window;
+  terminal::Window window;
   Cursor cursor;
   Offset offset;
   ScreenBuffer screenBuffer;
@@ -95,9 +95,9 @@ auto open(std::filesystem::path const& path, std::vector<std::string>& document,
  * \param[in] render The destination string
  */
 void updateRow(std::string_view row, std::string& render);
-}   // namespace Kilo::editor
+}   // namespace kilo::editor
 
-namespace Kilo::editor::detail {
+namespace kilo::editor::detail {
 
 /*
  * \brief Write the welcome message to the screen buffer
@@ -118,6 +118,6 @@ void printWelcomeMessage(int32_t windowWidth, ScreenBuffer& buffer);
  */
 void printLineOfDocument(std::string const& line, ScreenBuffer& buffer, int32_t windowWidth, int64_t columnOffset);
 
-}   // namespace Kilo::editor::detail
+}   // namespace kilo::editor::detail
 
 #endif

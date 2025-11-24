@@ -23,16 +23,16 @@
 
 #include "Application.hpp"
 
-#include "Editor/Editor.hpp"
-#include "IO/IO.hpp"
-#include "Utilities/Utilities.hpp"
+#include "editor/Editor.hpp"
+#include "io/IO.hpp"
+#include "utilities/Utilities.hpp"
 #include <fmt/format.h>
 #include <system_error>
 
 #include <cstdlib>
 #include <iostream>
 
-namespace Kilo::editor {
+namespace kilo::editor {
 
 /// Default constructor
 Application::Application() noexcept = default;
@@ -61,7 +61,7 @@ void Application::refreshScreen()
  */
 void Application::processKeypress()
 {
-  auto const keyPressed = IO::readKey();
+  auto const keyPressed = io::readKey();
   editor::processKeypress(keyPressed, editorConfig);
 }
 
@@ -98,4 +98,4 @@ catch (std::system_error const& err) {
   std::cerr << err.code() << ": " << err.what() << '\n';
 }
 
-}   // namespace Kilo::editor
+}   // namespace kilo::editor

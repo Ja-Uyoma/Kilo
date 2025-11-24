@@ -21,19 +21,29 @@
  * SOFTWARE.
  */
 
-#ifndef OFFSET_HPP
-#define OFFSET_HPP
+#ifndef IO_HPP
+#define IO_HPP
 
-#include <cstdint>
+namespace kilo::io {
 
-namespace Kilo::editor {
+/**
+ * \brief Read key input from stdin
+ * \return The character read
+ * \throws std::system_error if an error occured during read
+ */
+auto readKey() -> int;
 
-struct Offset
-{
-  std::int64_t row{};
-  std::int64_t col{};
-};
+namespace detail {
 
-} // namespace Kilo::editor
+/**
+ * \brief Handle the processing of escape sequences read in from stdin
+ *
+ * \return unsigned The key representing the input escape sequence
+ */
+auto handleEscapeSequences() noexcept -> unsigned;
+
+}   // namespace detail
+
+}   // namespace kilo::io
 
 #endif

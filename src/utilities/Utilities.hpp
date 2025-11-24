@@ -21,21 +21,23 @@
  * SOFTWARE.
  */
 
-#include "Utilities.hpp"
+#ifndef UTILITIES_HPP
+#define UTILITIES_HPP
 
-#include <unistd.h>
-
-namespace Kilo::utilities {
+namespace kilo::utilities {
 
 /// @brief Clear the screen and reposition the cursor to the top-left corner
-void clearScreenAndRepositionCursor() noexcept
+void clearScreenAndRepositionCursor() noexcept;
+
+/// @brief Map characters to control keys
+/// @param key The ASCII character to be mapped to a control key
+/// @return A control key
+constexpr auto ctrlKey(unsigned char key) noexcept -> unsigned
 {
-  {
-    [[maybe_unused]] auto&& rv = ::write(STDOUT_FILENO, "\x1b[2J", 4);
-  }
-  {
-    [[maybe_unused]] auto&& rv = ::write(STDOUT_FILENO, "\x1b[H", 3);
-  }
+  key &= 0x1f;
+  return key;
 }
 
-}   // namespace Kilo::utilities
+}   // namespace kilo::utilities
+
+#endif

@@ -23,14 +23,14 @@
 
 #include "IO.hpp"
 
-#include "Utilities/Constants.hpp"
+#include "utilities/Constants.hpp"
 #include <system_error>
 
 #include <array>
 #include <cerrno>
 #include <unistd.h>
 
-namespace Kilo::IO {
+namespace kilo::io {
 
 int readKey()
 {
@@ -84,7 +84,7 @@ unsigned handleEscapeSequences() noexcept
   }
 
   if (seq[0] == '[') {
-    using enum Kilo::utilities::EditorKey;
+    using enum kilo::utilities::EditorKey;
 
     /*
      * If the byte after [ is a digit, we read another byte expecting it to be
@@ -145,7 +145,7 @@ unsigned handleEscapeSequences() noexcept
     }
   }
   else if (seq[0] == 'O') {
-    using enum Kilo::utilities::EditorKey;
+    using enum kilo::utilities::EditorKey;
 
     switch (seq[1]) {
       case 'H':
@@ -160,4 +160,4 @@ unsigned handleEscapeSequences() noexcept
 
 }   // namespace detail
 
-}   // namespace Kilo::IO
+}   // namespace kilo::io

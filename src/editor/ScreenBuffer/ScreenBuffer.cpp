@@ -21,46 +21,47 @@
  * SOFTWARE.
  */
 
-#ifndef CONSTANTS_HPP
-#define CONSTANTS_HPP
+#include "ScreenBuffer.hpp"
 
-#include <string_view>
+#include <gsl/assert>
+#include <system_error>
 
-#include <cstdint>
+#include <cerrno>
+#include <unistd.h>
 
-namespace Kilo::utilities {
+namespace kilo::editor {
 
-struct EscapeSequences
+/// \brief Flush the buffer by writing its contents to a file
+/// \param[in] file The file being written to
+/// \returns The number of bytes written
+/// \throws `std::system_error` if the operation failed
+std::size_t ScreenBuffer::flush(io::FileInterface& file) const
 {
-  static constexpr std::string_view HideCursorWhenRepainting {"\x1b[?25l"};
-  static constexpr std::string_view MoveCursorToHomePosition {"\x1b[H"};
-  static constexpr std::string_view ShowTheCursor {"\x1b[?25h"};
-  static constexpr std::string_view ErasePartOfLineToTheRightOfCursor {"\x1b[K"};
-};
+  std::size_t totalWritten = 0;
 
-// The current version of the application
-inline constexpr std::string_view KiloVersion {"0.0.1"};
+  while (totalWritten < m_buffer.length()) {
+    errno = 0;
+    long result = file.write(STDOUT_FILENO, m_buffer.substr(0 + totalWritten, m_buffer.length() - totalWritten));
 
-// The size of a tab character
-inline constexpr int KiloTabStop = 8;
+    if (result == -1) {
+      if (errno == EINTR or errno == EAGAIN) {
+        continue;
+      }
+      else {
+        throw std::system_error(errno, std::system_category());
+      }
+    }
 
-// The keys supported by the application
-// We choose a representation for the arrow keys that does not conflict with the [w, a, s, d] keys.
-// We give them a large integer value that is outside the range of a char, so that they don't
-// conflict with ordinary keypresses.
-enum class EditorKey : std::uint16_t
-{
-  ArrowLeft = 1000,
-  ArrowRight,
-  ArrowUp,
-  ArrowDown,
-  Delete,
-  Home,
-  End,
-  PageUp,
-  PageDown
-};
+    if (result == 0) {
+      break;
+    }
 
-}   // namespace Kilo::utilities
+    totalWritten += result;
+  }
 
-#endif
+  Ensures((totalWritten == m_buffer.length() or totalWritten == 0) and
+          "The total number of bytes written is unequal to the size of the buffer");
+  return totalWritten;
+}
+
+}   // namespace kilo::editor

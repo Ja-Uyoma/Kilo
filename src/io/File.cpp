@@ -27,7 +27,7 @@
 #include <string>
 #include <unistd.h>
 
-namespace Kilo::IO {
+namespace kilo::io {
 
 /// Read all bytes from fileDescriptor into buffer
 /// \param[in] fileDescriptor The file being read from
@@ -67,4 +67,4 @@ std::size_t File::write(int fileDescriptor, std::string const& buffer, std::size
   return ::write(fileDescriptor, buffer.c_str(), nbytes);
 }
 
-}   // namespace Kilo::IO
+}   // namespace kilo::io

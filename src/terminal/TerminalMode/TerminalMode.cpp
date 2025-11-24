@@ -23,14 +23,15 @@
 
 #include "TerminalMode.hpp"
 
+#include <system_error>
+
 #include <cassert>
 #include <cerrno>
 #include <iostream>
-#include <system_error>
 #include <termios.h>
 #include <unistd.h>
 
-namespace Kilo::Terminal {
+namespace kilo::terminal {
 
 TerminalMode::TerminalMode()
 {
@@ -165,4 +166,4 @@ void ttyCanonicalMode(int fileDescriptor, termios const& buf)
 
 }   // namespace detail
 
-}   // namespace Kilo::Terminal
+}   // namespace kilo::terminal

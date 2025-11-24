@@ -21,19 +21,21 @@
  * SOFTWARE.
  */
 
-#ifndef CURSOR_HPP
-#define CURSOR_HPP
+#include "Utilities.hpp"
 
-#include <cstdint>
+#include <unistd.h>
 
-namespace Kilo::editor {
+namespace kilo::utilities {
 
-struct Cursor
+/// @brief Clear the screen and reposition the cursor to the top-left corner
+void clearScreenAndRepositionCursor() noexcept
 {
-  std::int64_t x{};
-  std::int64_t y{};
-};
+  {
+    [[maybe_unused]] auto&& rv = ::write(STDOUT_FILENO, "\x1b[2J", 4);
+  }
+  {
+    [[maybe_unused]] auto&& rv = ::write(STDOUT_FILENO, "\x1b[H", 3);
+  }
+}
 
-} // namespace Kilo::editor
-
-#endif
+}   // namespace kilo::utilities

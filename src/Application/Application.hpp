@@ -24,11 +24,11 @@
 #ifndef APPLICATION_HPP
 #define APPLICATION_HPP
 
-#include "Editor/Editor.hpp"
+#include "editor/Editor.hpp"
 
 #include <filesystem>
 
-namespace Kilo::editor {
+namespace kilo::editor {
 class Application
 {
 public:
@@ -73,6 +73,6 @@ public:
 private:
   editor::EditorConfig editorConfig;
 };
-} // namespace Kilo::editor
+}   // namespace kilo::editor
 
 #endif

@@ -24,12 +24,12 @@
 #include "Editor.hpp"
 
 #include "Cursor/Cursor.hpp"
-#include "IO/File.hpp"
 #include "Offset/Offset.hpp"
 #include "ScreenBuffer/ScreenBuffer.hpp"
-#include "Terminal/Window/Window.hpp"
-#include "Utilities/Constants.hpp"
-#include "Utilities/Utilities.hpp"
+#include "io/File.hpp"
+#include "terminal/Window/Window.hpp"
+#include "utilities/Constants.hpp"
+#include "utilities/Utilities.hpp"
 #include <fmt/format.h>
 #include <string_view>
 
@@ -48,7 +48,7 @@
 #include <utility>
 #include <vector>
 
-namespace Kilo::editor {
+namespace kilo::editor {
 
 /*
  * \brief Move the cursor in the open document depending on the key pressed
@@ -103,7 +103,7 @@ void refreshScreen(EditorConfig& editor)
     fmt::format("\x1b[{};{}H", (editor.cursor.y - editor.offset.row) + 1, (editor.cursor.x - editor.offset.col) + 1);
 
   // The file to which the screen buffer writes its contents when flushed (typically STDOUT)
-  IO::File outputFile {};
+  io::File outputFile {};
 
   editor.screenBuffer.write(cursorPos).write(utilities::EscapeSequences::ShowTheCursor).flush(outputFile);
 }
@@ -287,9 +287,9 @@ void updateRow(std::string_view row, std::string& render)
     }
   }
 }
-}   // namespace Kilo::editor
+}   // namespace kilo::editor
 
-namespace Kilo::editor::detail {
+namespace kilo::editor::detail {
 
 /*
  * \brief Write the welcome message to the screen buffer
@@ -356,4 +356,4 @@ void printLineOfDocument(std::string const& line, ScreenBuffer& buffer, int32_t 
   buffer.write(&line[columnOffset], lineLen);
 }
 
-}   // namespace Kilo::editor::detail
+}   // namespace kilo::editor::detail

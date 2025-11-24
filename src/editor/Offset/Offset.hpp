@@ -21,47 +21,19 @@
  * SOFTWARE.
  */
 
-#include "ScreenBuffer.hpp"
+#ifndef OFFSET_HPP
+#define OFFSET_HPP
 
-#include <gsl/assert>
-#include <system_error>
+#include <cstdint>
 
-#include <cerrno>
-#include <unistd.h>
+namespace kilo::editor {
 
-namespace Kilo::editor {
-
-/// \brief Flush the buffer by writing its contents to a file
-/// \param[in] file The file being written to
-/// \returns The number of bytes written
-/// \throws `std::system_error` if the operation failed
-std::size_t ScreenBuffer::flush(IO::FileInterface& file) const
+struct Offset
 {
-  std::size_t totalWritten = 0;
+  std::int64_t row{};
+  std::int64_t col{};
+};
 
-  while (totalWritten < m_buffer.length()) {
-    errno = 0;
-    long result = file.write(STDOUT_FILENO, m_buffer.substr(0 + totalWritten, m_buffer.length() - totalWritten));
+}   // namespace kilo::editor
 
-    if (result == -1) {
-      if (errno == EINTR or errno == EAGAIN) {
-        continue;
-      }
-      else {
-        throw std::system_error(errno, std::system_category());
-      }
-    }
-
-    if (result == 0) {
-      break;
-    }
-
-    totalWritten += result;
-  }
-
-  Ensures((totalWritten == m_buffer.length() or totalWritten == 0) and
-          "The total number of bytes written is unequal to the size of the buffer");
-  return totalWritten;
-}
-
-}   // namespace Kilo::editor
+#endif

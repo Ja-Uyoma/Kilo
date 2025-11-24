@@ -24,10 +24,10 @@
 #ifndef TERMINAL_STATE_HPP
 #define TERMINAL_STATE_HPP
 
-#include <termios.h>
 #include <cstdint>
+#include <termios.h>
 
-namespace Kilo::Terminal {
+namespace kilo::terminal {
 
 class TerminalMode
 {
@@ -91,7 +91,6 @@ void ttyCanonicalMode(int fileDescriptor, termios const& buf);
 
 }   // namespace detail
 
-}   // namespace Kilo::Terminal
+}   // namespace kilo::terminal
 
 #endif
-

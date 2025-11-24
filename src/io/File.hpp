@@ -27,7 +27,7 @@
 #include <cstddef>
 #include <string>
 
-namespace Kilo::IO {
+namespace kilo::io {
 
 class FileInterface
 {
@@ -95,6 +95,6 @@ public:
   auto write(int fileDescriptor, std::string const& buffer, std::size_t nbytes) noexcept -> std::size_t override;
 };
 
-}   // namespace Kilo::IO
+}   // namespace kilo::io
 
 #endif

@@ -23,7 +23,7 @@
 
 #include "Window.hpp"
 
-#include "IO/File.hpp"
+#include "io/File.hpp"
 #include <gsl/assert>
 #include <sys/ioctl.h>
 #include <system_error>
@@ -36,7 +36,7 @@
 #include <string>
 #include <unistd.h>
 
-namespace Kilo::Terminal {
+namespace kilo::terminal {
 
 Window::Window() : m_winsize(detail::getWindowSize())
 {
@@ -53,7 +53,7 @@ auto getWindowSize() -> WindowSize
 {
   ::winsize ws {};
 
-  if (IO::File file; ::ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == -1 or ws.ws_col == 0) {
+  if (io::File file; ::ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == -1 or ws.ws_col == 0) {
     errno = 0;
 
     if (file.write(STDOUT_FILENO, std::string("\x1b[999c\x1b[999B")) != 12) {
@@ -72,7 +72,7 @@ auto getWindowSize() -> WindowSize
  * \returns The position of the cursor in the terminal window
  * \throws std::system_error on failure
  */
-auto getCursorPosition(IO::FileInterface& file) -> WindowSize
+auto getCursorPosition(io::FileInterface& file) -> WindowSize
 {
   Expects(isatty(STDIN_FILENO) and "STDIN must be a terminal device");
   Expects(isatty(STDOUT_FILENO) and "STDOUT must be a terminal device");
@@ -141,4 +141,4 @@ auto getCursorPosition(IO::FileInterface& file) -> WindowSize
 
 }   // namespace detail
 
-}   // namespace Kilo::Terminal
+}   // namespace kilo::terminal

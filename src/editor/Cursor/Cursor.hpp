@@ -21,29 +21,19 @@
  * SOFTWARE.
  */
 
-#ifndef IO_HPP
-#define IO_HPP
+#ifndef CURSOR_HPP
+#define CURSOR_HPP
 
-namespace Kilo::IO {
+#include <cstdint>
 
-/**
- * \brief Read key input from stdin
- * \return The character read
- * \throws std::system_error if an error occured during read
- */
-auto readKey() -> int;
+namespace kilo::editor {
 
-namespace detail {
+struct Cursor
+{
+  std::int64_t x{};
+  std::int64_t y{};
+};
 
-/**
- * \brief Handle the processing of escape sequences read in from stdin
- *
- * \return unsigned The key representing the input escape sequence
- */
-auto handleEscapeSequences() noexcept -> unsigned;
-
-}   // namespace detail
-
-}   // namespace Kilo::IO
+}   // namespace kilo::editor
 
 #endif
