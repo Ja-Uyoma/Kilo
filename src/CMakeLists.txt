@@ -4,6 +4,7 @@ find_package(fmt REQUIRED)
 add_library(kilo_lib OBJECT)
 
 add_subdirectory(Utilities)
+add_subdirectory(IO)
 
 target_sources(kilo_lib PRIVATE
     "${PROJECT_SOURCE_DIR}/src/Editor/Cursor/Cursor.hpp"
@@ -19,17 +20,11 @@ target_sources(kilo_lib PRIVATE
     "${PROJECT_SOURCE_DIR}/src/Terminal/TerminalMode/TerminalMode.hpp"
     "${PROJECT_SOURCE_DIR}/src/Terminal/TerminalMode/TerminalMode.cpp"
 
-    "${PROJECT_SOURCE_DIR}/src/IO/File.hpp"
-    "${PROJECT_SOURCE_DIR}/src/IO/File.cpp"
-
     "${PROJECT_SOURCE_DIR}/src/Terminal/Window/Window.hpp"
     "${PROJECT_SOURCE_DIR}/src/Terminal/Window/Window.cpp"
 
     "${PROJECT_SOURCE_DIR}/src/Editor/ScreenBuffer/ScreenBuffer.hpp"
     "${PROJECT_SOURCE_DIR}/src/Editor/ScreenBuffer/ScreenBuffer.cpp"
-
-    "${PROJECT_SOURCE_DIR}/src/IO/IO.hpp"
-    "${PROJECT_SOURCE_DIR}/src/IO/IO.cpp"
 )
 
 target_include_directories(kilo_lib
@@ -42,6 +37,7 @@ target_link_libraries(kilo_lib PRIVATE
     Microsoft.GSL::GSL
     fmt::fmt
     kilo_lib_utilities
+    kilo_lib_io
 )
 
 target_compile_features(kilo_lib PUBLIC
