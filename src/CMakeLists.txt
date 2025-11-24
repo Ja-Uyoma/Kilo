@@ -43,7 +43,7 @@ add_executable(Kilo::exe ALIAS Kilo_exe)
 set_property(TARGET Kilo_exe PROPERTY OUTPUT_NAME kilo)
 
 target_link_libraries(Kilo_exe PRIVATE
-    kilo_lib
+    Kilo_lib
 )
 
 target_compile_features(Kilo_exe PRIVATE
