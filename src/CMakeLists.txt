@@ -5,6 +5,7 @@ add_library(kilo_lib OBJECT)
 
 add_subdirectory(Utilities)
 add_subdirectory(IO)
+add_subdirectory(Terminal)
 
 target_sources(kilo_lib PRIVATE
     "${PROJECT_SOURCE_DIR}/src/Editor/Cursor/Cursor.hpp"
@@ -16,12 +17,6 @@ target_sources(kilo_lib PRIVATE
     "${PROJECT_SOURCE_DIR}/src/Application/Application.cpp"
 
     "${PROJECT_SOURCE_DIR}/src/Editor/Offset/Offset.hpp"
-
-    "${PROJECT_SOURCE_DIR}/src/Terminal/TerminalMode/TerminalMode.hpp"
-    "${PROJECT_SOURCE_DIR}/src/Terminal/TerminalMode/TerminalMode.cpp"
-
-    "${PROJECT_SOURCE_DIR}/src/Terminal/Window/Window.hpp"
-    "${PROJECT_SOURCE_DIR}/src/Terminal/Window/Window.cpp"
 
     "${PROJECT_SOURCE_DIR}/src/Editor/ScreenBuffer/ScreenBuffer.hpp"
     "${PROJECT_SOURCE_DIR}/src/Editor/ScreenBuffer/ScreenBuffer.cpp"
@@ -38,6 +33,7 @@ target_link_libraries(kilo_lib PRIVATE
     fmt::fmt
     kilo_lib_utilities
     kilo_lib_io
+    kilo_lib_terminal
 )
 
 target_compile_features(kilo_lib PUBLIC
