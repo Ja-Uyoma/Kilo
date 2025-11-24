@@ -24,7 +24,7 @@
 #include "Editor.hpp"
 
 #include "Cursor/Cursor.hpp"
-#include "File/File.hpp"
+#include "IO/File.hpp"
 #include "Offset/Offset.hpp"
 #include "ScreenBuffer/ScreenBuffer.hpp"
 #include "Terminal/Window/Window.hpp"
@@ -87,9 +87,7 @@ void processKeypress(int keyPressed, EditorConfig& editorConfig)
 void refreshScreen(EditorConfig& editor)
 {
   // Hide the cursor when painting and then move it to the Home position
-  editor.screenBuffer
-    .write(EscapeSequences::HideCursorWhenRepainting)
-    .write(EscapeSequences::MoveCursorToHomePosition);
+  editor.screenBuffer.write(EscapeSequences::HideCursorWhenRepainting).write(EscapeSequences::MoveCursorToHomePosition);
 
   // Draw the welcome message, or each row of the currently open document with a tilde at the beginning
   drawRows(editor);
@@ -100,19 +98,13 @@ void refreshScreen(EditorConfig& editor)
   // We get the cursor position in the terminal by adding 1 to cursor.x and cursor.y
   // (less the corresponding offset values) to convert from 0-indexed values to the 1-indexed values
   // that the terminal uses
-  auto const cursorPos = fmt::format(
-    "\x1b[{};{}H",
-    (editor.cursor.y - editor.offset.row) + 1,
-    (editor.cursor.x - editor.offset.col) + 1
-    );
+  auto const cursorPos =
+    fmt::format("\x1b[{};{}H", (editor.cursor.y - editor.offset.row) + 1, (editor.cursor.x - editor.offset.col) + 1);
 
   // The file to which the screen buffer writes its contents when flushed (typically STDOUT)
-  IO::File outputFile{};
+  IO::File outputFile {};
 
-  editor.screenBuffer
-    .write(cursorPos)
-    .write(EscapeSequences::ShowTheCursor)
-    .flush(outputFile);
+  editor.screenBuffer.write(cursorPos).write(EscapeSequences::ShowTheCursor).flush(outputFile);
 }
 
 /*
@@ -179,8 +171,7 @@ void moveCursor(EditorKey const key, EditorConfig& editor)
         ++editor.cursor.y;
         editor.cursor.x = 0;
       }
-    }
-    break;
+    } break;
 
     case ArrowUp:
       if (editor.cursor.y != 0) {
@@ -275,13 +266,11 @@ void updateRow(std::string_view row, std::string& render)
 {
   using editor::KiloTabStop;
 
-  [[maybe_unused]] auto tabs = std::ranges::count_if(row, [](unsigned char c) {
-    return c == '\t';
-  });
+  [[maybe_unused]] auto tabs = std::ranges::count_if(row, [](unsigned char c) { return c == '\t'; });
 
-  int idx{};
+  int idx {};
 
-  for (std::size_t j{}; j < row.length(); j++) {
+  for (std::size_t j {}; j < row.length(); j++) {
     if (row[j] == '\t') {
       render[idx] = ' ';
       idx++;
@@ -297,7 +286,7 @@ void updateRow(std::string_view row, std::string& render)
     }
   }
 }
-} // namespace Kilo::editor
+}   // namespace Kilo::editor
 
 namespace Kilo::editor::detail {
 
@@ -366,4 +355,4 @@ void printLineOfDocument(std::string const& line, ScreenBuffer& buffer, int32_t 
   buffer.write(&line[columnOffset], lineLen);
 }
 
-} // namespace Kilo::editor::detail
+}   // namespace Kilo::editor::detail
