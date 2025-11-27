@@ -200,9 +200,7 @@ void moveCursor(utilities::EditorKey const key, EditorConfig& editor)
 
   auto const rowLength = currRow ? std::ssize(*currRow) : 0;
 
-  if (editor.cursor.x >= rowLength) {
-    editor.cursor.x = rowLength;
-  }
+  editor.cursor.x = std::min(editor.cursor.x, rowLength);
 }
 
 /*
@@ -215,17 +213,13 @@ void scroll(EditorConfig& editor)
   // If so, adjust the editor.offset.row and/or editor.offset.col variable(s) so that the
   // cursor is just inside the visible window
 
-  if (editor.cursor.y < editor.offset.row) {
-    editor.offset.row = editor.cursor.y;
-  }
+  editor.offset.row = std::min(editor.cursor.y, editor.offset.row);
 
   if (editor.cursor.y >= editor.offset.row + editor.window.rows()) {
     editor.offset.row = editor.cursor.y - editor.window.rows() + 1;
   }
 
-  if (editor.cursor.x < editor.offset.col) {
-    editor.offset.col = editor.cursor.x;
-  }
+  editor.offset.col = std::min(editor.cursor.x, editor.offset.col);
 
   if (editor.cursor.x >= editor.offset.col + editor.window.cols()) {
     editor.offset.col = editor.cursor.x - editor.window.cols() + 1;
@@ -345,13 +339,9 @@ void printLineOfDocument(std::string const& line, ScreenBuffer& buffer, int32_t 
 
   auto lineLen = std::ssize(line) - columnOffset;
 
-  if (lineLen < 0) {
-    lineLen = 0;
-  }
+  lineLen = std::max<int64_t>(lineLen, 0);
 
-  if (lineLen > windowWidth) {
-    lineLen = windowWidth;
-  }
+  lineLen = std::min<int64_t>(lineLen, windowWidth);
 
   buffer.write(&line[columnOffset], lineLen);
 }
