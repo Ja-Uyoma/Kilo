@@ -10,7 +10,7 @@ target_sources(Kilo_lib_io
 
 target_link_libraries(Kilo_lib_io
     PUBLIC
-        kilo_lib_utilities
+        Kilo_lib_utilities
 )
 
 target_include_directories(Kilo_lib_io

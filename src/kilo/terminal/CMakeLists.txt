@@ -10,7 +10,7 @@ target_sources(Kilo_lib_terminal
 
 target_link_libraries(Kilo_lib_terminal
     PUBLIC
-        kilo_lib_io
+        Kilo_lib_io
         Microsoft.GSL::GSL
 )
 
