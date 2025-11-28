@@ -21,11 +21,19 @@
  * SOFTWARE.
  */
 
-#include "kilo/Application/Application.hpp"
+#ifndef OFFSET_HPP
+#define OFFSET_HPP
 
-using kilo::editor::application;
+#include <cstdint>
 
-auto main(int argc, char const* argv[]) -> int
+namespace kilo::editor {
+
+struct offset
 {
-  return application::main(std::span {argv, static_cast<size_t>(argc)});
-}
+  std::int64_t row {};
+  std::int64_t col {};
+};
+
+}   // namespace kilo::editor
+
+#endif

@@ -1,0 +1,174 @@
+/**
+ * MIT License
+ * Copyright (c) 2023 Jimmy Givans
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+#include "IO.hpp"
+
+#include "kilo/utilities/Constants.hpp"
+#include <system_error>
+
+#include <array>
+#include <cerrno>
+#include <unistd.h>
+
+namespace kilo::io {
+
+/**
+ * \brief Read key input from stdin
+ * \return The character read
+ * \throws std::system_error if an error occured during read
+ */
+auto read_key() -> int
+{
+  char result {};
+
+  for (int64_t nread = 0; nread != 1; nread = ::read(STDIN_FILENO, &result, 1)) {
+    if (nread == -1 && errno != EAGAIN) {
+      throw std::system_error(errno, std::system_category(), "Could not read key input from stdin");
+    }
+
+    errno = 0;
+  }
+
+  // Pressing an arrow key sends multiple bytes as input to our program.
+  // These bytes are in the form of an escape sequence that starts with '\x1b',
+  // '[', followed by an 'A', 'B', 'C', or 'D', depending on which of the 4
+  // arrow keys was pressed. We want to read escape sequences of this form as a
+  // single key press.
+
+  if (result == '\x1b') {
+    return detail::handle_escape_sequences();
+  }
+
+  return result;
+}
+
+namespace detail {
+
+/**
+ * \brief Handle the processing of escape sequences read in from stdin
+ *
+ * \return The integral value of the key representing the input escape sequence
+ */
+auto handle_escape_sequences() noexcept -> int
+{
+  std::array<char, 3> seq {};
+  static constexpr char escape = '\x1b';
+
+  /*
+   * If we read an escape character, we immediately read 2 more bytes into the
+   * seq buffer. If either of these reads times out, then we assume the user
+   * just pressed the Escape key and return that.
+   */
+
+  if (::read(STDIN_FILENO, seq.data(), 1) != 1) {
+    return escape;
+  }
+
+  if (::read(STDIN_FILENO, &seq[1], 1) != 1) {
+    return escape;
+  }
+
+  if (seq[0] == '[') {
+    using enum kilo::utilities::editor_key;
+
+    /*
+     * If the byte after [ is a digit, we read another byte expecting it to be
+     * a ~. Then we test the digit byte to see if it's a 1, 4, 5, 6, 7, or 8.
+     * Page Up is sent as \x1b[5~, and Page Down is sent as \x1b[6~.
+     * Delete is sent as \x1b[3~.
+     * Home could be sent as \x1b[1~, \x1b[7~, \x1b[H, or \x1b[OH
+     * End could be sent as \x1b[4~, \x1b[8~, \x1b[F, or \x1b[OF.
+     */
+
+    if (seq[1] >= '0' && seq[1] <= '9') {
+      if (::read(STDIN_FILENO, &seq[2], 1) != 1) {
+        return escape;
+      }
+
+      if (seq[2] == '~') {
+        switch (seq[1]) {
+          case '1':
+            return static_cast<int>(home);
+          case '3':
+            return static_cast<int>(del);
+          case '4':
+            return static_cast<int>(end);
+          case '5':
+            return static_cast<int>(page_up);
+          case '6':
+            return static_cast<int>(page_down);
+          case '7':
+            return static_cast<int>(home);
+          case '8':
+            return static_cast<int>(end);
+          default:
+            break;
+        }
+      }
+    }
+
+    /*
+     * Otherwise we look to see if the escape sequence is an arrow key or Home
+     * or End escape sequence. If it is, we just return the corresponding [w,
+     * a, s, d] character for now. If it isn't, we just return the escape
+     * character
+     */
+
+    else {
+      switch (seq[1]) {
+        case 'A':
+          return static_cast<int>(arrow_up);
+        case 'B':
+          return static_cast<int>(arrow_down);
+        case 'C':
+          return static_cast<int>(arrow_right);
+        case 'D':
+          return static_cast<int>(arrow_left);
+        case 'H':
+          return static_cast<int>(home);
+        case 'F':
+          return static_cast<int>(end);
+        default:
+          break;
+      }
+    }
+  }
+  else if (seq[0] == 'O') {
+    using enum kilo::utilities::editor_key;
+
+    switch (seq[1]) {
+      case 'H':
+        return static_cast<int>(home);
+      case 'F':
+        return static_cast<int>(end);
+      default:
+        break;
+    }
+  }
+
+  return escape;
+}
+
+}   // namespace detail
+
+}   // namespace kilo::io

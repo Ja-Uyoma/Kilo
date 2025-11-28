@@ -21,11 +21,46 @@
  * SOFTWARE.
  */
 
-#include "kilo/Application/Application.hpp"
+#ifndef CONSTANTS_HPP
+#define CONSTANTS_HPP
 
-using kilo::editor::application;
+#include <string_view>
 
-auto main(int argc, char const* argv[]) -> int
+#include <cstdint>
+
+namespace kilo::utilities {
+
+struct escape_sequences
 {
-  return application::main(std::span {argv, static_cast<size_t>(argc)});
-}
+  static constexpr std::string_view hide_cursor_when_repainting {"\x1b[?25l"};
+  static constexpr std::string_view move_cursor_to_home_position {"\x1b[H"};
+  static constexpr std::string_view show_the_cursor {"\x1b[?25h"};
+  static constexpr std::string_view erase_part_of_line_to_the_right_of_cursor {"\x1b[K"};
+};
+
+// The current version of the application
+inline constexpr std::string_view kilo_version {"0.0.1"};
+
+// The size of a tab character
+inline constexpr int kilo_tab_stop = 8;
+
+// The keys supported by the application
+// We choose a representation for the arrow keys that does not conflict with the [w, a, s, d] keys.
+// We give them a large integer value that is outside the range of a char, so that they don't
+// conflict with ordinary keypresses.
+enum class editor_key : std::uint16_t
+{
+  arrow_left = 1000,
+  arrow_right,
+  arrow_up,
+  arrow_down,
+  del,
+  home,
+  end,
+  page_up,
+  page_down
+};
+
+}   // namespace kilo::utilities
+
+#endif

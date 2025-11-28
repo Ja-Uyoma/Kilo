@@ -21,11 +21,48 @@
  * SOFTWARE.
  */
 
-#include "kilo/Application/Application.hpp"
+#ifndef APPLICATION_HPP
+#define APPLICATION_HPP
 
-using kilo::editor::application;
+#include "kilo/editor/EditorConfig/EditorConfig.hpp"
 
-auto main(int argc, char const* argv[]) -> int
+#include <filesystem>
+#include <span>
+
+namespace kilo::editor {
+
+class application
 {
-  return application::main(std::span {argv, static_cast<size_t>(argc)});
-}
+public:
+  ///
+  /// \brief Default constructor
+  ///
+  explicit application() noexcept = default;
+
+  ///
+  /// \brief Run the application with the given command-line arguments
+  /// \param[in] args The command-line arguments passed to the application
+  /// \returns EXIT_SUCCESS on success, and EXIT_FAILURE otherwise
+  ///
+  static auto main(std::span<char const*> args) -> int;
+
+private:
+  editor::editor_config m_editor_config;
+
+  ///
+  /// \brief Open a file and write its contents to memory
+  ///
+  /// \param[in] path The path to the file
+  /// \return true If the operation was successful, and false otherwise
+  ///
+  auto open(std::filesystem::path const& path) -> bool;
+
+  ///
+  /// \brief Run the application
+  ///
+  void run();
+};
+
+}   // namespace kilo::editor
+
+#endif

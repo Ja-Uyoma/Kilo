@@ -1,54 +1,52 @@
-add_executable(kilo)
-
 find_package(Microsoft.GSL REQUIRED)
 find_package(fmt REQUIRED)
 
-target_link_libraries(kilo Microsoft.GSL::GSL fmt::fmt)
+add_library(Kilo_lib OBJECT)
 
-target_include_directories(kilo
-    PRIVATE
-        "${PROJECT_SOURCE_DIR}/src"
+add_subdirectory(kilo/utilities)
+add_subdirectory(kilo/io)
+add_subdirectory(kilo/terminal)
+add_subdirectory(kilo/editor)
+
+target_sources(Kilo_lib PRIVATE
+    "${PROJECT_SOURCE_DIR}/src/kilo/Application/Application.hpp"
+    "${PROJECT_SOURCE_DIR}/src/kilo/Application/Application.cpp"
 )
 
-target_sources(kilo
-    PRIVATE
-        "${PROJECT_SOURCE_DIR}/src/Utilities/Constants.hpp"
-        "${PROJECT_SOURCE_DIR}/src/Editor/Cursor/Cursor.hpp"
-
-        "${PROJECT_SOURCE_DIR}/src/Editor/Editor.hpp"
-        "${PROJECT_SOURCE_DIR}/src/Editor/Editor.cpp"
-        
-        "${PROJECT_SOURCE_DIR}/src/Application/Application.hpp"
-        "${PROJECT_SOURCE_DIR}/src/Application/Application.cpp"
-
-        "${PROJECT_SOURCE_DIR}/src/Editor/Offset/Offset.hpp"
-
-        "${PROJECT_SOURCE_DIR}/src/Terminal/TerminalMode/TerminalMode.hpp"
-        "${PROJECT_SOURCE_DIR}/src/Terminal/TerminalMode/TerminalMode.cpp"
-
-        "${PROJECT_SOURCE_DIR}/src/File/File.hpp"
-        "${PROJECT_SOURCE_DIR}/src/File/File.cpp"
-
-        "${PROJECT_SOURCE_DIR}/src/Utilities/Utilities.hpp"
-        "${PROJECT_SOURCE_DIR}/src/Utilities/Utilities.cpp"
-        
-        "${PROJECT_SOURCE_DIR}/src/Terminal/Window/Window.hpp"
-        "${PROJECT_SOURCE_DIR}/src/Terminal/Window/Window.cpp"
-
-        "${PROJECT_SOURCE_DIR}/src/Editor/ScreenBuffer/ScreenBuffer.hpp"
-        "${PROJECT_SOURCE_DIR}/src/Editor/ScreenBuffer/ScreenBuffer.cpp"
-
-        IO/IO.hpp
-        IO/IO.cpp
-    
-        main.cpp
+target_include_directories(Kilo_lib
+    ${warning_guard}
+    PUBLIC
+    "\$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>"
 )
 
-target_compile_features(kilo
+target_link_libraries(Kilo_lib
     PRIVATE
-        cxx_std_20
+        Microsoft.GSL::GSL
+        fmt::fmt
+        Kilo_lib_utilities
+        Kilo_lib_io
+        Kilo_lib_terminal
+        Kilo_lib_editor
 )
 
-target_compile_options(kilo
-    PRIVATE $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-Wall -Wextra -Werror -Wpedantic>
+target_compile_features(Kilo_lib PUBLIC
+    cxx_std_20
+)
+
+add_executable(Kilo_exe)
+
+target_sources(Kilo_exe PRIVATE
+    main.cpp
+)
+
+add_executable(Kilo::exe ALIAS Kilo_exe)
+
+set_property(TARGET Kilo_exe PROPERTY OUTPUT_NAME kilo)
+
+target_link_libraries(Kilo_exe PRIVATE
+    Kilo_lib
+)
+
+target_compile_features(Kilo_exe PRIVATE
+    cxx_std_20
 )

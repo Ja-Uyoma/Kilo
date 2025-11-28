@@ -21,11 +21,47 @@
  * SOFTWARE.
  */
 
-#include "kilo/Application/Application.hpp"
+#include "ScreenBuffer.hpp"
 
-using kilo::editor::application;
+#include <gsl/assert>
+#include <system_error>
 
-auto main(int argc, char const* argv[]) -> int
+#include <cerrno>
+#include <unistd.h>
+
+namespace kilo::editor {
+
+///
+/// \brief Flush the buffer by writing its contents to a file
+/// \param[in] file The file being written to
+/// \returns The number of bytes written
+/// \throws `std::system_error` if the operation failed
+///
+auto screen_buffer::flush(io::file_interface& file) const -> std::size_t
 {
-  return application::main(std::span {argv, static_cast<size_t>(argc)});
+  std::size_t total_written = 0;
+
+  while (total_written < m_buffer.length()) {
+    errno = 0;
+    int64_t result = file.write(STDOUT_FILENO, m_buffer.substr(0 + total_written, m_buffer.length() - total_written));
+
+    if (result == -1) {
+      if (errno == EINTR or errno == EAGAIN) {
+        continue;
+      }
+      throw std::system_error(errno, std::system_category());
+    }
+
+    if (result == 0) {
+      break;
+    }
+
+    total_written += result;
+  }
+
+  Ensures((total_written == m_buffer.length() or total_written == 0) and
+          "The total number of bytes written is unequal to the size of the buffer");
+  return total_written;
 }
+
+}   // namespace kilo::editor

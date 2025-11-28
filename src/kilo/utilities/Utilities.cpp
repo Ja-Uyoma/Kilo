@@ -21,11 +21,23 @@
  * SOFTWARE.
  */
 
-#include "kilo/Application/Application.hpp"
+#include "Utilities.hpp"
 
-using kilo::editor::application;
+#include <unistd.h>
 
-auto main(int argc, char const* argv[]) -> int
+namespace kilo::utilities {
+
+///
+/// \brief Clear the screen and reposition the cursor to the top-left corner
+///
+void clear_screen_and_reposition_cursor() noexcept
 {
-  return application::main(std::span {argv, static_cast<size_t>(argc)});
+  {
+    [[maybe_unused]] auto&& result = ::write(STDOUT_FILENO, "\x1b[2J", 4);
+  }
+  {
+    [[maybe_unused]] auto&& result = ::write(STDOUT_FILENO, "\x1b[H", 3);
+  }
 }
+
+}   // namespace kilo::utilities

@@ -21,11 +21,29 @@
  * SOFTWARE.
  */
 
-#include "kilo/Application/Application.hpp"
+#ifndef IO_HPP
+#define IO_HPP
 
-using kilo::editor::application;
+namespace kilo::io {
 
-auto main(int argc, char const* argv[]) -> int
-{
-  return application::main(std::span {argv, static_cast<size_t>(argc)});
-}
+/**
+ * \brief Read key input from stdin
+ * \return The character read
+ * \throws std::system_error if an error occured during read
+ */
+auto read_key() -> int;
+
+namespace detail {
+
+/**
+ * \brief Handle the processing of escape sequences read in from stdin
+ *
+ * \return The integral value of the key representing the input escape sequence
+ */
+auto handle_escape_sequences() noexcept -> int;
+
+}   // namespace detail
+
+}   // namespace kilo::io
+
+#endif

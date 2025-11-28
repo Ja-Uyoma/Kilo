@@ -1,0 +1,132 @@
+/**
+ * MIT License
+ * Copyright (c) 2023 Jimmy Givans
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+#include "kilo/editor/ScreenBuffer/ScreenBuffer.hpp"
+
+#include "kilo/io/File.hpp"
+#include <system_error>
+
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
+
+#include <cstdint>
+#include <cstring>
+#include <string>
+
+namespace kilo::editor {
+
+TEST(ScreenBufferTest, IsEmptyWhenCreated)
+{
+  screen_buffer buffer;
+  ASSERT_EQ(buffer.size(), 0);
+}
+
+TEST(ScreenBufferTest, ItsSizeIncreasesByTheLengthOfTheAppendedString)
+{
+  screen_buffer buffer;
+  char const* str = "Hello, World!";
+
+  buffer.write(str, std::strlen(str));
+
+  ASSERT_EQ(buffer.size(), 13);
+}
+
+// NOLINTBEGIN(modernize-use-trailing-return-type)
+
+class mock_file_interface : public io::file_interface
+{
+public:
+  MOCK_METHOD(int64_t, write, (int, std::string const&), (noexcept, override));
+  MOCK_METHOD(int64_t, write, (int, std::string const&, std::size_t), (noexcept, override));
+  MOCK_METHOD(int64_t, read, (int, std::string&), (noexcept, override));
+  MOCK_METHOD(int64_t, read, (int, std::string&, std::size_t), (noexcept, override));
+};
+
+// NOLINTEND(modernize-use-trailing-return-type)
+
+TEST(ScreenBufferTest, flushReturnsTheNumberOfBytesWrittenOnSuccess)
+{
+  using namespace ::testing;
+
+  mock_file_interface file;
+  screen_buffer buffer;
+  buffer.write("Hello, world!");
+
+  EXPECT_CALL(file, write(STDOUT_FILENO, std::string("Hello, world!"))).WillOnce(Return(13));
+  auto rv = buffer.flush(file);
+
+  ASSERT_THAT(rv, Eq(13));
+}
+
+TEST(ScreenBufferTest, flushThrowsAnExceptionOnFailure)
+{
+  using namespace ::testing;
+
+  mock_file_interface file;
+  screen_buffer buffer;
+  buffer.write("Non-retryable error example");
+
+  EXPECT_CALL(file, write(STDOUT_FILENO, std::string("Non-retryable error example")))
+    .WillOnce([](int, std::string const&) {
+      errno = EBADF;
+      return -1;
+    });
+
+  ASSERT_THROW(buffer.flush(file), std::system_error);
+}
+
+TEST(ScreenBufferTest, FlushHandlesEINTR)
+{
+  mock_file_interface mock_file;
+  screen_buffer buffer;
+  buffer.write("Retryable error example");
+
+  // Simulate EINTR error example, followed by a successful write
+  EXPECT_CALL(mock_file, write(STDOUT_FILENO, std::string("Retryable error example")))
+    .WillOnce([](int, std::string const&) {
+      errno = EINTR;
+      return -1;
+    })
+    .WillOnce(testing::Return(23));
+
+  auto result = buffer.flush(mock_file);
+
+  ASSERT_THAT(result, testing::Eq(23));
+}
+
+TEST(ScreenBufferTest, FlushStopsOnZeroBytesWritten)
+{
+  mock_file_interface mock_file;
+  screen_buffer buffer;
+  buffer.write("Buffer that cannot be fully written");
+
+  // Simulate zero bytes written
+  EXPECT_CALL(mock_file, write(STDOUT_FILENO, std::string("Buffer that cannot be fully written")))
+    .WillOnce(testing::Return(0));
+
+  auto result = buffer.flush(mock_file);
+
+  ASSERT_THAT(result, testing::Eq(0));
+}
+
+}   // namespace kilo::editor
