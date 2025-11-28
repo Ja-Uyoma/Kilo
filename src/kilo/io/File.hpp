@@ -70,6 +70,26 @@ public:
   /// \brief Virtual destructor
   ///
   virtual ~file_interface() = default;
+
+  ///
+  /// \brief Copy constructor
+  ///
+  file_interface(file_interface const&) = default;
+
+  ///
+  /// \brief Copy-assignment operator
+  ///
+  auto operator=(file_interface const&) -> file_interface& = default;
+
+  ///
+  /// \brief Move constructor
+  ///
+  file_interface(file_interface&&) = default;
+
+  ///
+  /// \brief Move-assignment operator
+  ///
+  auto operator=(file_interface&&) -> file_interface& = default;
 };
 
 class file : public file_interface
