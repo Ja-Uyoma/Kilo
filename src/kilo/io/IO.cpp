@@ -41,7 +41,7 @@ auto read_key() -> int
 {
   char c {};
 
-  for (long nread = 0; nread != 1; nread = ::read(STDIN_FILENO, &c, 1)) {
+  for (int64_t nread = 0; nread != 1; nread = ::read(STDIN_FILENO, &c, 1)) {
     if (nread == -1 && errno != EAGAIN) {
       throw std::system_error(errno, std::system_category(), "Could not read key input from stdin");
     }
