@@ -39,7 +39,7 @@ namespace kilo::editor {
 struct editor_config
 {
   terminal::window window;
-  cursor cursor;
+  cursor curs;
   offset off;
   screen_buffer screen_buf;
   std::vector<std::string> open_doc;

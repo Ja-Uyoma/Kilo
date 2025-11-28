@@ -65,10 +65,10 @@ void process_keypress(int key_pressed, editor_config& editor_config)
   using enum utilities::editor_key;
 
   if (auto const key = static_cast<utilities::editor_key>(key_pressed); key == home) {
-    editor_config.cursor.x = 0;
+    editor_config.curs.x = 0;
   }
   else if (key == end) {
-    editor_config.cursor.x = editor_config.window.cols() - 1;
+    editor_config.curs.x = editor_config.window.cols() - 1;
   }
   else if (key == page_up or key == page_down) {
     for (int32_t i = editor_config.window.rows(); i > 0; --i) {
@@ -100,7 +100,7 @@ void refresh_screen(editor_config& editor)
   // (less the corresponding offset values) to convert from 0-indexed values to the 1-indexed values
   // that the terminal uses
   auto const cursor_pos =
-    fmt::format("\x1b[{};{}H", (editor.cursor.y - editor.off.row) + 1, (editor.cursor.x - editor.off.col) + 1);
+    fmt::format("\x1b[{};{}H", (editor.curs.y - editor.off.row) + 1, (editor.curs.x - editor.off.col) + 1);
 
   // The file to which the screen buffer writes its contents when flushed (typically STDOUT)
   io::file out_file {};
@@ -147,40 +147,40 @@ void move_cursor(utilities::editor_key const key, editor_config& editor)
 
   switch (key) {
     case arrow_left:
-      if (editor.cursor.x != 0) {
-        --editor.cursor.x;
+      if (editor.curs.x != 0) {
+        --editor.curs.x;
       }
-      else if (editor.cursor.y > 0) {
-        --editor.cursor.y;
-        editor.cursor.x = std::ssize(editor.open_doc[editor.cursor.y]);
+      else if (editor.curs.y > 0) {
+        --editor.curs.y;
+        editor.curs.x = std::ssize(editor.open_doc[editor.curs.y]);
       }
       break;
     case arrow_right: {
       auto const curr_row = std::invoke([&editor]() -> std::optional<std::string> {
-        if (editor.cursor.y >= std::ssize(editor.open_doc)) {
+        if (editor.curs.y >= std::ssize(editor.open_doc)) {
           return std::nullopt;
         }
-        return std::make_optional(editor.open_doc[editor.cursor.y]);
+        return std::make_optional(editor.open_doc[editor.curs.y]);
       });
 
-      if (curr_row and editor.cursor.x < std::ssize(*curr_row)) {
-        ++editor.cursor.x;
+      if (curr_row and editor.curs.x < std::ssize(*curr_row)) {
+        ++editor.curs.x;
       }
-      else if (curr_row and editor.cursor.x == std::ssize(*curr_row)) {
-        ++editor.cursor.y;
-        editor.cursor.x = 0;
+      else if (curr_row and editor.curs.x == std::ssize(*curr_row)) {
+        ++editor.curs.y;
+        editor.curs.x = 0;
       }
     } break;
 
     case arrow_up:
-      if (editor.cursor.y != 0) {
-        --editor.cursor.y;
+      if (editor.curs.y != 0) {
+        --editor.curs.y;
       }
       break;
 
     case arrow_down:
-      if (editor.cursor.y < std::ssize(editor.open_doc)) {
-        ++editor.cursor.y;
+      if (editor.curs.y < std::ssize(editor.open_doc)) {
+        ++editor.curs.y;
       }
       break;
 
@@ -189,15 +189,15 @@ void move_cursor(utilities::editor_key const key, editor_config& editor)
   }
 
   auto const curr_row = std::invoke([&editor]() -> std::optional<std::string> {
-    if (editor.cursor.y >= std::ssize(editor.open_doc)) {
+    if (editor.curs.y >= std::ssize(editor.open_doc)) {
       return std::nullopt;
     }
-    return std::make_optional(editor.open_doc[editor.cursor.y]);
+    return std::make_optional(editor.open_doc[editor.curs.y]);
   });
 
   auto const row_len = curr_row ? std::ssize(*curr_row) : 0;
 
-  editor.cursor.x = std::min(editor.cursor.x, row_len);
+  editor.curs.x = std::min(editor.curs.x, row_len);
 }
 
 /**
@@ -210,16 +210,16 @@ void scroll(editor_config& editor)
   // If so, adjust the editor.offset.row and/or editor.offset.col variable(s) so that the
   // cursor is just inside the visible window
 
-  editor.off.row = std::min(editor.cursor.y, editor.off.row);
+  editor.off.row = std::min(editor.curs.y, editor.off.row);
 
-  if (editor.cursor.y >= editor.off.row + editor.window.rows()) {
-    editor.off.row = editor.cursor.y - editor.window.rows() + 1;
+  if (editor.curs.y >= editor.off.row + editor.window.rows()) {
+    editor.off.row = editor.curs.y - editor.window.rows() + 1;
   }
 
-  editor.off.col = std::min(editor.cursor.x, editor.off.col);
+  editor.off.col = std::min(editor.curs.x, editor.off.col);
 
-  if (editor.cursor.x >= editor.off.col + editor.window.cols()) {
-    editor.off.col = editor.cursor.x - editor.window.cols() + 1;
+  if (editor.curs.x >= editor.off.col + editor.window.cols()) {
+    editor.off.col = editor.curs.x - editor.window.cols() + 1;
   }
 }
 

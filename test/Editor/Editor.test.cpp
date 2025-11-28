@@ -56,7 +56,7 @@ TEST(processKeypress, MovesCursorToStartOfLineIfHomeButtonIsPressed)
 
   process_keypress(static_cast<int>(key), editor_config);
 
-  ASSERT_THAT(editor_config.cursor.x, ::testing::Eq(0));
+  ASSERT_THAT(editor_config.curs.x, ::testing::Eq(0));
 }
 
 TEST(processKeypress, MovesCursorToEndOfLineIfEndButtonIsPressed)
@@ -68,7 +68,7 @@ TEST(processKeypress, MovesCursorToEndOfLineIfEndButtonIsPressed)
 
   process_keypress(static_cast<int>(key), editor_config);
 
-  ASSERT_THAT(editor_config.cursor.x, ::testing::Eq(editor_config.window.cols() - 1));
+  ASSERT_THAT(editor_config.curs.x, ::testing::Eq(editor_config.window.cols() - 1));
 }
 
 namespace detail {
