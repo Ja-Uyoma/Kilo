@@ -128,16 +128,16 @@ void tty_raw(int file_descriptor, termios const& buf, termios& copy)
    * No SIGINT on BREAK, CR-to-NL off, input parity check off, don't strip 8th bit on input, output
    * flow control off
    */
-  copy.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
+  copy.c_iflag &= ~(static_cast<tcflag_t>(BRKINT | ICRNL | INPCK | ISTRIP | IXON));
 
   /* Output processing off */
-  copy.c_oflag &= ~OPOST;
+  copy.c_oflag &= ~(static_cast<tcflag_t>(OPOST));
 
   /* Set 8 bits per char */
   copy.c_cflag |= CS8;
 
   /* Echo off, canonical mode off, extended input processing off, signal chars off */
-  copy.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
+  copy.c_lflag &= ~(static_cast<tcflag_t>(ECHO | ICANON | IEXTEN | ISIG));
 
   /* Read 1 byte at a time */
   copy.c_cc[VMIN] = 0;
@@ -163,9 +163,10 @@ void tty_raw(int file_descriptor, termios const& buf, termios& copy)
   }
 
   auto const changes_did_not_stick = [&copy]() -> bool {
-    return (copy.c_iflag & (BRKINT | ICRNL | INPCK | ISTRIP | IXON)) != 0 || (copy.c_oflag & OPOST) != 0 ||
-           ((copy.c_cflag & CS8) != CS8) || (copy.c_lflag & (ECHO | ICANON | IEXTEN | ISIG)) != 0 ||
-           (copy.c_cc[VMIN] != 0) || (copy.c_cc[VTIME] != 1);
+    return (copy.c_iflag & static_cast<tcflag_t>(BRKINT | ICRNL | INPCK | ISTRIP | IXON)) != 0 ||
+           (copy.c_oflag & OPOST) != 0 || ((copy.c_cflag & CS8) != CS8) ||
+           (copy.c_lflag & static_cast<tcflag_t>(ECHO | ICANON | IEXTEN | ISIG)) != 0 || (copy.c_cc[VMIN] != 0) ||
+           (copy.c_cc[VTIME] != 1);
   };
 
   /*
