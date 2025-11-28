@@ -39,6 +39,22 @@ public:
   explicit application() noexcept = default;
 
   ///
+  /// \brief Open a file and write its contents to memory
+  ///
+  /// \param[in] path The path to the file
+  /// \return true If the operation was successful, and false otherwise
+  ///
+  auto open(std::filesystem::path const& path) -> bool;
+
+  ///
+  /// \brief Run the application
+  ///
+  void run();
+
+private:
+  editor::editor_config m_editor_config;
+
+  ///
   /// \brief Position the cursor within the visible window
   ///
   void scroll() noexcept;
@@ -57,22 +73,6 @@ public:
   /// \brief Draw each row of the buffer of text being edited, plus a tilde at the beginning
   ///
   void draw_rows();
-
-  ///
-  /// \brief Open a file and write its contents to memory
-  ///
-  /// \param[in] path The path to the file
-  /// \return true If the operation was successful, and false otherwise
-  ///
-  auto open(std::filesystem::path const& path) -> bool;
-
-  ///
-  /// \brief Run the application
-  ///
-  void run();
-
-private:
-  editor::editor_config m_editor_config;
 };
 }   // namespace kilo::editor
 
