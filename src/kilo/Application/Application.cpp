@@ -35,11 +35,6 @@
 namespace kilo::editor {
 
 ///
-/// \brief Default constructor
-///
-application::application() noexcept = default;
-
-///
 /// \brief Position the cursor within the visible window
 ///
 void application::scroll() noexcept

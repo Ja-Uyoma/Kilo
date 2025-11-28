@@ -36,7 +36,7 @@ public:
   ///
   /// \brief Default constructor
   ///
-  explicit application() noexcept;
+  explicit application() noexcept = default;
 
   ///
   /// \brief Position the cursor within the visible window
