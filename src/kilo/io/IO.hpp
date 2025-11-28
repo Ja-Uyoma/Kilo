@@ -38,9 +38,9 @@ namespace detail {
 /**
  * \brief Handle the processing of escape sequences read in from stdin
  *
- * \return unsigned The key representing the input escape sequence
+ * \return The integral value of the key representing the input escape sequence
  */
-auto handle_escape_sequences() noexcept -> unsigned;
+auto handle_escape_sequences() noexcept -> int;
 
 }   // namespace detail
 
