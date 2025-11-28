@@ -51,6 +51,8 @@ TEST(ScreenBufferTest, ItsSizeIncreasesByTheLengthOfTheAppendedString)
   ASSERT_EQ(buffer.size(), 13);
 }
 
+// NOLINTBEGIN(modernize-use-trailing-return-type)
+
 class mock_file_interface : public io::file_interface
 {
 public:
@@ -59,6 +61,8 @@ public:
   MOCK_METHOD(int64_t, read, (int, std::string&), (noexcept, override));
   MOCK_METHOD(int64_t, read, (int, std::string&, std::size_t), (noexcept, override));
 };
+
+// NOLINTEND(modernize-use-trailing-return-type)
 
 TEST(ScreenBufferTest, flushReturnsTheNumberOfBytesWrittenOnSuccess)
 {
