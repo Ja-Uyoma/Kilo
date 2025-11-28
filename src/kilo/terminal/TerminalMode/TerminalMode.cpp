@@ -27,6 +27,7 @@
 
 #include <cassert>
 #include <cerrno>
+#include <functional>
 #include <iostream>
 #include <termios.h>
 #include <unistd.h>
@@ -162,18 +163,18 @@ void tty_raw(int file_descriptor, termios const& buf, termios& copy)
     throw std::system_error(errno, std::system_category(), "Error while writing terminal driver settings to buffer");
   }
 
-  auto const changes_did_not_stick = [&copy]() -> bool {
+  auto const changes_did_not_stick = std::invoke([&copy]() -> bool {
     return (copy.c_iflag & static_cast<tcflag_t>(BRKINT | ICRNL | INPCK | ISTRIP | IXON)) != 0 ||
            (copy.c_oflag & OPOST) != 0 || ((copy.c_cflag & CS8) != CS8) ||
            (copy.c_lflag & static_cast<tcflag_t>(ECHO | ICANON | IEXTEN | ISIG)) != 0 || (copy.c_cc[VMIN] != 0) ||
            (copy.c_cc[VTIME] != 1);
-  };
+  });
 
   /*
    * Only some of the changes stuck. Restore the original settings
    */
 
-  if (changes_did_not_stick()) {
+  if (changes_did_not_stick) {
     ::tcsetattr(file_descriptor, TCSAFLUSH, &buf);
     throw std::system_error(EINVAL, std::system_category(), "Setting driver to raw mode only partially successful");
   }
