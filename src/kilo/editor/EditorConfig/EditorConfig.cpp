@@ -21,13 +21,9 @@
  * SOFTWARE.
  */
 
-#include "Editor.hpp"
+#include "EditorConfig.hpp"
 
-#include "Cursor/Cursor.hpp"
-#include "Offset/Offset.hpp"
-#include "ScreenBuffer/ScreenBuffer.hpp"
 #include "kilo/io/File.hpp"
-#include "kilo/terminal/Window/Window.hpp"
 #include "kilo/utilities/Constants.hpp"
 #include "kilo/utilities/Utilities.hpp"
 #include <fmt/format.h>
@@ -41,7 +37,6 @@
 #include <filesystem>
 #include <fstream>
 #include <functional>
-#include <iostream>
 #include <optional>
 #include <string>
 #include <unistd.h>

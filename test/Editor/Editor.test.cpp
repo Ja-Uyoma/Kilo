@@ -21,9 +21,8 @@
  * SOFTWARE.
  */
 
-#include "kilo/editor/Editor.hpp"
-
 #include "kilo/editor/Cursor/Cursor.hpp"
+#include "kilo/editor/EditorConfig/EditorConfig.hpp"
 #include "kilo/editor/ScreenBuffer/ScreenBuffer.hpp"
 #include "kilo/terminal/Window/Window.hpp"
 #include "kilo/utilities/Utilities.hpp"

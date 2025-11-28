@@ -24,9 +24,9 @@
 #ifndef EDITOR_HPP
 #define EDITOR_HPP
 
-#include "Cursor/Cursor.hpp"
-#include "Offset/Offset.hpp"
-#include "ScreenBuffer/ScreenBuffer.hpp"
+#include "kilo/editor/Cursor/Cursor.hpp"
+#include "kilo/editor/Offset/Offset.hpp"
+#include "kilo/editor/ScreenBuffer/ScreenBuffer.hpp"
 #include "kilo/terminal/Window/Window.hpp"
 #include "kilo/utilities/Constants.hpp"
 #include <string_view>

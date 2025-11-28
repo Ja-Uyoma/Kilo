@@ -23,7 +23,6 @@
 
 #include "Application.hpp"
 
-#include "kilo/editor/Editor.hpp"
 #include "kilo/io/IO.hpp"
 #include "kilo/utilities/Utilities.hpp"
 #include <fmt/format.h>

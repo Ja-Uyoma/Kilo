@@ -6,8 +6,8 @@ target_sources(Kilo_lib_editor
         Offset/Offset.hpp
         ScreenBuffer/ScreenBuffer.hpp
         ScreenBuffer/ScreenBuffer.cpp
-        Editor.hpp
-        Editor.cpp
+        EditorConfig/EditorConfig.hpp
+        EditorConfig/EditorConfig.cpp
 )
 
 target_link_libraries(Kilo_lib_editor
