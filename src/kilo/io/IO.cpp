@@ -120,6 +120,8 @@ auto handle_escape_sequences() noexcept -> unsigned
             return static_cast<int>(home);
           case '8':
             return static_cast<int>(end);
+          default:
+            break;
         }
       }
     }
@@ -145,6 +147,8 @@ auto handle_escape_sequences() noexcept -> unsigned
           return static_cast<int>(home);
         case 'F':
           return static_cast<int>(end);
+        default:
+          break;
       }
     }
   }
@@ -156,6 +160,8 @@ auto handle_escape_sequences() noexcept -> unsigned
         return static_cast<int>(home);
       case 'F':
         return static_cast<int>(end);
+      default:
+        break;
     }
   }
 
