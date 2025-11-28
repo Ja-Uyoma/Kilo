@@ -23,7 +23,6 @@ target_link_libraries(Kilo_lib
     PRIVATE
         Microsoft.GSL::GSL
         fmt::fmt
-    PUBLIC
         Kilo_lib_utilities
         Kilo_lib_io
         Kilo_lib_terminal

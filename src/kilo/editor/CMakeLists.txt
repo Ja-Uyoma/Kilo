@@ -11,7 +11,7 @@ target_sources(Kilo_lib_editor
 )
 
 target_link_libraries(Kilo_lib_editor
-    PUBLIC
+    PRIVATE
         Kilo_lib_io
         Kilo_lib_terminal
         Kilo_lib_utilities
