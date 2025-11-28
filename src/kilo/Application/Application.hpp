@@ -27,6 +27,7 @@
 #include "kilo/editor/EditorConfig/EditorConfig.hpp"
 
 #include <filesystem>
+#include <span>
 
 namespace kilo::editor {
 
@@ -50,6 +51,13 @@ public:
   /// \brief Run the application
   ///
   void run();
+
+  ///
+  /// \brief Run the application with the given command-line arguments
+  /// \param[in] args The command-line arguments passed to the application
+  /// \returns EXIT_SUCCESS on success, and EXIT_FAILURE otherwise
+  ///
+  static auto main(std::span<char const*> args) -> int;
 
 private:
   editor::editor_config m_editor_config;

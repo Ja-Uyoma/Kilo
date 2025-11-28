@@ -24,6 +24,7 @@
 #include "Application.hpp"
 
 #include "kilo/io/IO.hpp"
+#include "kilo/terminal/TerminalMode/TerminalMode.hpp"
 #include "kilo/utilities/Utilities.hpp"
 #include <fmt/format.h>
 #include <system_error>
@@ -91,6 +92,33 @@ try {
 catch (std::system_error const& err) {
   utilities::clear_screen_and_reposition_cursor();
   std::cerr << err.code() << ": " << err.what() << '\n';
+}
+
+///
+/// \brief Run the application with the given command-line arguments
+/// \param[in] args The command-line arguments passed to the application
+/// \returns EXIT_SUCCESS on success, and EXIT_FAILURE otherwise
+///
+auto application::main(std::span<char const*> args) -> int
+{
+  try {
+    static kilo::terminal::terminal_mode term_mode;
+    term_mode.set_raw_mode();
+  }
+  catch (std::system_error const& err) {
+    std::cerr << err.code().message() << ": " << err.what() << '\n';
+    return EXIT_FAILURE;
+  }
+
+  application app;
+
+  if (args.size() >= 2 and !app.open(args[1])) {
+    return EXIT_FAILURE;
+  }
+
+  app.run();
+
+  return EXIT_SUCCESS;
 }
 
 }   // namespace kilo::editor

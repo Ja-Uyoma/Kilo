@@ -22,32 +22,10 @@
  */
 
 #include "kilo/Application/Application.hpp"
-#include "kilo/terminal/TerminalMode/TerminalMode.hpp"
-
-#include <cstdlib>
-#include <iostream>
 
 using kilo::editor::application;
-using kilo::terminal::terminal_mode;
 
 auto main(int argc, char const* argv[]) -> int
 {
-  try {
-    static terminal_mode terminal_mode;
-    terminal_mode.set_raw_mode();
-  }
-  catch (std::system_error const& err) {
-    std::cerr << err.code().message() << ": " << err.what() << '\n';
-    return EXIT_FAILURE;
-  }
-
-  application app;
-
-  if (argc >= 2 && !app.open(argv[1])) {
-    return EXIT_FAILURE;
-  }
-
-  app.run();
-
-  return EXIT_SUCCESS;
+  return application::main(std::span {argv, static_cast<size_t>(argc)});
 }
