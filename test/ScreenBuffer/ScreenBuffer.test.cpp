@@ -29,6 +29,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include <cstdint>
 #include <cstring>
 #include <string>
 
@@ -53,10 +54,10 @@ TEST(ScreenBufferTest, ItsSizeIncreasesByTheLengthOfTheAppendedString)
 class mock_file_interface : public io::file_interface
 {
 public:
-  MOCK_METHOD(std::size_t, write, (int, std::string const&), (noexcept, override));
-  MOCK_METHOD(std::size_t, write, (int, std::string const&, std::size_t), (noexcept, override));
-  MOCK_METHOD(std::size_t, read, (int, std::string&), (noexcept, override));
-  MOCK_METHOD(std::size_t, read, (int, std::string&, std::size_t), (noexcept, override));
+  MOCK_METHOD(int64_t, write, (int, std::string const&), (noexcept, override));
+  MOCK_METHOD(int64_t, write, (int, std::string const&, std::size_t), (noexcept, override));
+  MOCK_METHOD(int64_t, read, (int, std::string&), (noexcept, override));
+  MOCK_METHOD(int64_t, read, (int, std::string&, std::size_t), (noexcept, override));
 };
 
 TEST(ScreenBufferTest, flushReturnsTheNumberOfBytesWrittenOnSuccess)
