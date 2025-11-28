@@ -30,23 +30,25 @@
 
 namespace kilo::terminal {
 
-struct WindowSize
+struct window_size
 {
   std::int32_t cols;
   std::int32_t rows;
 };
 
-class Window
+class window
 {
 public:
-  /// Create a new Window object
-  explicit Window();
+  ///
+  /// \brief Default constructor
+  ///
+  explicit window();
 
   /**
    * \brief Create a Window with the given dimensions
    * \param[in] windowSize The dimensions of the new Window object
    */
-  explicit constexpr Window(WindowSize const& windowSize) noexcept : m_winsize(windowSize)
+  explicit constexpr window(window_size const& window_size) noexcept : m_winsize(window_size)
   {
   }
 
@@ -69,7 +71,7 @@ public:
   }
 
 private:
-  WindowSize m_winsize;
+  window_size m_winsize;
 };
 
 namespace detail {
@@ -79,14 +81,14 @@ namespace detail {
  * \returns The dimensions of the terminal window
  * \throws std::system_error on failure
  */
-auto getWindowSize() -> WindowSize;
+auto get_window_size() -> window_size;
 
 /**
  * \brief Get the position of the cursor in the terminal window
  * \returns The position of the cursor in the terminal window
  * \throws std::system_error on failure
  */
-auto getCursorPosition(io::FileInterface& file) -> WindowSize;
+auto get_cursor_position(io::file_interface& file) -> window_size;
 
 }   // namespace detail
 

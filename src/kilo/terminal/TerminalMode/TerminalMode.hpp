@@ -29,65 +29,81 @@
 
 namespace kilo::terminal {
 
-class TerminalMode
+class terminal_mode
 {
 public:
-  enum class ttystate : std::uint8_t
+  enum class tty_mode : std::uint8_t
   {
-    Raw,
-    Canonical
+    raw,
+    canonical
   };
 
-  /// Default constructor
-  explicit TerminalMode();
+  ///
+  /// \brief Default constructor
+  ///
+  explicit terminal_mode();
 
-  /// Destructor
-  ~TerminalMode();
+  ///
+  /// \brief Destructor
+  ///
+  ~terminal_mode();
 
-  TerminalMode(TerminalMode const&) = delete;
-  auto operator=(TerminalMode const&) -> TerminalMode& = delete;
-  TerminalMode(TerminalMode&&) = delete;
-  auto operator=(TerminalMode&&) -> TerminalMode& = delete;
+  terminal_mode(terminal_mode const&) = delete;
+  auto operator=(terminal_mode const&) -> terminal_mode& = delete;
+  terminal_mode(terminal_mode&&) = delete;
+  auto operator=(terminal_mode&&) -> terminal_mode& = delete;
 
-  /// Set the terminal driver to raw (or non-canonical) mode
+  ///
+  /// \brief Set the terminal driver to raw (or non-canonical) mode
   /// \throws std::system_error on failure
-  void setRawMode() &;
+  ///
+  void set_raw_mode() &;
 
-  /// Set the terminal driver to canonical mode
-  void setCanonicalMode() &;
+  ///
+  /// \brief Set the terminal driver to canonical mode
+  ///
+  void set_canonical_mode() &;
 
-  /// Get the current state of the terminal
-  /// \returns ttystate::Raw if the terminal is in raw mode, ttystate::Canonical otherwise
+  ///
+  /// \brief Get the current mode of the terminal
+  /// \returns tty_mode::raw if the terminal is in raw mode, tty_mode::canonical otherwise
+  ///
   [[nodiscard]]
-  constexpr auto getState() const noexcept -> ttystate
+  constexpr auto get_mode() const noexcept -> tty_mode
   {
-    return m_state;
+    return m_mode;
   }
 
 private:
   termios m_termios {};
   termios m_copy {};
-  ttystate m_state {ttystate::Canonical};
+  tty_mode m_mode {tty_mode::canonical};
 };
 
 namespace detail {
 
-/// Query fileDescriptor and write its settings to buf
-/// \param[in] fileDescriptor The file descriptor to be queried
+///
+/// \brief Query file_descriptor and write its settings to buf
+/// \param[in] file_descriptor The file descriptor to be queried
 /// \param[in] buf Where the settings are written to
 /// \throws std::system_error on failure
-void getTerminalDriverSettings(int fileDescriptor, termios& buf);
+///
+void get_terminal_driver_settings(int file_descriptor, termios& buf);
 
-/// Set the terminal driver in raw mode
-/// \param[in] fileDescriptor The terminal driver's file descriptor
+///
+/// \brief Set the terminal driver in raw mode
+/// \param[in] file_descriptor The terminal driver's file descriptor
 /// \param[in] buf The buffer to which the terminal driver's settings are to be written
 /// \param[in] copy A copy of the settings stored in buf in case we need to roll back
-void ttyRaw(int fileDescriptor, termios const& buf, termios& copy);
+///
+void tty_raw(int file_descriptor, termios const& buf, termios& copy);
 
-/// Set the terminal driver in canonical mode
-/// \param[in] fileDescriptor The terminal driver's file descriptor
+///
+/// \brief Set the terminal driver in canonical mode
+/// \param[in] file_descriptor The terminal driver's file descriptor
 /// \param[in] buf The buffer from which the desired settings are to be read from
-void ttyCanonicalMode(int fileDescriptor, termios const& buf);
+///
+void tty_canonical_mode(int file_descriptor, termios const& buf);
 
 }   // namespace detail
 

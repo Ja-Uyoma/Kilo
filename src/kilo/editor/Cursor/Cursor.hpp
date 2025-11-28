@@ -28,7 +28,7 @@
 
 namespace kilo::editor {
 
-struct Cursor
+struct cursor
 {
   std::int64_t x {};
   std::int64_t y {};

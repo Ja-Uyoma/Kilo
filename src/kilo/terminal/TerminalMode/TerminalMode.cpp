@@ -33,69 +33,94 @@
 
 namespace kilo::terminal {
 
-TerminalMode::TerminalMode()
+///
+/// \brief Default constructor
+///
+terminal_mode::terminal_mode()
 {
-  detail::getTerminalDriverSettings(STDIN_FILENO, m_termios);
+  detail::get_terminal_driver_settings(STDIN_FILENO, m_termios);
 }
 
-TerminalMode::~TerminalMode()
+///
+/// \brief Destructor
+///
+terminal_mode::~terminal_mode()
 {
-  setCanonicalMode();
+  set_canonical_mode();
 }
 
-void TerminalMode::setRawMode() &
+///
+/// \brief Set the terminal driver to raw (or non-canonical) mode
+/// \throws std::system_error on failure
+///
+void terminal_mode::set_raw_mode() &
 {
-  if (m_state == ttystate::Raw) {
+  if (m_mode == tty_mode::raw) {
     return;
   }
 
-  assert(m_state == ttystate::Canonical && "Terminal driver currently in canonical mode");
+  assert(m_mode == tty_mode::canonical && "Terminal driver currently in canonical mode");
 
   try {
-    detail::ttyRaw(STDIN_FILENO, m_termios, m_copy);
-    m_state = ttystate::Raw;
+    detail::tty_raw(STDIN_FILENO, m_termios, m_copy);
+    m_mode = tty_mode::raw;
   }
   catch (std::system_error const& err) {
     std::cerr << err.code().message() << ": " << err.what() << '\n';
-    m_state = ttystate::Canonical;
+    m_mode = tty_mode::canonical;
     throw;
   }
 }
 
-void TerminalMode::setCanonicalMode() &
+///
+/// \brief Set the terminal driver to canonical mode
+///
+void terminal_mode::set_canonical_mode() &
 {
-  if (m_state == ttystate::Canonical) {
+  if (m_mode == tty_mode::canonical) {
     return;
   }
 
-  assert(m_state == ttystate::Raw && "Terminal driver currently in raw mode");
+  assert(m_mode == tty_mode::raw && "Terminal driver currently in raw mode");
 
   try {
-    detail::ttyCanonicalMode(STDIN_FILENO, m_termios);
-    m_state = ttystate::Canonical;
+    detail::tty_canonical_mode(STDIN_FILENO, m_termios);
+    m_mode = tty_mode::canonical;
   }
   catch (std::system_error const& err) {
     std::cerr << err.code().message() << ": " << err.what() << '\n';
-    m_state = ttystate::Raw;
+    m_mode = tty_mode::raw;
   }
 }
 
 namespace detail {
 
-void getTerminalDriverSettings(int fileDescriptor, termios& buf)
+///
+/// \brief Query file_descriptor and write its settings to buf
+/// \param[in] file_descriptor The file descriptor to be queried
+/// \param[in] buf Where the settings are written to
+/// \throws std::system_error on failure
+///
+void get_terminal_driver_settings(int file_descriptor, termios& buf)
 {
-  assert(fileDescriptor == STDIN_FILENO and "File descriptor must be STDIN_FILENO");
+  assert(file_descriptor == STDIN_FILENO and "File descriptor must be STDIN_FILENO");
 
   errno = 0;
 
-  if (::tcgetattr(fileDescriptor, &buf) == -1) [[unlikely]] {
+  if (::tcgetattr(file_descriptor, &buf) == -1) [[unlikely]] {
     throw std::system_error(errno, std::system_category(), "Could not retrieve terminal driver settings");
   }
 }
 
-void ttyRaw(int fileDescriptor, termios const& buf, termios& copy)
+///
+/// \brief Set the terminal driver in raw mode
+/// \param[in] file_descriptor The terminal driver's file descriptor
+/// \param[in] buf The buffer to which the terminal driver's settings are to be written
+/// \param[in] copy A copy of the settings stored in buf in case we need to roll back
+///
+void tty_raw(int file_descriptor, termios const& buf, termios& copy)
 {
-  assert(fileDescriptor == STDIN_FILENO and "File descriptor must be STDIN_FILENO");
+  assert(file_descriptor == STDIN_FILENO and "File descriptor must be STDIN_FILENO");
 
   copy = buf;
 
@@ -122,7 +147,7 @@ void ttyRaw(int fileDescriptor, termios const& buf, termios& copy)
 
   errno = 0;
 
-  if (::tcsetattr(fileDescriptor, TCSAFLUSH, &copy) == -1) [[unlikely]] {
+  if (::tcsetattr(file_descriptor, TCSAFLUSH, &copy) == -1) [[unlikely]] {
     throw std::system_error(errno, std::system_category(), "Failed to set terminal driver to raw mode");
   }
 
@@ -132,12 +157,12 @@ void ttyRaw(int fileDescriptor, termios const& buf, termios& copy)
 
   errno = 0;
 
-  if (::tcgetattr(fileDescriptor, &copy) == -1) [[unlikely]] {
-    ::tcsetattr(fileDescriptor, TCSAFLUSH, &buf);
+  if (::tcgetattr(file_descriptor, &copy) == -1) [[unlikely]] {
+    ::tcsetattr(file_descriptor, TCSAFLUSH, &buf);
     throw std::system_error(errno, std::system_category(), "Error while writing terminal driver settings to buffer");
   }
 
-  auto const changesDidNotStick = [&copy] {
+  auto const changes_did_not_stick = [&copy]() -> bool {
     return (copy.c_iflag & (BRKINT | ICRNL | INPCK | ISTRIP | IXON)) != 0 || (copy.c_oflag & OPOST) != 0 ||
            ((copy.c_cflag & CS8) != CS8) || (copy.c_lflag & (ECHO | ICANON | IEXTEN | ISIG)) != 0 ||
            (copy.c_cc[VMIN] != 0) || (copy.c_cc[VTIME] != 1);
@@ -147,19 +172,24 @@ void ttyRaw(int fileDescriptor, termios const& buf, termios& copy)
    * Only some of the changes stuck. Restore the original settings
    */
 
-  if (changesDidNotStick()) {
-    ::tcsetattr(fileDescriptor, TCSAFLUSH, &buf);
+  if (changes_did_not_stick()) {
+    ::tcsetattr(file_descriptor, TCSAFLUSH, &buf);
     throw std::system_error(EINVAL, std::system_category(), "Setting driver to raw mode only partially successful");
   }
 }
 
-void ttyCanonicalMode(int fileDescriptor, termios const& buf)
+///
+/// \brief Set the terminal driver in canonical mode
+/// \param[in] file_descriptor The terminal driver's file descriptor
+/// \param[in] buf The buffer from which the desired settings are to be read from
+///
+void tty_canonical_mode(int file_descriptor, termios const& buf)
 {
-  assert(fileDescriptor == STDIN_FILENO and "File descriptor must be STDIN_FILENO");
+  assert(file_descriptor == STDIN_FILENO and "File descriptor must be STDIN_FILENO");
 
   errno = 0;
 
-  if (::tcsetattr(fileDescriptor, TCSAFLUSH, &buf) == -1) [[unlikely]] {
+  if (::tcsetattr(file_descriptor, TCSAFLUSH, &buf) == -1) [[unlikely]] {
     throw std::system_error(errno, std::system_category(), "Failed to reset terminal driver to canonical mode");
   }
 }

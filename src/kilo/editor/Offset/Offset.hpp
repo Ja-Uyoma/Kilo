@@ -28,7 +28,7 @@
 
 namespace kilo::editor {
 
-struct Offset
+struct offset
 {
   std::int64_t row {};
   std::int64_t col {};

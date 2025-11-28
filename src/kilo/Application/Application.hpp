@@ -29,49 +29,50 @@
 #include <filesystem>
 
 namespace kilo::editor {
-class Application
+
+class application
 {
 public:
-  /// Default constructor
-  explicit Application() noexcept;
+  ///
+  /// \brief Default constructor
+  ///
+  explicit application() noexcept;
 
-  /**
-   * @brief Position the cursor within the visible window
-   *
-   */
+  ///
+  /// \brief Position the cursor within the visible window
+  ///
   void scroll() noexcept;
 
-  /**
-   * @brief Perform a screen refresh
-   *
-   */
-  void refreshScreen();
+  ///
+  /// \brief Perform a screen refresh
+  ///
+  void refresh_screen();
 
-  /**
-   * @brief Process the result of calling readKey
-   *
-   */
-  void processKeypress();
+  ///
+  /// \brief Process the result of calling readKey
+  ///
+  void process_keypress();
 
-  /**
-   * @brief Draw each row of the buffer of text being edited, plus a tilde at the beginning
-   */
-  void drawRows();
+  ///
+  /// \brief Draw each row of the buffer of text being edited, plus a tilde at the beginning
+  ///
+  void draw_rows();
 
-  /**
-   * @brief Open a file and write its contents to memory
-   *
-   * @param[in] path The path to the file
-   * @return true If the operation was successful
-   * @return false If the operation failed
-   */
+  ///
+  /// \brief Open a file and write its contents to memory
+  ///
+  /// \param[in] path The path to the file
+  /// \return true If the operation was successful, and false otherwise
+  ///
   auto open(std::filesystem::path const& path) -> bool;
 
-  /// Run the application
+  ///
+  /// \brief Run the application
+  ///
   void run();
 
 private:
-  editor::EditorConfig editorConfig;
+  editor::editor_config m_editor_config;
 };
 }   // namespace kilo::editor
 

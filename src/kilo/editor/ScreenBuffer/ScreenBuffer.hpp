@@ -36,50 +36,62 @@ namespace kilo::editor {
 // strings will be appended, and then this buffer will be written out at the
 // end.
 
-class ScreenBuffer
+class screen_buffer
 {
 public:
-  explicit constexpr ScreenBuffer() noexcept = default;
+  ///
+  /// \brief Default constructor
+  ///
+  explicit constexpr screen_buffer() noexcept = default;
 
-  /// @brief Append the given C-string to the buffer
-  /// @param[in] str The string to be appended to the buffer
-  /// @param[in] length The length of the string
-  constexpr auto write(char const* str, std::size_t length) -> ScreenBuffer&
+  ///
+  /// \brief Append the given C-string to the buffer
+  /// \param[in] str The string to be appended to the buffer
+  /// \param[in] length The length of the string
+  /// \returns A reference to the screen_buffer object
+  ///
+  constexpr auto write(char const* str, std::size_t length) -> screen_buffer&
   {
     m_buffer.append(str, length);
     return *this;
   }
 
-  /**
-   * @brief Append the given string to the string buffer
-   *
-   * @param[in] str The string to be appended to the string buffer
-   */
-  constexpr auto write(std::string_view str) -> ScreenBuffer&
+  ///
+  /// \brief Append the given string to the string buffer
+  /// \param[in] str The string to be appended to the string buffer
+  /// \returns A reference to the screen_buffer object
+  ///
+  constexpr auto write(std::string_view str) -> screen_buffer&
   {
     m_buffer.append(str);
     return *this;
   }
 
-  /// @brief Get the size of the buffer
-  /// @returns The size of the buffer
+  ///
+  /// \brief Get the size of the buffer
+  /// \returns The size of the buffer
+  ///
   [[nodiscard]] constexpr auto size() const noexcept -> std::size_t
   {
     return m_buffer.length();
   }
 
-  /// @brief Get a  C-string representation of the buffer
-  /// @returns A constant C-string representation of the buffer
+  ///
+  /// \brief Get a  C-string representation of the buffer
+  /// \returns A constant C-string representation of the buffer
+  ///
   [[nodiscard]] constexpr auto c_str() const noexcept -> char const*
   {
     return m_buffer.c_str();
   }
 
+  ///
   /// \brief Flush the buffer by writing its contents to a file
   /// \param[in] file The file being written to
   /// \returns The number of bytes written
   /// \throws `std::system_error` if the operation failed
-  auto flush(io::FileInterface& file) const -> std::size_t;
+  ///
+  auto flush(io::file_interface& file) const -> std::size_t;
 
 private:
   std::string m_buffer;

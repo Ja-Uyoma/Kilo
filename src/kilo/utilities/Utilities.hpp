@@ -26,13 +26,17 @@
 
 namespace kilo::utilities {
 
-/// @brief Clear the screen and reposition the cursor to the top-left corner
-void clearScreenAndRepositionCursor() noexcept;
+///
+/// \brief Clear the screen and reposition the cursor to the top-left corner
+///
+void clear_screen_and_reposition_cursor() noexcept;
 
-/// @brief Map characters to control keys
-/// @param key The ASCII character to be mapped to a control key
-/// @return A control key
-constexpr auto ctrlKey(unsigned char key) noexcept -> unsigned
+///
+/// \brief Map characters to control keys
+/// \param key The ASCII character to be mapped to a control key
+/// \return A control key
+///
+constexpr auto ctrl_key(unsigned char key) noexcept -> unsigned
 {
   key &= 0x1f;
   return key;

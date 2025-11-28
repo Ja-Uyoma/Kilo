@@ -31,7 +31,7 @@ namespace kilo::io {
  * \return The character read
  * \throws std::system_error if an error occured during read
  */
-auto readKey() -> int;
+auto read_key() -> int;
 
 namespace detail {
 
@@ -40,7 +40,7 @@ namespace detail {
  *
  * \return unsigned The key representing the input escape sequence
  */
-auto handleEscapeSequences() noexcept -> unsigned;
+auto handle_escape_sequences() noexcept -> unsigned;
 
 }   // namespace detail
 

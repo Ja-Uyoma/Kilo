@@ -32,7 +32,12 @@
 
 namespace kilo::io {
 
-int readKey()
+/**
+ * \brief Read key input from stdin
+ * \return The character read
+ * \throws std::system_error if an error occured during read
+ */
+auto read_key() -> int
 {
   char c {};
 
@@ -51,11 +56,10 @@ int readKey()
   // single key press.
 
   if (c == '\x1b') {
-    return detail::handleEscapeSequences();
+    return detail::handle_escape_sequences();
   }
-  else {
-    return c;
-  }
+
+  return c;
 }
 
 namespace detail {
@@ -65,7 +69,7 @@ namespace detail {
  *
  * \return unsigned The key representing the input escape sequence
  */
-unsigned handleEscapeSequences() noexcept
+auto handle_escape_sequences() noexcept -> unsigned
 {
   std::array<char, 3> seq {};
 
@@ -84,7 +88,7 @@ unsigned handleEscapeSequences() noexcept
   }
 
   if (seq[0] == '[') {
-    using enum kilo::utilities::EditorKey;
+    using enum kilo::utilities::editor_key;
 
     /*
      * If the byte after [ is a digit, we read another byte expecting it to be
@@ -103,19 +107,19 @@ unsigned handleEscapeSequences() noexcept
       if (seq[2] == '~') {
         switch (seq[1]) {
           case '1':
-            return static_cast<int>(Home);
+            return static_cast<int>(home);
           case '3':
-            return static_cast<int>(Delete);
+            return static_cast<int>(del);
           case '4':
-            return static_cast<int>(End);
+            return static_cast<int>(end);
           case '5':
-            return static_cast<int>(PageUp);
+            return static_cast<int>(page_up);
           case '6':
-            return static_cast<int>(PageDown);
+            return static_cast<int>(page_down);
           case '7':
-            return static_cast<int>(Home);
+            return static_cast<int>(home);
           case '8':
-            return static_cast<int>(End);
+            return static_cast<int>(end);
         }
       }
     }
@@ -130,28 +134,28 @@ unsigned handleEscapeSequences() noexcept
     else {
       switch (seq[1]) {
         case 'A':
-          return static_cast<int>(ArrowUp);
+          return static_cast<int>(arrow_up);
         case 'B':
-          return static_cast<int>(ArrowDown);
+          return static_cast<int>(arrow_down);
         case 'C':
-          return static_cast<int>(ArrowRight);
+          return static_cast<int>(arrow_right);
         case 'D':
-          return static_cast<int>(ArrowLeft);
+          return static_cast<int>(arrow_left);
         case 'H':
-          return static_cast<int>(Home);
+          return static_cast<int>(home);
         case 'F':
-          return static_cast<int>(End);
+          return static_cast<int>(end);
       }
     }
   }
   else if (seq[0] == 'O') {
-    using enum kilo::utilities::EditorKey;
+    using enum kilo::utilities::editor_key;
 
     switch (seq[1]) {
       case 'H':
-        return static_cast<int>(Home);
+        return static_cast<int>(home);
       case 'F':
-        return static_cast<int>(End);
+        return static_cast<int>(end);
     }
   }
 

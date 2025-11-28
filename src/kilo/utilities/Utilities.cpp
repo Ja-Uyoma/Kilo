@@ -27,14 +27,16 @@
 
 namespace kilo::utilities {
 
-/// @brief Clear the screen and reposition the cursor to the top-left corner
-void clearScreenAndRepositionCursor() noexcept
+///
+/// \brief Clear the screen and reposition the cursor to the top-left corner
+///
+void clear_screen_and_reposition_cursor() noexcept
 {
   {
-    [[maybe_unused]] auto&& rv = ::write(STDOUT_FILENO, "\x1b[2J", 4);
+    [[maybe_unused]] auto&& result = ::write(STDOUT_FILENO, "\x1b[2J", 4);
   }
   {
-    [[maybe_unused]] auto&& rv = ::write(STDOUT_FILENO, "\x1b[H", 3);
+    [[maybe_unused]] auto&& result = ::write(STDOUT_FILENO, "\x1b[H", 3);
   }
 }
 

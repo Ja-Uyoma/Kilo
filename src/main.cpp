@@ -27,20 +27,21 @@
 #include <cstdlib>
 #include <iostream>
 
-using namespace kilo;
+using kilo::editor::application;
+using kilo::terminal::terminal_mode;
 
-int main(int argc, char const* argv[])
+auto main(int argc, char const* argv[]) -> int
 {
   try {
-    static terminal::TerminalMode terminalMode;
-    terminalMode.setRawMode();
+    static terminal_mode terminal_mode;
+    terminal_mode.set_raw_mode();
   }
   catch (std::system_error const& err) {
     std::cerr << err.code().message() << ": " << err.what() << '\n';
     return EXIT_FAILURE;
   }
 
-  editor::Application app;
+  application app;
 
   if (argc >= 2 && !app.open(argv[1])) {
     return EXIT_FAILURE;

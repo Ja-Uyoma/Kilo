@@ -34,67 +34,68 @@
 
 namespace kilo::editor {
 
-/// Default constructor
-Application::Application() noexcept = default;
+///
+/// \brief Default constructor
+///
+application::application() noexcept = default;
 
-/**
- * @brief Position the cursor within the visible window
- *
- */
-void Application::scroll() noexcept
+///
+/// \brief Position the cursor within the visible window
+///
+void application::scroll() noexcept
 {
-  editor::scroll(editorConfig);
+  editor::scroll(m_editor_config);
 }
 
-/**
- * @brief Perform a screen refresh
- *
- */
-void Application::refreshScreen()
+///
+/// \brief Perform a screen refresh
+///
+void application::refresh_screen()
 {
-  editor::refreshScreen(editorConfig);
+  editor::refresh_screen(m_editor_config);
 }
 
-/**
- * @brief Process the result of calling readKey
- *
- */
-void Application::processKeypress()
+///
+/// \brief Process the result of calling readKey
+///
+void application::process_keypress()
 {
-  auto const keyPressed = io::readKey();
-  editor::processKeypress(keyPressed, editorConfig);
+  auto const key_pressed = io::read_key();
+  editor::process_keypress(key_pressed, m_editor_config);
 }
 
-/**
- * @brief Draw each row of the buffer of text being edited, plus a tilde at the beginning
- */
-void Application::drawRows()
+///
+/// \brief Draw each row of the buffer of text being edited, plus a tilde at the beginning
+///
+void application::draw_rows()
 {
-  editor::drawRows(editorConfig);
+  editor::draw_rows(m_editor_config);
 }
 
-/**
- * @brief Open a file and write its contents to memory
- *
- * @param[in] path The path to the file
- * @return true If the operation was successful
- * @return false If the operation failed
- */
-auto Application::open(std::filesystem::path const& path) -> bool
+///
+/// \brief Open a file and write its contents to memory
+///
+/// \param[in] path The path to the file
+/// \return true If the operation was successful, and false otherwise
+///
+auto application::open(std::filesystem::path const& path) -> bool
 {
-  return editor::open(path, editorConfig.openDoc, editorConfig.renderedDoc);
+  return editor::open(path, m_editor_config.open_doc, m_editor_config.rendered_doc);
 }
 
-void Application::run()
+///
+/// \brief Run the application
+///
+void application::run()
 try {
   while (true) {
     scroll();
-    refreshScreen();
-    processKeypress();
+    refresh_screen();
+    process_keypress();
   }
 }
 catch (std::system_error const& err) {
-  utilities::clearScreenAndRepositionCursor();
+  utilities::clear_screen_and_reposition_cursor();
   std::cerr << err.code() << ": " << err.what() << '\n';
 }
 

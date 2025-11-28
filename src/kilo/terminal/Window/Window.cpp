@@ -38,7 +38,10 @@
 
 namespace kilo::terminal {
 
-Window::Window() : m_winsize(detail::getWindowSize())
+///
+/// \brief Default constructor
+///
+window::window() : m_winsize(detail::get_window_size())
 {
 }
 
@@ -49,11 +52,11 @@ namespace detail {
  * \returns The dimensions of the terminal window
  * \throws std::system_error on failure
  */
-auto getWindowSize() -> WindowSize
+auto get_window_size() -> window_size
 {
-  ::winsize ws {};
+  ::winsize winsz {};
 
-  if (io::File file; ::ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == -1 or ws.ws_col == 0) {
+  if (io::file file; ::ioctl(STDOUT_FILENO, TIOCGWINSZ, &winsz) == -1 or winsz.ws_col == 0) {
     errno = 0;
 
     if (file.write(STDOUT_FILENO, std::string("\x1b[999c\x1b[999B")) != 12) {
@@ -61,10 +64,10 @@ auto getWindowSize() -> WindowSize
                               "Could not move the cursor to the bottom-right of the screen");
     }
 
-    return detail::getCursorPosition(file);
+    return detail::get_cursor_position(file);
   }
 
-  return WindowSize {.cols = ws.ws_col, .rows = ws.ws_row};
+  return window_size {.cols = winsz.ws_col, .rows = winsz.ws_row};
 }
 
 /**
@@ -72,7 +75,7 @@ auto getWindowSize() -> WindowSize
  * \returns The position of the cursor in the terminal window
  * \throws std::system_error on failure
  */
-auto getCursorPosition(io::FileInterface& file) -> WindowSize
+auto get_cursor_position(io::file_interface& file) -> window_size
 {
   Expects(isatty(STDIN_FILENO) and "STDIN must be a terminal device");
   Expects(isatty(STDOUT_FILENO) and "STDOUT must be a terminal device");
@@ -102,36 +105,36 @@ auto getCursorPosition(io::FileInterface& file) -> WindowSize
                                 "where an escape sequence was expected");
   }
 
-  WindowSize result {.cols = 0, .rows = 0};
+  window_size result {.cols = 0, .rows = 0};
 
   // At this point, we are passing a string of the form "35;76" to std::from_chars
   // We tell it to parse the 2 integers separated by a ';' and write the value
   // into the rows and cols variables
 
-  char const* parsePtr = &buf[2];
-  char const* endPtr = &buf.back();
+  char const* parse_ptr = &buf[2];
+  char const* end_ptr = &buf.back();
 
   // Parse rows
-  auto [rowEndPtr, rowEc] = std::from_chars(parsePtr, endPtr, result.rows);
+  auto [row_end_ptr, row_ec] = std::from_chars(parse_ptr, end_ptr, result.rows);
 
   // Check error if no characters consumed
-  if (rowEc != std::errc() or rowEndPtr == parsePtr) {
+  if (row_ec != std::errc() or row_end_ptr == parse_ptr) {
     return {};   // failed to parse rows or row-string empty
   }
 
   // Check for semicolon
-  if (rowEndPtr == endPtr or *rowEndPtr != ';') {
+  if (row_end_ptr == end_ptr or *row_end_ptr != ';') {
     return {};   // expected semicolon not found or end of string
   }
 
   // Skip semicolon
-  parsePtr = rowEndPtr + 1;
+  parse_ptr = row_end_ptr + 1;
 
   // Parse columns
-  auto [colEndPtr, colEc] = std::from_chars(parsePtr, endPtr, result.cols);
+  auto [col_end_ptr, col_ec] = std::from_chars(parse_ptr, end_ptr, result.cols);
 
   // Check error; no characters consumed, or not ending at 'R'
-  if (colEc != std::errc() or colEndPtr == parsePtr or colEndPtr != endPtr) {
+  if (col_ec != std::errc() or col_end_ptr == parse_ptr or col_end_ptr != end_ptr) {
     // Failed to parse columns, or cols string empty, or extra characters encountered before 'R'
     return {};
   }

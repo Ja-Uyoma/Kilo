@@ -39,36 +39,36 @@ namespace kilo::editor {
 
 TEST(processKeypress, TerminatesTheProgramIfQIsPressed)
 {
-  using utilities::EditorKey;
+  using utilities::editor_key;
 
-  EditorConfig editorConfig;
-  constexpr auto key = utilities::ctrlKey('q');
+  editor_config editor_config;
+  constexpr auto key = utilities::ctrl_key('q');
 
-  ASSERT_EXIT(processKeypress(key, editorConfig), ::testing::ExitedWithCode(0), ::testing::Eq(""));
+  ASSERT_EXIT(process_keypress(key, editor_config), ::testing::ExitedWithCode(0), ::testing::Eq(""));
 }
 
 TEST(processKeypress, MovesCursorToStartOfLineIfHomeButtonIsPressed)
 {
-  using utilities::EditorKey;
+  using utilities::editor_key;
 
-  constexpr auto key = EditorKey::Home;
-  EditorConfig editorConfig;
+  constexpr auto key = editor_key::home;
+  editor_config editor_config;
 
-  processKeypress(static_cast<int>(key), editorConfig);
+  process_keypress(static_cast<int>(key), editor_config);
 
-  ASSERT_THAT(editorConfig.cursor.x, ::testing::Eq(0));
+  ASSERT_THAT(editor_config.cursor.x, ::testing::Eq(0));
 }
 
 TEST(processKeypress, MovesCursorToEndOfLineIfEndButtonIsPressed)
 {
-  using utilities::EditorKey;
+  using utilities::editor_key;
 
-  constexpr auto key = EditorKey::End;
-  EditorConfig editorConfig;
+  constexpr auto key = editor_key::end;
+  editor_config editor_config;
 
-  processKeypress(static_cast<int>(key), editorConfig);
+  process_keypress(static_cast<int>(key), editor_config);
 
-  ASSERT_THAT(editorConfig.cursor.x, ::testing::Eq(editorConfig.window.cols() - 1));
+  ASSERT_THAT(editor_config.cursor.x, ::testing::Eq(editor_config.window.cols() - 1));
 }
 
 namespace detail {
@@ -76,9 +76,9 @@ namespace detail {
 TEST(printWelcomeMessage, PrintsTheCorrectMessageCentred)
 {
   constexpr int width = 50;
-  ScreenBuffer buf {};
+  screen_buffer buf {};
 
-  printWelcomeMessage(width, buf);
+  print_welcome_message(width, buf);
 
   std::string const msg {"Kilo editor -- version 0.0.1"};
   auto const padding = (width - msg.length()) / 2;
@@ -90,24 +90,24 @@ TEST(printWelcomeMessage, PrintsTheCorrectMessageCentred)
 TEST(printWelcomeMessage, TruncatesTheMessageIfItsTooLong)
 {
   constexpr int width = 25;
-  ScreenBuffer buf {};
+  screen_buffer buf {};
 
-  printWelcomeMessage(width, buf);
+  print_welcome_message(width, buf);
 
   std::string const msg {"Kilo editor -- version 0.0.1"};
-  std::string const truncatedMsg = msg.substr(0, width);
+  std::string const truncated_msg = msg.substr(0, width);
 
-  ASSERT_THAT(buf.c_str(), ::testing::Eq(truncatedMsg));
+  ASSERT_THAT(buf.c_str(), ::testing::Eq(truncated_msg));
 }
 
 TEST(printLineOfDocument, PrintsNothingWhenTheLineLengthIsLessThanTheColumnOffset)
 {
   std::string const line {"The quick brown fox jumped over the lazy doggo"};
-  constexpr int windowWidth = 20;
-  auto const colOffset = std::ssize(line) + 5;
-  ScreenBuffer buf;
+  constexpr int window_width = 20;
+  auto const col_off = std::ssize(line) + 5;
+  screen_buffer buf;
 
-  printLineOfDocument(line, buf, windowWidth, colOffset);
+  print_line_of_document(line, buf, window_width, col_off);
 
   ASSERT_THAT(buf.size(), ::testing::Eq(0));
 }
@@ -115,13 +115,13 @@ TEST(printLineOfDocument, PrintsNothingWhenTheLineLengthIsLessThanTheColumnOffse
 TEST(printLineOfDocument, TruncatesTheLineIfItsLongerThanWindowWidth)
 {
   std::string const line {"The quick brown fox jumped over the lazy doggo"};
-  constexpr int windowWidth = 20;
-  constexpr int colOffset = 5;
-  ScreenBuffer buf;
+  constexpr int window_width = 20;
+  constexpr int col_off = 5;
+  screen_buffer buf;
 
-  printLineOfDocument(line, buf, windowWidth, colOffset);
+  print_line_of_document(line, buf, window_width, col_off);
 
-  ASSERT_THAT(buf.size(), ::testing::Eq(windowWidth));
+  ASSERT_THAT(buf.size(), ::testing::Eq(window_width));
 }
 
 }   // namespace detail

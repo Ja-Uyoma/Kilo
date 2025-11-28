@@ -31,37 +31,37 @@
 
 namespace kilo::editor {
 
+///
 /// \brief Flush the buffer by writing its contents to a file
 /// \param[in] file The file being written to
 /// \returns The number of bytes written
 /// \throws `std::system_error` if the operation failed
-std::size_t ScreenBuffer::flush(io::FileInterface& file) const
+///
+auto screen_buffer::flush(io::file_interface& file) const -> std::size_t
 {
-  std::size_t totalWritten = 0;
+  std::size_t total_written = 0;
 
-  while (totalWritten < m_buffer.length()) {
+  while (total_written < m_buffer.length()) {
     errno = 0;
-    long result = file.write(STDOUT_FILENO, m_buffer.substr(0 + totalWritten, m_buffer.length() - totalWritten));
+    int64_t result = file.write(STDOUT_FILENO, m_buffer.substr(0 + total_written, m_buffer.length() - total_written));
 
     if (result == -1) {
       if (errno == EINTR or errno == EAGAIN) {
         continue;
       }
-      else {
-        throw std::system_error(errno, std::system_category());
-      }
+      throw std::system_error(errno, std::system_category());
     }
 
     if (result == 0) {
       break;
     }
 
-    totalWritten += result;
+    total_written += result;
   }
 
-  Ensures((totalWritten == m_buffer.length() or totalWritten == 0) and
+  Ensures((total_written == m_buffer.length() or total_written == 0) and
           "The total number of bytes written is unequal to the size of the buffer");
-  return totalWritten;
+  return total_written;
 }
 
 }   // namespace kilo::editor

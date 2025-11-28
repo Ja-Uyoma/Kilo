@@ -35,21 +35,21 @@ namespace kilo::terminal {
 
 TEST(TerminalMode, SetRawModePutsTheTerminalDriverInRawMode)
 {
-  TerminalMode state {};
+  terminal_mode state {};
 
-  auto cleanup = gsl::finally([&state] { state.setCanonicalMode(); });
+  auto cleanup = gsl::finally([&state] { state.set_canonical_mode(); });
 
-  ASSERT_NO_THROW(state.setRawMode());
-  ASSERT_THAT(state.getState(), testing::Eq(TerminalMode::ttystate::Raw));
+  ASSERT_NO_THROW(state.set_raw_mode());
+  ASSERT_THAT(state.get_mode(), testing::Eq(terminal_mode::tty_mode::raw));
 }
 
 TEST(TerminalMode, ResetRestoresTerminalSettingsToCanonicalMode)
 {
-  TerminalMode tstate {};
-  tstate.setRawMode();
+  terminal_mode tstate {};
+  tstate.set_raw_mode();
 
-  ASSERT_NO_THROW(tstate.setCanonicalMode());
-  ASSERT_THAT(tstate.getState(), testing::Eq(TerminalMode::ttystate::Canonical));
+  ASSERT_NO_THROW(tstate.set_canonical_mode());
+  ASSERT_THAT(tstate.get_mode(), testing::Eq(terminal_mode::tty_mode::canonical));
 }
 
 namespace detail {
@@ -57,13 +57,13 @@ namespace detail {
 TEST(getTerminalDriverSettings, TerminatesWhenPassedAnInvalidFileDescriptor)
 {
   termios buf {};
-  ASSERT_DEATH(getTerminalDriverSettings(STDOUT_FILENO, buf), "File descriptor must be STDIN_FILENO");
+  ASSERT_DEATH(get_terminal_driver_settings(STDOUT_FILENO, buf), "File descriptor must be STDIN_FILENO");
 }
 
 TEST(getTerminalDriverSettings, RunsSuccessfullyWhenPassedAValidFileDescriptor)
 {
   termios buf {};
-  ASSERT_NO_THROW(getTerminalDriverSettings(STDIN_FILENO, buf));
+  ASSERT_NO_THROW(get_terminal_driver_settings(STDIN_FILENO, buf));
 }
 
 TEST(ttyRaw, TerminatesWhenPassedAnInvalidFileDescriptor)
@@ -71,7 +71,7 @@ TEST(ttyRaw, TerminatesWhenPassedAnInvalidFileDescriptor)
   termios const buf {};
   termios copy {};
 
-  ASSERT_DEATH(ttyRaw(STDOUT_FILENO, buf, copy), "File descriptor must be STDIN_FILENO");
+  ASSERT_DEATH(tty_raw(STDOUT_FILENO, buf, copy), "File descriptor must be STDIN_FILENO");
 }
 
 TEST(ttyRaw, SucceedsWhenPassedAValidFileDescriptor)
@@ -79,24 +79,24 @@ TEST(ttyRaw, SucceedsWhenPassedAValidFileDescriptor)
   termios buf {};
   termios copy {};
 
-  auto cleanup = gsl::finally([&buf] { ttyCanonicalMode(STDIN_FILENO, buf); });
-  getTerminalDriverSettings(STDIN_FILENO, buf);
+  auto cleanup = gsl::finally([&buf] { tty_canonical_mode(STDIN_FILENO, buf); });
+  get_terminal_driver_settings(STDIN_FILENO, buf);
 
-  ASSERT_NO_THROW(ttyRaw(STDIN_FILENO, buf, copy));
+  ASSERT_NO_THROW(tty_raw(STDIN_FILENO, buf, copy));
 }
 
 TEST(ttyCanonicalMode, TerminatesWhenPassedAnInvalidFileDescriptor)
 {
   termios const buf {};
-  ASSERT_DEATH(ttyCanonicalMode(STDOUT_FILENO, buf), "File descriptor must be STDIN_FILENO");
+  ASSERT_DEATH(tty_canonical_mode(STDOUT_FILENO, buf), "File descriptor must be STDIN_FILENO");
 }
 
 TEST(ttyCanonicalMode, SucceedsWhenPassedAValidFileDescriptor)
 {
   termios buf {};
-  getTerminalDriverSettings(STDIN_FILENO, buf);
+  get_terminal_driver_settings(STDIN_FILENO, buf);
 
-  ASSERT_NO_THROW(ttyCanonicalMode(STDIN_FILENO, buf));
+  ASSERT_NO_THROW(tty_canonical_mode(STDIN_FILENO, buf));
 }
 
 }   // namespace detail
