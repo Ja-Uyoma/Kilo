@@ -33,12 +33,21 @@ void clear_screen_and_reposition_cursor() noexcept;
 
 ///
 /// \brief Map characters to control keys
-/// \param key The ASCII character to be mapped to a control key
+/// This function performs a bitwise AND operation to mask the lower 5 bits of the input character while zeroing out all
+/// higher bits, thus isolating only the least significant 5 bits.
+/// \param[in] key The ASCII character to be mapped to a control key
+/// \pre The input must be a printable ASCII character
 /// \return A control key
 ///
 constexpr auto ctrl_key(unsigned char key) noexcept -> unsigned
 {
-  key &= 0x1f;
+  constexpr unsigned char control_key_mask = 0x1f;
+
+  // This is the Unix terminal convention for control key sequences
+  // When you press Ctrl + A, for example, the terminal sends the ASCII character with its upper 3 bits cleared
+  // A = 0x41, Ctrl+A = 0x01
+
+  key &= control_key_mask;
   return key;
 }
 
