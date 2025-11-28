@@ -24,7 +24,7 @@
 #ifndef FILE_HPP
 #define FILE_HPP
 
-#include <cstddef>
+#include <cstdint>
 #include <string>
 
 namespace kilo::io {
@@ -38,7 +38,7 @@ public:
   /// \param[in] buffer The buffer being read to
   /// \returns The number of bytes read
   ///
-  virtual auto read(int file_descriptor, std::string& buffer) noexcept -> std::size_t = 0;
+  virtual auto read(int file_descriptor, std::string& buffer) noexcept -> int64_t = 0;
 
   ///
   /// \brief Read nbytes from file_descriptor into buffer
@@ -47,7 +47,7 @@ public:
   /// \param[in] nbytes The number of bytes to read
   /// \returns The number of bytes read
   ///
-  virtual auto read(int file_descriptor, std::string& buffer, std::size_t nbytes) -> std::size_t = 0;
+  virtual auto read(int file_descriptor, std::string& buffer, std::size_t nbytes) -> int64_t = 0;
 
   ///
   /// \brief Write all bytes of buffer to file_descriptor
@@ -55,7 +55,7 @@ public:
   /// \param[in] buffer The buffer being written from
   /// \returns The number of bytes written
   ///
-  virtual auto write(int file_descriptor, std::string const& buffer) noexcept -> std::size_t = 0;
+  virtual auto write(int file_descriptor, std::string const& buffer) noexcept -> int64_t = 0;
 
   ///
   /// \brief Write nbytes of buffer to file_descriptor
@@ -64,7 +64,7 @@ public:
   /// \param[in] nbytes The number of bytes to write
   /// \returns The number of bytes written
   ///
-  virtual auto write(int file_descriptor, std::string const& buffer, std::size_t nbytes) -> std::size_t = 0;
+  virtual auto write(int file_descriptor, std::string const& buffer, std::size_t nbytes) -> int64_t = 0;
 
   ///
   /// \brief Virtual destructor
@@ -101,7 +101,7 @@ public:
   /// \param[in] buffer The buffer being read to
   /// \returns The number of bytes read
   ///
-  auto read(int file_descriptor, std::string& buffer) noexcept -> std::size_t override;
+  auto read(int file_descriptor, std::string& buffer) noexcept -> int64_t override;
 
   ///
   /// \brief Read nbytes from file_descriptor into buffer
@@ -110,7 +110,7 @@ public:
   /// \param[in] nbytes The number of bytes to read
   /// \returns The number of bytes read
   ///
-  auto read(int file_descriptor, std::string& buffer, std::size_t nbytes) noexcept -> std::size_t override;
+  auto read(int file_descriptor, std::string& buffer, std::size_t nbytes) noexcept -> int64_t override;
 
   ///
   /// \brief Write all bytes of buffer to file_descriptor
@@ -118,7 +118,7 @@ public:
   /// \param[in] buffer The buffer being written from
   /// \returns The number of bytes written
   ///
-  auto write(int file_descriptor, std::string const& buffer) noexcept -> std::size_t override;
+  auto write(int file_descriptor, std::string const& buffer) noexcept -> int64_t override;
 
   ///
   /// \brief Write nbytes of buffer to file_descriptor
@@ -127,7 +127,7 @@ public:
   /// \param[in] nbytes The number of bytes to write
   /// \returns The number of bytes written
   ///
-  auto write(int file_descriptor, std::string const& buffer, std::size_t nbytes) noexcept -> std::size_t override;
+  auto write(int file_descriptor, std::string const& buffer, std::size_t nbytes) noexcept -> int64_t override;
 };
 
 }   // namespace kilo::io

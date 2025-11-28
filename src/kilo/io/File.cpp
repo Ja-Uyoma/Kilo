@@ -35,7 +35,7 @@ namespace kilo::io {
 /// \param[in] buffer The buffer being read to
 /// \returns The number of bytes read
 ///
-auto file::read(int file_descriptor, std::string& buffer) noexcept -> std::size_t
+auto file::read(int file_descriptor, std::string& buffer) noexcept -> int64_t
 {
   return ::read(file_descriptor, &buffer[0], buffer.length());
 }
@@ -47,7 +47,7 @@ auto file::read(int file_descriptor, std::string& buffer) noexcept -> std::size_
 /// \param[in] nbytes The number of bytes to read
 /// \returns The number of bytes read
 ///
-auto file::read(int file_descriptor, std::string& buffer, std::size_t nbytes) noexcept -> std::size_t
+auto file::read(int file_descriptor, std::string& buffer, std::size_t nbytes) noexcept -> int64_t
 {
   return ::read(file_descriptor, &buffer[0], nbytes);
 }
@@ -58,7 +58,7 @@ auto file::read(int file_descriptor, std::string& buffer, std::size_t nbytes) no
 /// \param[in] buffer The buffer being written from
 /// \returns The number of bytes written
 ///
-auto file::write(int file_descriptor, std::string const& buffer) noexcept -> std::size_t
+auto file::write(int file_descriptor, std::string const& buffer) noexcept -> int64_t
 {
   return ::write(file_descriptor, buffer.c_str(), buffer.length());
 }
@@ -70,7 +70,7 @@ auto file::write(int file_descriptor, std::string const& buffer) noexcept -> std
 /// \param[in] nbytes The number of bytes to write
 /// \returns The number of bytes written
 ///
-auto file::write(int file_descriptor, std::string const& buffer, std::size_t nbytes) noexcept -> std::size_t
+auto file::write(int file_descriptor, std::string const& buffer, std::size_t nbytes) noexcept -> int64_t
 {
   return ::write(file_descriptor, buffer.c_str(), nbytes);
 }
