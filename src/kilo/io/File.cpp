@@ -37,7 +37,7 @@ namespace kilo::io {
 ///
 auto file::read(int file_descriptor, std::string& buffer) noexcept -> int64_t
 {
-  return ::read(file_descriptor, &buffer[0], buffer.length());
+  return ::read(file_descriptor, buffer.data(), buffer.length());
 }
 
 ///
@@ -49,7 +49,7 @@ auto file::read(int file_descriptor, std::string& buffer) noexcept -> int64_t
 ///
 auto file::read(int file_descriptor, std::string& buffer, std::size_t nbytes) noexcept -> int64_t
 {
-  return ::read(file_descriptor, &buffer[0], nbytes);
+  return ::read(file_descriptor, buffer.data(), nbytes);
 }
 
 ///
