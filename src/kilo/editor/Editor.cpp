@@ -100,7 +100,7 @@ void refresh_screen(editor_config& editor)
   // (less the corresponding offset values) to convert from 0-indexed values to the 1-indexed values
   // that the terminal uses
   auto const cursor_pos =
-    fmt::format("\x1b[{};{}H", (editor.cursor.y - editor.offset.row) + 1, (editor.cursor.x - editor.offset.col) + 1);
+    fmt::format("\x1b[{};{}H", (editor.cursor.y - editor.off.row) + 1, (editor.cursor.x - editor.off.col) + 1);
 
   // The file to which the screen buffer writes its contents when flushed (typically STDOUT)
   io::file out_file {};
@@ -115,7 +115,7 @@ void refresh_screen(editor_config& editor)
 void draw_rows(editor_config& editor)
 {
   for (int32_t curr_row = 0; curr_row < editor.window.rows(); ++curr_row) {
-    if (auto const file_row = curr_row + editor.offset.row; file_row >= std::ssize(editor.open_doc)) {
+    if (auto const file_row = curr_row + editor.off.row; file_row >= std::ssize(editor.open_doc)) {
       if (editor.open_doc.empty() and curr_row == editor.window.rows() / 3) {
         detail::print_welcome_message(editor.window.cols(), editor.screen_buf);
       }
@@ -125,7 +125,7 @@ void draw_rows(editor_config& editor)
     }
     else {
       detail::print_line_of_document(editor.rendered_doc[file_row], editor.screen_buf, editor.window.cols(),
-                                     editor.offset.col);
+                                     editor.off.col);
     }
 
     editor.screen_buf.write(utilities::escape_sequences::erase_part_of_line_to_the_right_of_cursor);
@@ -210,16 +210,16 @@ void scroll(editor_config& editor)
   // If so, adjust the editor.offset.row and/or editor.offset.col variable(s) so that the
   // cursor is just inside the visible window
 
-  editor.offset.row = std::min(editor.cursor.y, editor.offset.row);
+  editor.off.row = std::min(editor.cursor.y, editor.off.row);
 
-  if (editor.cursor.y >= editor.offset.row + editor.window.rows()) {
-    editor.offset.row = editor.cursor.y - editor.window.rows() + 1;
+  if (editor.cursor.y >= editor.off.row + editor.window.rows()) {
+    editor.off.row = editor.cursor.y - editor.window.rows() + 1;
   }
 
-  editor.offset.col = std::min(editor.cursor.x, editor.offset.col);
+  editor.off.col = std::min(editor.cursor.x, editor.off.col);
 
-  if (editor.cursor.x >= editor.offset.col + editor.window.cols()) {
-    editor.offset.col = editor.cursor.x - editor.window.cols() + 1;
+  if (editor.cursor.x >= editor.off.col + editor.window.cols()) {
+    editor.off.col = editor.cursor.x - editor.window.cols() + 1;
   }
 }
 

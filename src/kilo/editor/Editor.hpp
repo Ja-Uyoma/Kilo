@@ -40,7 +40,7 @@ struct editor_config
 {
   terminal::window window;
   cursor cursor;
-  offset offset;
+  offset off;
   screen_buffer screen_buf;
   std::vector<std::string> open_doc;
   std::vector<std::string> rendered_doc;
