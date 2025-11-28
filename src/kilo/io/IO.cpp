@@ -39,9 +39,9 @@ namespace kilo::io {
  */
 auto read_key() -> int
 {
-  char c {};
+  char result {};
 
-  for (int64_t nread = 0; nread != 1; nread = ::read(STDIN_FILENO, &c, 1)) {
+  for (int64_t nread = 0; nread != 1; nread = ::read(STDIN_FILENO, &result, 1)) {
     if (nread == -1 && errno != EAGAIN) {
       throw std::system_error(errno, std::system_category(), "Could not read key input from stdin");
     }
@@ -55,11 +55,11 @@ auto read_key() -> int
   // arrow keys was pressed. We want to read escape sequences of this form as a
   // single key press.
 
-  if (c == '\x1b') {
+  if (result == '\x1b') {
     return detail::handle_escape_sequences();
   }
 
-  return c;
+  return result;
 }
 
 namespace detail {
