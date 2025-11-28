@@ -72,6 +72,7 @@ namespace detail {
 auto handle_escape_sequences() noexcept -> int
 {
   std::array<char, 3> seq {};
+  static constexpr char escape = '\x1b';
 
   /*
    * If we read an escape character, we immediately read 2 more bytes into the
@@ -80,11 +81,11 @@ auto handle_escape_sequences() noexcept -> int
    */
 
   if (::read(STDIN_FILENO, seq.data(), 1) != 1) {
-    return '\x1b';
+    return escape;
   }
 
   if (::read(STDIN_FILENO, &seq[1], 1) != 1) {
-    return '\x1b';
+    return escape;
   }
 
   if (seq[0] == '[') {
@@ -101,7 +102,7 @@ auto handle_escape_sequences() noexcept -> int
 
     if (seq[1] >= '0' && seq[1] <= '9') {
       if (::read(STDIN_FILENO, &seq[2], 1) != 1) {
-        return '\x1b';
+        return escape;
       }
 
       if (seq[2] == '~') {
@@ -165,7 +166,7 @@ auto handle_escape_sequences() noexcept -> int
     }
   }
 
-  return '\x1b';
+  return escape;
 }
 
 }   // namespace detail
