@@ -79,7 +79,7 @@ auto handle_escape_sequences() noexcept -> unsigned
    * just pressed the Escape key and return that.
    */
 
-  if (::read(STDIN_FILENO, &seq[0], 1) != 1) {
+  if (::read(STDIN_FILENO, seq.data(), 1) != 1) {
     return '\x1b';
   }
 
