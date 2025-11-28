@@ -35,39 +35,6 @@
 namespace kilo::editor {
 
 ///
-/// \brief Position the cursor within the visible window
-///
-void application::scroll() noexcept
-{
-  editor::scroll(m_editor_config);
-}
-
-///
-/// \brief Perform a screen refresh
-///
-void application::refresh_screen()
-{
-  editor::refresh_screen(m_editor_config);
-}
-
-///
-/// \brief Process the result of calling readKey
-///
-void application::process_keypress()
-{
-  auto const key_pressed = io::read_key();
-  editor::process_keypress(key_pressed, m_editor_config);
-}
-
-///
-/// \brief Draw each row of the buffer of text being edited, plus a tilde at the beginning
-///
-void application::draw_rows()
-{
-  editor::draw_rows(m_editor_config);
-}
-
-///
 /// \brief Open a file and write its contents to memory
 ///
 /// \param[in] path The path to the file
@@ -84,9 +51,11 @@ auto application::open(std::filesystem::path const& path) -> bool
 void application::run()
 try {
   while (true) {
-    scroll();
-    refresh_screen();
-    process_keypress();
+    editor::scroll(m_editor_config);
+    editor::refresh_screen(m_editor_config);
+
+    auto const key_pressed = io::read_key();
+    editor::process_keypress(key_pressed, m_editor_config);
   }
 }
 catch (std::system_error const& err) {

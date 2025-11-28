@@ -61,27 +61,8 @@ public:
 
 private:
   editor::editor_config m_editor_config;
-
-  ///
-  /// \brief Position the cursor within the visible window
-  ///
-  void scroll() noexcept;
-
-  ///
-  /// \brief Perform a screen refresh
-  ///
-  void refresh_screen();
-
-  ///
-  /// \brief Process the result of calling readKey
-  ///
-  void process_keypress();
-
-  ///
-  /// \brief Draw each row of the buffer of text being edited, plus a tilde at the beginning
-  ///
-  void draw_rows();
 };
+
 }   // namespace kilo::editor
 
 #endif
