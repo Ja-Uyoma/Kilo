@@ -33,6 +33,11 @@ class file_interface
 {
 public:
   ///
+  /// \brief Default constructor
+  ///
+  explicit file_interface() noexcept = default;
+
+  ///
   /// \brief Read all bytes from file_descriptor into buffer
   /// \param[in] file_descriptor The file being read from
   /// \param[in] buffer The buffer being read to
@@ -95,6 +100,11 @@ public:
 class file : public file_interface
 {
 public:
+  ///
+  /// \brief Default constructor
+  ///
+  explicit file() noexcept = default;
+
   ///
   /// \brief Read all bytes from file_descriptor into buffer
   /// \param[in] file_descriptor The file being read from
