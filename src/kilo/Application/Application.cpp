@@ -42,7 +42,7 @@ namespace kilo::editor {
 ///
 auto application::open(std::filesystem::path const& path) -> bool
 {
-  return editor::open(path, m_editor_config.open_doc, m_editor_config.rendered_doc);
+  return editor::open(path, m_editor_config.open_doc, m_editor_config.render);
 }
 
 ///

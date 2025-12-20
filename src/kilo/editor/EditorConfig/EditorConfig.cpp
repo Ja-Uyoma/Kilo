@@ -119,8 +119,7 @@ void draw_rows(editor_config& editor)
       }
     }
     else {
-      detail::print_line_of_document(editor.rendered_doc[file_row], editor.screen_buf, editor.window.cols(),
-                                     editor.off.col);
+      detail::print_line_of_document(editor.render[file_row], editor.screen_buf, editor.window.cols(), editor.off.col);
     }
 
     editor.screen_buf.write(utilities::escape_sequences::erase_part_of_line_to_the_right_of_cursor);
