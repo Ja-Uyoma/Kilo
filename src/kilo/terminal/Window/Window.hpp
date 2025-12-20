@@ -84,6 +84,15 @@ namespace detail {
 auto get_window_size() -> window_size;
 
 /**
+ * \brief Get the dimensions of the terminal window
+ * \param[in] file The "file" we're performing IO operations on; usually stdin and stdout
+ * \param[in] winsz The internal data structure to which the sizes will be written
+ * \returns The size of the terminal window
+ * \throws std::system_error on failure
+ */
+auto get_window_size(io::file_interface& file, winsize& winsz) -> window_size;
+
+/**
  * \brief Get the position of the cursor in the terminal window
  * \returns The position of the cursor in the terminal window
  * \throws std::system_error on failure

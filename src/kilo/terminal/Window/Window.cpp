@@ -71,6 +71,28 @@ auto get_window_size() -> window_size
 }
 
 /**
+ * \brief Get the dimensions of the terminal window
+ * \param[in] file The "file" we're performing IO operations on; usually stdin and stdout
+ * \param[in] winsz The internal data structure to which the sizes will be written
+ * \returns The size of the terminal window
+ * \throws std::system_error on failure
+ */
+auto get_window_size(io::file_interface& file, winsize& winsz) -> window_size
+{
+  if (file.ioctl(STDOUT_FILENO, TIOCGWINSZ, &winsz) == -1 or winsz.ws_col == 0) {
+    static constexpr std::string move_cursor_bottom_right("\x1b[999c\x1b[999B");
+
+    if (file.write(STDOUT_FILENO, move_cursor_bottom_right) != move_cursor_bottom_right.size()) {
+      throw std::system_error(errno, std::system_category(), "Could not move cursor to bottom-right of screen");
+    }
+
+    return detail::get_cursor_position(file);
+  }
+
+  return window_size {.cols = winsz.ws_col, .rows = winsz.ws_row};
+}
+
+/**
  * \brief Get the position of the cursor in the terminal window
  * \returns The position of the cursor in the terminal window
  * \throws std::system_error on failure
