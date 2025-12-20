@@ -82,7 +82,7 @@ auto get_window_size(io::file_interface& file, winsize& winsz) -> window_size
   if (file.ioctl(STDOUT_FILENO, TIOCGWINSZ, &winsz) == -1 or winsz.ws_col == 0) {
     static constexpr std::string move_cursor_bottom_right("\x1b[999c\x1b[999B");
 
-    if (file.write(STDOUT_FILENO, move_cursor_bottom_right) != move_cursor_bottom_right.size()) {
+    if (file.write(STDOUT_FILENO, move_cursor_bottom_right) != std::ssize(move_cursor_bottom_right)) {
       throw std::system_error(errno, std::system_category(), "Could not move cursor to bottom-right of screen");
     }
 
