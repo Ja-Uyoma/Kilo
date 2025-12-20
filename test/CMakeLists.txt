@@ -11,9 +11,10 @@ add_executable(Kilo_test)
 
 target_sources(Kilo_test
     PRIVATE
-        src/kilo/editor/Editor.test.cpp
-        src/kilo/screen_buffer/ScreenBuffer.test.cpp
-        src/kilo/terminal_mode/TerminalMode.test.cpp
+        src/kilo/editor/editor.test.cpp
+        src/kilo/editor/screen_buffer.test.cpp
+        src/kilo/terminal/terminal_mode.test.cpp
+        src/kilo/terminal/window.test.cpp
 )
 
 target_link_libraries(Kilo_test

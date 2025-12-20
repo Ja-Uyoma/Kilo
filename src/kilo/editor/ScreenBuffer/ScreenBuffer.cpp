@@ -42,8 +42,8 @@ auto screen_buffer::flush(io::file_interface& file) const -> std::size_t
   std::size_t total_written = 0;
 
   while (total_written < m_buffer.length()) {
-    errno = 0;
-    int64_t result = file.write(STDOUT_FILENO, m_buffer.substr(0 + total_written, m_buffer.length() - total_written));
+    int64_t const result =
+      file.write(STDOUT_FILENO, m_buffer.substr(0 + total_written, m_buffer.length() - total_written));
 
     if (result == -1) {
       if (errno == EINTR or errno == EAGAIN) {
@@ -56,7 +56,7 @@ auto screen_buffer::flush(io::file_interface& file) const -> std::size_t
       break;
     }
 
-    total_written += result;
+    total_written += static_cast<std::size_t>(result);
   }
 
   Ensures((total_written == m_buffer.length() or total_written == 0) and

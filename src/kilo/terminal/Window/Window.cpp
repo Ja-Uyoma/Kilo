@@ -56,10 +56,12 @@ auto get_window_size() -> window_size
 {
   ::winsize winsz {};
 
+  // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg, hicpp-vararg)
   if (io::file file; ::ioctl(STDOUT_FILENO, TIOCGWINSZ, &winsz) == -1 or winsz.ws_col == 0) {
     errno = 0;
+    static constexpr std::string move_cursor_bottom_right("\x1b[999c\x1b[999B");
 
-    if (file.write(STDOUT_FILENO, std::string("\x1b[999c\x1b[999B")) != 12) {
+    if (file.write(STDOUT_FILENO, move_cursor_bottom_right) != std::ssize(move_cursor_bottom_right)) {
       throw std::system_error(errno, std::system_category(),
                               "Could not move the cursor to the bottom-right of the screen");
     }
@@ -114,7 +116,7 @@ auto get_cursor_position(io::file_interface& file) -> window_size
   std::array<char, buffer_size> buf = {};
 
   for (std::size_t i = 0; i < buf.size() - 1; ++i) {
-    if (::read(STDIN_FILENO, &buf[i], 1) != 1 or buf[i] == 'R') {
+    if (::read(STDIN_FILENO, &buf.at(i), 1) != 1 or buf.at(i) == 'R') {
       break;
     }
   }
@@ -151,7 +153,7 @@ auto get_cursor_position(io::file_interface& file) -> window_size
   }
 
   // Skip semicolon
-  parse_ptr = row_end_ptr + 1;
+  parse_ptr = row_end_ptr + 1;   // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
   // Parse columns
   auto [col_end_ptr, col_ec] = std::from_chars(parse_ptr, end_ptr, result.cols);

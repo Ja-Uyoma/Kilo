@@ -22,7 +22,6 @@
  */
 
 #include "kilo/editor/ScreenBuffer/ScreenBuffer.hpp"
-
 #include "kilo/io/File.hpp"
 #include <system_error>
 
@@ -66,24 +65,25 @@ public:
 
 TEST(ScreenBufferTest, flushReturnsTheNumberOfBytesWrittenOnSuccess)
 {
-  using namespace ::testing;
+  using ::testing::Eq;
+  using ::testing::Return;
 
   mock_file_interface file;
   screen_buffer buffer;
-  buffer.write("Hello, world!");
+  static constexpr std::string str("Hello, world!");
+  buffer.write(str);
 
-  EXPECT_CALL(file, write(STDOUT_FILENO, std::string("Hello, world!"))).WillOnce(Return(13));
-  auto rv = buffer.flush(file);
+  EXPECT_CALL(file, write(STDOUT_FILENO, str)).WillOnce(Return(std::ssize(str)));
+  auto result = buffer.flush(file);
 
-  ASSERT_THAT(rv, Eq(13));
+  ASSERT_THAT(result, Eq(13));
 }
 
 TEST(ScreenBufferTest, flushThrowsAnExceptionOnFailure)
 {
-  using namespace ::testing;
-
   mock_file_interface file;
   screen_buffer buffer;
+
   buffer.write("Non-retryable error example");
 
   EXPECT_CALL(file, write(STDOUT_FILENO, std::string("Non-retryable error example")))
@@ -99,15 +99,17 @@ TEST(ScreenBufferTest, FlushHandlesEINTR)
 {
   mock_file_interface mock_file;
   screen_buffer buffer;
-  buffer.write("Retryable error example");
+  std::string const str("Retryable error example");
+
+  buffer.write(str);
 
   // Simulate EINTR error example, followed by a successful write
-  EXPECT_CALL(mock_file, write(STDOUT_FILENO, std::string("Retryable error example")))
+  EXPECT_CALL(mock_file, write(STDOUT_FILENO, str))
     .WillOnce([](int, std::string const&) {
       errno = EINTR;
       return -1;
     })
-    .WillOnce(testing::Return(23));
+    .WillOnce(testing::Return(std::ssize(str)));
 
   auto result = buffer.flush(mock_file);
 
