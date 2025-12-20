@@ -110,7 +110,8 @@ auto get_cursor_position(io::file_interface& file) -> window_size
   // Read the reply from stdin and store it in a buffer
   // Do this until we encounter a 'R' character
 
-  std::array<char, 32> buf = {};
+  static constexpr unsigned buffer_size = 32;
+  std::array<char, buffer_size> buf = {};
 
   for (std::size_t i = 0; i < buf.size() - 1; ++i) {
     if (::read(STDIN_FILENO, &buf[i], 1) != 1 or buf[i] == 'R') {
