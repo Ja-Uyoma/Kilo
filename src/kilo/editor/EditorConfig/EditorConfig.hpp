@@ -24,14 +24,24 @@
 #ifndef EDITOR_CONFIG_HPP
 #define EDITOR_CONFIG_HPP
 
-#include "kilo/editor/Cursor/Cursor.hpp"
-#include "kilo/editor/Offset/Offset.hpp"
 #include "kilo/editor/ScreenBuffer/ScreenBuffer.hpp"
 #include "kilo/terminal/Window/Window.hpp"
 
 #include <vector>
 
 namespace kilo::editor {
+
+struct cursor
+{
+  std::int64_t x {};
+  std::int64_t y {};
+};
+
+struct offset
+{
+  std::int64_t row {};
+  std::int64_t col {};
+};
 
 struct editor_config
 {
