@@ -24,6 +24,7 @@
 #include "Application.hpp"
 
 #include "kilo/io/IO.hpp"
+#include "kilo/editor/Editor.hpp"
 #include "kilo/terminal/TerminalMode/TerminalMode.hpp"
 #include "kilo/utilities/Utilities.hpp"
 #include <fmt/format.h>

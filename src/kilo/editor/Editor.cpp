@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-#include "EditorConfig.hpp"
+#include "Editor.hpp"
 
 #include "kilo/io/File.hpp"
 #include "kilo/utilities/Constants.hpp"

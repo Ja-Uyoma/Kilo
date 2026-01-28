@@ -22,10 +22,12 @@
  */
 
 #include "kilo/editor/Cursor/Cursor.hpp"
+#include "kilo/editor/Editor.hpp"
 #include "kilo/editor/EditorConfig/EditorConfig.hpp"
 #include "kilo/editor/ScreenBuffer/ScreenBuffer.hpp"
 #include "kilo/terminal/Window/Window.hpp"
 #include "kilo/utilities/Utilities.hpp"
+#include "kilo/utilities/Constants.hpp"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
