@@ -36,7 +36,7 @@ struct window_size
   std::int32_t rows;
 };
 
-class window
+class window final
 {
 public:
   ///

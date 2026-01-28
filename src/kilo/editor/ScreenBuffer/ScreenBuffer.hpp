@@ -36,7 +36,7 @@ namespace kilo::editor {
 // strings will be appended, and then this buffer will be written out at the
 // end.
 
-class screen_buffer
+class screen_buffer final
 {
 public:
   ///

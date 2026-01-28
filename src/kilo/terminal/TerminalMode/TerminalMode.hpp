@@ -29,7 +29,7 @@
 
 namespace kilo::terminal {
 
-class terminal_mode
+class terminal_mode final
 {
 public:
   enum class tty_mode : std::uint8_t

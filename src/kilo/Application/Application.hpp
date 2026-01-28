@@ -31,7 +31,7 @@
 
 namespace kilo::editor {
 
-class application
+class application final
 {
 public:
   ///

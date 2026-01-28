@@ -118,7 +118,7 @@ public:
   auto operator=(file_interface&&) -> file_interface& = default;
 };
 
-class file : public file_interface
+class file final : public file_interface
 {
 public:
   ///
