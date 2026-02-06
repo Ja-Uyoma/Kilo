@@ -23,12 +23,12 @@
 
 #include "TerminalMode.hpp"
 
+#include <fmt/core.h>
 #include <gsl/assert>
 #include <system_error>
 
 #include <cerrno>
 #include <functional>
-#include <iostream>
 #include <termios.h>
 #include <unistd.h>
 
@@ -57,7 +57,7 @@ void terminal_mode::set_raw_mode() & noexcept(false)
     m_mode = tty_mode::raw;
   }
   catch (std::system_error const& err) {
-    std::cerr << err.code().message() << ": " << err.what() << '\n';
+    fmt::print(stderr, "{}: {}\n", err.code().message(), err.what());
     m_mode = tty_mode::canonical;
     Ensures(m_mode == tty_mode::canonical and "Terminal driver currently in canonical mode");
     throw;
@@ -79,7 +79,7 @@ void terminal_mode::set_canonical_mode() & noexcept
     m_mode = tty_mode::canonical;
   }
   catch (std::system_error const& err) {
-    std::cerr << err.code().message() << ": " << err.what() << '\n';
+    fmt::print(stderr, "{}: {}\n", err.code().message(), err.what());
     m_mode = tty_mode::raw;
     Ensures(m_mode == tty_mode::raw and "Operation failed. Terminal driver reset to raw mode");
   }
