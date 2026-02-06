@@ -32,7 +32,7 @@
 #include <termios.h>
 #include <unistd.h>
 
-namespace kilo::terminal {
+namespace kilo::terminal::inline v1 {
 
 terminal_mode::terminal_mode() noexcept(false)
 {
@@ -164,4 +164,4 @@ void tty_canonical_mode(int file_descriptor, termios const& buf) noexcept(false)
 
 }   // namespace detail
 
-}   // namespace kilo::terminal
+}   // namespace kilo::terminal::inline v1

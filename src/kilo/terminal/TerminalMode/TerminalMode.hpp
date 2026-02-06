@@ -27,7 +27,7 @@
 #include <cstdint>
 #include <termios.h>
 
-namespace kilo::terminal {
+namespace kilo::terminal::inline v1 {
 
 /**
  * @class terminal_mode
@@ -127,6 +127,6 @@ void tty_canonical_mode(int file_descriptor, termios const& buf) noexcept(false)
 
 }   // namespace detail
 
-}   // namespace kilo::terminal
+}   // namespace kilo::terminal::inline v1
 
 #endif
