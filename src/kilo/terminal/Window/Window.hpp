@@ -56,7 +56,7 @@ public:
    * \brief Get the columns of the terminal window
    * \returns The columns of the terminal window
    */
-  [[nodiscard]] constexpr auto cols() const noexcept
+  [[nodiscard]] constexpr auto cols() const& noexcept -> std::int32_t
   {
     return m_winsize.cols;
   }
@@ -65,7 +65,7 @@ public:
    * \brief Get the rows of the terminal window
    * \returns The rows of the terminal window
    */
-  [[nodiscard]] constexpr auto rows() const noexcept
+  [[nodiscard]] constexpr auto rows() const& noexcept -> std::int32_t
   {
     return m_winsize.rows;
   }
