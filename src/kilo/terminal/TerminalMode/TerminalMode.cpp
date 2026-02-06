@@ -133,7 +133,7 @@ void tty_raw(int file_descriptor, termios const& buf, termios& copy) noexcept(fa
     }
   }
 
-  auto const changes_did_not_stick = std::invoke([&copy]() -> bool {
+  auto const changes_did_not_stick = std::invoke([&copy]() noexcept -> bool {
     return (copy.c_iflag & static_cast<tcflag_t>(BRKINT | ICRNL | INPCK | ISTRIP | IXON)) != 0 ||
            (copy.c_oflag & OPOST) != 0 || ((copy.c_cflag & CS8) != CS8) ||
            (copy.c_lflag & static_cast<tcflag_t>(ECHO | ICANON | IEXTEN | ISIG)) != 0 || (copy.c_cc[VMIN] != 0) ||
