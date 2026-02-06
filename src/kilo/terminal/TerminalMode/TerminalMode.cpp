@@ -23,9 +23,9 @@
 
 #include "TerminalMode.hpp"
 
+#include <gsl/assert>
 #include <system_error>
 
-#include <cassert>
 #include <cerrno>
 #include <functional>
 #include <iostream>
@@ -50,7 +50,7 @@ void terminal_mode::set_raw_mode() & noexcept(false)
     return;
   }
 
-  assert(m_mode == tty_mode::canonical && "Terminal driver currently in canonical mode");
+  Expects(m_mode == tty_mode::canonical && "Terminal driver currently in canonical mode");
 
   try {
     detail::tty_raw(STDIN_FILENO, m_termios, m_copy);
@@ -59,20 +59,20 @@ void terminal_mode::set_raw_mode() & noexcept(false)
   catch (std::system_error const& err) {
     std::cerr << err.code().message() << ": " << err.what() << '\n';
     m_mode = tty_mode::canonical;
+    Ensures(m_mode == tty_mode::canonical and "Terminal driver currently in canonical mode");
     throw;
   }
+
+  Ensures(m_mode == tty_mode::raw and "Terminal driver is in raw mode");
 }
 
-///
-/// \brief Set the terminal driver to canonical mode
-///
-void terminal_mode::set_canonical_mode() &
+void terminal_mode::set_canonical_mode() & noexcept
 {
   if (m_mode == tty_mode::canonical) {
     return;
   }
 
-  assert(m_mode == tty_mode::raw && "Terminal driver currently in raw mode");
+  Expects(m_mode == tty_mode::raw and "Terminal driver currently in raw mode");
 
   try {
     detail::tty_canonical_mode(STDIN_FILENO, m_termios);
@@ -81,14 +81,17 @@ void terminal_mode::set_canonical_mode() &
   catch (std::system_error const& err) {
     std::cerr << err.code().message() << ": " << err.what() << '\n';
     m_mode = tty_mode::raw;
+    Ensures(m_mode == tty_mode::raw and "Operation failed. Terminal driver reset to raw mode");
   }
+
+  Ensures(m_mode == tty_mode::canonical and "Terminal driver successfully set to canonical mode");
 }
 
 namespace detail {
 
 void get_terminal_driver_settings(int file_descriptor, termios& buf) noexcept(false)
 {
-  assert(file_descriptor == STDIN_FILENO and "File descriptor must be STDIN_FILENO");
+  Expects(file_descriptor == STDIN_FILENO and "File descriptor must be STDIN_FILENO");
 
   errno = 0;
 
@@ -99,7 +102,7 @@ void get_terminal_driver_settings(int file_descriptor, termios& buf) noexcept(fa
 
 void tty_raw(int file_descriptor, termios const& buf, termios& copy) noexcept(false)
 {
-  assert(file_descriptor == STDIN_FILENO and "File descriptor must be STDIN_FILENO");
+  Expects(file_descriptor == STDIN_FILENO and "File descriptor must be STDIN_FILENO");
 
   copy = buf;
 
@@ -160,7 +163,7 @@ void tty_raw(int file_descriptor, termios const& buf, termios& copy) noexcept(fa
 
 void tty_canonical_mode(int file_descriptor, termios const& buf) noexcept(false)
 {
-  assert(file_descriptor == STDIN_FILENO and "File descriptor must be STDIN_FILENO");
+  Expects(file_descriptor == STDIN_FILENO and "File descriptor must be STDIN_FILENO");
 
   errno = 0;
 
