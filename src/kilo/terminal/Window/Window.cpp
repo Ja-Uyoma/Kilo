@@ -52,7 +52,7 @@ namespace detail {
  * \returns The dimensions of the terminal window
  * \throws std::system_error on failure
  */
-auto get_window_size() -> window_size
+auto get_window_size() noexcept(false) -> window_size
 {
   ::winsize winsz {};
 
@@ -79,7 +79,7 @@ auto get_window_size() -> window_size
  * \returns The size of the terminal window
  * \throws std::system_error on failure
  */
-auto get_window_size(io::file_interface& file, winsize& winsz) -> window_size
+auto get_window_size(io::file_interface& file, winsize& winsz) noexcept(false) -> window_size
 {
   if (file.ioctl(STDOUT_FILENO, TIOCGWINSZ, &winsz) == -1 or winsz.ws_col == 0) {
     static constexpr std::string move_cursor_bottom_right("\x1b[999c\x1b[999B");
@@ -99,7 +99,7 @@ auto get_window_size(io::file_interface& file, winsize& winsz) -> window_size
  * \returns The position of the cursor in the terminal window
  * \throws std::system_error on failure
  */
-auto get_cursor_position(io::file_interface& file) -> window_size
+auto get_cursor_position(io::file_interface& file) noexcept(false) -> window_size
 {
   Expects(isatty(STDIN_FILENO) and "STDIN must be a terminal device");
   Expects(isatty(STDOUT_FILENO) and "STDOUT must be a terminal device");

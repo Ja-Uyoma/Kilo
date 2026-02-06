@@ -42,7 +42,7 @@ public:
   ///
   /// \brief Default constructor
   ///
-  explicit window();
+  explicit window() noexcept(false);
 
   /**
    * \brief Create a Window with the given dimensions
@@ -81,7 +81,7 @@ namespace detail {
  * \returns The dimensions of the terminal window
  * \throws std::system_error on failure
  */
-auto get_window_size() -> window_size;
+auto get_window_size() noexcept(false) -> window_size;
 
 /**
  * \brief Get the dimensions of the terminal window
@@ -90,14 +90,14 @@ auto get_window_size() -> window_size;
  * \returns The size of the terminal window
  * \throws std::system_error on failure
  */
-auto get_window_size(io::file_interface& file, winsize& winsz) -> window_size;
+auto get_window_size(io::file_interface& file, winsize& winsz) noexcept(false) -> window_size;
 
 /**
  * \brief Get the position of the cursor in the terminal window
  * \returns The position of the cursor in the terminal window
  * \throws std::system_error on failure
  */
-auto get_cursor_position(io::file_interface& file) -> window_size;
+auto get_cursor_position(io::file_interface& file) noexcept(false) -> window_size;
 
 }   // namespace detail
 
