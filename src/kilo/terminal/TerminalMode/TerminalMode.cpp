@@ -34,27 +34,17 @@
 
 namespace kilo::terminal {
 
-///
-/// \brief Default constructor
-///
-terminal_mode::terminal_mode()
+terminal_mode::terminal_mode() noexcept(false)
 {
   detail::get_terminal_driver_settings(STDIN_FILENO, m_termios);
 }
 
-///
-/// \brief Destructor
-///
-terminal_mode::~terminal_mode()
+terminal_mode::~terminal_mode() noexcept
 {
   set_canonical_mode();
 }
 
-///
-/// \brief Set the terminal driver to raw (or non-canonical) mode
-/// \throws std::system_error on failure
-///
-void terminal_mode::set_raw_mode() &
+void terminal_mode::set_raw_mode() & noexcept(false)
 {
   if (m_mode == tty_mode::raw) {
     return;
@@ -96,13 +86,7 @@ void terminal_mode::set_canonical_mode() &
 
 namespace detail {
 
-///
-/// \brief Query file_descriptor and write its settings to buf
-/// \param[in] file_descriptor The file descriptor to be queried
-/// \param[in] buf Where the settings are written to
-/// \throws std::system_error on failure
-///
-void get_terminal_driver_settings(int file_descriptor, termios& buf)
+void get_terminal_driver_settings(int file_descriptor, termios& buf) noexcept(false)
 {
   assert(file_descriptor == STDIN_FILENO and "File descriptor must be STDIN_FILENO");
 
@@ -113,13 +97,7 @@ void get_terminal_driver_settings(int file_descriptor, termios& buf)
   }
 }
 
-///
-/// \brief Set the terminal driver in raw mode
-/// \param[in] file_descriptor The terminal driver's file descriptor
-/// \param[in] buf The buffer to which the terminal driver's settings are to be written
-/// \param[in] copy A copy of the settings stored in buf in case we need to roll back
-///
-void tty_raw(int file_descriptor, termios const& buf, termios& copy)
+void tty_raw(int file_descriptor, termios const& buf, termios& copy) noexcept(false)
 {
   assert(file_descriptor == STDIN_FILENO and "File descriptor must be STDIN_FILENO");
 
@@ -180,12 +158,7 @@ void tty_raw(int file_descriptor, termios const& buf, termios& copy)
   }
 }
 
-///
-/// \brief Set the terminal driver in canonical mode
-/// \param[in] file_descriptor The terminal driver's file descriptor
-/// \param[in] buf The buffer from which the desired settings are to be read from
-///
-void tty_canonical_mode(int file_descriptor, termios const& buf)
+void tty_canonical_mode(int file_descriptor, termios const& buf) noexcept(false)
 {
   assert(file_descriptor == STDIN_FILENO and "File descriptor must be STDIN_FILENO");
 
