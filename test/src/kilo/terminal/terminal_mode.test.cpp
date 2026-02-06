@@ -23,6 +23,8 @@
 
 #include "kilo/terminal/TerminalMode/TerminalMode.hpp"
 
+#include <system_error>
+
 #include <gsl/util>
 
 #include <gmock/gmock.h>
@@ -33,17 +35,17 @@
 
 namespace kilo::terminal {
 
-TEST(TerminalMode, SetRawModePutsTheTerminalDriverInRawMode)
+TEST(TerminalMode, SetRawModeSetsTerminalModeToRawMode)
 {
   terminal_mode state {};
 
-  auto cleanup = gsl::finally([&state] { state.set_canonical_mode(); });
+  auto cleanup = gsl::finally([&state]() -> void { state.set_canonical_mode(); });
 
   ASSERT_NO_THROW(state.set_raw_mode());
   ASSERT_THAT(state.get_mode(), testing::Eq(terminal_mode::tty_mode::raw));
 }
 
-TEST(TerminalMode, ResetRestoresTerminalSettingsToCanonicalMode)
+TEST(TerminalMode, SetCanonicalModeSetsTerminalModeToCanonicalMode)
 {
   terminal_mode tstate {};
   tstate.set_raw_mode();
@@ -54,44 +56,50 @@ TEST(TerminalMode, ResetRestoresTerminalSettingsToCanonicalMode)
 
 namespace detail {
 
-TEST(getTerminalDriverSettings, TerminatesWhenPassedAnInvalidFileDescriptor)
+TEST(TerminalMode, GetTerminalDriverSettingsThrowsAnExceptionWhenGivenABadFileDescriptor)
 {
-  termios buf {};
-  ASSERT_DEATH(get_terminal_driver_settings(STDOUT_FILENO, buf), "File descriptor must be STDIN_FILENO");
+  ASSERT_THROW({
+    termios buf {};
+    get_terminal_driver_settings(-1, buf);
+  }, std::system_error);
 }
 
-TEST(getTerminalDriverSettings, RunsSuccessfullyWhenPassedAValidFileDescriptor)
+TEST(TerminalMode, GetTerminalDriverSettingsRunsSuccessfullyWhenPassedAValidFileDescriptor)
 {
   termios buf {};
   ASSERT_NO_THROW(get_terminal_driver_settings(STDIN_FILENO, buf));
 }
 
-TEST(ttyRaw, TerminatesWhenPassedAnInvalidFileDescriptor)
+TEST(TerminalMode, TtyRawThrowsAnExceptionWhenGivenABadFileDescriptor)
 {
-  termios const buf {};
-  termios copy {};
+  ASSERT_THROW({
+    termios const buf{};
+    termios copy {};
 
-  ASSERT_DEATH(tty_raw(STDOUT_FILENO, buf, copy), "File descriptor must be STDIN_FILENO");
+    tty_raw(-1, buf, copy);
+  }, std::system_error);
 }
 
-TEST(ttyRaw, SucceedsWhenPassedAValidFileDescriptor)
+TEST(TerminalMode, TtyRawSucceedsWhenPassedAValidFileDescriptor)
 {
   termios buf {};
   termios copy {};
 
-  auto cleanup = gsl::finally([&buf] { tty_canonical_mode(STDIN_FILENO, buf); });
+  auto cleanup = gsl::finally([&buf]() -> void { tty_canonical_mode(STDIN_FILENO, buf); });
   get_terminal_driver_settings(STDIN_FILENO, buf);
 
   ASSERT_NO_THROW(tty_raw(STDIN_FILENO, buf, copy));
 }
 
-TEST(ttyCanonicalMode, TerminatesWhenPassedAnInvalidFileDescriptor)
+TEST(TerminalMode, TtyCanonicalModeThrowsAnExceptionWhenGivenABadFileDescriptor)
 {
-  termios const buf {};
-  ASSERT_DEATH(tty_canonical_mode(STDOUT_FILENO, buf), "File descriptor must be STDIN_FILENO");
+  ASSERT_THROW({
+    termios const buf {};
+    tty_canonical_mode(-1, buf);
+  }, std::system_error);
 }
 
-TEST(ttyCanonicalMode, SucceedsWhenPassedAValidFileDescriptor)
+TEST(TerminalMode, TtyCanonicalModeSucceedsWhenPassedAValidFileDescriptor)
 {
   termios buf {};
   get_terminal_driver_settings(STDIN_FILENO, buf);
