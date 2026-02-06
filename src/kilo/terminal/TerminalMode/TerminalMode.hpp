@@ -81,7 +81,7 @@ public:
    * @pre The terminal driver should be in raw mode
    * @post The terminal driver will be in canonical mode
    */
-  void set_canonical_mode() & noexcept;
+  void set_canonical_mode() & noexcept(false);
 
   /**
    * @brief Get the current mode of the terminal driver

@@ -50,41 +50,26 @@ void terminal_mode::set_raw_mode() & noexcept(false)
     return;
   }
 
-  Expects(m_mode == tty_mode::canonical && "Terminal driver currently in canonical mode");
+  Expects(m_mode == tty_mode::canonical && "Terminal driver is in canonical mode");
 
-  try {
-    detail::tty_raw(STDIN_FILENO, m_termios, m_copy);
-    m_mode = tty_mode::raw;
-  }
-  catch (std::system_error const& err) {
-    fmt::print(stderr, "{}: {}\n", err.code().message(), err.what());
-    m_mode = tty_mode::canonical;
-    Ensures(m_mode == tty_mode::canonical and "Terminal driver currently in canonical mode");
-    throw;
-  }
+  detail::tty_raw(STDIN_FILENO, m_termios, m_copy);
+  m_mode = tty_mode::raw;
 
   Ensures(m_mode == tty_mode::raw and "Terminal driver is in raw mode");
 }
 
-void terminal_mode::set_canonical_mode() & noexcept
+void terminal_mode::set_canonical_mode() & noexcept(false)
 {
   if (m_mode == tty_mode::canonical) {
     return;
   }
 
-  Expects(m_mode == tty_mode::raw and "Terminal driver currently in raw mode");
+  Expects(m_mode == tty_mode::raw and "Terminal driver is in raw mode");
 
-  try {
-    detail::tty_canonical_mode(STDIN_FILENO, m_termios);
-    m_mode = tty_mode::canonical;
-  }
-  catch (std::system_error const& err) {
-    fmt::print(stderr, "{}: {}\n", err.code().message(), err.what());
-    m_mode = tty_mode::raw;
-    Ensures(m_mode == tty_mode::raw and "Operation failed. Terminal driver reset to raw mode");
-  }
+  detail::tty_canonical_mode(STDIN_FILENO, m_termios);
+  m_mode = tty_mode::canonical;
 
-  Ensures(m_mode == tty_mode::canonical and "Terminal driver successfully set to canonical mode");
+  Ensures(m_mode == tty_mode::canonical and "Terminal driver is in canonical mode");
 }
 
 namespace detail {
