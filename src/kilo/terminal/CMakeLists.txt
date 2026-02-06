@@ -8,7 +8,6 @@ target_sources(Kilo_lib_terminal
 
 target_link_libraries(Kilo_lib_terminal
     PRIVATE
-        Kilo_lib_io
         Microsoft.GSL::GSL
         fmt::fmt
 )
