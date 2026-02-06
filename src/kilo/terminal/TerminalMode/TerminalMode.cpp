@@ -41,7 +41,12 @@ terminal_mode::terminal_mode() noexcept(false)
 
 terminal_mode::~terminal_mode() noexcept
 {
-  set_canonical_mode();
+  try {
+    set_canonical_mode();
+  }
+  catch (std::system_error const& err) {
+    fmt::print(stderr, "{}: {}\n", err.code().message(), err.what());
+  }
 }
 
 void terminal_mode::set_raw_mode() & noexcept(false)
