@@ -116,7 +116,7 @@ void tty_raw(int file_descriptor, termios const& buf, termios& copy) noexcept(fa
   errno = 0;
 
   if (::tcsetattr(file_descriptor, TCSAFLUSH, &copy) == -1) [[unlikely]] {
-    throw std::system_error(errno, std::system_category(), "Failed to set terminal driver to raw mode");
+    throw std::system_error(errno, std::system_category(), "Error while setting terminal driver to raw mode");
   }
 
   /*
@@ -126,8 +126,11 @@ void tty_raw(int file_descriptor, termios const& buf, termios& copy) noexcept(fa
   errno = 0;
 
   if (::tcgetattr(file_descriptor, &copy) == -1) [[unlikely]] {
-    ::tcsetattr(file_descriptor, TCSAFLUSH, &buf);
-    throw std::system_error(errno, std::system_category(), "Error while writing terminal driver settings to buffer");
+    throw std::system_error(errno, std::system_category(), "Error while quering terminal driver for success of initial operation");
+
+    if (::tcsetattr(file_descriptor, TCSAFLUSH, &buf) == -1) [[unlikely]] {
+      throw std::system_error(errno, std::system_category(), "Error while restoring original terminal driver settings");
+    }
   }
 
   auto const changes_did_not_stick = std::invoke([&copy]() -> bool {
@@ -142,8 +145,11 @@ void tty_raw(int file_descriptor, termios const& buf, termios& copy) noexcept(fa
    */
 
   if (changes_did_not_stick) {
-    ::tcsetattr(file_descriptor, TCSAFLUSH, &buf);
-    throw std::system_error(EINVAL, std::system_category(), "Setting driver to raw mode only partially successful");
+    if (::tcsetattr(file_descriptor, TCSAFLUSH, &buf) == -1) [[unlikely]] {
+      throw std::system_error(errno, std::system_category(), "Error while restoring original terminal driver settings");
+    }
+
+    throw std::system_error(EINVAL, std::system_category(), "Error while setting terminal driver to raw mode. Restoring original settings...");
   }
 }
 
