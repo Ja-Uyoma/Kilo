@@ -33,7 +33,7 @@
 #include <termios.h>
 #include <unistd.h>
 
-namespace kilo::terminal {
+namespace kilo::terminal::inline v1 {
 
 TEST(TerminalMode, SetRawModeSetsTerminalModeToRawMode)
 {
@@ -109,4 +109,4 @@ TEST(TerminalMode, TtyCanonicalModeSucceedsWhenPassedAValidFileDescriptor)
 
 }   // namespace detail
 
-}   // namespace kilo::terminal
+}  // namespace kilo::terminal::inline v1
