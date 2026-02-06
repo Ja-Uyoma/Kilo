@@ -30,31 +30,40 @@
 
 namespace kilo::terminal {
 
+/**
+ * @struct window_size
+ * @brief Encodes the dimensions of a window
+ */
 struct window_size
 {
   std::int32_t cols;
   std::int32_t rows;
 };
 
+/**
+ * @class window
+ * @brief Manages the creation of a window either by reading the dimensions of the terminal window or by explicitly
+ * setting your desired dimensions
+ */
 class window final
 {
 public:
-  ///
-  /// \brief Default constructor
-  ///
+  /**
+   * @brief Create a default window instance whose dimensions equal those of the currently-open terminal window
+   */
   explicit window() noexcept(false);
 
   /**
-   * \brief Create a Window with the given dimensions
-   * \param[in] windowSize The dimensions of the new Window object
+   * @brief Create a window with the given dimensions
+   * @param[in] windowSize The dimensions of the new Window object
    */
   explicit constexpr window(window_size const& window_size) noexcept : m_winsize(window_size)
   {
   }
 
   /**
-   * \brief Get the columns of the terminal window
-   * \returns The columns of the terminal window
+   * @brief Get the columns of the terminal window
+   * @returns The columns of the terminal window
    */
   [[nodiscard]] constexpr auto cols() const& noexcept -> std::int32_t
   {
@@ -62,8 +71,8 @@ public:
   }
 
   /**
-   * \brief Get the rows of the terminal window
-   * \returns The rows of the terminal window
+   * @brief Get the rows of the terminal window
+   * @returns The rows of the terminal window
    */
   [[nodiscard]] constexpr auto rows() const& noexcept -> std::int32_t
   {
@@ -77,25 +86,25 @@ private:
 namespace detail {
 
 /**
- * \brief Get the dimensions of the terminal window
- * \returns The dimensions of the terminal window
- * \throws std::system_error on failure
+ * @brief Get the dimensions of the terminal window
+ * @returns The dimensions of the terminal window
+ * @throws std::system_error on failure
  */
 auto get_window_size() noexcept(false) -> window_size;
 
 /**
- * \brief Get the dimensions of the terminal window
- * \param[in] file The "file" we're performing IO operations on; usually stdin and stdout
- * \param[in] winsz The internal data structure to which the sizes will be written
- * \returns The size of the terminal window
- * \throws std::system_error on failure
+ * @brief Get the dimensions of the terminal window
+ * @param[in] file The "file" we're performing IO operations on; usually stdin and stdout
+ * @param[in] winsz The internal data structure to which the sizes will be written
+ * @returns The size of the terminal window
+ * @throws std::system_error on failure
  */
 auto get_window_size(io::file_interface& file, winsize& winsz) noexcept(false) -> window_size;
 
 /**
- * \brief Get the position of the cursor in the terminal window
- * \returns The position of the cursor in the terminal window
- * \throws std::system_error on failure
+ * @brief Get the position of the cursor in the terminal window
+ * @returns The position of the cursor in the terminal window
+ * @throws std::system_error on failure
  */
 auto get_cursor_position(io::file_interface& file) noexcept(false) -> window_size;
 

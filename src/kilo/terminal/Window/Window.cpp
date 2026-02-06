@@ -38,20 +38,12 @@
 
 namespace kilo::terminal {
 
-///
-/// \brief Default constructor
-///
 window::window() : m_winsize(detail::get_window_size())
 {
 }
 
 namespace detail {
 
-/**
- * \brief Get the dimensions of the terminal window
- * \returns The dimensions of the terminal window
- * \throws std::system_error on failure
- */
 auto get_window_size() noexcept(false) -> window_size
 {
   ::winsize winsz {};
@@ -72,13 +64,6 @@ auto get_window_size() noexcept(false) -> window_size
   return window_size {.cols = winsz.ws_col, .rows = winsz.ws_row};
 }
 
-/**
- * \brief Get the dimensions of the terminal window
- * \param[in] file The "file" we're performing IO operations on; usually stdin and stdout
- * \param[in] winsz The internal data structure to which the sizes will be written
- * \returns The size of the terminal window
- * \throws std::system_error on failure
- */
 auto get_window_size(io::file_interface& file, winsize& winsz) noexcept(false) -> window_size
 {
   if (file.ioctl(STDOUT_FILENO, TIOCGWINSZ, &winsz) == -1 or winsz.ws_col == 0) {
@@ -94,11 +79,6 @@ auto get_window_size(io::file_interface& file, winsize& winsz) noexcept(false) -
   return window_size {.cols = winsz.ws_col, .rows = winsz.ws_row};
 }
 
-/**
- * \brief Get the position of the cursor in the terminal window
- * \returns The position of the cursor in the terminal window
- * \throws std::system_error on failure
- */
 auto get_cursor_position(io::file_interface& file) noexcept(false) -> window_size
 {
   Expects(isatty(STDIN_FILENO) and "STDIN must be a terminal device");
