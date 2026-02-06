@@ -21,8 +21,8 @@
  * SOFTWARE.
  */
 
-#ifndef TERMINAL_STATE_HPP
-#define TERMINAL_STATE_HPP
+#ifndef KILO_TERMINAL_TERMINAL_MODE_HPP
+#define KILO_TERMINAL_TERMINAL_MODE_HPP
 
 #include <cstdint>
 #include <termios.h>
