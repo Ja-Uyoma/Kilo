@@ -104,7 +104,6 @@ namespace detail {
  * @brief Query file_descriptor and write its settings to buf
  * @param[in] file_descriptor The file descriptor to be queried
  * @param[in] buf Where the settings are written to
- * @pre The file descriptor must be STDIN_FILENO
  * @throws std::system_error on failure
  */
 void get_terminal_driver_settings(int file_descriptor, termios& buf) noexcept(false);
@@ -114,7 +113,6 @@ void get_terminal_driver_settings(int file_descriptor, termios& buf) noexcept(fa
  * @param[in] file_descriptor The terminal driver's file descriptor
  * @param[in] buf The buffer to which the terminal driver's settings are to be written
  * @param[in] copy A copy of the settings stored in buf in case we need to roll back
- * @pre The file descriptor must be STDIN_FILENO
  * @throws std::system_error if the operation failed
  */
 void tty_raw(int file_descriptor, termios const& buf, termios& copy) noexcept(false);
@@ -123,7 +121,6 @@ void tty_raw(int file_descriptor, termios const& buf, termios& copy) noexcept(fa
  * @brief Set the terminal driver's mode to canonical mode
  * @param[in] file_descriptor The terminal driver's file descriptor
  * @param[in] buf The buffer from which the desired settings are to be read from
- * @pre The file descriptor must be STDIN_FILENO
  * @throws std::system_error if the operation failed
  */
 void tty_canonical_mode(int file_descriptor, termios const& buf) noexcept(false);

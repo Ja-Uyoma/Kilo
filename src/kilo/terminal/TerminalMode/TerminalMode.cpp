@@ -91,8 +91,6 @@ namespace detail {
 
 void get_terminal_driver_settings(int file_descriptor, termios& buf) noexcept(false)
 {
-  Expects(file_descriptor == STDIN_FILENO and "File descriptor must be STDIN_FILENO");
-
   errno = 0;
 
   if (::tcgetattr(file_descriptor, &buf) == -1) [[unlikely]] {
@@ -102,8 +100,6 @@ void get_terminal_driver_settings(int file_descriptor, termios& buf) noexcept(fa
 
 void tty_raw(int file_descriptor, termios const& buf, termios& copy) noexcept(false)
 {
-  Expects(file_descriptor == STDIN_FILENO and "File descriptor must be STDIN_FILENO");
-
   copy = buf;
 
   /*
@@ -163,8 +159,6 @@ void tty_raw(int file_descriptor, termios const& buf, termios& copy) noexcept(fa
 
 void tty_canonical_mode(int file_descriptor, termios const& buf) noexcept(false)
 {
-  Expects(file_descriptor == STDIN_FILENO and "File descriptor must be STDIN_FILENO");
-
   errno = 0;
 
   if (::tcsetattr(file_descriptor, TCSAFLUSH, &buf) == -1) [[unlikely]] {
