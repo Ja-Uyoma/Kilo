@@ -76,7 +76,7 @@ auto get_cursor_position(io::file_interface& file) noexcept(false) -> window_siz
   std::array<char, buffer_size> buf = {};
 
   for (std::size_t i = 0; i < buf.size() - 1; ++i) {
-    if (::read(STDIN_FILENO, &buf.at(i), 1) != 1 or buf.at(i) == 'R') {
+    if (file.read(STDIN_FILENO, buf.at(i)) != 1 or buf.at(i) == 'R') {
       break;
     }
   }
