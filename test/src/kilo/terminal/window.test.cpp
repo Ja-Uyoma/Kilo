@@ -88,6 +88,16 @@ TEST(Window, GetWindowSizeThrowsAnExceptionWhenWindowColsIsZeroAndWriteFails)
   ASSERT_THROW({ detail::get_window_size(mfile, winsz); }, std::system_error);
 }
 
+TEST(Window, GetCursorPositionThrowsAnExceptionOnFailureToGetCursorPosition)
+{
+  mock_file mfile;
+  static constexpr std::string get_cursor_position("\x1b[6n");
+
+  EXPECT_CALL(mfile, write(STDOUT_FILENO, get_cursor_position)).WillOnce(::testing::Return(0));
+
+  ASSERT_THROW(detail::get_cursor_position(mfile), std::system_error);
+}
+
 // NOLINTEND(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
 
 }   // namespace kilo::terminal
