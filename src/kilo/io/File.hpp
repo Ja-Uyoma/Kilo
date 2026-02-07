@@ -81,30 +81,11 @@ public:
   ///
   virtual auto ioctl(int file_descriptor, uint64_t request, void* args) noexcept -> int64_t = 0;
 
-  ///
-  /// \brief Virtual destructor
-  ///
   virtual ~file_interface() = default;
-
-  ///
-  /// \brief Copy constructor
-  ///
   file_interface(file_interface const&) = default;
-
-  ///
-  /// \brief Copy-assignment operator
-  ///
   auto operator=(file_interface const&) -> file_interface& = default;
-
-  ///
-  /// \brief Move constructor
-  ///
-  file_interface(file_interface&&) = default;
-
-  ///
-  /// \brief Move-assignment operator
-  ///
-  auto operator=(file_interface&&) -> file_interface& = default;
+  file_interface(file_interface&&) noexcept = default;
+  auto operator=(file_interface&&) noexcept -> file_interface& = default;
 };
 
 class file final : public file_interface
