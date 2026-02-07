@@ -25,6 +25,7 @@
 #define WINDOW_HPP
 
 #include "kilo/io/File.hpp"
+#include <sys/ioctl.h>
 
 #include <cstdint>
 

@@ -48,8 +48,7 @@ auto get_window_size() noexcept(false) -> window_size
 {
   ::winsize winsz {};
 
-  // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg, hicpp-vararg)
-  if (io::file file; ::ioctl(STDOUT_FILENO, TIOCGWINSZ, &winsz) == -1 or winsz.ws_col == 0) {
+  if (io::file file; file.ioctl(STDOUT_FILENO, TIOCGWINSZ, &winsz) == -1 or winsz.ws_col == 0) {
     errno = 0;
     static constexpr std::string move_cursor_bottom_right("\x1b[999c\x1b[999B");
 
