@@ -81,17 +81,10 @@ public:
   }
 
 private:
-  window_size m_winsize;
+  window_size m_winsize {};
 };
 
 namespace detail {
-
-/**
- * @brief Get the dimensions of the terminal window
- * @returns The dimensions of the terminal window
- * @throws std::system_error on failure
- */
-auto get_window_size() noexcept(false) -> window_size;
 
 /**
  * @brief Get the dimensions of the terminal window

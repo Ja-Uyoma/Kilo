@@ -38,30 +38,15 @@
 
 namespace kilo::terminal {
 
-window::window() : m_winsize(detail::get_window_size())
+window::window() noexcept(false)
 {
+  io::file file;
+  ::winsize winsz {};
+
+  m_winsize = detail::get_window_size(file, winsz);
 }
 
 namespace detail {
-
-auto get_window_size() noexcept(false) -> window_size
-{
-  ::winsize winsz {};
-
-  if (io::file file; file.ioctl(STDOUT_FILENO, TIOCGWINSZ, &winsz) == -1 or winsz.ws_col == 0) {
-    errno = 0;
-    static constexpr std::string move_cursor_bottom_right("\x1b[999c\x1b[999B");
-
-    if (file.write(STDOUT_FILENO, move_cursor_bottom_right) != std::ssize(move_cursor_bottom_right)) {
-      throw std::system_error(errno, std::system_category(),
-                              "Could not move the cursor to the bottom-right of the screen");
-    }
-
-    return detail::get_cursor_position(file);
-  }
-
-  return window_size {.cols = winsz.ws_col, .rows = winsz.ws_row};
-}
 
 auto get_window_size(io::file_interface& file, winsize& winsz) noexcept(false) -> window_size
 {
