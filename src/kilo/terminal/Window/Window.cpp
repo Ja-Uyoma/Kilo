@@ -24,7 +24,6 @@
 #include "Window.hpp"
 
 #include "kilo/io/File.hpp"
-#include <gsl/assert>
 #include <sys/ioctl.h>
 #include <system_error>
 
@@ -65,9 +64,6 @@ auto get_window_size(io::file_interface& file, winsize& winsz) noexcept(false) -
 
 auto get_cursor_position(io::file_interface& file) noexcept(false) -> window_size
 {
-  Expects(isatty(STDIN_FILENO) and "STDIN must be a terminal device");
-  Expects(isatty(STDOUT_FILENO) and "STDOUT must be a terminal device");
-
   // Get the position of the cursor
   if (file.write(STDOUT_FILENO, std::string("\x1b[6n")) != 4) {
     throw std::system_error(errno, std::system_category(), "Could not get cursor position");
