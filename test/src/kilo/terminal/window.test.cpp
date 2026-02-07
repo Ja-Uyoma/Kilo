@@ -22,8 +22,10 @@ class mock_file : public io::file_interface
 public:
   MOCK_METHOD(int64_t, write, (int, std::string const&), (noexcept, override));
   MOCK_METHOD(int64_t, write, (int, std::string const&, std::size_t), (noexcept, override));
+  MOCK_METHOD(int64_t, write, (int, char), (noexcept, override));
   MOCK_METHOD(int64_t, read, (int, std::string&), (noexcept, override));
   MOCK_METHOD(int64_t, read, (int, std::string&, std::size_t), (noexcept, override));
+  MOCK_METHOD(int64_t, read, (int, char), (noexcept, override));
   MOCK_METHOD(int64_t, ioctl, (int, std::uint64_t, void*), (noexcept, override));
 };
 

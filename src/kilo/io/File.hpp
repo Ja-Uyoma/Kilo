@@ -55,6 +55,14 @@ public:
   virtual auto read(int file_descriptor, std::string& buffer, std::size_t nbytes) -> int64_t = 0;
 
   ///
+  /// \brief Read from file_descriptor into buffer
+  /// \param[in] file_descriptor The file being read from
+  /// \param[in] buffer The buffer being read to
+  /// \returns The number of bytes read
+  ///
+  virtual auto read(int file_descriptor, char buffer) -> int64_t = 0;
+
+  ///
   /// \brief Write all bytes of buffer to file_descriptor
   /// \param[in] file_descriptor The file descriptor being written to
   /// \param[in] buffer The buffer being written from
@@ -70,6 +78,14 @@ public:
   /// \returns The number of bytes written
   ///
   virtual auto write(int file_descriptor, std::string const& buffer, std::size_t nbytes) -> int64_t = 0;
+
+  ///
+  /// \brief Write buffer to file_descriptor
+  /// \param[in] file_descriptor The file descriptor being written to
+  /// \param[in] buffer The buffer being written from
+  /// \returns The number of bytes written
+  ///
+  virtual auto write(int file_descriptor, char buffer) -> int64_t = 0;
 
   ///
   /// \brief Manipulates the underlying device parameters of special files
@@ -114,6 +130,14 @@ public:
   auto read(int file_descriptor, std::string& buffer, std::size_t nbytes) noexcept -> int64_t override;
 
   ///
+  /// \brief Read from file_descriptor into buffer
+  /// \param[in] file_descriptor The file being read from
+  /// \param[in] buffer The buffer being read to
+  /// \returns The number of bytes read
+  ///
+  auto read(int file_descriptor, char buffer) noexcept -> int64_t override;
+
+  ///
   /// \brief Write all bytes of buffer to file_descriptor
   /// \param[in] file_descriptor The file descriptor being written to
   /// \param[in] buffer The buffer being written from
@@ -129,6 +153,14 @@ public:
   /// \returns The number of bytes written
   ///
   auto write(int file_descriptor, std::string const& buffer, std::size_t nbytes) noexcept -> int64_t override;
+
+  ///
+  /// \brief Write buffer to file_descriptor
+  /// \param[in] file_descriptor The file descriptor being written to
+  /// \param[in] buffer The buffer being written from
+  /// \returns The number of bytes written
+  ///
+  auto write(int file_descriptor, char buffer) noexcept -> int64_t override;
 
   ///
   /// \brief Manipulates the underlying device parameters of special files

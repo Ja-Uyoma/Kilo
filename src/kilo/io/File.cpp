@@ -41,6 +41,11 @@ auto file::read(int file_descriptor, std::string& buffer, std::size_t nbytes) no
   return ::read(file_descriptor, buffer.data(), nbytes);
 }
 
+auto file::read(int file_descriptor, char buffer) noexcept -> int64_t
+{
+  return ::read(file_descriptor, &buffer, 1);
+}
+
 auto file::write(int file_descriptor, std::string const& buffer) noexcept -> int64_t
 {
   return ::write(file_descriptor, buffer.c_str(), buffer.length());
@@ -49,6 +54,11 @@ auto file::write(int file_descriptor, std::string const& buffer) noexcept -> int
 auto file::write(int file_descriptor, std::string const& buffer, std::size_t nbytes) noexcept -> int64_t
 {
   return ::write(file_descriptor, buffer.c_str(), nbytes);
+}
+
+auto file::write(int file_descriptor, char buffer) noexcept -> int64_t
+{
+  return ::write(file_descriptor, &buffer, 1);
 }
 
 auto file::ioctl(int file_descriptor, uint64_t request, void* args) noexcept -> int64_t
