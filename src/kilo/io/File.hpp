@@ -24,15 +24,10 @@
 #ifndef FILE_HPP
 #define FILE_HPP
 
-#include <sys/ioctl.h>
-
 #include <cstdint>
 #include <string>
 
 namespace kilo::io {
-
-template<typename T>
-concept IsPointer = std::is_pointer_v<T>;
 
 class file_interface
 {
@@ -79,18 +74,12 @@ public:
   ///
   /// \brief Manipulates the underlying device parameters of special files
   /// Essentially just a C++ wrapper for the system's ioctl() function
-  /// \tparam Args A generic pointer type
   /// \param[in] file_descriptor An open file descriptor
   /// \param[in] request A device-dependent request code
   /// \param[in] args A pointer to memory
   /// \returns 0 on success or -1 on failure, with errno set appropriately
   ///
-  template<IsPointer Args>
-  auto ioctl(int file_descriptor, uint64_t request, Args args) noexcept -> int64_t
-  {
-    // NOLINTNEXTLINE(*-vararg)
-    return ::ioctl(file_descriptor, request, std::forward<Args>(args));
-  }
+  virtual auto ioctl(int file_descriptor, uint64_t request, void* args) noexcept -> int64_t = 0;
 
   ///
   /// \brief Virtual destructor
@@ -159,6 +148,16 @@ public:
   /// \returns The number of bytes written
   ///
   auto write(int file_descriptor, std::string const& buffer, std::size_t nbytes) noexcept -> int64_t override;
+
+  ///
+  /// \brief Manipulates the underlying device parameters of special files
+  /// Essentially just a C++ wrapper for the system's ioctl() function
+  /// \param[in] file_descriptor An open file descriptor
+  /// \param[in] request A device-dependent request code
+  /// \param[in] args A pointer to memory
+  /// \returns 0 on success or -1 on failure, with errno set appropriately
+  ///
+  auto ioctl(int file_descriptor, uint64_t request, void* args) noexcept -> int64_t override;
 };
 
 }   // namespace kilo::io

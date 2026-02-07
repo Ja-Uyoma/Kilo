@@ -23,6 +23,8 @@
 
 #include "File.hpp"
 
+#include <sys/ioctl.h>
+
 #include <cerrno>
 #include <string>
 #include <unistd.h>
@@ -73,6 +75,12 @@ auto file::write(int file_descriptor, std::string const& buffer) noexcept -> int
 auto file::write(int file_descriptor, std::string const& buffer, std::size_t nbytes) noexcept -> int64_t
 {
   return ::write(file_descriptor, buffer.c_str(), nbytes);
+}
+
+auto file::ioctl(int file_descriptor, uint64_t request, void* args) noexcept -> int64_t
+{
+  // NOLINTNEXTLINE(*-vararg)
+  return ::ioctl(file_descriptor, request, args);
 }
 
 }   // namespace kilo::io
