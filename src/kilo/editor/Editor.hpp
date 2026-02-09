@@ -27,15 +27,14 @@
 #include "EditorConfig/EditorConfig.hpp"
 #include "ScreenBuffer/ScreenBuffer.hpp"
 #include "kilo/utilities/Constants.hpp"
-
 #include <string_view>
+
+#include <cstdint>
 #include <filesystem>
 #include <vector>
-#include <cstdint>
 
-namespace kilo::editor
-{
-    /**
+namespace kilo::editor {
+/**
  * \brief Move the cursor in the open document depending on the key pressed
  * \param[in] key_pressed The key pressed by the user
  * \param[in] editor The current state of the editor
@@ -83,7 +82,7 @@ auto open(std::filesystem::path const& path, std::vector<std::string>& document,
  * \param[in] row The source string
  * \param[in] render The destination string
  */
-void update_row(std::string_view row, std::string& render);
+void update_row(std::string_view row, std::string& render) noexcept;
 
 }   // namespace kilo::editor
 
@@ -109,6 +108,5 @@ void print_welcome_message(int32_t window_width, screen_buffer& buffer);
 void print_line_of_document(std::string const& line, screen_buffer& buffer, int32_t window_width, int64_t col_off);
 
 }   // namespace kilo::editor::detail
-
 
 #endif

@@ -255,27 +255,30 @@ auto open(std::filesystem::path const& path, std::vector<std::string>& document,
  * \param[in] row The source string
  * \param[in] render The destination string
  */
-void update_row(std::string_view row, std::string& render)
+void update_row(std::string_view row, std::string& render) noexcept
 {
+  Expects(row.length() == render.length() and "The source and destination strings must be of the same size");
+
   using utilities::kilo_tab_stop;
 
-  [[maybe_unused]] auto tabs = std::ranges::count_if(row, [](unsigned char character) { return character == '\t'; });
+  [[maybe_unused]] auto tabs =
+    std::ranges::count_if(row, [](unsigned char character) -> bool { return character == '\t'; });
 
-  int idx {};
+  std::size_t idx {};
 
-  for (std::size_t j {}; j < row.length(); j++) {
-    if (row[j] == '\t') {
+  for (auto const character : row) {
+    if (character == '\t') {
       render[idx] = ' ';
-      idx++;
+      ++idx;
 
       while (idx % kilo_tab_stop != 0) {
         render[idx] = ' ';
-        idx++;
+        ++idx;
       }
     }
     else {
-      render[idx] = row[j];
-      idx++;
+      render[idx] = character;
+      ++idx;
     }
   }
 }
