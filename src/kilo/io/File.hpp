@@ -24,6 +24,7 @@
 #ifndef FILE_HPP
 #define FILE_HPP
 
+#include <cstddef>
 #include <cstdint>
 #include <string>
 

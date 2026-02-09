@@ -26,6 +26,8 @@
 #include <sys/ioctl.h>
 
 #include <cerrno>
+#include <cstddef>
+#include <cstdint>
 #include <string>
 #include <unistd.h>
 
