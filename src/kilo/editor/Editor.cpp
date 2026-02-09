@@ -339,7 +339,7 @@ void print_line_of_document(std::string const& line, screen_buffer& buffer, int3
   auto line_len = std::ssize(line) - col_off;
   line_len = std::clamp<int64_t>(line_len, 0, window_width);
 
-  buffer.write(&line[col_off], line_len);
+  buffer.write(line.substr(static_cast<size_t>(col_off), static_cast<size_t>(line_len)));
 }
 
 }   // namespace kilo::editor::detail
