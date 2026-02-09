@@ -22,11 +22,12 @@
  */
 
 #include "kilo/editor/Editor.hpp"
+
 #include "kilo/editor/EditorConfig/EditorConfig.hpp"
 #include "kilo/editor/ScreenBuffer/ScreenBuffer.hpp"
 #include "kilo/terminal/Window/Window.hpp"
-#include "kilo/utilities/Utilities.hpp"
 #include "kilo/utilities/Constants.hpp"
+#include "kilo/utilities/Utilities.hpp"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -37,7 +38,7 @@
 
 namespace kilo::editor {
 
-TEST(processKeypress, TerminatesTheProgramIfQIsPressed)
+TEST(Editor, ProcessKeypressTerminatesTheProgramIfQIsPressed)
 {
   using utilities::editor_key;
 
@@ -47,7 +48,7 @@ TEST(processKeypress, TerminatesTheProgramIfQIsPressed)
   ASSERT_EXIT(process_keypress(key, editor_config), ::testing::ExitedWithCode(0), ::testing::Eq(""));
 }
 
-TEST(processKeypress, MovesCursorToStartOfLineIfHomeButtonIsPressed)
+TEST(Editor, ProcessKeyPressMovesCursorToStartOfLineIfHomeButtonIsPressed)
 {
   using utilities::editor_key;
 
@@ -59,7 +60,7 @@ TEST(processKeypress, MovesCursorToStartOfLineIfHomeButtonIsPressed)
   ASSERT_THAT(editor_config.curs.x, ::testing::Eq(0));
 }
 
-TEST(processKeypress, MovesCursorToEndOfLineIfEndButtonIsPressed)
+TEST(Editor, ProcessKeypressMovesCursorToEndOfLineIfEndButtonIsPressed)
 {
   using utilities::editor_key;
 
@@ -73,7 +74,7 @@ TEST(processKeypress, MovesCursorToEndOfLineIfEndButtonIsPressed)
 
 namespace detail {
 
-TEST(printWelcomeMessage, PrintsTheCorrectMessageCentred)
+TEST(Editor, PrintWelcomeMessagePrintsTheCorrectMessageCentred)
 {
   constexpr int width = 50;
   screen_buffer buf {};
@@ -87,7 +88,7 @@ TEST(printWelcomeMessage, PrintsTheCorrectMessageCentred)
   ASSERT_THAT(buf.c_str(), ::testing::Eq(output));
 }
 
-TEST(printWelcomeMessage, TruncatesTheMessageIfItsTooLong)
+TEST(Editor, PrintWelcomeMessageTruncatesTheMessageIfItsTooLong)
 {
   constexpr int width = 25;
   screen_buffer buf {};
@@ -100,7 +101,7 @@ TEST(printWelcomeMessage, TruncatesTheMessageIfItsTooLong)
   ASSERT_THAT(buf.c_str(), ::testing::Eq(truncated_msg));
 }
 
-TEST(printLineOfDocument, PrintsNothingWhenTheLineLengthIsLessThanTheColumnOffset)
+TEST(Editor, PrintLineOfDocumentPrintsNothingWhenTheLineLengthIsLessThanTheColumnOffset)
 {
   std::string const line {"The quick brown fox jumped over the lazy doggo"};
   constexpr int window_width = 20;
@@ -112,7 +113,7 @@ TEST(printLineOfDocument, PrintsNothingWhenTheLineLengthIsLessThanTheColumnOffse
   ASSERT_THAT(buf.size(), ::testing::Eq(0));
 }
 
-TEST(printLineOfDocument, TruncatesTheLineIfItsLongerThanWindowWidth)
+TEST(Editor, PrintLineOfDocumentTruncatesTheLineIfItsLongerThanWindowWidth)
 {
   std::string const line {"The quick brown fox jumped over the lazy doggo"};
   constexpr int window_width = 20;
