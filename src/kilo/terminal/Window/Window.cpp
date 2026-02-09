@@ -24,6 +24,7 @@
 #include "Window.hpp"
 
 #include "kilo/io/File.hpp"
+#include <asm-generic/ioctls.h>
 #include <sys/ioctl.h>
 #include <system_error>
 
@@ -64,8 +65,10 @@ auto get_window_size(io::file_interface& file, winsize& winsz) noexcept(false) -
 
 auto get_cursor_position(io::file_interface& file) noexcept(false) -> window_size
 {
+  static constexpr auto get_cursor_position = std::string("\x1b[6n");
+
   // Get the position of the cursor
-  if (file.write(STDOUT_FILENO, std::string("\x1b[6n")) != 4) {
+  if (file.write(STDOUT_FILENO, get_cursor_position) != std::ssize(get_cursor_position)) {
     throw std::system_error(errno, std::system_category(), "Could not get cursor position");
   }
 
