@@ -50,7 +50,7 @@ public:
   /// \param[in] length The length of the string
   /// \returns A reference to the screen_buffer object
   ///
-  constexpr auto write(char const* str, std::size_t length) -> screen_buffer&
+  constexpr auto write(char const* str, std::size_t length) & noexcept(false) -> screen_buffer&
   {
     m_buffer.append(str, length);
     return *this;
@@ -61,7 +61,7 @@ public:
   /// \param[in] str The string to be appended to the string buffer
   /// \returns A reference to the screen_buffer object
   ///
-  constexpr auto write(std::string_view str) -> screen_buffer&
+  constexpr auto write(std::string_view str) & noexcept(false) -> screen_buffer&
   {
     m_buffer.append(str);
     return *this;
@@ -71,16 +71,25 @@ public:
   /// \brief Get the size of the buffer
   /// \returns The size of the buffer
   ///
-  [[nodiscard]] constexpr auto size() const noexcept -> std::size_t
+  [[nodiscard]] constexpr auto size() const& noexcept -> std::size_t
   {
     return m_buffer.length();
+  }
+
+  ///
+  /// \brief Get the size of the buffer
+  /// \returns The size of the buffer as a signed value
+  ///
+  [[nodiscard]] constexpr auto ssize() const& noexcept -> int64_t
+  {
+    return std::ssize(m_buffer);
   }
 
   ///
   /// \brief Get a  C-string representation of the buffer
   /// \returns A constant C-string representation of the buffer
   ///
-  [[nodiscard]] constexpr auto c_str() const noexcept -> char const*
+  [[nodiscard]] constexpr auto c_str() const& noexcept -> char const*
   {
     return m_buffer.c_str();
   }
@@ -91,7 +100,7 @@ public:
   /// \returns The number of bytes written
   /// \throws `std::system_error` if the operation failed
   ///
-  auto flush(io::file_interface& file) const -> std::size_t;
+  auto flush(io::file_interface& file) const& noexcept(false) -> std::size_t;
 
 private:
   std::string m_buffer;

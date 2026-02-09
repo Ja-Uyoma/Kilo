@@ -37,7 +37,7 @@ namespace kilo::editor {
 /// \returns The number of bytes written
 /// \throws `std::system_error` if the operation failed
 ///
-auto screen_buffer::flush(io::file_interface& file) const -> std::size_t
+auto screen_buffer::flush(io::file_interface& file) const& noexcept(false) -> std::size_t
 {
   std::size_t total_written = 0;
 
