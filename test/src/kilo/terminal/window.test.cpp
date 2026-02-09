@@ -7,6 +7,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include <array>
 #include <cerrno>
 #include <cstddef>
 #include <cstdint>
@@ -94,10 +95,12 @@ TEST(Window, GetCursorPositionThrowsAnExceptionOnFailureToGetCursorPosition)
 {
   mock_file mfile;
   static constexpr std::string get_cursor_position("\x1b[6n");
+  static constexpr unsigned buffer_size = 32;
+  std::array<char, buffer_size> buffer {};
 
   EXPECT_CALL(mfile, write(STDOUT_FILENO, get_cursor_position)).WillOnce(::testing::Return(0));
 
-  ASSERT_THROW(detail::get_cursor_position(mfile), std::system_error);
+  ASSERT_THROW(detail::get_cursor_position(mfile, buffer), std::system_error);
 }
 
 // NOLINTEND(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)

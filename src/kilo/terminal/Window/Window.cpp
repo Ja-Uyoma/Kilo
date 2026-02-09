@@ -32,6 +32,7 @@
 #include <cerrno>
 #include <charconv>
 #include <cstdlib>
+#include <span>
 #include <stdexcept>
 #include <string>
 #include <unistd.h>
@@ -57,13 +58,16 @@ auto get_window_size(io::file_interface& file, winsize& winsz) noexcept(false) -
       throw std::system_error(errno, std::system_category(), "Could not move cursor to bottom-right of screen");
     }
 
-    return detail::get_cursor_position(file);
+    static constexpr unsigned buffer_size = 32;
+    std::array<char, buffer_size> buf = {};
+
+    return detail::get_cursor_position(file, buf);
   }
 
   return window_size {.cols = winsz.ws_col, .rows = winsz.ws_row};
 }
 
-auto get_cursor_position(io::file_interface& file) noexcept(false) -> window_size
+auto get_cursor_position(io::file_interface& file, std::span<char> buffer) noexcept(false) -> window_size
 {
   static constexpr auto get_cursor_position = std::string("\x1b[6n");
 
@@ -75,20 +79,17 @@ auto get_cursor_position(io::file_interface& file) noexcept(false) -> window_siz
   // Read the reply from stdin and store it in a buffer
   // Do this until we encounter a 'R' character
 
-  static constexpr unsigned buffer_size = 32;
-  std::array<char, buffer_size> buf = {};
-
-  for (std::size_t i = 0; i < buf.size() - 1; ++i) {
-    if (file.read(STDIN_FILENO, buf.at(i)) != 1 or buf.at(i) == 'R') {
+  for (std::size_t i = 0; i < buffer.size() - 1; ++i) {
+    if (file.read(STDIN_FILENO, buffer[i]) != 1 or buffer[i] == 'R') {
       break;
     }
   }
 
   // Assign the null-termination character to the final byte of buf
-  buf.back() = '\0';
+  buffer.back() = '\0';
 
   // First make sure read() responded with an escape sequence
-  if (buf[0] != '\x1b' or buf[1] != '[') {
+  if (buffer[0] != '\x1b' or buffer[1] != '[') {
     throw std::runtime_error("An invalid byte sequence was encountered "
                              "where an escape sequence was expected");
   }
@@ -99,8 +100,8 @@ auto get_cursor_position(io::file_interface& file) noexcept(false) -> window_siz
   // We tell it to parse the 2 integers separated by a ';' and write the value
   // into the rows and cols variables
 
-  char const* parse_ptr = &buf[2];
-  char const* end_ptr = &buf.back();
+  char const* parse_ptr = &buffer[2];
+  char const* end_ptr = &buffer.back();
 
   // Parse rows
   auto [row_end_ptr, row_ec] = std::from_chars(parse_ptr, end_ptr, result.rows);

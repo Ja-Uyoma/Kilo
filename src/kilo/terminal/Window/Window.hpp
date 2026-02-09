@@ -28,6 +28,7 @@
 #include <sys/ioctl.h>
 
 #include <cstdint>
+#include <span>
 
 namespace kilo::terminal {
 
@@ -88,19 +89,27 @@ namespace detail {
 
 /**
  * @brief Get the dimensions of the terminal window
+ * @details Delegates to get_cursor_position if the window size could not be determined by a call to ioctl
+ *
  * @param[in] file The "file" we're performing IO operations on; usually stdin and stdout
  * @param[in] winsz The internal data structure to which the sizes will be written
  * @returns The size of the terminal window
- * @throws std::system_error on failure
+ * @throws std::system_error if the cursor could not be moved to the bottom-right of the terminal window
+ * @throws std::system_error if the position of the cursor in the terminal window could not be determined
+ * @throws std::runtime_error if the obtained cursor position was ill-formed and could not be parsed
  */
 auto get_window_size(io::file_interface& file, winsize& winsz) noexcept(false) -> window_size;
 
 /**
  * @brief Get the position of the cursor in the terminal window
+ *
+ * @param[in] file The file we're performing IO operations on (usually STDIN and STDOUT)
+ * @param[in] buffer The buffer to which the cursor position is written
  * @returns The position of the cursor in the terminal window
- * @throws std::system_error on failure
+ * @throws std::system_error if the position of the cursor in the terminal window could not be determined
+ * @throws std::runtime_error if the obtained cursor position was ill-formed and could not be parsed
  */
-auto get_cursor_position(io::file_interface& file) noexcept(false) -> window_size;
+auto get_cursor_position(io::file_interface& file, std::span<char> buffer) noexcept(false) -> window_size;
 
 }   // namespace detail
 
