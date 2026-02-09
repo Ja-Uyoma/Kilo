@@ -53,8 +53,9 @@ namespace kilo::editor {
  */
 void process_keypress(int key_pressed, editor_config& editor_config)
 {
+  std::ignore = std::atexit([]() -> void { utilities::clear_screen_and_reposition_cursor(); });
+
   if (key_pressed == utilities::ctrl_key('q')) {
-    utilities::clear_screen_and_reposition_cursor();
     std::exit(EXIT_SUCCESS);
   }
 
