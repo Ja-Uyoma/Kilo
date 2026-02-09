@@ -86,8 +86,8 @@ auto get_cursor_position(io::file_interface& file) noexcept(false) -> window_siz
 
   // First make sure read() responded with an escape sequence
   if (buf[0] != '\x1b' or buf[1] != '[') {
-    throw std::invalid_argument("An invalid byte sequence was encountered "
-                                "where an escape sequence was expected");
+    throw std::runtime_error("An invalid byte sequence was encountered "
+                             "where an escape sequence was expected");
   }
 
   window_size result {.cols = 0, .rows = 0};
@@ -104,12 +104,12 @@ auto get_cursor_position(io::file_interface& file) noexcept(false) -> window_siz
 
   // Check error if no characters consumed
   if (row_ec != std::errc() or row_end_ptr == parse_ptr) {
-    return {};   // failed to parse rows or row-string empty
+    throw std::runtime_error("Failed to parse rows or row-string empty");
   }
 
   // Check for semicolon
   if (row_end_ptr == end_ptr or *row_end_ptr != ';') {
-    return {};   // expected semicolon not found or end of string
+    throw std::runtime_error("Expected semi-colon not found or end of string");
   }
 
   // Skip semicolon
@@ -120,8 +120,8 @@ auto get_cursor_position(io::file_interface& file) noexcept(false) -> window_siz
 
   // Check error; no characters consumed, or not ending at 'R'
   if (col_ec != std::errc() or col_end_ptr == parse_ptr or col_end_ptr != end_ptr) {
-    // Failed to parse columns, or cols string empty, or extra characters encountered before 'R'
-    return {};
+    throw std::runtime_error(
+      "Failed to parse columns, or cols string empty, or extra characters encountered before 'R'");
   }
 
   return result;
