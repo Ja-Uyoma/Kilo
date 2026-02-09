@@ -334,12 +334,10 @@ void print_welcome_message(int32_t window_width, screen_buffer& buffer)
 void print_line_of_document(std::string const& line, screen_buffer& buffer, int32_t window_width, int64_t col_off)
 {
   Expects(col_off >= 0 and "Column offset must be non-negative");
+  Expects(window_width >= 0 and "The window width must be a positive value");
 
   auto line_len = std::ssize(line) - col_off;
-
-  line_len = std::max<int64_t>(line_len, 0);
-
-  line_len = std::min<int64_t>(line_len, window_width);
+  line_len = std::clamp<int64_t>(line_len, 0, window_width);
 
   buffer.write(&line[col_off], line_len);
 }
