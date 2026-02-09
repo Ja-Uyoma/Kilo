@@ -27,6 +27,7 @@
 #include "kilo/utilities/Constants.hpp"
 #include "kilo/utilities/Utilities.hpp"
 #include <fmt/format.h>
+#include <gsl/assert>
 #include <string_view>
 
 #include <algorithm>
@@ -332,7 +333,7 @@ void print_welcome_message(int32_t window_width, screen_buffer& buffer)
  */
 void print_line_of_document(std::string const& line, screen_buffer& buffer, int32_t window_width, int64_t col_off)
 {
-  assert(col_off >= 0 and "Column offset must be non-negative");
+  Expects(col_off >= 0 and "Column offset must be non-negative");
 
   auto line_len = std::ssize(line) - col_off;
 
