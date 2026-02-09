@@ -45,15 +45,24 @@ TEST(Editor, ProcessKeypressTerminatesTheProgramIfQIsPressed)
   editor_config editor_config;
   constexpr auto key = utilities::ctrl_key('q');
 
-  ASSERT_EXIT(process_keypress(key, editor_config), ::testing::ExitedWithCode(0), ::testing::Eq(""));
+  ASSERT_EXIT(process_keypress(key, editor_config), ::testing::ExitedWithCode(EXIT_SUCCESS), ::testing::Eq(""));
 }
 
-TEST(Editor, ProcessKeyPressMovesCursorToStartOfLineIfHomeButtonIsPressed)
+TEST(Editor, ProcessKeypressMovesCursorToStartOfLineIfHomeButtonIsPressed)
 {
+  using terminal::window;
   using utilities::editor_key;
 
+  static constexpr int32_t cols = 64;
+  static constexpr int32_t rows = 32;
+
   constexpr auto key = editor_key::home;
-  editor_config editor_config;
+  editor_config editor_config {.window = window({.cols = cols, .rows = rows}),
+                               .curs = {},
+                               .off = {},
+                               .screen_buf = screen_buffer(),
+                               .open_doc = std::vector<std::string>(),
+                               .render = std::vector<std::string>()};
 
   process_keypress(static_cast<int>(key), editor_config);
 
@@ -62,10 +71,19 @@ TEST(Editor, ProcessKeyPressMovesCursorToStartOfLineIfHomeButtonIsPressed)
 
 TEST(Editor, ProcessKeypressMovesCursorToEndOfLineIfEndButtonIsPressed)
 {
+  using terminal::window;
   using utilities::editor_key;
 
+  static constexpr int32_t cols = 64;
+  static constexpr int32_t rows = 32;
+
   constexpr auto key = editor_key::end;
-  editor_config editor_config;
+  editor_config editor_config {.window = window({.cols = cols, .rows = rows}),
+                               .curs = {},
+                               .off = {},
+                               .screen_buf = screen_buffer(),
+                               .open_doc = std::vector<std::string>(),
+                               .render = std::vector<std::string>()};
 
   process_keypress(static_cast<int>(key), editor_config);
 
