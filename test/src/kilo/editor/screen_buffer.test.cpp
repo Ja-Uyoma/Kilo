@@ -35,18 +35,18 @@
 
 namespace kilo::editor {
 
-TEST(ScreenBufferTest, IsEmptyWhenCreated)
+TEST(ScreenBuffer, IsEmptyWhenCreated)
 {
   screen_buffer buffer;
   ASSERT_EQ(buffer.size(), 0);
 }
 
-TEST(ScreenBufferTest, ItsSizeIncreasesByTheLengthOfTheAppendedString)
+TEST(ScreenBuffer, ItsSizeIncreasesByTheLengthOfTheAppendedString)
 {
   screen_buffer buffer;
   char const* str = "Hello, World!";
 
-  buffer.write(str, std::strlen(str));
+  buffer.write({str, std::strlen(str)});
 
   ASSERT_EQ(buffer.size(), 13);
 }
@@ -67,7 +67,7 @@ public:
 
 // NOLINTEND(modernize-use-trailing-return-type)
 
-TEST(ScreenBufferTest, flushReturnsTheNumberOfBytesWrittenOnSuccess)
+TEST(ScreenBuffer, flushReturnsTheNumberOfBytesWrittenOnSuccess)
 {
   using ::testing::Eq;
   using ::testing::Return;
@@ -83,7 +83,7 @@ TEST(ScreenBufferTest, flushReturnsTheNumberOfBytesWrittenOnSuccess)
   ASSERT_THAT(result, Eq(13));
 }
 
-TEST(ScreenBufferTest, flushThrowsAnExceptionOnFailure)
+TEST(ScreenBuffer, flushThrowsAnExceptionOnFailure)
 {
   mock_file_interface file;
   screen_buffer buffer;
@@ -91,7 +91,7 @@ TEST(ScreenBufferTest, flushThrowsAnExceptionOnFailure)
   buffer.write("Non-retryable error example");
 
   EXPECT_CALL(file, write(STDOUT_FILENO, std::string("Non-retryable error example")))
-    .WillOnce([](int, std::string const&) {
+    .WillOnce([](int, std::string const&) -> int {
       errno = EBADF;
       return -1;
     });
@@ -99,7 +99,7 @@ TEST(ScreenBufferTest, flushThrowsAnExceptionOnFailure)
   ASSERT_THROW(buffer.flush(file), std::system_error);
 }
 
-TEST(ScreenBufferTest, FlushHandlesEINTR)
+TEST(ScreenBuffer, FlushHandlesEINTR)
 {
   mock_file_interface mock_file;
   screen_buffer buffer;
@@ -109,7 +109,7 @@ TEST(ScreenBufferTest, FlushHandlesEINTR)
 
   // Simulate EINTR error example, followed by a successful write
   EXPECT_CALL(mock_file, write(STDOUT_FILENO, str))
-    .WillOnce([](int, std::string const&) {
+    .WillOnce([](int, std::string const&) -> int {
       errno = EINTR;
       return -1;
     })
@@ -120,7 +120,7 @@ TEST(ScreenBufferTest, FlushHandlesEINTR)
   ASSERT_THAT(result, testing::Eq(23));
 }
 
-TEST(ScreenBufferTest, FlushStopsOnZeroBytesWritten)
+TEST(ScreenBuffer, FlushStopsOnZeroBytesWritten)
 {
   mock_file_interface mock_file;
   screen_buffer buffer;

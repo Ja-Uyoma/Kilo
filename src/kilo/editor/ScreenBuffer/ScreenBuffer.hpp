@@ -45,18 +45,6 @@ public:
   explicit constexpr screen_buffer() noexcept = default;
 
   ///
-  /// \brief Append the given C-string to the buffer
-  /// \param[in] str The string to be appended to the buffer
-  /// \param[in] length The length of the string
-  /// \returns A reference to the screen_buffer object
-  ///
-  constexpr auto write(char const* str, std::size_t length) & noexcept(false) -> screen_buffer&
-  {
-    m_buffer.append(str, length);
-    return *this;
-  }
-
-  ///
   /// \brief Append the given string to the string buffer
   /// \param[in] str The string to be appended to the string buffer
   /// \returns A reference to the screen_buffer object
