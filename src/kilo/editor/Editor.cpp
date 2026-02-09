@@ -258,7 +258,7 @@ void update_row(std::string_view row, std::string& render)
 {
   using utilities::kilo_tab_stop;
 
-  [[maybe_unused]] auto tabs = std::ranges::count_if(row, [](unsigned char c) { return c == '\t'; });
+  [[maybe_unused]] auto tabs = std::ranges::count_if(row, [](unsigned char character) { return character == '\t'; });
 
   int idx {};
 
