@@ -36,6 +36,7 @@ struct escape_sequences
   static constexpr std::string_view move_cursor_to_home_position {"\x1b[H"};
   static constexpr std::string_view show_the_cursor {"\x1b[?25h"};
   static constexpr std::string_view erase_part_of_line_to_the_right_of_cursor {"\x1b[K"};
+  static constexpr std::string_view crnl {"\r\n"};
 };
 
 // The current version of the application
