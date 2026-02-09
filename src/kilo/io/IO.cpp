@@ -37,7 +37,7 @@ namespace kilo::io {
  * \return The character read
  * \throws std::system_error if an error occured during read
  */
-auto read_key() -> int
+auto read_key() noexcept(false) -> int
 {
   char result {};
 
