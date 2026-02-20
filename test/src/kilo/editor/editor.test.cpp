@@ -121,18 +121,6 @@ TEST(Editor, PrintWelcomeMessageTruncatesTheMessageIfItsTooLong)
   ASSERT_THAT(buf.c_str(), ::testing::Eq(truncated_msg));
 }
 
-TEST(Editor, PrintLineOfDocumentPrintsNothingWhenTheLineLengthIsLessThanTheColumnOffset)
-{
-  std::string const line {"The quick brown fox jumped over the lazy doggo"};
-  constexpr int window_width = 20;
-  auto const col_off = std::ssize(line) + 5;
-  screen_buffer buf;
-
-  print_line_of_document(line, buf, window_width, col_off);
-
-  ASSERT_THAT(buf.size(), ::testing::Eq(0));
-}
-
 TEST(Editor, PrintLineOfDocumentTruncatesTheLineIfItsLongerThanWindowWidth)
 {
   std::string const line {"The quick brown fox jumped over the lazy doggo"};
@@ -143,6 +131,49 @@ TEST(Editor, PrintLineOfDocumentTruncatesTheLineIfItsLongerThanWindowWidth)
   print_line_of_document(line, buf, window_width, col_off);
 
   ASSERT_THAT(buf.size(), ::testing::Eq(window_width));
+}
+
+TEST(Editor, PrintLineOfDocumentPrintsFullLineWhenWindowIsWiderThanLine)
+{
+  std::string const line {"Hello world"};
+  constexpr int window_width = 20;
+  constexpr int col_off = 0;
+  screen_buffer buf;
+
+  print_line_of_document(line, buf, window_width, col_off);
+
+  ASSERT_THAT(buf.size(), ::testing::Eq(static_cast<int>(std::ssize(line))));
+  ASSERT_THAT(buf.c_str(), ::testing::Eq(line));
+}
+
+TEST(Editor, PrintLineOfDocumentStartsAtColumnOffset)
+{
+  std::string const line {"0123456789abcdefghijklmnopqrstuvwxyz"};
+  constexpr int window_width = 10;
+  constexpr int col_off = 4;
+  screen_buffer buf;
+
+  print_line_of_document(line, buf, window_width, col_off);
+
+  std::string const expected = line.substr(static_cast<size_t>(col_off), static_cast<size_t>(window_width));
+
+  ASSERT_THAT(buf.size(), ::testing::Eq(static_cast<int>(std::ssize(expected))));
+  ASSERT_THAT(buf.c_str(), ::testing::Eq(expected));
+}
+
+TEST(Editor, PrintLineOfDocumentPrintsRemainingCharsWhenShorterThanWindow)
+{
+  std::string const line {"abcdef"};
+  constexpr int window_width = 10;
+  constexpr int col_off = 2;
+  screen_buffer buf;
+
+  print_line_of_document(line, buf, window_width, col_off);
+
+  std::string const expected = line.substr(static_cast<size_t>(col_off));
+
+  ASSERT_THAT(buf.size(), ::testing::Eq(static_cast<int>(std::ssize(expected))));
+  ASSERT_THAT(buf.c_str(), ::testing::Eq(expected));
 }
 
 }   // namespace detail
