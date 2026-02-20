@@ -38,6 +38,8 @@
 
 namespace kilo::editor {
 
+// NOLINTBEGIN(*-magic-numbers)
+
 TEST(Editor, ProcessKeypressTerminatesTheProgramIfQIsPressed)
 {
   using utilities::editor_key;
@@ -90,6 +92,208 @@ TEST(Editor, ProcessKeypressMovesCursorToEndOfLineIfEndButtonIsPressed)
   process_keypress(static_cast<int>(key), editor_config);
 
   ASSERT_THAT(editor_config.curs.x, ::testing::Eq(editor_config.winsize.cols - 1));
+}
+
+TEST(Editor, MoveCursorArrowLeftDecrementsXWhenNotAtStart)
+{
+  editor_config editor_config {
+    .winsize = {.cols = 80, .rows = 24},
+    .curs = {.x = 5, .y = 0},
+    .off = {},
+    .screen_buf = screen_buffer(),
+    .open_doc = std::vector<std::string> {"Hello world"},
+    .render = std::vector<std::string> {"Hello world"}
+  };
+
+  move_cursor(utilities::editor_key::arrow_left, editor_config);
+
+  ASSERT_THAT(editor_config.curs.x, ::testing::Eq(4));
+  ASSERT_THAT(editor_config.curs.y, ::testing::Eq(0));
+}
+
+TEST(Editor, MoveCursorArrowLeftMovesToEndOfPreviousLineWhenAtStartOfLine)
+{
+  editor_config editor_config {
+    .winsize = {.cols = 80, .rows = 24},
+    .curs = {.x = 0, .y = 1},
+    .off = {},
+    .screen_buf = screen_buffer(),
+    .open_doc = std::vector<std::string> {"Hello", "world"},
+    .render = std::vector<std::string> {"Hello", "world"}
+  };
+
+  move_cursor(utilities::editor_key::arrow_left, editor_config);
+
+  ASSERT_THAT(editor_config.curs.x, ::testing::Eq(5));
+  ASSERT_THAT(editor_config.curs.y, ::testing::Eq(0));
+}
+
+TEST(Editor, MoveCursorArrowLeftStaysAtStartWhenAlreadyAtBeginningOfDocument)
+{
+  editor_config editor_config {
+    .winsize = {.cols = 80, .rows = 24},
+    .curs = {.x = 0, .y = 0},
+    .off = {},
+    .screen_buf = screen_buffer(),
+    .open_doc = std::vector<std::string> {"Hello world"},
+    .render = std::vector<std::string> {"Hello world"}
+  };
+
+  move_cursor(utilities::editor_key::arrow_left, editor_config);
+
+  ASSERT_THAT(editor_config.curs.x, ::testing::Eq(0));
+  ASSERT_THAT(editor_config.curs.y, ::testing::Eq(0));
+}
+
+TEST(Editor, MoveCursorArrowRightIncrementsXWhenNotAtEndOfLine)
+{
+  editor_config editor_config {
+    .winsize = {.cols = 80, .rows = 24},
+    .curs = {.x = 3, .y = 0},
+    .off = {},
+    .screen_buf = screen_buffer(),
+    .open_doc = std::vector<std::string> {"Hello world"},
+    .render = std::vector<std::string> {"Hello world"}
+  };
+
+  move_cursor(utilities::editor_key::arrow_right, editor_config);
+
+  ASSERT_THAT(editor_config.curs.x, ::testing::Eq(4));
+  ASSERT_THAT(editor_config.curs.y, ::testing::Eq(0));
+}
+
+TEST(Editor, MoveCursorArrowRightMovesToStartOfNextLineWhenAtEndOfLine)
+{
+  editor_config editor_config {
+    .winsize = {.cols = 80, .rows = 24},
+    .curs = {.x = 5, .y = 0},
+    .off = {},
+    .screen_buf = screen_buffer(),
+    .open_doc = std::vector<std::string> {"Hello", "world"},
+    .render = std::vector<std::string> {"Hello", "world"}
+  };
+
+  move_cursor(utilities::editor_key::arrow_right, editor_config);
+
+  ASSERT_THAT(editor_config.curs.x, ::testing::Eq(0));
+  ASSERT_THAT(editor_config.curs.y, ::testing::Eq(1));
+}
+
+TEST(Editor, MoveCursorArrowRightStaysAtEndWhenAtEndOfDocument)
+{
+  editor_config editor_config {
+    .winsize = {.cols = 80, .rows = 24},
+    .curs = {.x = 11, .y = 1},
+    .off = {},
+    .screen_buf = screen_buffer(),
+    .open_doc = std::vector<std::string> {"Hello world"},
+    .render = std::vector<std::string> {"Hello world"}
+  };
+
+  move_cursor(utilities::editor_key::arrow_right, editor_config);
+
+  ASSERT_THAT(editor_config.curs.x, ::testing::Eq(0));
+  ASSERT_THAT(editor_config.curs.y, ::testing::Eq(1));
+}
+
+TEST(Editor, MoveCursorArrowUpDecrementsYWhenNotAtTopOfDocument)
+{
+  editor_config editor_config {
+    .winsize = {.cols = 80, .rows = 24},
+    .curs = {.x = 3, .y = 2},
+    .off = {},
+    .screen_buf = screen_buffer(),
+    .open_doc = std::vector<std::string> {"Hello", "world", "foo"},
+    .render = std::vector<std::string> {"Hello", "world", "foo"}
+  };
+
+  move_cursor(utilities::editor_key::arrow_up, editor_config);
+
+  ASSERT_THAT(editor_config.curs.y, ::testing::Eq(1));
+  ASSERT_THAT(editor_config.curs.x, ::testing::Eq(3));
+}
+
+TEST(Editor, MoveCursorArrowUpStaysAtTopWhenAlreadyAtFirstLine)
+{
+  editor_config editor_config {
+    .winsize = {.cols = 80, .rows = 24},
+    .curs = {.x = 3, .y = 0},
+    .off = {},
+    .screen_buf = screen_buffer(),
+    .open_doc = std::vector<std::string> {"Hello", "world", "foo"},
+    .render = std::vector<std::string> {"Hello", "world", "foo"}
+  };
+
+  move_cursor(utilities::editor_key::arrow_up, editor_config);
+
+  ASSERT_THAT(editor_config.curs.y, ::testing::Eq(0));
+}
+
+TEST(Editor, MoveCursorArrowDownIncrementsYWhenNotAtBottomOfDocument)
+{
+  editor_config editor_config {
+    .winsize = {.cols = 80, .rows = 24},
+    .curs = {.x = 3, .y = 0},
+    .off = {},
+    .screen_buf = screen_buffer(),
+    .open_doc = std::vector<std::string> {"Hello", "world", "foo"},
+    .render = std::vector<std::string> {"Hello", "world", "foo"}
+  };
+
+  move_cursor(utilities::editor_key::arrow_down, editor_config);
+
+  ASSERT_THAT(editor_config.curs.y, ::testing::Eq(1));
+  ASSERT_THAT(editor_config.curs.x, ::testing::Eq(3));
+}
+
+TEST(Editor, MoveCursorArrowDownStaysAtBottomWhenAlreadyAtLastLine)
+{
+  editor_config editor_config {
+    .winsize = {.cols = 80, .rows = 24},
+    .curs = {.x = 3, .y = 3},
+    .off = {},
+    .screen_buf = screen_buffer(),
+    .open_doc = std::vector<std::string> {"Hello", "world", "foo"},
+    .render = std::vector<std::string> {"Hello", "world", "foo"}
+  };
+
+  move_cursor(utilities::editor_key::arrow_down, editor_config);
+
+  ASSERT_THAT(editor_config.curs.y, ::testing::Eq(3));
+}
+
+TEST(Editor, MoveCursorClampsXWhenMovingToShorterLine)
+{
+  editor_config editor_config {
+    .winsize = {.cols = 80, .rows = 24},
+    .curs = {.x = 10, .y = 0},
+    .off = {},
+    .screen_buf = screen_buffer(),
+    .open_doc = std::vector<std::string> {"Hello world this is longer", "hi"},
+    .render = std::vector<std::string> {"Hello world this is longer", "hi"}
+  };
+
+  move_cursor(utilities::editor_key::arrow_down, editor_config);
+
+  ASSERT_THAT(editor_config.curs.x, ::testing::Eq(2));
+  ASSERT_THAT(editor_config.curs.y, ::testing::Eq(1));
+}
+
+TEST(Editor, MoveCursorClampsXWhenMovingBeyondOpenDocBounds)
+{
+  editor_config editor_config {
+    .winsize = {.cols = 80, .rows = 24},
+    .curs = {.x = 5, .y = 2},
+    .off = {},
+    .screen_buf = screen_buffer(),
+    .open_doc = std::vector<std::string> {"Hello"},
+    .render = std::vector<std::string> {"Hello"}
+  };
+
+  move_cursor(utilities::editor_key::arrow_down, editor_config);
+
+  // After vertical move beyond document, x should be clamped to line length
+  ASSERT_THAT(editor_config.curs.x, ::testing::Eq(0));
 }
 
 namespace detail {
@@ -177,5 +381,7 @@ TEST(Editor, PrintLineOfDocumentPrintsRemainingCharsWhenShorterThanWindow)
 }
 
 }   // namespace detail
+
+// NOLINTEND(*-magic-numbers)
 
 }   // namespace kilo::editor
