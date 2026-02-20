@@ -200,7 +200,7 @@ void move_cursor(utilities::editor_key const key, editor_config& editor)
  * \brief Fix the cursor in the visible window while scrolling
  * \param[in] editor The current state of the editor
  */
-void scroll(editor_config& editor)
+void scroll(editor_config& editor) noexcept
 {
   // Check if the cursor has moved outside the visible window
   // If so, adjust the editor.offset.row and/or editor.offset.col variable(s) so that the

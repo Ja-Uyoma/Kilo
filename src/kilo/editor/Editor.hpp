@@ -64,7 +64,7 @@ void move_cursor(utilities::editor_key key, editor_config& editor);
  * \brief Fix the cursor in the visible window while scrolling
  * \param[in] editor The current state of the editor
  */
-void scroll(editor_config& editor);
+void scroll(editor_config& editor) noexcept;
 
 /**
  * \brief Open a file and write its contents to memory
