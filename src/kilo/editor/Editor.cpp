@@ -37,7 +37,6 @@
 #include <cstring>
 #include <filesystem>
 #include <fstream>
-#include <functional>
 #include <optional>
 #include <string>
 #include <unistd.h>
@@ -142,6 +141,14 @@ void move_cursor(utilities::editor_key const key, editor_config& editor)
 {
   using enum utilities::editor_key;
 
+  auto const get_current_row = [&editor]() -> std::optional<std::string> {
+    if (editor.curs.y >= std::ssize(editor.open_doc)) {
+      return std::nullopt;
+    }
+
+    return std::make_optional(editor.open_doc[static_cast<std::size_t>(editor.curs.y)]);
+  };
+
   switch (key) {
     case arrow_left:
       if (editor.curs.x != 0) {
@@ -153,12 +160,7 @@ void move_cursor(utilities::editor_key const key, editor_config& editor)
       }
       break;
     case arrow_right: {
-      auto const curr_row = std::invoke([&editor]() -> std::optional<std::string> {
-        if (editor.curs.y >= std::ssize(editor.open_doc)) {
-          return std::nullopt;
-        }
-        return std::make_optional(editor.open_doc[static_cast<std::size_t>(editor.curs.y)]);
-      });
+      auto const curr_row = get_current_row();
 
       if (curr_row and editor.curs.x < std::ssize(*curr_row)) {
         ++editor.curs.x;
@@ -185,13 +187,7 @@ void move_cursor(utilities::editor_key const key, editor_config& editor)
       return;
   }
 
-  auto const curr_row = std::invoke([&editor]() -> std::optional<std::string> {
-    if (editor.curs.y >= std::ssize(editor.open_doc)) {
-      return std::nullopt;
-    }
-    return std::make_optional(editor.open_doc[static_cast<std::size_t>(editor.curs.y)]);
-  });
-
+  auto const curr_row = get_current_row();
   auto const row_len = curr_row ? std::ssize(*curr_row) : 0;
 
   editor.curs.x = std::min(editor.curs.x, row_len);
