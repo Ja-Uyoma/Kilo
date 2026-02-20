@@ -121,7 +121,8 @@ void draw_rows(editor_config& editor)
       }
     }
     else {
-      detail::print_line_of_document(editor.render[file_row], editor.screen_buf, editor.winsize.cols, editor.off.col);
+      detail::print_line_of_document(editor.render[static_cast<std::size_t>(file_row)], editor.screen_buf,
+                                     editor.winsize.cols, editor.off.col);
     }
 
     editor.screen_buf.write(utilities::escape_sequences::erase_part_of_line_to_the_right_of_cursor);
@@ -148,7 +149,7 @@ void move_cursor(utilities::editor_key const key, editor_config& editor)
       }
       else if (editor.curs.y > 0) {
         --editor.curs.y;
-        editor.curs.x = std::ssize(editor.open_doc[editor.curs.y]);
+        editor.curs.x = std::ssize(editor.open_doc[static_cast<std::size_t>(editor.curs.y)]);
       }
       break;
     case arrow_right: {
@@ -156,7 +157,7 @@ void move_cursor(utilities::editor_key const key, editor_config& editor)
         if (editor.curs.y >= std::ssize(editor.open_doc)) {
           return std::nullopt;
         }
-        return std::make_optional(editor.open_doc[editor.curs.y]);
+        return std::make_optional(editor.open_doc[static_cast<std::size_t>(editor.curs.y)]);
       });
 
       if (curr_row and editor.curs.x < std::ssize(*curr_row)) {
@@ -188,7 +189,7 @@ void move_cursor(utilities::editor_key const key, editor_config& editor)
     if (editor.curs.y >= std::ssize(editor.open_doc)) {
       return std::nullopt;
     }
-    return std::make_optional(editor.open_doc[editor.curs.y]);
+    return std::make_optional(editor.open_doc[static_cast<std::size_t>(editor.curs.y)]);
   });
 
   auto const row_len = curr_row ? std::ssize(*curr_row) : 0;
@@ -300,7 +301,7 @@ void print_welcome_message(int32_t window_width, screen_buffer& buffer)
 
   // If the message is longer than the window's width, resize it to fit
   if (std::cmp_greater(msg.length(), window_width)) {
-    msg.resize(window_width);
+    msg.resize(static_cast<std::size_t>(window_width));
   }
 
   /*
