@@ -39,12 +39,12 @@
 
 namespace kilo::terminal {
 
-window::window() noexcept(false)
+auto get_terminal_window_size() noexcept(false) -> window_size
 {
   io::file file;
   ::winsize winsz {};
 
-  m_winsize = detail::get_window_size(file, winsz);
+  return detail::get_window_size(file, winsz);
 }
 
 namespace detail {

@@ -50,19 +50,20 @@ TEST(Editor, ProcessKeypressTerminatesTheProgramIfQIsPressed)
 
 TEST(Editor, ProcessKeypressMovesCursorToStartOfLineIfHomeButtonIsPressed)
 {
-  using terminal::window;
   using utilities::editor_key;
 
   static constexpr int32_t cols = 64;
   static constexpr int32_t rows = 32;
 
   constexpr auto key = editor_key::home;
-  editor_config editor_config {.window = window({.cols = cols, .rows = rows}),
-                               .curs = {},
-                               .off = {},
-                               .screen_buf = screen_buffer(),
-                               .open_doc = std::vector<std::string>(),
-                               .render = std::vector<std::string>()};
+  editor_config editor_config {
+    .winsize = {.cols = cols, .rows = rows},
+    .curs = {},
+    .off = {},
+    .screen_buf = screen_buffer(),
+    .open_doc = std::vector<std::string>(),
+    .render = std::vector<std::string>()
+  };
 
   process_keypress(static_cast<int>(key), editor_config);
 
@@ -71,23 +72,24 @@ TEST(Editor, ProcessKeypressMovesCursorToStartOfLineIfHomeButtonIsPressed)
 
 TEST(Editor, ProcessKeypressMovesCursorToEndOfLineIfEndButtonIsPressed)
 {
-  using terminal::window;
   using utilities::editor_key;
 
   static constexpr int32_t cols = 64;
   static constexpr int32_t rows = 32;
 
   constexpr auto key = editor_key::end;
-  editor_config editor_config {.window = window({.cols = cols, .rows = rows}),
-                               .curs = {},
-                               .off = {},
-                               .screen_buf = screen_buffer(),
-                               .open_doc = std::vector<std::string>(),
-                               .render = std::vector<std::string>()};
+  editor_config editor_config {
+    .winsize = {.cols = cols, .rows = rows},
+    .curs = {},
+    .off = {},
+    .screen_buf = screen_buffer(),
+    .open_doc = std::vector<std::string>(),
+    .render = std::vector<std::string>()
+  };
 
   process_keypress(static_cast<int>(key), editor_config);
 
-  ASSERT_THAT(editor_config.curs.x, ::testing::Eq(editor_config.window.cols() - 1));
+  ASSERT_THAT(editor_config.curs.x, ::testing::Eq(editor_config.winsize.cols - 1));
 }
 
 namespace detail {

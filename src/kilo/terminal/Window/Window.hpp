@@ -43,47 +43,15 @@ struct window_size
 };
 
 /**
- * @class window
- * @brief Manages the creation of a window either by reading the dimensions of the terminal window or by explicitly
- * setting your desired dimensions
+ * @brief Get the size of the open terminal window
+ *
+ * @returns The size of the terminal window as a window_size struct
+ * @throws std::system_error if either get_window_size() or get_cursor_position fail
+ * @throws std::runtime_error if either get_window_size() or get_cursor_position fail
+ * @see detail::get_window_size()
+ * @see detail::get_cursor_position()
  */
-class window final
-{
-public:
-  /**
-   * @brief Create a default window instance whose dimensions equal those of the currently-open terminal window
-   */
-  explicit window() noexcept(false);
-
-  /**
-   * @brief Create a window with the given dimensions
-   * @param[in] windowSize The dimensions of the new Window object
-   */
-  explicit constexpr window(window_size const& window_size) noexcept : m_winsize(window_size)
-  {
-  }
-
-  /**
-   * @brief Get the columns of the terminal window
-   * @returns The columns of the terminal window
-   */
-  [[nodiscard]] constexpr auto cols() const& noexcept -> std::int32_t
-  {
-    return m_winsize.cols;
-  }
-
-  /**
-   * @brief Get the rows of the terminal window
-   * @returns The rows of the terminal window
-   */
-  [[nodiscard]] constexpr auto rows() const& noexcept -> std::int32_t
-  {
-    return m_winsize.rows;
-  }
-
-private:
-  window_size m_winsize {};
-};
+auto get_terminal_window_size() noexcept(false) -> window_size;
 
 namespace detail {
 

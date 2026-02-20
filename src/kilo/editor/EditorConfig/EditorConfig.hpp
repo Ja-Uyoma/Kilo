@@ -45,7 +45,7 @@ struct offset
 
 struct editor_config
 {
-  terminal::window window;
+  terminal::window_size winsize;
   cursor curs;
   offset off;
   screen_buffer screen_buf;
@@ -53,6 +53,6 @@ struct editor_config
   std::vector<std::string> render;
 };
 
-}  // namespace kilo::editor
+}   // namespace kilo::editor
 
 #endif

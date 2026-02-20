@@ -23,9 +23,10 @@
 
 #include "Application.hpp"
 
-#include "kilo/io/IO.hpp"
 #include "kilo/editor/Editor.hpp"
+#include "kilo/io/IO.hpp"
 #include "kilo/terminal/TerminalMode/TerminalMode.hpp"
+#include "kilo/terminal/Window/Window.hpp"
 #include "kilo/utilities/Utilities.hpp"
 #include <fmt/format.h>
 #include <system_error>
@@ -34,6 +35,11 @@
 #include <iostream>
 
 namespace kilo::editor {
+
+application::application() noexcept(false)
+{
+  m_editor_config.winsize = terminal::get_terminal_window_size();
+}
 
 ///
 /// \brief Open a file and write its contents to memory

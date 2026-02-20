@@ -37,7 +37,7 @@ public:
   ///
   /// \brief Default constructor
   ///
-  explicit application() noexcept = default;
+  explicit application() noexcept(false);
 
   ///
   /// \brief Run the application with the given command-line arguments

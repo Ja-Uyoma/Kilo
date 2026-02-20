@@ -65,10 +65,10 @@ void process_keypress(int key_pressed, editor_config& editor_config)
     editor_config.curs.x = 0;
   }
   else if (key == end) {
-    editor_config.curs.x = editor_config.window.cols() - 1;
+    editor_config.curs.x = editor_config.winsize.cols - 1;
   }
   else if (key == page_up or key == page_down) {
-    for (int32_t i = editor_config.window.rows(); i > 0; --i) {
+    for (int32_t i = editor_config.winsize.rows; i > 0; --i) {
       move_cursor(key == page_up ? arrow_up : arrow_down, editor_config);
     }
   }
@@ -111,22 +111,22 @@ void refresh_screen(editor_config& editor)
  */
 void draw_rows(editor_config& editor)
 {
-  for (int32_t curr_row = 0; curr_row < editor.window.rows(); ++curr_row) {
+  for (int32_t curr_row = 0; curr_row < editor.winsize.rows; ++curr_row) {
     if (auto const file_row = curr_row + editor.off.row; file_row >= std::ssize(editor.open_doc)) {
-      if (editor.open_doc.empty() and curr_row == editor.window.rows() / 3) {
-        detail::print_welcome_message(editor.window.cols(), editor.screen_buf);
+      if (editor.open_doc.empty() and curr_row == editor.winsize.rows / 3) {
+        detail::print_welcome_message(editor.winsize.cols, editor.screen_buf);
       }
       else {
         editor.screen_buf.write("~");
       }
     }
     else {
-      detail::print_line_of_document(editor.render[file_row], editor.screen_buf, editor.window.cols(), editor.off.col);
+      detail::print_line_of_document(editor.render[file_row], editor.screen_buf, editor.winsize.cols, editor.off.col);
     }
 
     editor.screen_buf.write(utilities::escape_sequences::erase_part_of_line_to_the_right_of_cursor);
 
-    if (curr_row < editor.window.rows() - 1) {
+    if (curr_row < editor.winsize.rows - 1) {
       editor.screen_buf.write(utilities::escape_sequences::crnl);
     }
   }
@@ -208,14 +208,14 @@ void scroll(editor_config& editor)
 
   editor.off.row = std::min(editor.curs.y, editor.off.row);
 
-  if (editor.curs.y >= editor.off.row + editor.window.rows()) {
-    editor.off.row = editor.curs.y - editor.window.rows() + 1;
+  if (editor.curs.y >= editor.off.row + editor.winsize.rows) {
+    editor.off.row = editor.curs.y - editor.winsize.rows + 1;
   }
 
   editor.off.col = std::min(editor.curs.x, editor.off.col);
 
-  if (editor.curs.x >= editor.off.col + editor.window.cols()) {
-    editor.off.col = editor.curs.x - editor.window.cols() + 1;
+  if (editor.curs.x >= editor.off.col + editor.winsize.cols) {
+    editor.off.col = editor.curs.x - editor.winsize.cols + 1;
   }
 }
 

@@ -36,9 +36,9 @@ public:
 
 TEST(Window, WindowAccessorsReturnExpectedValues)
 {
-  constexpr auto win = window({.cols = 64, .rows = 32});
-  ASSERT_THAT(win.cols(), ::testing::Eq(64));
-  ASSERT_THAT(win.rows(), ::testing::Eq(32));
+  constexpr auto win = window_size {.cols = 64, .rows = 32};
+  ASSERT_THAT(win.cols, ::testing::Eq(64));
+  ASSERT_THAT(win.rows, ::testing::Eq(32));
 }
 
 TEST(Window, GetWindowSizeReturnsTheWindowSizeOnSuccess)
