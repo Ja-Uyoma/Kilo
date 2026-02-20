@@ -56,18 +56,20 @@ auto application::open(std::filesystem::path const& path) -> bool
 /// \brief Run the application
 ///
 void application::run()
-try {
-  while (true) {
-    editor::scroll(m_editor_config);
-    editor::refresh_screen(m_editor_config);
+{
+  try {
+    while (true) {
+      editor::scroll(m_editor_config);
+      editor::refresh_screen(m_editor_config);
 
-    auto const key_pressed = io::read_key();
-    editor::process_keypress(key_pressed, m_editor_config);
+      auto const key_pressed = io::read_key();
+      editor::process_keypress(key_pressed, m_editor_config);
+    }
   }
-}
-catch (std::system_error const& err) {
-  utilities::clear_screen_and_reposition_cursor();
-  std::cerr << err.code() << ": " << err.what() << '\n';
+  catch (std::system_error const& err) {
+    utilities::clear_screen_and_reposition_cursor();
+    std::cerr << err.code() << ": " << err.what() << '\n';
+  }
 }
 
 ///
