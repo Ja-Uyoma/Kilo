@@ -38,8 +38,8 @@ namespace kilo::terminal {
  */
 struct window_size
 {
-  std::int32_t cols;
-  std::int32_t rows;
+  std::int32_t cols {};
+  std::int32_t rows {};
 };
 
 /**
