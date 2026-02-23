@@ -335,7 +335,11 @@ void print_line_of_document(std::string const& line, screen_buffer& buffer, int3
 {
   Expects(col_off >= 0 and "Column offset must be non-negative");
 
-  auto line_len = std::clamp<int64_t>(std::ssize(line) - col_off, 0, static_cast<int64_t>(window_width));
+  auto line_len = std::ssize(line) - col_off;
+
+  line_len = std::max<int64_t>(line_len, 0);
+
+  line_len = std::min<int64_t>(line_len, window_width);
 
   buffer.write(line.substr(static_cast<size_t>(col_off), static_cast<size_t>(line_len)));
 }
