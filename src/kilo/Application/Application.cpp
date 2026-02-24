@@ -59,7 +59,6 @@ void application::run()
 {
   try {
     while (true) {
-      editor::scroll(m_editor_config);
       editor::refresh_screen(m_editor_config);
 
       auto const key_pressed = io::read_key();

@@ -81,6 +81,8 @@ void process_keypress(int key_pressed, editor_config& editor_config)
  */
 void refresh_screen(editor_config& editor)
 {
+  scroll(editor);
+
   // Hide the cursor when painting and then move it to the Home position
   editor.screen_buf.write(utilities::escape_sequences::hide_cursor_when_repainting)
     .write(utilities::escape_sequences::move_cursor_to_home_position);
