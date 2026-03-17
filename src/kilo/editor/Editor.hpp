@@ -27,6 +27,7 @@
 #include "EditorConfig/EditorConfig.hpp"
 #include "ScreenBuffer/ScreenBuffer.hpp"
 #include "kilo/utilities/Constants.hpp"
+#include <gsl/pointers>
 #include <string_view>
 
 #include <cstdint>
@@ -67,15 +68,14 @@ void move_cursor(utilities::editor_key key, editor_config& editor);
 void scroll(editor_config& editor) noexcept;
 
 /**
- * \brief Open a file and write its contents to memory
+ * @brief Open a file and write its contents to a buffer in memory
  *
- * \param[in] path The path to the file
- * \param[in] document The buffer containing the file in memory
- * \param[in] rendered The document that is actually rendered to the window
- * \return true If the operation was successful, and false otherwise
+ * @param[in] path The path to the file
+ * @param[in,out] rows The buffer containing the rows of text of the file
+ *
+ * @throws std::ios_base::failure if an error was encountered when opening or reading from the file
  */
-auto open(std::filesystem::path const& path, std::vector<std::string>& document, std::vector<std::string>& rendered)
-  -> bool;
+void open(std::filesystem::path const& path, gsl::not_null<std::vector<erow>*> rows);
 
 /**
  * \brief Copies the contents of the source string into the destination string

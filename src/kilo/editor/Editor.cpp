@@ -28,6 +28,7 @@
 #include "kilo/utilities/Utilities.hpp"
 #include <fmt/format.h>
 #include <gsl/assert>
+#include <gsl/pointers>
 #include <string_view>
 
 #include <algorithm>
@@ -37,6 +38,7 @@
 #include <cstring>
 #include <filesystem>
 #include <fstream>
+#include <ios>
 #include <string>
 #include <unistd.h>
 #include <utility>
@@ -112,8 +114,8 @@ void refresh_screen(editor_config& editor)
 void draw_rows(editor_config& editor)
 {
   for (int32_t curr_row = 0; curr_row < editor.winsize.rows; ++curr_row) {
-    if (auto const file_row = curr_row + editor.off.row; file_row >= std::ssize(editor.open_doc)) {
-      if (editor.open_doc.empty() and curr_row == editor.winsize.rows / 3) {
+    if (auto const file_row = curr_row + editor.off.row; file_row >= std::ssize(editor.row)) {
+      if (editor.row.empty() and curr_row == editor.winsize.rows / 3) {
         detail::print_welcome_message(editor.winsize.cols, editor.screen_buf);
       }
       else {
@@ -121,7 +123,7 @@ void draw_rows(editor_config& editor)
       }
     }
     else {
-      detail::print_line_of_document(editor.render[static_cast<std::size_t>(file_row)], editor.screen_buf,
+      detail::print_line_of_document(editor.row[static_cast<std::size_t>(file_row)].chars, editor.screen_buf,
                                      editor.winsize.cols, editor.off.col);
     }
 
@@ -143,11 +145,11 @@ void move_cursor(utilities::editor_key const key, editor_config& editor)
   using enum utilities::editor_key;
 
   auto const get_current_row = [&editor]() noexcept -> std::string* {
-    if (editor.curs.y >= std::ssize(editor.open_doc)) {
+    if (editor.curs.y >= std::ssize(editor.row)) {
       return nullptr;
     }
 
-    return &editor.open_doc[static_cast<std::size_t>(editor.curs.y)];
+    return &editor.row[static_cast<std::size_t>(editor.curs.y)].chars;
   };
 
   switch (key) {
@@ -157,7 +159,7 @@ void move_cursor(utilities::editor_key const key, editor_config& editor)
       }
       else if (editor.curs.y > 0) {
         --editor.curs.y;
-        editor.curs.x = std::ssize(editor.open_doc[static_cast<std::size_t>(editor.curs.y)]);
+        editor.curs.x = std::ssize(editor.row[static_cast<std::size_t>(editor.curs.y)].chars);
       }
       break;
     case arrow_right: {
@@ -179,7 +181,7 @@ void move_cursor(utilities::editor_key const key, editor_config& editor)
       break;
 
     case arrow_down:
-      if (editor.curs.y < std::ssize(editor.open_doc)) {
+      if (editor.curs.y < std::ssize(editor.row)) {
         ++editor.curs.y;
       }
       break;
@@ -217,36 +219,29 @@ void scroll(editor_config& editor) noexcept
   }
 }
 
-/**
- * \brief Open a file and write its contents to memory
- *
- * \param[in] path The path to the file
- * \param[in] document The buffer containing the file in memory
- * \param[in] rendered The document that is actually rendered to the window
- * \return true If the operation was successful, and false otherwise
- */
-auto open(std::filesystem::path const& path, std::vector<std::string>& document, std::vector<std::string>& rendered)
-  -> bool
+void open(std::filesystem::path const& path, gsl::not_null<std::vector<erow>*> rows)
 {
-  if (!std::filesystem::is_regular_file(path)) {
-    return false;
+  auto file = std::ifstream(path);
+
+  if (!file.is_open()) {
+    throw std::ios_base::failure("Could not open file");
   }
 
-  std::ifstream infile(path);
+  auto line = std::string();
 
-  if (!infile) {
-    return false;
+  while (std::getline(file, line)) {
+    if (!line.empty() and line.back() == '\r') {
+      line.pop_back();
+    }
+
+    rows->push_back({line, line});
   }
 
-  std::string line;
-
-  while (std::getline(infile, line)) {
-    document.push_back(line);
+  if ((file.bad() or file.fail()) and !file.eof()) {
+    throw std::ios_base::failure("Error while reading from file");
   }
 
-  rendered = document;
-
-  return true;
+  file.close();
 }
 
 /**

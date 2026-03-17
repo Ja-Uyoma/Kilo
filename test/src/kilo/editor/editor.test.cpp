@@ -60,11 +60,9 @@ TEST(Editor, ProcessKeypressMovesCursorToStartOfLineIfHomeButtonIsPressed)
   constexpr auto key = editor_key::home;
   editor_config editor_config {
     .winsize = {.cols = cols, .rows = rows},
-    .curs = {},
-    .off = {},
-    .screen_buf = screen_buffer(),
-    .open_doc = std::vector<std::string>(),
-    .render = std::vector<std::string>()
+      .curs = {},
+      .off = {},
+      .screen_buf = screen_buffer(), .row = {}
   };
 
   process_keypress(static_cast<int>(key), editor_config);
@@ -82,11 +80,9 @@ TEST(Editor, ProcessKeypressMovesCursorToEndOfLineIfEndButtonIsPressed)
   constexpr auto key = editor_key::end;
   editor_config editor_config {
     .winsize = {.cols = cols, .rows = rows},
-    .curs = {},
-    .off = {},
-    .screen_buf = screen_buffer(),
-    .open_doc = std::vector<std::string>(),
-    .render = std::vector<std::string>()
+      .curs = {},
+      .off = {},
+      .screen_buf = screen_buffer(), .row = {}
   };
 
   process_keypress(static_cast<int>(key), editor_config);
@@ -101,8 +97,7 @@ TEST(Editor, MoveCursorArrowLeftDecrementsXWhenNotAtStart)
     .curs = {.x = 5, .y = 0},
     .off = {},
     .screen_buf = screen_buffer(),
-    .open_doc = std::vector<std::string> {"Hello world"},
-    .render = std::vector<std::string> {"Hello world"}
+    .row = {{"Hello world", "Hello world"}}
   };
 
   move_cursor(utilities::editor_key::arrow_left, editor_config);
@@ -118,8 +113,7 @@ TEST(Editor, MoveCursorArrowLeftMovesToEndOfPreviousLineWhenAtStartOfLine)
     .curs = {.x = 0, .y = 1},
     .off = {},
     .screen_buf = screen_buffer(),
-    .open_doc = std::vector<std::string> {"Hello", "world"},
-    .render = std::vector<std::string> {"Hello", "world"}
+    .row = {{"Hello", "Hello"}, {"world", "world"}}
   };
 
   move_cursor(utilities::editor_key::arrow_left, editor_config);
@@ -135,8 +129,7 @@ TEST(Editor, MoveCursorArrowLeftStaysAtStartWhenAlreadyAtBeginningOfDocument)
     .curs = {.x = 0, .y = 0},
     .off = {},
     .screen_buf = screen_buffer(),
-    .open_doc = std::vector<std::string> {"Hello world"},
-    .render = std::vector<std::string> {"Hello world"}
+    .row = {{"Hello world", "Hello world"}}
   };
 
   move_cursor(utilities::editor_key::arrow_left, editor_config);
@@ -152,8 +145,7 @@ TEST(Editor, MoveCursorArrowRightIncrementsXWhenNotAtEndOfLine)
     .curs = {.x = 3, .y = 0},
     .off = {},
     .screen_buf = screen_buffer(),
-    .open_doc = std::vector<std::string> {"Hello world"},
-    .render = std::vector<std::string> {"Hello world"}
+    .row = {{"Hello world", "Hello world"}}
   };
 
   move_cursor(utilities::editor_key::arrow_right, editor_config);
@@ -169,8 +161,7 @@ TEST(Editor, MoveCursorArrowRightMovesToStartOfNextLineWhenAtEndOfLine)
     .curs = {.x = 5, .y = 0},
     .off = {},
     .screen_buf = screen_buffer(),
-    .open_doc = std::vector<std::string> {"Hello", "world"},
-    .render = std::vector<std::string> {"Hello", "world"}
+    .row = {{"Hello", "Hello"}, {"world", "world"}}
   };
 
   move_cursor(utilities::editor_key::arrow_right, editor_config);
@@ -186,8 +177,7 @@ TEST(Editor, MoveCursorArrowRightStaysAtEndWhenAtEndOfDocument)
     .curs = {.x = 11, .y = 1},
     .off = {},
     .screen_buf = screen_buffer(),
-    .open_doc = std::vector<std::string> {"Hello world"},
-    .render = std::vector<std::string> {"Hello world"}
+    .row = {{"Hello world", "Hello world"}}
   };
 
   move_cursor(utilities::editor_key::arrow_right, editor_config);
@@ -203,8 +193,7 @@ TEST(Editor, MoveCursorArrowUpDecrementsYWhenNotAtTopOfDocument)
     .curs = {.x = 3, .y = 2},
     .off = {},
     .screen_buf = screen_buffer(),
-    .open_doc = std::vector<std::string> {"Hello", "world", "foo"},
-    .render = std::vector<std::string> {"Hello", "world", "foo"}
+    .row = {{"Hello", "Hello"}, {"world", "world"}, {"foo", "foo"}}
   };
 
   move_cursor(utilities::editor_key::arrow_up, editor_config);
@@ -220,8 +209,7 @@ TEST(Editor, MoveCursorArrowUpStaysAtTopWhenAlreadyAtFirstLine)
     .curs = {.x = 3, .y = 0},
     .off = {},
     .screen_buf = screen_buffer(),
-    .open_doc = std::vector<std::string> {"Hello", "world", "foo"},
-    .render = std::vector<std::string> {"Hello", "world", "foo"}
+    .row = {{"Hello", "Hello"}, {"world", "world"}, {"foo", "foo"}}
   };
 
   move_cursor(utilities::editor_key::arrow_up, editor_config);
@@ -236,8 +224,7 @@ TEST(Editor, MoveCursorArrowDownIncrementsYWhenNotAtBottomOfDocument)
     .curs = {.x = 3, .y = 0},
     .off = {},
     .screen_buf = screen_buffer(),
-    .open_doc = std::vector<std::string> {"Hello", "world", "foo"},
-    .render = std::vector<std::string> {"Hello", "world", "foo"}
+    .row = {{"Hello", "Hello"}, {"world", "world"}, {"foo", "foo"}}
   };
 
   move_cursor(utilities::editor_key::arrow_down, editor_config);
@@ -253,8 +240,7 @@ TEST(Editor, MoveCursorArrowDownStaysAtBottomWhenAlreadyAtLastLine)
     .curs = {.x = 3, .y = 3},
     .off = {},
     .screen_buf = screen_buffer(),
-    .open_doc = std::vector<std::string> {"Hello", "world", "foo"},
-    .render = std::vector<std::string> {"Hello", "world", "foo"}
+    .row = {{"Hello", "Hello"}, {"world", "world"}, {"foo", "foo"}}
   };
 
   move_cursor(utilities::editor_key::arrow_down, editor_config);
@@ -269,8 +255,7 @@ TEST(Editor, MoveCursorClampsXWhenMovingToShorterLine)
     .curs = {.x = 10, .y = 0},
     .off = {},
     .screen_buf = screen_buffer(),
-    .open_doc = std::vector<std::string> {"Hello world this is longer", "hi"},
-    .render = std::vector<std::string> {"Hello world this is longer", "hi"}
+    .row = {{"Hello world this is longer", "Hello world this is longer"}, {"hi", "hi"}}
   };
 
   move_cursor(utilities::editor_key::arrow_down, editor_config);
@@ -286,8 +271,7 @@ TEST(Editor, MoveCursorClampsXWhenMovingBeyondOpenDocBounds)
     .curs = {.x = 5, .y = 2},
     .off = {},
     .screen_buf = screen_buffer(),
-    .open_doc = std::vector<std::string> {"Hello"},
-    .render = std::vector<std::string> {"Hello"}
+    .row = {{"Hello", "Hello"}}
   };
 
   move_cursor(utilities::editor_key::arrow_down, editor_config);

@@ -53,9 +53,9 @@ private:
   /// \brief Open a file and write its contents to memory
   ///
   /// \param[in] path The path to the file
-  /// \return true If the operation was successful, and false otherwise
+  /// \throws std::ios_base::failure if the file could not be opened or if there was an error while reading from it
   ///
-  auto open(std::filesystem::path const& path) -> bool;
+  void open(std::filesystem::path const& path);
 
   ///
   /// \brief Run the application

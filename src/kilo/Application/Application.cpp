@@ -41,20 +41,11 @@ application::application() noexcept(false)
   m_editor_config.winsize = terminal::get_terminal_window_size();
 }
 
-///
-/// \brief Open a file and write its contents to memory
-///
-/// \param[in] path The path to the file
-/// \return true If the operation was successful, and false otherwise
-///
-auto application::open(std::filesystem::path const& path) -> bool
+void application::open(std::filesystem::path const& path)
 {
-  return editor::open(path, m_editor_config.open_doc, m_editor_config.render);
+  editor::open(path, &m_editor_config.row);
 }
 
-///
-/// \brief Run the application
-///
 void application::run()
 {
   try {
@@ -71,11 +62,6 @@ void application::run()
   }
 }
 
-///
-/// \brief Run the application with the given command-line arguments
-/// \param[in] args The command-line arguments passed to the application
-/// \returns EXIT_SUCCESS on success, and EXIT_FAILURE otherwise
-///
 auto application::main(std::span<char const*> args) -> int
 {
   try {
@@ -89,8 +75,14 @@ auto application::main(std::span<char const*> args) -> int
 
   application app;
 
-  if (args.size() >= 2 and !app.open(args[1])) {
-    return EXIT_FAILURE;
+  if (args.size() >= 2) {
+    try {
+      app.open(args[1]);
+    }
+    catch (std::ios_base::failure const& err) {
+      std::cerr << err.what() << '\n' << err.code() << ": " << err.code().message() << '\n';
+      return EXIT_FAILURE;
+    }
   }
 
   app.run();

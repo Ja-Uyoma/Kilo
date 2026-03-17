@@ -43,14 +43,22 @@ struct offset
   std::int64_t col {};
 };
 
+/**
+ * @struct erow
+ */
+struct erow
+{
+  std::string chars;
+  std::string render;
+};
+
 struct editor_config
 {
   terminal::window_size winsize;
   cursor curs;
   offset off;
   screen_buffer screen_buf;
-  std::vector<std::string> open_doc;
-  std::vector<std::string> render;
+  std::vector<erow> row;
 };
 
 }   // namespace kilo::editor
