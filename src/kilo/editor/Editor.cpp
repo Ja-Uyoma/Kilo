@@ -123,7 +123,7 @@ void draw_rows(editor_config& editor)
       }
     }
     else {
-      detail::print_line_of_document(editor.row[static_cast<std::size_t>(file_row)].chars, editor.screen_buf,
+      detail::print_line_of_document(editor.row[static_cast<std::size_t>(file_row)].render, editor.screen_buf,
                                      editor.winsize.cols, editor.off.col);
     }
 
