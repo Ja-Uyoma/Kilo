@@ -234,7 +234,7 @@ void open(std::filesystem::path const& path, gsl::not_null<std::vector<erow>*> r
       line.pop_back();
     }
 
-    rows->push_back({line, line});
+    rows->push_back({line, ""});
   }
 
   if ((file.bad() or file.fail()) and !file.eof()) {
@@ -255,8 +255,10 @@ void update_row(std::string_view row, std::string& render) noexcept
 
   using utilities::kilo_tab_stop;
 
-  [[maybe_unused]] auto tabs =
-    std::ranges::count_if(row, [](unsigned char character) -> bool { return character == '\t'; });
+  auto tabs = std::ranges::count_if(row, [](unsigned char character) -> bool { return character == '\t'; });
+
+  render.clear();
+  render.resize(row.length() + static_cast<size_t>(tabs * (kilo_tab_stop - 1)) + 1);
 
   std::size_t idx {};
 
