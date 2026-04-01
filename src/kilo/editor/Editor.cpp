@@ -234,7 +234,7 @@ void open(std::filesystem::path const& path, gsl::not_null<std::vector<erow>*> r
       line.pop_back();
     }
 
-    rows->push_back({line, ""});
+    rows->emplace_back(line);
   }
 
   if ((file.bad() or file.fail()) and !file.eof()) {

@@ -50,6 +50,14 @@ struct erow
 {
   std::string chars;
   std::string render;
+
+  /**
+   * @brief Create an erow instance from the given std::string object
+   * @param[in] line The std::string from which the erow is to be created
+   */
+  explicit erow(std::string line) : chars(std::move(line))
+  {
+  }
 };
 
 struct editor_config
