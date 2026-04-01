@@ -242,6 +242,10 @@ void open(std::filesystem::path const& path, gsl::not_null<std::vector<erow>*> r
   }
 
   file.close();
+
+  for (auto& [chars, render] : *rows) {
+    update_row(chars, render);
+  }
 }
 
 /**
