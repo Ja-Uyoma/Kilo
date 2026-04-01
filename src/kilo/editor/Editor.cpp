@@ -255,8 +255,6 @@ void open(std::filesystem::path const& path, gsl::not_null<std::vector<erow>*> r
  */
 void update_row(std::string_view row, std::string& render) noexcept
 {
-  Expects(row.length() == render.length() and "The source and destination strings must be of the same size");
-
   using utilities::kilo_tab_stop;
 
   auto tabs = std::ranges::count_if(row, [](unsigned char character) -> bool { return character == '\t'; });
