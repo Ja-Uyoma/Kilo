@@ -84,6 +84,14 @@ void open(std::filesystem::path const& path, gsl::not_null<std::vector<erow>*> r
  */
 void update_row(std::string_view row, std::string& render) noexcept;
 
+/**
+ * @brief Converts a @code chars index into a @code render index
+ * @param[in] row A row of text in the editor
+ * @param[in] cursor_x The x-position of the cursor in the erow's @code chars field
+ * @returns The x-position of the cursor in the erow's @code render field
+ */
+auto row_cx_to_rx(erow const& row, int64_t cursor_x) -> int64_t;
+
 }   // namespace kilo::editor
 
 namespace kilo::editor::detail {
