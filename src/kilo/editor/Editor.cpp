@@ -101,6 +101,7 @@ void refresh_screen(editor_config& editor)
 
   // Draw the welcome message, or each row of the currently open document with a tilde at the beginning
   draw_rows(editor);
+  draw_status_bar(&editor);
 
   // We want to show the cursor immediately after writing the contents of the open document or the welcome message.
   // To do this, we must first get the cursor position, and then write it to the screen buffer before flushing it
@@ -317,6 +318,19 @@ auto row_cx_to_rx(erow const& row, int64_t cursor_x) -> int64_t
   }
 
   return render_x;
+}
+
+void draw_status_bar(gsl::not_null<editor_config*> editor)
+{
+  using utilities::escape_sequences;
+
+  editor->screen_buf.write(escape_sequences::switch_to_inverted_colours);
+
+  for (std::size_t i = 0; std::cmp_less(i, editor->winsize.cols); ++i) {
+    editor->screen_buf.write(" ");
+  }
+
+  editor->screen_buf.write(escape_sequences::switch_to_normal_formatting);
 }
 
 }   // namespace kilo::editor

@@ -92,6 +92,12 @@ void update_row(std::string_view row, std::string& render) noexcept;
  */
 auto row_cx_to_rx(erow const& row, int64_t cursor_x) -> int64_t;
 
+/**
+ * @brief Draw a status bar with inverted colours at the bottom of the screen
+ * @param[in] editor The current editor state
+ */
+void draw_status_bar(gsl::not_null<editor_config*> editor);
+
 }   // namespace kilo::editor
 
 namespace kilo::editor::detail {
