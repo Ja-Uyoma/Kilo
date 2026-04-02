@@ -60,10 +60,17 @@ struct erow
   }
 };
 
+/**
+ * @struct editor_config
+ * @brief
+ */
 struct editor_config
 {
   terminal::window_size winsize;
   cursor curs;
+
+  // Index into the `render` string
+  int64_t rx {};
   offset off;
   screen_buffer screen_buf;
   std::vector<erow> row;
