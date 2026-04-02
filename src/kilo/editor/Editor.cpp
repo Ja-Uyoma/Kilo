@@ -206,16 +206,18 @@ void scroll(editor_config& editor) noexcept
   // If so, adjust the editor.offset.row and/or editor.offset.col variable(s) so that the
   // cursor is just inside the visible window
 
+  editor.rx = editor.curs.x;
+
   editor.off.row = std::min(editor.curs.y, editor.off.row);
 
   if (editor.curs.y >= editor.off.row + editor.winsize.rows) {
     editor.off.row = editor.curs.y - editor.winsize.rows + 1;
   }
 
-  editor.off.col = std::min(editor.curs.x, editor.off.col);
+  editor.off.col = std::min(editor.rx, editor.off.col);
 
-  if (editor.curs.x >= editor.off.col + editor.winsize.cols) {
-    editor.off.col = editor.curs.x - editor.winsize.cols + 1;
+  if (editor.rx >= editor.off.col + editor.winsize.cols) {
+    editor.off.col = editor.rx - editor.winsize.cols + 1;
   }
 }
 
