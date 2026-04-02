@@ -44,7 +44,7 @@ application::application() noexcept(false)
 
 void application::open(std::filesystem::path const& path)
 {
-  editor::open(path, &m_editor_config.row);
+  editor::open(path, &m_editor_config);
 }
 
 void application::run()

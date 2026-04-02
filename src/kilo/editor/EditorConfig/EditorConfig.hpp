@@ -74,6 +74,7 @@ struct editor_config
   offset off;
   screen_buffer screen_buf;
   std::vector<erow> row;
+  std::string filename;
 };
 
 }   // namespace kilo::editor

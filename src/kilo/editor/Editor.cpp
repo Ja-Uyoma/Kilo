@@ -234,8 +234,9 @@ void scroll(editor_config& editor) noexcept
   }
 }
 
-void open(std::filesystem::path const& path, gsl::not_null<std::vector<erow>*> rows)
+void open(std::filesystem::path const& path, gsl::not_null<editor_config*> editor)
 {
+  editor->filename = path.filename();
   auto file = std::ifstream(path);
 
   if (!file.is_open()) {
@@ -249,7 +250,7 @@ void open(std::filesystem::path const& path, gsl::not_null<std::vector<erow>*> r
       line.pop_back();
     }
 
-    rows->emplace_back(line);
+    editor->row.emplace_back(line);
   }
 
   if ((file.bad() or file.fail()) and !file.eof()) {
@@ -258,7 +259,7 @@ void open(std::filesystem::path const& path, gsl::not_null<std::vector<erow>*> r
 
   file.close();
 
-  for (auto& [chars, render] : *rows) {
+  for (auto& [chars, render] : editor->row) {
     update_row(chars, render);
   }
 }

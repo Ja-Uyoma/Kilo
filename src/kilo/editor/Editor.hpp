@@ -32,7 +32,6 @@
 
 #include <cstdint>
 #include <filesystem>
-#include <vector>
 
 namespace kilo::editor {
 /**
@@ -71,11 +70,11 @@ void scroll(editor_config& editor) noexcept;
  * @brief Open a file and write its contents to a buffer in memory
  *
  * @param[in] path The path to the file
- * @param[in,out] rows The buffer containing the rows of text of the file
+ * @param[in,out] editor The current editor state
  *
  * @throws std::ios_base::failure if an error was encountered when opening or reading from the file
  */
-void open(std::filesystem::path const& path, gsl::not_null<std::vector<erow>*> rows);
+void open(std::filesystem::path const& path, gsl::not_null<editor_config*> editor);
 
 /**
  * \brief Copies the contents of the source string into the destination string
