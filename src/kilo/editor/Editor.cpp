@@ -99,7 +99,7 @@ void refresh_screen(editor_config& editor)
   // (less the corresponding offset values) to convert from 0-indexed values to the 1-indexed values
   // that the terminal uses
   auto const cursor_pos =
-    fmt::format("\x1b[{};{}H", (editor.curs.y - editor.off.row) + 1, (editor.curs.x - editor.off.col) + 1);
+    fmt::format("\x1b[{};{}H", (editor.curs.y - editor.off.row) + 1, (editor.rx - editor.off.col) + 1);
 
   // The file to which the screen buffer writes its contents when flushed (typically STDOUT)
   io::file out_file {};
