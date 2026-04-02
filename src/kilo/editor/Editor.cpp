@@ -139,9 +139,7 @@ void draw_rows(editor_config& editor)
 
     editor.screen_buf.write(utilities::escape_sequences::erase_part_of_line_to_the_right_of_cursor);
 
-    if (curr_row < editor.winsize.rows - 1) {
-      editor.screen_buf.write(utilities::escape_sequences::crnl);
-    }
+    editor.screen_buf.write(utilities::escape_sequences::crnl);
   }
 }
 
