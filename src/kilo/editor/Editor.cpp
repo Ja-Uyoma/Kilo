@@ -27,7 +27,6 @@
 #include "kilo/utilities/Constants.hpp"
 #include "kilo/utilities/Utilities.hpp"
 #include <fmt/format.h>
-#include <algorithm>
 #include <gsl/assert>
 #include <gsl/pointers>
 #include <string_view>
@@ -66,7 +65,9 @@ void process_keypress(int key_pressed, editor_config& editor_config)
     editor_config.curs.x = 0;
   }
   else if (key == end) {
-    editor_config.curs.x = editor_config.winsize.cols - 1;
+    if (editor_config.curs.y < std::ssize(editor_config.row)) {
+      editor_config.curs.x = std::ssize(editor_config.row[static_cast<std::size_t>(editor_config.curs.y)].chars);
+    }
   }
   else if (key == page_up or key == page_down) {
     if (key == page_up) {
