@@ -326,8 +326,10 @@ void draw_status_bar(gsl::not_null<editor_config*> editor)
   using utilities::escape_sequences;
 
   editor->screen_buf.write(escape_sequences::switch_to_inverted_colours);
+
   auto status =
     fmt::format("{:.20} - {} lines", editor->filename.empty() ? "[No Name]" : editor->filename, editor->row.size());
+  auto rstatus = fmt::format("{}/{}", editor->curs.y + 1, editor->row.size());
 
   if (std::ssize(status) > editor->winsize.cols) {
     status.resize(static_cast<std::size_t>(editor->winsize.cols));
@@ -335,8 +337,14 @@ void draw_status_bar(gsl::not_null<editor_config*> editor)
 
   editor->screen_buf.write(status);
 
-  for (std::size_t i = status.length(); std::cmp_less(i, editor->winsize.cols); ++i) {
-    editor->screen_buf.write(" ");
+  for (std::size_t i = status.length(); i < static_cast<std::size_t>(editor->winsize.cols); ++i) {
+    if (static_cast<std::size_t>(editor->winsize.cols) - i != rstatus.length()) {
+      editor->screen_buf.write(" ");
+    }
+    else {
+      editor->screen_buf.write(rstatus);
+      break;
+    }
   }
 
   editor->screen_buf.write(escape_sequences::switch_to_normal_formatting);
