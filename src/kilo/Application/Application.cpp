@@ -49,6 +49,8 @@ void application::open(std::filesystem::path const& path)
 
 void application::run()
 {
+  editor::set_status_msg(&m_editor_config, "HELP: Ctrl-Q = quit");
+
   try {
     while (true) {
       editor::refresh_screen(m_editor_config);

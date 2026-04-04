@@ -27,9 +27,11 @@
 #include "EditorConfig/EditorConfig.hpp"
 #include "ScreenBuffer/ScreenBuffer.hpp"
 #include "kilo/utilities/Constants.hpp"
+#include <fmt/format.h>
 #include <gsl/pointers>
 #include <string_view>
 
+#include <chrono>
 #include <cstdint>
 #include <filesystem>
 
@@ -96,6 +98,19 @@ auto row_cx_to_rx(erow const& row, int64_t cursor_x) -> int64_t;
  * @param[in] editor The current editor state
  */
 void draw_status_bar(gsl::not_null<editor_config*> editor);
+
+/**
+ * @brief Set a status message to be displayed in the editor
+ * @tparam Args The type of arguments to pass to the format string
+ * @param[in] editor The current state of the editor
+ * @param[in] args A variable list of arguments to be appended to the status message
+ */
+template<typename... Args>
+void set_status_msg(gsl::not_null<editor_config*> editor, fmt::format_string<Args...> fmt_str, Args&&... args)
+{
+  editor->status_msg = fmt::format(fmt_str, std::forward<Args>(args)...);
+  editor->status_msg_time = std::chrono::system_clock::now();
+}
 
 }   // namespace kilo::editor
 
