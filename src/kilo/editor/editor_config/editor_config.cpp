@@ -325,7 +325,7 @@ void draw_message_bar(editor_config const& editor, gsl::not_null<append_buffer::
 
 }   // namespace kilo::editor::editor_config
 
-namespace kilo::editor::detail {
+namespace kilo::editor::editor_config::detail {
 
 void print_welcome_message(int32_t window_width, gsl::not_null<append_buffer::append_buffer*> buffer)
 {
@@ -373,4 +373,4 @@ void print_line_of_document(std::string const& line, gsl::not_null<append_buffer
   buffer->write({&line.c_str()[static_cast<std::size_t>(col_off)], static_cast<std::size_t>(line_len)});
 }
 
-}   // namespace kilo::editor::detail
+}   // namespace kilo::editor::editor_config::detail

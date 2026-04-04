@@ -141,7 +141,7 @@ void draw_message_bar(editor_config const& editor, gsl::not_null<append_buffer::
 
 }   // namespace kilo::editor::editor_config
 
-namespace kilo::editor::detail {
+namespace kilo::editor::editor_config::detail {
 
 /**
  * @brief Write the welcome message to the screen buffer
@@ -161,6 +161,6 @@ void print_welcome_message(int32_t window_width, gsl::not_null<append_buffer::ap
 void print_line_of_document(std::string const& line, gsl::not_null<append_buffer::append_buffer*> buffer,
                             int32_t window_width, int64_t col_off);
 
-}   // namespace kilo::editor::detail
+}   // namespace kilo::editor::editor_config::detail
 
 #endif
