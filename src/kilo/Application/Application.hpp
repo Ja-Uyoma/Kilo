@@ -24,8 +24,8 @@
 #ifndef APPLICATION_HPP
 #define APPLICATION_HPP
 
-#include "kilo/editor/EditorConfig/EditorConfig.hpp"
 #include "kilo/editor/append_buffer/append_buffer.hpp"
+#include "kilo/editor/editor_config/editor_config.hpp"
 #include "kilo/terminal/window_size/window_size.hpp"
 
 #include <filesystem>

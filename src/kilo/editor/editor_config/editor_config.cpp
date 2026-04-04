@@ -21,7 +21,8 @@
  * SOFTWARE.
  */
 
-#include "EditorConfig.hpp"
+#include "editor_config.hpp"
+
 #include "kilo/editor/append_buffer/append_buffer.hpp"
 #include "kilo/editor/erow/erow.hpp"
 #include "kilo/io/File.hpp"

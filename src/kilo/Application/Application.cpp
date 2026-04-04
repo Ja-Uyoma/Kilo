@@ -23,7 +23,7 @@
 
 #include "Application.hpp"
 
-#include "kilo/editor/EditorConfig/EditorConfig.hpp"
+#include "kilo/editor/editor_config/editor_config.hpp"
 #include "kilo/io/IO.hpp"
 #include "kilo/terminal/TerminalMode/TerminalMode.hpp"
 #include "kilo/terminal/window_size/window_size.hpp"

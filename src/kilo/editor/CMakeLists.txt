@@ -4,7 +4,7 @@ target_sources(Kilo_lib_editor
     PUBLIC
         append_buffer/append_buffer.cpp
         erow/erow.cpp
-        Editor.cpp
+        editor_config/editor_config.cpp
 )
 
 target_link_libraries(Kilo_lib_editor
