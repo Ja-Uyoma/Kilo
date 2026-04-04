@@ -112,6 +112,12 @@ void set_status_msg(gsl::not_null<editor_config*> editor, fmt::format_string<Arg
   editor->status_msg_time = std::chrono::system_clock::now();
 }
 
+/**
+ * @brief Draw the message bar
+ * @param[in] editor The current state of the editor
+ */
+void draw_message_bar(gsl::not_null<editor_config*> editor);
+
 }   // namespace kilo::editor
 
 namespace kilo::editor::detail {

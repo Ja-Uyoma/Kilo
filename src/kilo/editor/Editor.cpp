@@ -33,6 +33,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <chrono>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -102,6 +103,7 @@ void refresh_screen(editor_config& editor)
   // Draw the welcome message, or each row of the currently open document with a tilde at the beginning
   draw_rows(editor);
   draw_status_bar(&editor);
+  draw_message_bar(&editor);
 
   // We want to show the cursor immediately after writing the contents of the open document or the welcome message.
   // To do this, we must first get the cursor position, and then write it to the screen buffer before flushing it
@@ -350,6 +352,20 @@ void draw_status_bar(gsl::not_null<editor_config*> editor)
   editor->screen_buf.write(escape_sequences::switch_to_normal_formatting);
   editor->screen_buf.write(escape_sequences::crnl);
 }
+
+void draw_message_bar(gsl::not_null<editor_config*> editor)
+{
+  using std::chrono::system_clock;
+  using utilities::escape_sequences;
+
+  static constexpr auto time_limit = 5U;
+
+  editor->screen_buf.write(escape_sequences::erase_part_of_line_to_the_right_of_cursor);
+  auto const msg_len = std::min(std::ssize(editor->status_msg), static_cast<int64_t>(editor->winsize.cols));
+
+  if (msg_len > 0 and system_clock::now() - editor->status_msg_time < std::chrono::seconds(time_limit)) {
+    editor->screen_buf.write({editor->status_msg.c_str(), static_cast<std::size_t>(msg_len)});
+  }
 }
 
 }   // namespace kilo::editor
