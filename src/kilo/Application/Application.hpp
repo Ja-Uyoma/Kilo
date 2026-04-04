@@ -25,6 +25,7 @@
 #define APPLICATION_HPP
 
 #include "kilo/editor/EditorConfig/EditorConfig.hpp"
+#include "kilo/editor/append_buffer/append_buffer.hpp"
 
 #include <filesystem>
 #include <span>

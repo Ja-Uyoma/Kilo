@@ -53,7 +53,7 @@ void refresh_screen(editor_config& editor, gsl::not_null<append_buffer::append_b
  * \brief Draw each row of the buffer of text being edited, plus a tilde at the beginning, or the welcome message
  * \param[in] editor The editor configuration
  */
-void draw_rows(editor_config& editor, gsl::not_null<append_buffer::append_buffer*> abuf);
+void draw_rows(editor_config const& editor, gsl::not_null<append_buffer::append_buffer*> abuf);
 
 /**
  * \brief Move the cursor in the direction of the key pressed
@@ -97,7 +97,7 @@ auto row_cx_to_rx(erow const& row, int64_t cursor_x) -> int64_t;
  * @brief Draw a status bar with inverted colours at the bottom of the screen
  * @param[in] editor The current editor state
  */
-void draw_status_bar(gsl::not_null<editor_config*> editor, gsl::not_null<append_buffer::append_buffer*> abuf);
+void draw_status_bar(editor_config const& editor, gsl::not_null<append_buffer::append_buffer*> abuf);
 
 /**
  * @brief Set a status message to be displayed in the editor
@@ -116,7 +116,7 @@ void set_status_msg(gsl::not_null<editor_config*> editor, fmt::format_string<Arg
  * @brief Draw the message bar
  * @param[in] editor The current state of the editor
  */
-void draw_message_bar(gsl::not_null<editor_config*> editor, gsl::not_null<append_buffer::append_buffer*> abuf);
+void draw_message_bar(editor_config const& editor, gsl::not_null<append_buffer::append_buffer*> abuf);
 
 }   // namespace kilo::editor
 
@@ -128,7 +128,7 @@ namespace kilo::editor::detail {
  * \param[in] window_width The width of the window in which the message is to be displayed
  * \param[in] buffer The buffer to which the message is written before being displayed
  */
-void print_welcome_message(int32_t window_width, append_buffer::append_buffer& buffer);
+void print_welcome_message(int32_t window_width, gsl::not_null<append_buffer::append_buffer*> buffer);
 
 /**
  * \brief Print a line of text from the open document to the screen
@@ -139,8 +139,8 @@ void print_welcome_message(int32_t window_width, append_buffer::append_buffer& b
  * \param[in] col_off The column offset between the terminal window width and the document width
  * \pre The column offset must be non-negative
  */
-void print_line_of_document(std::string const& line, append_buffer::append_buffer& buffer, int32_t window_width,
-                            int64_t col_off);
+void print_line_of_document(std::string const& line, gsl::not_null<append_buffer::append_buffer*> buffer,
+                            int32_t window_width, int64_t col_off);
 
 }   // namespace kilo::editor::detail
 
