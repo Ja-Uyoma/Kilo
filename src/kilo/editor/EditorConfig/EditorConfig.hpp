@@ -21,21 +21,29 @@
  * SOFTWARE.
  */
 
-#ifndef EDITOR_CONFIG_HPP
-#define EDITOR_CONFIG_HPP
+#ifndef KILO_EDITOR_EDITOR_CONFIG_EDITOR_CONFIG_HPP
+#define KILO_EDITOR_EDITOR_CONFIG_EDITOR_CONFIG_HPP
 
+#include "kilo/editor/append_buffer/append_buffer.hpp"
 #include "kilo/editor/cursor/cursor.hpp"
 #include "kilo/editor/erow/erow.hpp"
 #include "kilo/editor/offset/offset.hpp"
+#include "kilo/terminal/window_size/window_size.hpp"
+#include "kilo/utilities/Constants.hpp"
+#include <fmt/format.h>
+#include <gsl/pointers>
+#include <string_view>
 
 #include <chrono>
+#include <cstdint>
+#include <filesystem>
 #include <vector>
 
-namespace kilo::editor {
+namespace kilo::editor::editor_config {
 
 /**
  * @struct editor_config
- * @brief
+ * @brief Represents the state of the editor
  */
 struct editor_config
 {
@@ -49,6 +57,110 @@ struct editor_config
   std::chrono::time_point<std::chrono::system_clock> status_msg_time;
 };
 
-}   // namespace kilo::editor
+/**
+ * @brief Move the cursor in the open document depending on the key pressed
+ * @param[in] key_pressed The key pressed by the user
+ * @param[in] editor The current state of the editor
+ */
+void process_keypress(int key_pressed, editor_config& editor_config, terminal::window_size::window_size const& winsize);
+
+/**
+ * @brief Perform a screen refresh
+ * @param[in] editor The current editor configuration
+ * @param[in,out] abuf The buffer to which writes to the screen are done
+ */
+void refresh_screen(editor_config& editor, gsl::not_null<append_buffer::append_buffer*> abuf,
+                    terminal::window_size::window_size const& winsize);
+
+/**
+ * @brief Draw each row of the buffer of text being edited, plus a tilde at the beginning, or the welcome message
+ * @param[in] editor The editor configuration
+ * @param[in,out] abuf The buffer to which writes to the screen are done
+ */
+void draw_rows(editor_config const& editor, gsl::not_null<append_buffer::append_buffer*> abuf,
+               terminal::window_size::window_size const& winsize);
+
+/**
+ * @brief Move the cursor in the direction of the key pressed
+ * @param[in] key The key pressed by the user
+ * @param[in] editor The current state of the editor
+ */
+void move_cursor(utilities::editor_key key, editor_config& editor);
+
+/**
+ * @brief Fix the cursor in the visible window while scrolling
+ * @param[in] editor The current state of the editor
+ */
+void scroll(editor_config& editor, terminal::window_size::window_size const& winsize) noexcept;
+
+/**
+ * @brief Open a file and write its contents to a buffer in memory
+ *
+ * @param[in] path The path to the file
+ * @param[in,out] editor The current editor state
+ *
+ * @throws std::ios_base::failure if an error was encountered when opening or reading from the file
+ */
+void open(std::filesystem::path const& path, gsl::not_null<editor_config*> editor);
+
+/**
+ * @brief Copies the contents of the source string into the destination string
+ * @param[in] row The source string
+ * @param[in] render The destination string
+ */
+void update_row(std::string_view row, std::string& render) noexcept;
+
+/**
+ * @brief Draw a status bar with inverted colours at the bottom of the screen
+ * @param[in] editor The current editor state
+ * @param[in,out] abuf The buffer to which writes to the screen are done
+ */
+void draw_status_bar(editor_config const& editor, gsl::not_null<append_buffer::append_buffer*> abuf,
+                     terminal::window_size::window_size const& winsize);
+
+/**
+ * @brief Set a status message to be displayed in the editor
+ * @tparam Args The type of arguments to pass to the format string
+ * @param[in] editor The current state of the editor
+ * @param[in] args A variable list of arguments to be appended to the status message
+ */
+template<typename... Args>
+void set_status_msg(gsl::not_null<editor_config*> editor, fmt::format_string<Args...> fmt_str, Args&&... args)
+{
+  editor->status_msg = fmt::format(fmt_str, std::forward<Args>(args)...);
+  editor->status_msg_time = std::chrono::system_clock::now();
+}
+
+/**
+ * @brief Draw the message bar
+ * @param[in] editor The current state of the editor
+ * @param[in,out] abuf The buffer to which writes to the screen are done
+ */
+void draw_message_bar(editor_config const& editor, gsl::not_null<append_buffer::append_buffer*> abuf,
+                      terminal::window_size::window_size const& winsize);
+
+}   // namespace kilo::editor::editor_config
+
+namespace kilo::editor::detail {
+
+/**
+ * @brief Write the welcome message to the screen buffer
+ * @param[in] window_width The width of the window in which the message is to be displayed
+ * @param[in,out] buffer The buffer to which the message is written before being displayed
+ */
+void print_welcome_message(int32_t window_width, gsl::not_null<append_buffer::append_buffer*> buffer);
+
+/**
+ * @brief Print a line of text from the open document to the screen
+ * @param[in] line The line to be printed
+ * @param[in,out] buffer The buffer to which writes to the screen are done
+ * @param[in] window_width The width of the terminal window
+ * @param[in] col_off The column offset between the terminal window width and the document width
+ * @pre The column offset must be non-negative
+ */
+void print_line_of_document(std::string const& line, gsl::not_null<append_buffer::append_buffer*> buffer,
+                            int32_t window_width, int64_t col_off);
+
+}   // namespace kilo::editor::detail
 
 #endif

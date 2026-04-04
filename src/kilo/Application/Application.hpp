@@ -49,7 +49,7 @@ public:
   static auto main(std::span<char const*> args) -> int;
 
 private:
-  kilo::editor::editor_config m_editor_config;
+  kilo::editor::editor_config::editor_config m_editor_config;
   kilo::editor::append_buffer::append_buffer m_abuf;
   kilo::terminal::window_size::window_size m_winsize;
 

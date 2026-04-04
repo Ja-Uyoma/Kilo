@@ -23,7 +23,7 @@
 
 #include "Application.hpp"
 
-#include "kilo/editor/Editor.hpp"
+#include "kilo/editor/EditorConfig/EditorConfig.hpp"
 #include "kilo/io/IO.hpp"
 #include "kilo/terminal/TerminalMode/TerminalMode.hpp"
 #include "kilo/terminal/window_size/window_size.hpp"
@@ -45,19 +45,19 @@ application::application() noexcept(false)
 
 void application::open(std::filesystem::path const& path)
 {
-  kilo::editor::open(path, &m_editor_config);
+  kilo::editor::editor_config::open(path, &m_editor_config);
 }
 
 void application::run()
 {
-  kilo::editor::set_status_msg(&m_editor_config, "HELP: Ctrl-Q = quit");
+  kilo::editor::editor_config::set_status_msg(&m_editor_config, "HELP: Ctrl-Q = quit");
 
   try {
     while (true) {
-      kilo::editor::refresh_screen(m_editor_config, &m_abuf, m_winsize);
+      kilo::editor::editor_config::refresh_screen(m_editor_config, &m_abuf, m_winsize);
 
       auto const key_pressed = io::read_key();
-      kilo::editor::process_keypress(key_pressed, m_editor_config, m_winsize);
+      kilo::editor::editor_config::process_keypress(key_pressed, m_editor_config, m_winsize);
     }
   }
   catch (std::system_error const& err) {
