@@ -21,34 +21,23 @@
  * SOFTWARE.
  */
 
-#ifndef EDITOR_CONFIG_HPP
-#define EDITOR_CONFIG_HPP
+#ifndef KILO_EDITOR_CURSOR_CURSOR_HPP
+#define KILO_EDITOR_CURSOR_CURSOR_HPP
 
-#include "kilo/editor/cursor/cursor.hpp"
-#include "kilo/editor/erow/erow.hpp"
-#include "kilo/editor/offset/offset.hpp"
+#include <cstdint>
 
-#include <chrono>
-#include <vector>
-
-namespace kilo::editor {
+namespace kilo::editor::cursor {
 
 /**
- * @struct editor_config
- * @brief
+ * @struct cursor
+ * @brief This represents the position of the cursor in the open document
  */
-struct editor_config
+struct cursor
 {
-  cursor::cursor curs;
-  // Index into the `render` string
-  int64_t rx {};
-  offset::offset off;
-  std::vector<erow::erow> row;
-  std::string filename;
-  std::string status_msg;
-  std::chrono::time_point<std::chrono::system_clock> status_msg_time;
+  int64_t x {};
+  int64_t y {};
 };
 
-}   // namespace kilo::editor
+}   // namespace kilo::editor::cursor
 
 #endif
