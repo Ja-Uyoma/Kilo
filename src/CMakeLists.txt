@@ -9,8 +9,7 @@ add_subdirectory(kilo/terminal)
 add_subdirectory(kilo/editor)
 
 target_sources(Kilo_lib PRIVATE
-    "${PROJECT_SOURCE_DIR}/src/kilo/Application/Application.hpp"
-    "${PROJECT_SOURCE_DIR}/src/kilo/Application/Application.cpp"
+    "${PROJECT_SOURCE_DIR}/src/kilo/application/application.cpp"
 )
 
 target_include_directories(Kilo_lib

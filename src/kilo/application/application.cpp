@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-#include "Application.hpp"
+#include "application.hpp"
 
 #include "kilo/editor/editor_config/editor_config.hpp"
 #include "kilo/io/IO.hpp"

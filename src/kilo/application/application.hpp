@@ -21,8 +21,8 @@
  * SOFTWARE.
  */
 
-#ifndef APPLICATION_HPP
-#define APPLICATION_HPP
+#ifndef KILO_APPLICATION_APPLICATION_HPP
+#define KILO_APPLICATION_APPLICATION_HPP
 
 #include "kilo/editor/append_buffer/append_buffer.hpp"
 #include "kilo/editor/editor_config/editor_config.hpp"

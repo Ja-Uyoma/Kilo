@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-#include "kilo/Application/Application.hpp"
+#include "kilo/application/application.hpp"
 
 #include <cstddef>
 #include <span>
