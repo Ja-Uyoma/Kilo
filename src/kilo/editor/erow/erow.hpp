@@ -21,44 +21,40 @@
  * SOFTWARE.
  */
 
-#ifndef EDITOR_CONFIG_HPP
-#define EDITOR_CONFIG_HPP
+#ifndef KILO_EDITOR_EROW_EROW_HPP
+#define KILO_EDITOR_EROW_EROW_HPP
 
-#include "kilo/editor/erow/erow.hpp"
+#include <string>
 
-#include <chrono>
-#include <vector>
+namespace kilo::editor::erow {
 
-namespace kilo::editor {
-
-struct cursor
+/**
+ * @class erow
+ * @brief Represents a single row of text in the editor
+ */
+class erow
 {
-  std::int64_t x {};
-  std::int64_t y {};
-};
+public:
+  std::string chars;
+  std::string render;
 
-struct offset
-{
-  std::int64_t row {};
-  std::int64_t col {};
+  /**
+   * @brief Create an erow instance from the given std::string object
+   * @param[in] line The std::string from which the erow is to be created
+   */
+  explicit erow(std::string line) : chars(std::move(line))
+  {
+  }
 };
 
 /**
- * @struct editor_config
- * @brief
+ * @brief Converts a @code chars index into a @code render index
+ * @param[in] row A row of text in the editor
+ * @param[in] cursor_x The x-position of the cursor in the erow's @code chars field
+ * @returns The x-position of the cursor in the erow's @code render field
  */
-struct editor_config
-{
-  cursor curs;
-  // Index into the `render` string
-  int64_t rx {};
-  offset off;
-  std::vector<erow::erow> row;
-  std::string filename;
-  std::string status_msg;
-  std::chrono::time_point<std::chrono::system_clock> status_msg_time;
-};
+auto row_cx_to_rx(erow const& row, int64_t cursor_x) -> int64_t;
 
-}   // namespace kilo::editor
+}   // namespace kilo::editor::erow
 
 #endif

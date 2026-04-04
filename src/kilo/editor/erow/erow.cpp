@@ -21,44 +21,38 @@
  * SOFTWARE.
  */
 
-#ifndef EDITOR_CONFIG_HPP
-#define EDITOR_CONFIG_HPP
+#include "erow.hpp"
 
-#include "kilo/editor/erow/erow.hpp"
+#include "kilo/utilities/Constants.hpp"
 
-#include <chrono>
-#include <vector>
+#include <cstddef>
+#include <cstdint>
+#include <utility>
 
-namespace kilo::editor {
+namespace kilo::editor::erow {
 
-struct cursor
+auto row_cx_to_rx(erow const& row, int64_t cursor_x) -> int64_t
 {
-  std::int64_t x {};
-  std::int64_t y {};
-};
+  using utilities::kilo_tab_stop;
 
-struct offset
-{
-  std::int64_t row {};
-  std::int64_t col {};
-};
+  int64_t render_x {};
 
-/**
- * @struct editor_config
- * @brief
- */
-struct editor_config
-{
-  cursor curs;
-  // Index into the `render` string
-  int64_t rx {};
-  offset off;
-  std::vector<erow::erow> row;
-  std::string filename;
-  std::string status_msg;
-  std::chrono::time_point<std::chrono::system_clock> status_msg_time;
-};
+  // Loop through all the characters to the left of `cursor_x`, and figure out how many spaces each tab takes up.
+  // For each character, if it's a tab we use rx % kilo_tab_stop to find out how many columns we are to the right of the
+  // last tab stop, then subtract that from kilo_tab_stop - 1 to find out how many columns we are to the left of the
+  // next tab stop.
+  // We add that amount to render_x to get just to the left of the next tab stop, and then the unconditional ++render_x
+  // statement gets us right on the next tab stop. This works even if we are currently on a tab stop.
 
-}   // namespace kilo::editor
+  for (std::size_t j = 0; std::cmp_less(j, cursor_x); ++j) {
+    if (row.chars[j] == '\t') {
+      render_x += (kilo_tab_stop - 1) - (render_x % kilo_tab_stop);
+    }
 
-#endif
+    ++render_x;
+  }
+
+  return render_x;
+}
+
+}   // namespace kilo::editor::erow

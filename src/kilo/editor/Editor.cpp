@@ -24,6 +24,7 @@
 #include "Editor.hpp"
 
 #include "kilo/editor/append_buffer/append_buffer.hpp"
+#include "kilo/editor/erow/erow.hpp"
 #include "kilo/io/File.hpp"
 #include "kilo/terminal/window_size/window_size.hpp"
 #include "kilo/utilities/Constants.hpp"
@@ -273,30 +274,6 @@ void update_row(std::string_view row, std::string& render) noexcept
       ++idx;
     }
   }
-}
-
-auto row_cx_to_rx(erow const& row, int64_t cursor_x) -> int64_t
-{
-  using utilities::kilo_tab_stop;
-
-  int64_t render_x {};
-
-  // Loop through all the characters to the left of `cursor_x`, and figure out how many spaces each tab takes up.
-  // For each character, if it's a tab we use rx % kilo_tab_stop to find out how many columns we are to the right of the
-  // last tab stop, then subtract that from kilo_tab_stop - 1 to find out how many columns we are to the left of the
-  // next tab stop.
-  // We add that amount to render_x to get just to the left of the next tab stop, and then the unconditional ++render_x
-  // statement gets us right on the next tab stop. This works even if we are currently on a tab stop.
-
-  for (std::size_t j = 0; std::cmp_less(j, cursor_x); ++j) {
-    if (row.chars[j] == '\t') {
-      render_x += (kilo_tab_stop - 1) - (render_x % kilo_tab_stop);
-    }
-
-    ++render_x;
-  }
-
-  return render_x;
 }
 
 void draw_status_bar(editor_config const& editor, gsl::not_null<append_buffer::append_buffer*> abuf,
