@@ -28,13 +28,14 @@
 #include "kilo/terminal/TerminalMode/TerminalMode.hpp"
 #include "kilo/terminal/Window/Window.hpp"
 #include "kilo/utilities/Utilities.hpp"
-#include <fmt/format.h>
 #include <system_error>
 
 #include <cstdlib>
+#include <filesystem>
 #include <iostream>
+#include <span>
 
-namespace kilo::editor {
+namespace kilo::application {
 
 application::application() noexcept(false)
 {
@@ -44,23 +45,23 @@ application::application() noexcept(false)
 
 void application::open(std::filesystem::path const& path)
 {
-  editor::open(path, &m_editor_config);
+  kilo::editor::open(path, &m_editor_config);
 }
 
 void application::run()
 {
-  editor::set_status_msg(&m_editor_config, "HELP: Ctrl-Q = quit");
+  kilo::editor::set_status_msg(&m_editor_config, "HELP: Ctrl-Q = quit");
 
   try {
     while (true) {
-      editor::refresh_screen(m_editor_config);
+      kilo::editor::refresh_screen(m_editor_config);
 
       auto const key_pressed = io::read_key();
-      editor::process_keypress(key_pressed, m_editor_config);
+      kilo::editor::process_keypress(key_pressed, m_editor_config);
     }
   }
   catch (std::system_error const& err) {
-    utilities::clear_screen_and_reposition_cursor();
+    kilo::utilities::clear_screen_and_reposition_cursor();
     std::cerr << err.code() << ": " << err.what() << '\n';
   }
 }
@@ -93,4 +94,4 @@ auto application::main(std::span<char const*> args) -> int
   return EXIT_SUCCESS;
 }
 
-}   // namespace kilo::editor
+}   // namespace kilo::application

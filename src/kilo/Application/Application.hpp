@@ -29,7 +29,7 @@
 #include <filesystem>
 #include <span>
 
-namespace kilo::editor {
+namespace kilo::application {
 
 class application final
 {
@@ -47,7 +47,7 @@ public:
   static auto main(std::span<char const*> args) -> int;
 
 private:
-  editor::editor_config m_editor_config;
+  kilo::editor::editor_config m_editor_config;
 
   ///
   /// \brief Open a file and write its contents to memory
@@ -63,6 +63,6 @@ private:
   void run();
 };
 
-}   // namespace kilo::editor
+}   // namespace kilo::application
 
 #endif
