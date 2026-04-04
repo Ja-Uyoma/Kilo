@@ -25,6 +25,7 @@
 
 #include "kilo/editor/append_buffer/append_buffer.hpp"
 #include "kilo/io/File.hpp"
+#include "kilo/terminal/Window/Window.hpp"
 #include "kilo/utilities/Constants.hpp"
 #include "kilo/utilities/Utilities.hpp"
 #include <fmt/format.h>
@@ -48,7 +49,7 @@
 
 namespace kilo::editor {
 
-void process_keypress(int key_pressed, editor_config& editor_config)
+void process_keypress(int key_pressed, editor_config& editor_config, terminal::window_size const& winsize)
 {
   std::ignore = std::atexit([]() -> void { utilities::clear_screen_and_reposition_cursor(); });
 
@@ -71,11 +72,11 @@ void process_keypress(int key_pressed, editor_config& editor_config)
       editor_config.curs.y = editor_config.off.row;
     }
     else if (key == page_down) {
-      editor_config.curs.y = editor_config.off.row + editor_config.winsize.rows - 1;
+      editor_config.curs.y = editor_config.off.row + winsize.rows - 1;
       editor_config.curs.y = std::min(editor_config.curs.y, std::ssize(editor_config.row));
     }
 
-    for (int32_t i = editor_config.winsize.rows; i > 0; --i) {
+    for (int32_t i = winsize.rows; i > 0; --i) {
       move_cursor(key == page_up ? arrow_up : arrow_down, editor_config);
     }
   }
@@ -84,18 +85,19 @@ void process_keypress(int key_pressed, editor_config& editor_config)
   }
 }
 
-void refresh_screen(editor_config& editor, gsl::not_null<append_buffer::append_buffer*> abuf)
+void refresh_screen(editor_config& editor, gsl::not_null<append_buffer::append_buffer*> abuf,
+                    terminal::window_size const& winsize)
 {
-  scroll(editor);
+  scroll(editor, winsize);
 
   // Hide the cursor when painting and then move it to the Home position
   abuf->write(utilities::escape_sequences::hide_cursor_when_repainting)
     .write(utilities::escape_sequences::move_cursor_to_home_position);
 
   // Draw the welcome message, or each row of the currently open document with a tilde at the beginning
-  draw_rows(editor, abuf);
-  draw_status_bar(editor, abuf);
-  draw_message_bar(editor, abuf);
+  draw_rows(editor, abuf, winsize);
+  draw_status_bar(editor, abuf, winsize);
+  draw_message_bar(editor, abuf, winsize);
 
   // We want to show the cursor immediately after writing the contents of the open document or the welcome message.
   // To do this, we must first get the cursor position, and then write it to the screen buffer before flushing it
@@ -112,19 +114,20 @@ void refresh_screen(editor_config& editor, gsl::not_null<append_buffer::append_b
   abuf->write(cursor_pos).write(utilities::escape_sequences::show_the_cursor).flush(out_file);
 }
 
-void draw_rows(editor_config const& editor, gsl::not_null<append_buffer::append_buffer*> abuf)
+void draw_rows(editor_config const& editor, gsl::not_null<append_buffer::append_buffer*> abuf,
+               terminal::window_size const& winsize)
 {
-  for (int32_t curr_row = 0; curr_row < editor.winsize.rows; ++curr_row) {
+  for (int32_t curr_row = 0; curr_row < winsize.rows; ++curr_row) {
     if (auto const file_row = curr_row + editor.off.row; file_row >= std::ssize(editor.row)) {
-      if (editor.row.empty() and curr_row == editor.winsize.rows / 3) {
-        detail::print_welcome_message(editor.winsize.cols, abuf);
+      if (editor.row.empty() and curr_row == winsize.rows / 3) {
+        detail::print_welcome_message(winsize.cols, abuf);
       }
       else {
         abuf->write("~");
       }
     }
     else {
-      detail::print_line_of_document(editor.row[static_cast<std::size_t>(file_row)].render, abuf, editor.winsize.cols,
+      detail::print_line_of_document(editor.row[static_cast<std::size_t>(file_row)].render, abuf, winsize.cols,
                                      editor.off.col);
     }
 
@@ -189,7 +192,7 @@ void move_cursor(utilities::editor_key const key, editor_config& editor)
   editor.curs.x = std::min(editor.curs.x, row_len);
 }
 
-void scroll(editor_config& editor) noexcept
+void scroll(editor_config& editor, terminal::window_size const& winsize) noexcept
 {
   // Check if the cursor has moved outside the visible window
   // If so, adjust the editor.offset.row and/or editor.offset.col variable(s) so that the
@@ -203,14 +206,14 @@ void scroll(editor_config& editor) noexcept
 
   editor.off.row = std::min(editor.curs.y, editor.off.row);
 
-  if (editor.curs.y >= editor.off.row + editor.winsize.rows) {
-    editor.off.row = editor.curs.y - editor.winsize.rows + 1;
+  if (editor.curs.y >= editor.off.row + winsize.rows) {
+    editor.off.row = editor.curs.y - winsize.rows + 1;
   }
 
   editor.off.col = std::min(editor.rx, editor.off.col);
 
-  if (editor.rx >= editor.off.col + editor.winsize.cols) {
-    editor.off.col = editor.rx - editor.winsize.cols + 1;
+  if (editor.rx >= editor.off.col + winsize.cols) {
+    editor.off.col = editor.rx - winsize.cols + 1;
   }
 }
 
@@ -296,7 +299,8 @@ auto row_cx_to_rx(erow const& row, int64_t cursor_x) -> int64_t
   return render_x;
 }
 
-void draw_status_bar(editor_config const& editor, gsl::not_null<append_buffer::append_buffer*> abuf)
+void draw_status_bar(editor_config const& editor, gsl::not_null<append_buffer::append_buffer*> abuf,
+                     terminal::window_size const& winsize)
 {
   using utilities::escape_sequences;
 
@@ -306,14 +310,14 @@ void draw_status_bar(editor_config const& editor, gsl::not_null<append_buffer::a
     fmt::format("{:.20} - {} lines", editor.filename.empty() ? "[No Name]" : editor.filename, editor.row.size());
   auto rstatus = fmt::format("{}/{}", editor.curs.y + 1, editor.row.size());
 
-  if (std::ssize(status) > editor.winsize.cols) {
-    status.resize(static_cast<std::size_t>(editor.winsize.cols));
+  if (std::ssize(status) > winsize.cols) {
+    status.resize(static_cast<std::size_t>(winsize.cols));
   }
 
   abuf->write(status);
 
-  for (std::size_t i = status.length(); i < static_cast<std::size_t>(editor.winsize.cols); ++i) {
-    if (static_cast<std::size_t>(editor.winsize.cols) - i != rstatus.length()) {
+  for (std::size_t i = status.length(); i < static_cast<std::size_t>(winsize.cols); ++i) {
+    if (static_cast<std::size_t>(winsize.cols) - i != rstatus.length()) {
       abuf->write(" ");
     }
     else {
@@ -326,7 +330,8 @@ void draw_status_bar(editor_config const& editor, gsl::not_null<append_buffer::a
   abuf->write(escape_sequences::crnl);
 }
 
-void draw_message_bar(editor_config const& editor, gsl::not_null<append_buffer::append_buffer*> abuf)
+void draw_message_bar(editor_config const& editor, gsl::not_null<append_buffer::append_buffer*> abuf,
+                      terminal::window_size const& winsize)
 {
   using std::chrono::system_clock;
   using utilities::escape_sequences;
@@ -334,7 +339,7 @@ void draw_message_bar(editor_config const& editor, gsl::not_null<append_buffer::
   static constexpr auto time_limit = 5U;
 
   abuf->write(escape_sequences::erase_part_of_line_to_the_right_of_cursor);
-  auto const msg_len = std::min(std::ssize(editor.status_msg), static_cast<int64_t>(editor.winsize.cols));
+  auto const msg_len = std::min(std::ssize(editor.status_msg), static_cast<int64_t>(winsize.cols));
 
   if (msg_len > 0 and system_clock::now() - editor.status_msg_time < std::chrono::seconds(time_limit)) {
     abuf->write({editor.status_msg.c_str(), static_cast<std::size_t>(msg_len)});

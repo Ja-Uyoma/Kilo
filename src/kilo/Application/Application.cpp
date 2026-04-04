@@ -39,8 +39,8 @@ namespace kilo::application {
 
 application::application() noexcept(false)
 {
-  m_editor_config.winsize = terminal::get_terminal_window_size();
-  m_editor_config.winsize.rows -= 2;
+  m_winsize = terminal::get_terminal_window_size();
+  m_winsize.rows -= 2;
 }
 
 void application::open(std::filesystem::path const& path)
@@ -54,10 +54,10 @@ void application::run()
 
   try {
     while (true) {
-      kilo::editor::refresh_screen(m_editor_config, &m_abuf);
+      kilo::editor::refresh_screen(m_editor_config, &m_abuf, m_winsize);
 
       auto const key_pressed = io::read_key();
-      kilo::editor::process_keypress(key_pressed, m_editor_config);
+      kilo::editor::process_keypress(key_pressed, m_editor_config, m_winsize);
     }
   }
   catch (std::system_error const& err) {

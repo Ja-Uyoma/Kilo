@@ -26,6 +26,7 @@
 
 #include "kilo/editor/EditorConfig/EditorConfig.hpp"
 #include "kilo/editor/append_buffer/append_buffer.hpp"
+#include "kilo/terminal/Window/Window.hpp"
 
 #include <filesystem>
 #include <span>
@@ -50,6 +51,7 @@ public:
 private:
   kilo::editor::editor_config m_editor_config;
   kilo::editor::append_buffer::append_buffer m_abuf;
+  kilo::terminal::window_size m_winsize;
 
   ///
   /// \brief Open a file and write its contents to memory

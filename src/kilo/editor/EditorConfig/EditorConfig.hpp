@@ -24,8 +24,6 @@
 #ifndef EDITOR_CONFIG_HPP
 #define EDITOR_CONFIG_HPP
 
-#include "kilo/terminal/Window/Window.hpp"
-
 #include <chrono>
 #include <vector>
 
@@ -66,9 +64,7 @@ struct erow
  */
 struct editor_config
 {
-  terminal::window_size winsize;
   cursor curs;
-
   // Index into the `render` string
   int64_t rx {};
   offset off;
