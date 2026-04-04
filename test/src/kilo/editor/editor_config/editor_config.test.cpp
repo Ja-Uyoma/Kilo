@@ -72,11 +72,14 @@ TEST(EditorConfig, ProcessKeypressMovesCursorToEndOfLineIfEndButtonIsPressed)
 
   constexpr auto key = editor_key::end;
   window_size winsz {.cols = 64, .rows = 32};
-  editor_config editor_config {};
+  editor_config editor_config {
+    .curs = {},
+      .row = {erow::erow("Hello world"), erow::erow("This is a hotfix")}
+  };
 
   process_keypress(static_cast<int>(key), editor_config, winsz);
 
-  ASSERT_THAT(editor_config.curs.x, ::testing::Eq(winsz.cols - 1));
+  ASSERT_THAT(editor_config.curs.x, ::testing::Eq(std::strlen("Hello world")));
 }
 
 TEST(EditorConfig, MoveCursorArrowLeftDecrementsXWhenNotAtStart)
