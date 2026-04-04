@@ -23,10 +23,13 @@
 
 #include "ScreenBuffer.hpp"
 
+#include "kilo/io/File.hpp"
 #include <gsl/assert>
 #include <system_error>
 
 #include <cerrno>
+#include <cstddef>
+#include <cstdint>
 #include <unistd.h>
 
 namespace kilo::editor {
@@ -37,7 +40,7 @@ namespace kilo::editor {
 /// \returns The number of bytes written
 /// \throws `std::system_error` if the operation failed
 ///
-auto screen_buffer::flush(io::file_interface& file) const& noexcept(false) -> std::size_t
+auto append_buffer::flush(io::file_interface& file) const& noexcept(false) -> std::size_t
 {
   std::size_t total_written = 0;
 

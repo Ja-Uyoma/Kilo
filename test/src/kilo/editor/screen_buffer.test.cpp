@@ -37,13 +37,13 @@ namespace kilo::editor {
 
 TEST(ScreenBuffer, IsEmptyWhenCreated)
 {
-  screen_buffer buffer;
+  append_buffer buffer;
   ASSERT_EQ(buffer.size(), 0);
 }
 
 TEST(ScreenBuffer, ItsSizeIncreasesByTheLengthOfTheAppendedString)
 {
-  screen_buffer buffer;
+  append_buffer buffer;
   char const* str = "Hello, World!";
 
   buffer.write({str, std::strlen(str)});
@@ -73,7 +73,7 @@ TEST(ScreenBuffer, flushReturnsTheNumberOfBytesWrittenOnSuccess)
   using ::testing::Return;
 
   mock_file_interface file;
-  screen_buffer buffer;
+  append_buffer buffer;
   static constexpr std::string str("Hello, world!");
   buffer.write(str);
 
@@ -86,7 +86,7 @@ TEST(ScreenBuffer, flushReturnsTheNumberOfBytesWrittenOnSuccess)
 TEST(ScreenBuffer, flushThrowsAnExceptionOnFailure)
 {
   mock_file_interface file;
-  screen_buffer buffer;
+  append_buffer buffer;
 
   buffer.write("Non-retryable error example");
 
@@ -102,7 +102,7 @@ TEST(ScreenBuffer, flushThrowsAnExceptionOnFailure)
 TEST(ScreenBuffer, FlushHandlesEINTR)
 {
   mock_file_interface mock_file;
-  screen_buffer buffer;
+  append_buffer buffer;
   std::string const str("Retryable error example");
 
   buffer.write(str);
@@ -123,7 +123,7 @@ TEST(ScreenBuffer, FlushHandlesEINTR)
 TEST(ScreenBuffer, FlushStopsOnZeroBytesWritten)
 {
   mock_file_interface mock_file;
-  screen_buffer buffer;
+  append_buffer buffer;
   buffer.write("Buffer that cannot be fully written");
 
   // Simulate zero bytes written

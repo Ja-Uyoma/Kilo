@@ -62,7 +62,7 @@ TEST(Editor, ProcessKeypressMovesCursorToStartOfLineIfHomeButtonIsPressed)
     .winsize = {.cols = cols, .rows = rows},
       .curs = {},
       .off = {},
-      .screen_buf = screen_buffer(), .row = {}
+      .abuf = append_buffer(), .row = {}
   };
 
   process_keypress(static_cast<int>(key), editor_config);
@@ -82,7 +82,7 @@ TEST(Editor, ProcessKeypressMovesCursorToEndOfLineIfEndButtonIsPressed)
     .winsize = {.cols = cols, .rows = rows},
       .curs = {},
       .off = {},
-      .screen_buf = screen_buffer(), .row = {}
+      .abuf = append_buffer(), .row = {}
   };
 
   process_keypress(static_cast<int>(key), editor_config);
@@ -96,7 +96,7 @@ TEST(Editor, MoveCursorArrowLeftDecrementsXWhenNotAtStart)
     .winsize = {.cols = 80, .rows = 24},
     .curs = {.x = 5, .y = 0},
     .off = {},
-    .screen_buf = screen_buffer(),
+    .abuf = append_buffer(),
     .row = {{"Hello world", "Hello world"}}
   };
 
@@ -112,7 +112,7 @@ TEST(Editor, MoveCursorArrowLeftMovesToEndOfPreviousLineWhenAtStartOfLine)
     .winsize = {.cols = 80, .rows = 24},
     .curs = {.x = 0, .y = 1},
     .off = {},
-    .screen_buf = screen_buffer(),
+    .abuf = append_buffer(),
     .row = {{"Hello", "Hello"}, {"world", "world"}}
   };
 
@@ -128,7 +128,7 @@ TEST(Editor, MoveCursorArrowLeftStaysAtStartWhenAlreadyAtBeginningOfDocument)
     .winsize = {.cols = 80, .rows = 24},
     .curs = {.x = 0, .y = 0},
     .off = {},
-    .screen_buf = screen_buffer(),
+    .abuf = append_buffer(),
     .row = {{"Hello world", "Hello world"}}
   };
 
@@ -144,7 +144,7 @@ TEST(Editor, MoveCursorArrowRightIncrementsXWhenNotAtEndOfLine)
     .winsize = {.cols = 80, .rows = 24},
     .curs = {.x = 3, .y = 0},
     .off = {},
-    .screen_buf = screen_buffer(),
+    .abuf = append_buffer(),
     .row = {{"Hello world", "Hello world"}}
   };
 
@@ -160,7 +160,7 @@ TEST(Editor, MoveCursorArrowRightMovesToStartOfNextLineWhenAtEndOfLine)
     .winsize = {.cols = 80, .rows = 24},
     .curs = {.x = 5, .y = 0},
     .off = {},
-    .screen_buf = screen_buffer(),
+    .abuf = append_buffer(),
     .row = {{"Hello", "Hello"}, {"world", "world"}}
   };
 
@@ -176,7 +176,7 @@ TEST(Editor, MoveCursorArrowRightStaysAtEndWhenAtEndOfDocument)
     .winsize = {.cols = 80, .rows = 24},
     .curs = {.x = 11, .y = 1},
     .off = {},
-    .screen_buf = screen_buffer(),
+    .abuf = append_buffer(),
     .row = {{"Hello world", "Hello world"}}
   };
 
@@ -192,7 +192,7 @@ TEST(Editor, MoveCursorArrowUpDecrementsYWhenNotAtTopOfDocument)
     .winsize = {.cols = 80, .rows = 24},
     .curs = {.x = 3, .y = 2},
     .off = {},
-    .screen_buf = screen_buffer(),
+    .abuf = append_buffer(),
     .row = {{"Hello", "Hello"}, {"world", "world"}, {"foo", "foo"}}
   };
 
@@ -208,7 +208,7 @@ TEST(Editor, MoveCursorArrowUpStaysAtTopWhenAlreadyAtFirstLine)
     .winsize = {.cols = 80, .rows = 24},
     .curs = {.x = 3, .y = 0},
     .off = {},
-    .screen_buf = screen_buffer(),
+    .abuf = append_buffer(),
     .row = {{"Hello", "Hello"}, {"world", "world"}, {"foo", "foo"}}
   };
 
@@ -223,7 +223,7 @@ TEST(Editor, MoveCursorArrowDownIncrementsYWhenNotAtBottomOfDocument)
     .winsize = {.cols = 80, .rows = 24},
     .curs = {.x = 3, .y = 0},
     .off = {},
-    .screen_buf = screen_buffer(),
+    .abuf = append_buffer(),
     .row = {{"Hello", "Hello"}, {"world", "world"}, {"foo", "foo"}}
   };
 
@@ -239,7 +239,7 @@ TEST(Editor, MoveCursorArrowDownStaysAtBottomWhenAlreadyAtLastLine)
     .winsize = {.cols = 80, .rows = 24},
     .curs = {.x = 3, .y = 3},
     .off = {},
-    .screen_buf = screen_buffer(),
+    .abuf = append_buffer(),
     .row = {{"Hello", "Hello"}, {"world", "world"}, {"foo", "foo"}}
   };
 
@@ -254,7 +254,7 @@ TEST(Editor, MoveCursorClampsXWhenMovingToShorterLine)
     .winsize = {.cols = 80, .rows = 24},
     .curs = {.x = 10, .y = 0},
     .off = {},
-    .screen_buf = screen_buffer(),
+    .abuf = append_buffer(),
     .row = {{"Hello world this is longer", "Hello world this is longer"}, {"hi", "hi"}}
   };
 
@@ -270,7 +270,7 @@ TEST(Editor, MoveCursorClampsXWhenMovingBeyondOpenDocBounds)
     .winsize = {.cols = 80, .rows = 24},
     .curs = {.x = 5, .y = 2},
     .off = {},
-    .screen_buf = screen_buffer(),
+    .abuf = append_buffer(),
     .row = {{"Hello", "Hello"}}
   };
 
@@ -285,7 +285,7 @@ namespace detail {
 TEST(Editor, PrintWelcomeMessagePrintsTheCorrectMessageCentred)
 {
   constexpr int width = 50;
-  screen_buffer buf {};
+  append_buffer buf {};
 
   print_welcome_message(width, buf);
 
@@ -299,7 +299,7 @@ TEST(Editor, PrintWelcomeMessagePrintsTheCorrectMessageCentred)
 TEST(Editor, PrintWelcomeMessageTruncatesTheMessageIfItsTooLong)
 {
   constexpr int width = 25;
-  screen_buffer buf {};
+  append_buffer buf {};
 
   print_welcome_message(width, buf);
 
@@ -314,7 +314,7 @@ TEST(Editor, PrintLineOfDocumentTruncatesTheLineIfItsLongerThanWindowWidth)
   std::string const line {"The quick brown fox jumped over the lazy doggo"};
   constexpr int window_width = 20;
   constexpr int col_off = 5;
-  screen_buffer buf;
+  append_buffer buf;
 
   print_line_of_document(line, buf, window_width, col_off);
 
@@ -326,7 +326,7 @@ TEST(Editor, PrintLineOfDocumentPrintsFullLineWhenWindowIsWiderThanLine)
   std::string const line {"Hello world"};
   constexpr int window_width = 20;
   constexpr int col_off = 0;
-  screen_buffer buf;
+  append_buffer buf;
 
   print_line_of_document(line, buf, window_width, col_off);
 
@@ -339,7 +339,7 @@ TEST(Editor, PrintLineOfDocumentStartsAtColumnOffset)
   std::string const line {"0123456789abcdefghijklmnopqrstuvwxyz"};
   constexpr int window_width = 10;
   constexpr int col_off = 4;
-  screen_buffer buf;
+  append_buffer buf;
 
   print_line_of_document(line, buf, window_width, col_off);
 
@@ -354,7 +354,7 @@ TEST(Editor, PrintLineOfDocumentPrintsRemainingCharsWhenShorterThanWindow)
   std::string const line {"abcdef"};
   constexpr int window_width = 10;
   constexpr int col_off = 2;
-  screen_buffer buf;
+  append_buffer buf;
 
   print_line_of_document(line, buf, window_width, col_off);
 

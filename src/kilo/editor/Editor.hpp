@@ -128,7 +128,7 @@ namespace kilo::editor::detail {
  * \param[in] window_width The width of the window in which the message is to be displayed
  * \param[in] buffer The buffer to which the message is written before being displayed
  */
-void print_welcome_message(int32_t window_width, screen_buffer& buffer);
+void print_welcome_message(int32_t window_width, append_buffer& buffer);
 
 /**
  * \brief Print a line of text from the open document to the screen
@@ -139,7 +139,7 @@ void print_welcome_message(int32_t window_width, screen_buffer& buffer);
  * \param[in] col_off The column offset between the terminal window width and the document width
  * \pre The column offset must be non-negative
  */
-void print_line_of_document(std::string const& line, screen_buffer& buffer, int32_t window_width, int64_t col_off);
+void print_line_of_document(std::string const& line, append_buffer& buffer, int32_t window_width, int64_t col_off);
 
 }   // namespace kilo::editor::detail
 

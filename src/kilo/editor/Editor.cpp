@@ -97,7 +97,7 @@ void refresh_screen(editor_config& editor)
   scroll(editor);
 
   // Hide the cursor when painting and then move it to the Home position
-  editor.screen_buf.write(utilities::escape_sequences::hide_cursor_when_repainting)
+  editor.abuf.write(utilities::escape_sequences::hide_cursor_when_repainting)
     .write(utilities::escape_sequences::move_cursor_to_home_position);
 
   // Draw the welcome message, or each row of the currently open document with a tilde at the beginning
@@ -117,7 +117,7 @@ void refresh_screen(editor_config& editor)
   // The file to which the screen buffer writes its contents when flushed (typically STDOUT)
   io::file out_file {};
 
-  editor.screen_buf.write(cursor_pos).write(utilities::escape_sequences::show_the_cursor).flush(out_file);
+  editor.abuf.write(cursor_pos).write(utilities::escape_sequences::show_the_cursor).flush(out_file);
 }
 
 /**
@@ -129,20 +129,20 @@ void draw_rows(editor_config& editor)
   for (int32_t curr_row = 0; curr_row < editor.winsize.rows; ++curr_row) {
     if (auto const file_row = curr_row + editor.off.row; file_row >= std::ssize(editor.row)) {
       if (editor.row.empty() and curr_row == editor.winsize.rows / 3) {
-        detail::print_welcome_message(editor.winsize.cols, editor.screen_buf);
+        detail::print_welcome_message(editor.winsize.cols, editor.abuf);
       }
       else {
-        editor.screen_buf.write("~");
+        editor.abuf.write("~");
       }
     }
     else {
-      detail::print_line_of_document(editor.row[static_cast<std::size_t>(file_row)].render, editor.screen_buf,
+      detail::print_line_of_document(editor.row[static_cast<std::size_t>(file_row)].render, editor.abuf,
                                      editor.winsize.cols, editor.off.col);
     }
 
-    editor.screen_buf.write(utilities::escape_sequences::erase_part_of_line_to_the_right_of_cursor);
+    editor.abuf.write(utilities::escape_sequences::erase_part_of_line_to_the_right_of_cursor);
 
-    editor.screen_buf.write(utilities::escape_sequences::crnl);
+    editor.abuf.write(utilities::escape_sequences::crnl);
   }
 }
 
@@ -327,7 +327,7 @@ void draw_status_bar(gsl::not_null<editor_config*> editor)
 {
   using utilities::escape_sequences;
 
-  editor->screen_buf.write(escape_sequences::switch_to_inverted_colours);
+  editor->abuf.write(escape_sequences::switch_to_inverted_colours);
 
   auto status =
     fmt::format("{:.20} - {} lines", editor->filename.empty() ? "[No Name]" : editor->filename, editor->row.size());
@@ -337,20 +337,20 @@ void draw_status_bar(gsl::not_null<editor_config*> editor)
     status.resize(static_cast<std::size_t>(editor->winsize.cols));
   }
 
-  editor->screen_buf.write(status);
+  editor->abuf.write(status);
 
   for (std::size_t i = status.length(); i < static_cast<std::size_t>(editor->winsize.cols); ++i) {
     if (static_cast<std::size_t>(editor->winsize.cols) - i != rstatus.length()) {
-      editor->screen_buf.write(" ");
+      editor->abuf.write(" ");
     }
     else {
-      editor->screen_buf.write(rstatus);
+      editor->abuf.write(rstatus);
       break;
     }
   }
 
-  editor->screen_buf.write(escape_sequences::switch_to_normal_formatting);
-  editor->screen_buf.write(escape_sequences::crnl);
+  editor->abuf.write(escape_sequences::switch_to_normal_formatting);
+  editor->abuf.write(escape_sequences::crnl);
 }
 
 void draw_message_bar(gsl::not_null<editor_config*> editor)
@@ -360,11 +360,11 @@ void draw_message_bar(gsl::not_null<editor_config*> editor)
 
   static constexpr auto time_limit = 5U;
 
-  editor->screen_buf.write(escape_sequences::erase_part_of_line_to_the_right_of_cursor);
+  editor->abuf.write(escape_sequences::erase_part_of_line_to_the_right_of_cursor);
   auto const msg_len = std::min(std::ssize(editor->status_msg), static_cast<int64_t>(editor->winsize.cols));
 
   if (msg_len > 0 and system_clock::now() - editor->status_msg_time < std::chrono::seconds(time_limit)) {
-    editor->screen_buf.write({editor->status_msg.c_str(), static_cast<std::size_t>(msg_len)});
+    editor->abuf.write({editor->status_msg.c_str(), static_cast<std::size_t>(msg_len)});
   }
 }
 
@@ -378,7 +378,7 @@ namespace kilo::editor::detail {
  * \param[in] window_width The width of the window in which the message is to be displayed
  * \param[in] buffer The buffer to which the message is written before being displayed
  */
-void print_welcome_message(int32_t window_width, screen_buffer& buffer)
+void print_welcome_message(int32_t window_width, append_buffer& buffer)
 {
   auto msg = fmt::format("Kilo editor -- version {}", utilities::kilo_version);
 
@@ -419,7 +419,7 @@ void print_welcome_message(int32_t window_width, screen_buffer& buffer)
  * \param[in] col_off The column offset between the terminal window width and the document width
  * \pre The column offset must be non-negative
  */
-void print_line_of_document(std::string const& line, screen_buffer& buffer, int32_t window_width, int64_t col_off)
+void print_line_of_document(std::string const& line, append_buffer& buffer, int32_t window_width, int64_t col_off)
 {
   Expects(col_off >= 0 and "Column offset must be non-negative");
 

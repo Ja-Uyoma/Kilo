@@ -21,12 +21,14 @@
  * SOFTWARE.
  */
 
-#ifndef SCREEN_BUFFER_HPP
-#define SCREEN_BUFFER_HPP
+#ifndef KILO_EDITOR_APPEND_BUFFER_HPP
+#define KILO_EDITOR_APPEND_BUFFER_HPP
 
 #include "kilo/io/File.hpp"
 #include <string_view>
 
+#include <cstddef>
+#include <cstdint>
 #include <string>
 
 namespace kilo::editor {
@@ -36,20 +38,25 @@ namespace kilo::editor {
 // strings will be appended, and then this buffer will be written out at the
 // end.
 
-class screen_buffer final
+/**
+ * @class append_buffer
+ * @brief
+ * @details
+ */
+class append_buffer final
 {
 public:
   ///
   /// \brief Default constructor
   ///
-  explicit constexpr screen_buffer() noexcept = default;
+  explicit constexpr append_buffer() noexcept = default;
 
   ///
   /// \brief Append the given string to the string buffer
   /// \param[in] str The string to be appended to the string buffer
-  /// \returns A reference to the screen_buffer object
+  /// \returns A reference to the append_buffer object
   ///
-  constexpr auto write(std::string_view str) & noexcept(false) -> screen_buffer&
+  constexpr auto write(std::string_view str) & noexcept(false) -> append_buffer&
   {
     m_buffer.append(str);
     return *this;
