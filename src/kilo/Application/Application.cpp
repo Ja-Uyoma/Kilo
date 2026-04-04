@@ -54,7 +54,7 @@ void application::run()
 
   try {
     while (true) {
-      kilo::editor::refresh_screen(m_editor_config);
+      kilo::editor::refresh_screen(m_editor_config, &m_abuf);
 
       auto const key_pressed = io::read_key();
       kilo::editor::process_keypress(key_pressed, m_editor_config);

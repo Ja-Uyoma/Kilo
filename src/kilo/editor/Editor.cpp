@@ -93,18 +93,18 @@ void process_keypress(int key_pressed, editor_config& editor_config)
  * \brief Perform a screen refresh
  * \param[in] editor The current editor configuration
  */
-void refresh_screen(editor_config& editor)
+void refresh_screen(editor_config& editor, gsl::not_null<append_buffer::append_buffer*> abuf)
 {
   scroll(editor);
 
   // Hide the cursor when painting and then move it to the Home position
-  editor.abuf.write(utilities::escape_sequences::hide_cursor_when_repainting)
+  abuf->write(utilities::escape_sequences::hide_cursor_when_repainting)
     .write(utilities::escape_sequences::move_cursor_to_home_position);
 
   // Draw the welcome message, or each row of the currently open document with a tilde at the beginning
-  draw_rows(editor);
-  draw_status_bar(&editor);
-  draw_message_bar(&editor);
+  draw_rows(editor, abuf);
+  draw_status_bar(&editor, abuf);
+  draw_message_bar(&editor, abuf);
 
   // We want to show the cursor immediately after writing the contents of the open document or the welcome message.
   // To do this, we must first get the cursor position, and then write it to the screen buffer before flushing it
@@ -118,32 +118,31 @@ void refresh_screen(editor_config& editor)
   // The file to which the screen buffer writes its contents when flushed (typically STDOUT)
   io::file out_file {};
 
-  editor.abuf.write(cursor_pos).write(utilities::escape_sequences::show_the_cursor).flush(out_file);
+  abuf->write(cursor_pos).write(utilities::escape_sequences::show_the_cursor).flush(out_file);
 }
 
 /**
  * \brief Draw each row of the buffer of text being edited, plus a tilde at the beginning, or the welcome message
  * \param[in] editor The editor configuration
  */
-void draw_rows(editor_config& editor)
+void draw_rows(editor_config& editor, gsl::not_null<append_buffer::append_buffer*> abuf)
 {
   for (int32_t curr_row = 0; curr_row < editor.winsize.rows; ++curr_row) {
     if (auto const file_row = curr_row + editor.off.row; file_row >= std::ssize(editor.row)) {
       if (editor.row.empty() and curr_row == editor.winsize.rows / 3) {
-        detail::print_welcome_message(editor.winsize.cols, editor.abuf);
+        detail::print_welcome_message(editor.winsize.cols, *abuf);
       }
       else {
-        editor.abuf.write("~");
+        abuf->write("~");
       }
     }
     else {
-      detail::print_line_of_document(editor.row[static_cast<std::size_t>(file_row)].render, editor.abuf,
-                                     editor.winsize.cols, editor.off.col);
+      detail::print_line_of_document(editor.row[static_cast<std::size_t>(file_row)].render, *abuf, editor.winsize.cols,
+                                     editor.off.col);
     }
 
-    editor.abuf.write(utilities::escape_sequences::erase_part_of_line_to_the_right_of_cursor);
-
-    editor.abuf.write(utilities::escape_sequences::crnl);
+    abuf->write(utilities::escape_sequences::erase_part_of_line_to_the_right_of_cursor);
+    abuf->write(utilities::escape_sequences::crnl);
   }
 }
 
@@ -324,11 +323,11 @@ auto row_cx_to_rx(erow const& row, int64_t cursor_x) -> int64_t
   return render_x;
 }
 
-void draw_status_bar(gsl::not_null<editor_config*> editor)
+void draw_status_bar(gsl::not_null<editor_config*> editor, gsl::not_null<append_buffer::append_buffer*> abuf)
 {
   using utilities::escape_sequences;
 
-  editor->abuf.write(escape_sequences::switch_to_inverted_colours);
+  abuf->write(escape_sequences::switch_to_inverted_colours);
 
   auto status =
     fmt::format("{:.20} - {} lines", editor->filename.empty() ? "[No Name]" : editor->filename, editor->row.size());
@@ -338,34 +337,34 @@ void draw_status_bar(gsl::not_null<editor_config*> editor)
     status.resize(static_cast<std::size_t>(editor->winsize.cols));
   }
 
-  editor->abuf.write(status);
+  abuf->write(status);
 
   for (std::size_t i = status.length(); i < static_cast<std::size_t>(editor->winsize.cols); ++i) {
     if (static_cast<std::size_t>(editor->winsize.cols) - i != rstatus.length()) {
-      editor->abuf.write(" ");
+      abuf->write(" ");
     }
     else {
-      editor->abuf.write(rstatus);
+      abuf->write(rstatus);
       break;
     }
   }
 
-  editor->abuf.write(escape_sequences::switch_to_normal_formatting);
-  editor->abuf.write(escape_sequences::crnl);
+  abuf->write(escape_sequences::switch_to_normal_formatting);
+  abuf->write(escape_sequences::crnl);
 }
 
-void draw_message_bar(gsl::not_null<editor_config*> editor)
+void draw_message_bar(gsl::not_null<editor_config*> editor, gsl::not_null<append_buffer::append_buffer*> abuf)
 {
   using std::chrono::system_clock;
   using utilities::escape_sequences;
 
   static constexpr auto time_limit = 5U;
 
-  editor->abuf.write(escape_sequences::erase_part_of_line_to_the_right_of_cursor);
+  abuf->write(escape_sequences::erase_part_of_line_to_the_right_of_cursor);
   auto const msg_len = std::min(std::ssize(editor->status_msg), static_cast<int64_t>(editor->winsize.cols));
 
   if (msg_len > 0 and system_clock::now() - editor->status_msg_time < std::chrono::seconds(time_limit)) {
-    editor->abuf.write({editor->status_msg.c_str(), static_cast<std::size_t>(msg_len)});
+    abuf->write({editor->status_msg.c_str(), static_cast<std::size_t>(msg_len)});
   }
 }
 

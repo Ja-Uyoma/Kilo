@@ -48,6 +48,7 @@ public:
 
 private:
   kilo::editor::editor_config m_editor_config;
+  kilo::editor::append_buffer::append_buffer m_abuf;
 
   ///
   /// \brief Open a file and write its contents to memory

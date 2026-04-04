@@ -73,7 +73,6 @@ struct editor_config
   // Index into the `render` string
   int64_t rx {};
   offset off;
-  append_buffer::append_buffer abuf;
   std::vector<erow> row;
   std::string filename;
   std::string status_msg;
