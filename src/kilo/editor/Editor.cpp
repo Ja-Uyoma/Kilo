@@ -49,7 +49,7 @@
 
 namespace kilo::editor {
 
-void process_keypress(int key_pressed, editor_config& editor_config, terminal::window_size const& winsize)
+void process_keypress(int key_pressed, editor_config& editor_config, terminal::window_size::window_size const& winsize)
 {
   std::ignore = std::atexit([]() -> void { utilities::clear_screen_and_reposition_cursor(); });
 
@@ -86,7 +86,7 @@ void process_keypress(int key_pressed, editor_config& editor_config, terminal::w
 }
 
 void refresh_screen(editor_config& editor, gsl::not_null<append_buffer::append_buffer*> abuf,
-                    terminal::window_size const& winsize)
+                    terminal::window_size::window_size const& winsize)
 {
   scroll(editor, winsize);
 
@@ -115,7 +115,7 @@ void refresh_screen(editor_config& editor, gsl::not_null<append_buffer::append_b
 }
 
 void draw_rows(editor_config const& editor, gsl::not_null<append_buffer::append_buffer*> abuf,
-               terminal::window_size const& winsize)
+               terminal::window_size::window_size const& winsize)
 {
   for (int32_t curr_row = 0; curr_row < winsize.rows; ++curr_row) {
     if (auto const file_row = curr_row + editor.off.row; file_row >= std::ssize(editor.row)) {
@@ -192,7 +192,7 @@ void move_cursor(utilities::editor_key const key, editor_config& editor)
   editor.curs.x = std::min(editor.curs.x, row_len);
 }
 
-void scroll(editor_config& editor, terminal::window_size const& winsize) noexcept
+void scroll(editor_config& editor, terminal::window_size::window_size const& winsize) noexcept
 {
   // Check if the cursor has moved outside the visible window
   // If so, adjust the editor.offset.row and/or editor.offset.col variable(s) so that the
@@ -300,7 +300,7 @@ auto row_cx_to_rx(erow const& row, int64_t cursor_x) -> int64_t
 }
 
 void draw_status_bar(editor_config const& editor, gsl::not_null<append_buffer::append_buffer*> abuf,
-                     terminal::window_size const& winsize)
+                     terminal::window_size::window_size const& winsize)
 {
   using utilities::escape_sequences;
 
@@ -331,7 +331,7 @@ void draw_status_bar(editor_config const& editor, gsl::not_null<append_buffer::a
 }
 
 void draw_message_bar(editor_config const& editor, gsl::not_null<append_buffer::append_buffer*> abuf,
-                      terminal::window_size const& winsize)
+                      terminal::window_size::window_size const& winsize)
 {
   using std::chrono::system_clock;
   using utilities::escape_sequences;

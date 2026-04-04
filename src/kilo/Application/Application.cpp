@@ -39,7 +39,7 @@ namespace kilo::application {
 
 application::application() noexcept(false)
 {
-  m_winsize = terminal::get_terminal_window_size();
+  m_winsize = terminal::window_size::get_terminal_window_size();
   m_winsize.rows -= 2;
 }
 

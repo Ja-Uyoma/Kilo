@@ -37,7 +37,7 @@
 #include <string>
 #include <unistd.h>
 
-namespace kilo::terminal {
+namespace kilo::terminal::window_size {
 
 auto get_terminal_window_size() noexcept(false) -> window_size
 {
@@ -133,4 +133,4 @@ auto get_cursor_position(io::file_interface& file, std::span<char> buffer) noexc
 
 }   // namespace detail
 
-}   // namespace kilo::terminal
+}   // namespace kilo::terminal::window_size

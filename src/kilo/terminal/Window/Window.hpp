@@ -30,7 +30,7 @@
 #include <cstdint>
 #include <span>
 
-namespace kilo::terminal {
+namespace kilo::terminal::window_size {
 
 /**
  * @struct window_size
@@ -81,6 +81,6 @@ auto get_cursor_position(io::file_interface& file, std::span<char> buffer) noexc
 
 }   // namespace detail
 
-}   // namespace kilo::terminal
+}   // namespace kilo::terminal::window_size
 
 #endif

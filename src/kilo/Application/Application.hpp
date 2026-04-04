@@ -51,7 +51,7 @@ public:
 private:
   kilo::editor::editor_config m_editor_config;
   kilo::editor::append_buffer::append_buffer m_abuf;
-  kilo::terminal::window_size m_winsize;
+  kilo::terminal::window_size::window_size m_winsize;
 
   ///
   /// \brief Open a file and write its contents to memory

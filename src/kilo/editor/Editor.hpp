@@ -43,7 +43,7 @@ namespace kilo::editor {
  * @param[in] key_pressed The key pressed by the user
  * @param[in] editor The current state of the editor
  */
-void process_keypress(int key_pressed, editor_config& editor_config, terminal::window_size const& winsize);
+void process_keypress(int key_pressed, editor_config& editor_config, terminal::window_size::window_size const& winsize);
 
 /**
  * @brief Perform a screen refresh
@@ -51,7 +51,7 @@ void process_keypress(int key_pressed, editor_config& editor_config, terminal::w
  * @param[in,out] abuf The buffer to which writes to the screen are done
  */
 void refresh_screen(editor_config& editor, gsl::not_null<append_buffer::append_buffer*> abuf,
-                    terminal::window_size const& winsize);
+                    terminal::window_size::window_size const& winsize);
 
 /**
  * @brief Draw each row of the buffer of text being edited, plus a tilde at the beginning, or the welcome message
@@ -59,7 +59,7 @@ void refresh_screen(editor_config& editor, gsl::not_null<append_buffer::append_b
  * @param[in,out] abuf The buffer to which writes to the screen are done
  */
 void draw_rows(editor_config const& editor, gsl::not_null<append_buffer::append_buffer*> abuf,
-               terminal::window_size const& winsize);
+               terminal::window_size::window_size const& winsize);
 
 /**
  * @brief Move the cursor in the direction of the key pressed
@@ -72,7 +72,7 @@ void move_cursor(utilities::editor_key key, editor_config& editor);
  * @brief Fix the cursor in the visible window while scrolling
  * @param[in] editor The current state of the editor
  */
-void scroll(editor_config& editor, terminal::window_size const& winsize) noexcept;
+void scroll(editor_config& editor, terminal::window_size::window_size const& winsize) noexcept;
 
 /**
  * @brief Open a file and write its contents to a buffer in memory
@@ -105,7 +105,7 @@ auto row_cx_to_rx(erow const& row, int64_t cursor_x) -> int64_t;
  * @param[in,out] abuf The buffer to which writes to the screen are done
  */
 void draw_status_bar(editor_config const& editor, gsl::not_null<append_buffer::append_buffer*> abuf,
-                     terminal::window_size const& winsize);
+                     terminal::window_size::window_size const& winsize);
 
 /**
  * @brief Set a status message to be displayed in the editor
@@ -126,7 +126,7 @@ void set_status_msg(gsl::not_null<editor_config*> editor, fmt::format_string<Arg
  * @param[in,out] abuf The buffer to which writes to the screen are done
  */
 void draw_message_bar(editor_config const& editor, gsl::not_null<append_buffer::append_buffer*> abuf,
-                      terminal::window_size const& winsize);
+                      terminal::window_size::window_size const& winsize);
 
 }   // namespace kilo::editor
 
