@@ -38,6 +38,7 @@
 namespace kilo::editor::editor_config {
 
 // NOLINTBEGIN(*-magic-numbers)
+// NOLINTBEGIN(*-missing-designated-field-initializers)
 
 TEST(EditorConfig, ProcessKeypressTerminatesTheProgramIfQIsPressed)
 {
@@ -348,6 +349,7 @@ TEST(EditorConfig, PrintLineOfDocumentPrintsRemainingCharsWhenShorterThanWindow)
 
 }   // namespace detail
 
+// NOLINTEND(*-missing-designated-field-initializers)
 // NOLINTEND(*-magic-numbers)
 
 }   // namespace kilo::editor::editor_config
