@@ -32,7 +32,7 @@
 #include <cstdint>
 #include <unistd.h>
 
-namespace kilo::editor {
+namespace kilo::editor::append_buffer {
 
 ///
 /// \brief Flush the buffer by writing its contents to a file
@@ -67,4 +67,4 @@ auto append_buffer::flush(io::file_interface& file) const& noexcept(false) -> st
   return total_written;
 }
 
-}   // namespace kilo::editor
+}   // namespace kilo::editor::append_buffer

@@ -31,7 +31,7 @@
 #include <cstdint>
 #include <string>
 
-namespace kilo::editor {
+namespace kilo::editor::append_buffer {
 // In order to avoid making multiple ::write() calls anytime we need to refresh
 // the screen, we will do one big ::write() at the end to make sure the entire
 // screen updates at once. This is accomplished by the use of a buffer to which
@@ -100,6 +100,6 @@ public:
 private:
   std::string m_buffer;
 };
-}   // namespace kilo::editor
+}   // namespace kilo::editor::append_buffer
 
 #endif

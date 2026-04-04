@@ -23,6 +23,7 @@
 
 #include "Editor.hpp"
 
+#include "kilo/editor/ScreenBuffer/ScreenBuffer.hpp"
 #include "kilo/io/File.hpp"
 #include "kilo/utilities/Constants.hpp"
 #include "kilo/utilities/Utilities.hpp"
@@ -378,7 +379,7 @@ namespace kilo::editor::detail {
  * \param[in] window_width The width of the window in which the message is to be displayed
  * \param[in] buffer The buffer to which the message is written before being displayed
  */
-void print_welcome_message(int32_t window_width, append_buffer& buffer)
+void print_welcome_message(int32_t window_width, append_buffer::append_buffer& buffer)
 {
   auto msg = fmt::format("Kilo editor -- version {}", utilities::kilo_version);
 
@@ -419,7 +420,8 @@ void print_welcome_message(int32_t window_width, append_buffer& buffer)
  * \param[in] col_off The column offset between the terminal window width and the document width
  * \pre The column offset must be non-negative
  */
-void print_line_of_document(std::string const& line, append_buffer& buffer, int32_t window_width, int64_t col_off)
+void print_line_of_document(std::string const& line, append_buffer::append_buffer& buffer, int32_t window_width,
+                            int64_t col_off)
 {
   Expects(col_off >= 0 and "Column offset must be non-negative");
 
