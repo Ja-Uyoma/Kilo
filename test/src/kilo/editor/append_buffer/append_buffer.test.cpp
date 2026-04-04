@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-#include "kilo/editor/ScreenBuffer/ScreenBuffer.hpp"
+#include "kilo/editor/append_buffer/append_buffer.hpp"
 #include "kilo/io/File.hpp"
 #include <system_error>
 
@@ -33,15 +33,15 @@
 #include <cstring>
 #include <string>
 
-namespace kilo::editor {
+namespace kilo::editor::append_buffer {
 
-TEST(ScreenBuffer, IsEmptyWhenCreated)
+TEST(AppendBuffer, IsEmptyWhenCreated)
 {
   append_buffer buffer;
   ASSERT_EQ(buffer.size(), 0);
 }
 
-TEST(ScreenBuffer, ItsSizeIncreasesByTheLengthOfTheAppendedString)
+TEST(AppendBuffer, ItsSizeIncreasesByTheLengthOfTheAppendedString)
 {
   append_buffer buffer;
   char const* str = "Hello, World!";
@@ -67,7 +67,7 @@ public:
 
 // NOLINTEND(modernize-use-trailing-return-type)
 
-TEST(ScreenBuffer, flushReturnsTheNumberOfBytesWrittenOnSuccess)
+TEST(AppendBuffer, flushReturnsTheNumberOfBytesWrittenOnSuccess)
 {
   using ::testing::Eq;
   using ::testing::Return;
@@ -83,7 +83,7 @@ TEST(ScreenBuffer, flushReturnsTheNumberOfBytesWrittenOnSuccess)
   ASSERT_THAT(result, Eq(13));
 }
 
-TEST(ScreenBuffer, flushThrowsAnExceptionOnFailure)
+TEST(AppendBuffer, flushThrowsAnExceptionOnFailure)
 {
   mock_file_interface file;
   append_buffer buffer;
@@ -99,7 +99,7 @@ TEST(ScreenBuffer, flushThrowsAnExceptionOnFailure)
   ASSERT_THROW(buffer.flush(file), std::system_error);
 }
 
-TEST(ScreenBuffer, FlushHandlesEINTR)
+TEST(AppendBuffer, FlushHandlesEINTR)
 {
   mock_file_interface mock_file;
   append_buffer buffer;
@@ -120,7 +120,7 @@ TEST(ScreenBuffer, FlushHandlesEINTR)
   ASSERT_THAT(result, testing::Eq(23));
 }
 
-TEST(ScreenBuffer, FlushStopsOnZeroBytesWritten)
+TEST(AppendBuffer, FlushStopsOnZeroBytesWritten)
 {
   mock_file_interface mock_file;
   append_buffer buffer;
@@ -135,4 +135,4 @@ TEST(ScreenBuffer, FlushStopsOnZeroBytesWritten)
   ASSERT_THAT(result, testing::Eq(0));
 }
 
-}   // namespace kilo::editor
+}   // namespace kilo::editor::append_buffer

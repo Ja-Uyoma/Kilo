@@ -21,11 +21,10 @@
  * SOFTWARE.
  */
 
-#include "kilo/editor/Editor.hpp"
+#include "kilo/editor/editor_config/editor_config.hpp"
 
-#include "kilo/editor/EditorConfig/EditorConfig.hpp"
-#include "kilo/editor/ScreenBuffer/ScreenBuffer.hpp"
-#include "kilo/terminal/Window/Window.hpp"
+#include "kilo/editor/append_buffer/append_buffer.hpp"
+#include "kilo/terminal/window_size/window_size.hpp"
 #include "kilo/utilities/Constants.hpp"
 #include "kilo/utilities/Utilities.hpp"
 
@@ -36,68 +35,56 @@
 #include <string>
 #include <vector>
 
-namespace kilo::editor {
+namespace kilo::editor::editor_config {
 
 // NOLINTBEGIN(*-magic-numbers)
 
-TEST(Editor, ProcessKeypressTerminatesTheProgramIfQIsPressed)
+TEST(EditorConfig, ProcessKeypressTerminatesTheProgramIfQIsPressed)
 {
+  using terminal::window_size::window_size;
   using utilities::editor_key;
 
   editor_config editor_config;
+  window_size winsz {};
   constexpr auto key = utilities::ctrl_key('q');
 
-  ASSERT_EXIT(process_keypress(key, editor_config), ::testing::ExitedWithCode(EXIT_SUCCESS), ::testing::Eq(""));
+  ASSERT_EXIT(process_keypress(key, editor_config, winsz), ::testing::ExitedWithCode(EXIT_SUCCESS), ::testing::Eq(""));
 }
 
-TEST(Editor, ProcessKeypressMovesCursorToStartOfLineIfHomeButtonIsPressed)
+TEST(EditorConfig, ProcessKeypressMovesCursorToStartOfLineIfHomeButtonIsPressed)
 {
+  using terminal::window_size::window_size;
   using utilities::editor_key;
 
-  static constexpr int32_t cols = 64;
-  static constexpr int32_t rows = 32;
-
   constexpr auto key = editor_key::home;
-  editor_config editor_config {
-    .winsize = {.cols = cols, .rows = rows},
-      .curs = {},
-      .off = {},
-      .abuf = append_buffer(), .row = {}
-  };
+  window_size winsz {.cols = 64, .rows = 32};
+  editor_config editor_config {};
 
-  process_keypress(static_cast<int>(key), editor_config);
+  process_keypress(static_cast<int>(key), editor_config, winsz);
 
   ASSERT_THAT(editor_config.curs.x, ::testing::Eq(0));
 }
 
-TEST(Editor, ProcessKeypressMovesCursorToEndOfLineIfEndButtonIsPressed)
+TEST(EditorConfig, ProcessKeypressMovesCursorToEndOfLineIfEndButtonIsPressed)
 {
+  using terminal::window_size::window_size;
   using utilities::editor_key;
 
-  static constexpr int32_t cols = 64;
-  static constexpr int32_t rows = 32;
-
   constexpr auto key = editor_key::end;
-  editor_config editor_config {
-    .winsize = {.cols = cols, .rows = rows},
-      .curs = {},
-      .off = {},
-      .abuf = append_buffer(), .row = {}
-  };
+  window_size winsz {.cols = 64, .rows = 32};
+  editor_config editor_config {};
 
-  process_keypress(static_cast<int>(key), editor_config);
+  process_keypress(static_cast<int>(key), editor_config, winsz);
 
-  ASSERT_THAT(editor_config.curs.x, ::testing::Eq(editor_config.winsize.cols - 1));
+  ASSERT_THAT(editor_config.curs.x, ::testing::Eq(winsz.cols - 1));
 }
 
-TEST(Editor, MoveCursorArrowLeftDecrementsXWhenNotAtStart)
+TEST(EditorConfig, MoveCursorArrowLeftDecrementsXWhenNotAtStart)
 {
   editor_config editor_config {
-    .winsize = {.cols = 80, .rows = 24},
     .curs = {.x = 5, .y = 0},
-    .off = {},
-    .abuf = append_buffer(),
-    .row = {{"Hello world", "Hello world"}}
+      .off = {},
+      .row = {erow::erow {"Hello world"}}
   };
 
   move_cursor(utilities::editor_key::arrow_left, editor_config);
@@ -106,14 +93,12 @@ TEST(Editor, MoveCursorArrowLeftDecrementsXWhenNotAtStart)
   ASSERT_THAT(editor_config.curs.y, ::testing::Eq(0));
 }
 
-TEST(Editor, MoveCursorArrowLeftMovesToEndOfPreviousLineWhenAtStartOfLine)
+TEST(EditorConfig, MoveCursorArrowLeftMovesToEndOfPreviousLineWhenAtStartOfLine)
 {
   editor_config editor_config {
-    .winsize = {.cols = 80, .rows = 24},
     .curs = {.x = 0, .y = 1},
-    .off = {},
-    .abuf = append_buffer(),
-    .row = {{"Hello", "Hello"}, {"world", "world"}}
+      .off = {},
+      .row = {erow::erow {"Hello"}, erow::erow {"world"}}
   };
 
   move_cursor(utilities::editor_key::arrow_left, editor_config);
@@ -122,14 +107,12 @@ TEST(Editor, MoveCursorArrowLeftMovesToEndOfPreviousLineWhenAtStartOfLine)
   ASSERT_THAT(editor_config.curs.y, ::testing::Eq(0));
 }
 
-TEST(Editor, MoveCursorArrowLeftStaysAtStartWhenAlreadyAtBeginningOfDocument)
+TEST(EditorConfig, MoveCursorArrowLeftStaysAtStartWhenAlreadyAtBeginningOfDocument)
 {
   editor_config editor_config {
-    .winsize = {.cols = 80, .rows = 24},
     .curs = {.x = 0, .y = 0},
-    .off = {},
-    .abuf = append_buffer(),
-    .row = {{"Hello world", "Hello world"}}
+      .off = {},
+      .row = {erow::erow {"Hello world"}}
   };
 
   move_cursor(utilities::editor_key::arrow_left, editor_config);
@@ -138,14 +121,12 @@ TEST(Editor, MoveCursorArrowLeftStaysAtStartWhenAlreadyAtBeginningOfDocument)
   ASSERT_THAT(editor_config.curs.y, ::testing::Eq(0));
 }
 
-TEST(Editor, MoveCursorArrowRightIncrementsXWhenNotAtEndOfLine)
+TEST(EditorConfig, MoveCursorArrowRightIncrementsXWhenNotAtEndOfLine)
 {
   editor_config editor_config {
-    .winsize = {.cols = 80, .rows = 24},
     .curs = {.x = 3, .y = 0},
-    .off = {},
-    .abuf = append_buffer(),
-    .row = {{"Hello world", "Hello world"}}
+      .off = {},
+      .row = {erow::erow {"Hello world"}}
   };
 
   move_cursor(utilities::editor_key::arrow_right, editor_config);
@@ -154,14 +135,12 @@ TEST(Editor, MoveCursorArrowRightIncrementsXWhenNotAtEndOfLine)
   ASSERT_THAT(editor_config.curs.y, ::testing::Eq(0));
 }
 
-TEST(Editor, MoveCursorArrowRightMovesToStartOfNextLineWhenAtEndOfLine)
+TEST(EditorConfig, MoveCursorArrowRightMovesToStartOfNextLineWhenAtEndOfLine)
 {
   editor_config editor_config {
-    .winsize = {.cols = 80, .rows = 24},
     .curs = {.x = 5, .y = 0},
-    .off = {},
-    .abuf = append_buffer(),
-    .row = {{"Hello", "Hello"}, {"world", "world"}}
+      .off = {},
+      .row = {erow::erow {"Hello"}, erow::erow {"world"}}
   };
 
   move_cursor(utilities::editor_key::arrow_right, editor_config);
@@ -170,14 +149,12 @@ TEST(Editor, MoveCursorArrowRightMovesToStartOfNextLineWhenAtEndOfLine)
   ASSERT_THAT(editor_config.curs.y, ::testing::Eq(1));
 }
 
-TEST(Editor, MoveCursorArrowRightStaysAtEndWhenAtEndOfDocument)
+TEST(EditorConfig, MoveCursorArrowRightStaysAtEndWhenAtEndOfDocument)
 {
   editor_config editor_config {
-    .winsize = {.cols = 80, .rows = 24},
     .curs = {.x = 11, .y = 1},
-    .off = {},
-    .abuf = append_buffer(),
-    .row = {{"Hello world", "Hello world"}}
+      .off = {},
+      .row = {erow::erow {"Hello world"}}
   };
 
   move_cursor(utilities::editor_key::arrow_right, editor_config);
@@ -186,14 +163,12 @@ TEST(Editor, MoveCursorArrowRightStaysAtEndWhenAtEndOfDocument)
   ASSERT_THAT(editor_config.curs.y, ::testing::Eq(1));
 }
 
-TEST(Editor, MoveCursorArrowUpDecrementsYWhenNotAtTopOfDocument)
+TEST(EditorConfig, MoveCursorArrowUpDecrementsYWhenNotAtTopOfDocument)
 {
   editor_config editor_config {
-    .winsize = {.cols = 80, .rows = 24},
     .curs = {.x = 3, .y = 2},
-    .off = {},
-    .abuf = append_buffer(),
-    .row = {{"Hello", "Hello"}, {"world", "world"}, {"foo", "foo"}}
+      .off = {},
+      .row = {erow::erow {"Hello"}, erow::erow {"world"}, erow::erow {"foo"}}
   };
 
   move_cursor(utilities::editor_key::arrow_up, editor_config);
@@ -202,14 +177,12 @@ TEST(Editor, MoveCursorArrowUpDecrementsYWhenNotAtTopOfDocument)
   ASSERT_THAT(editor_config.curs.x, ::testing::Eq(3));
 }
 
-TEST(Editor, MoveCursorArrowUpStaysAtTopWhenAlreadyAtFirstLine)
+TEST(EditorConfig, MoveCursorArrowUpStaysAtTopWhenAlreadyAtFirstLine)
 {
   editor_config editor_config {
-    .winsize = {.cols = 80, .rows = 24},
     .curs = {.x = 3, .y = 0},
-    .off = {},
-    .abuf = append_buffer(),
-    .row = {{"Hello", "Hello"}, {"world", "world"}, {"foo", "foo"}}
+      .off = {},
+      .row = {erow::erow {"Hello"}, erow::erow {"world"}, erow::erow {"foo"}}
   };
 
   move_cursor(utilities::editor_key::arrow_up, editor_config);
@@ -217,14 +190,12 @@ TEST(Editor, MoveCursorArrowUpStaysAtTopWhenAlreadyAtFirstLine)
   ASSERT_THAT(editor_config.curs.y, ::testing::Eq(0));
 }
 
-TEST(Editor, MoveCursorArrowDownIncrementsYWhenNotAtBottomOfDocument)
+TEST(EditorConfig, MoveCursorArrowDownIncrementsYWhenNotAtBottomOfDocument)
 {
   editor_config editor_config {
-    .winsize = {.cols = 80, .rows = 24},
     .curs = {.x = 3, .y = 0},
-    .off = {},
-    .abuf = append_buffer(),
-    .row = {{"Hello", "Hello"}, {"world", "world"}, {"foo", "foo"}}
+      .off = {},
+      .row = {erow::erow {"Hello"}, erow::erow {"world"}, erow::erow {"foo"}}
   };
 
   move_cursor(utilities::editor_key::arrow_down, editor_config);
@@ -233,14 +204,12 @@ TEST(Editor, MoveCursorArrowDownIncrementsYWhenNotAtBottomOfDocument)
   ASSERT_THAT(editor_config.curs.x, ::testing::Eq(3));
 }
 
-TEST(Editor, MoveCursorArrowDownStaysAtBottomWhenAlreadyAtLastLine)
+TEST(EditorConfig, MoveCursorArrowDownStaysAtBottomWhenAlreadyAtLastLine)
 {
   editor_config editor_config {
-    .winsize = {.cols = 80, .rows = 24},
     .curs = {.x = 3, .y = 3},
-    .off = {},
-    .abuf = append_buffer(),
-    .row = {{"Hello", "Hello"}, {"world", "world"}, {"foo", "foo"}}
+      .off = {},
+      .row = {erow::erow {"Hello"}, erow::erow {"world"}, erow::erow {"foo"}}
   };
 
   move_cursor(utilities::editor_key::arrow_down, editor_config);
@@ -248,14 +217,12 @@ TEST(Editor, MoveCursorArrowDownStaysAtBottomWhenAlreadyAtLastLine)
   ASSERT_THAT(editor_config.curs.y, ::testing::Eq(3));
 }
 
-TEST(Editor, MoveCursorClampsXWhenMovingToShorterLine)
+TEST(EditorConfig, MoveCursorClampsXWhenMovingToShorterLine)
 {
   editor_config editor_config {
-    .winsize = {.cols = 80, .rows = 24},
     .curs = {.x = 10, .y = 0},
-    .off = {},
-    .abuf = append_buffer(),
-    .row = {{"Hello world this is longer", "Hello world this is longer"}, {"hi", "hi"}}
+      .off = {},
+      .row = {erow::erow {"Hello world this is longer"}, erow::erow {"hi"}}
   };
 
   move_cursor(utilities::editor_key::arrow_down, editor_config);
@@ -264,14 +231,12 @@ TEST(Editor, MoveCursorClampsXWhenMovingToShorterLine)
   ASSERT_THAT(editor_config.curs.y, ::testing::Eq(1));
 }
 
-TEST(Editor, MoveCursorClampsXWhenMovingBeyondOpenDocBounds)
+TEST(EditorConfig, MoveCursorClampsXWhenMovingBeyondOpenDocBounds)
 {
   editor_config editor_config {
-    .winsize = {.cols = 80, .rows = 24},
     .curs = {.x = 5, .y = 2},
-    .off = {},
-    .abuf = append_buffer(),
-    .row = {{"Hello", "Hello"}}
+      .off = {},
+      .row = {erow::erow {"Hello"}}
   };
 
   move_cursor(utilities::editor_key::arrow_down, editor_config);
@@ -282,12 +247,12 @@ TEST(Editor, MoveCursorClampsXWhenMovingBeyondOpenDocBounds)
 
 namespace detail {
 
-TEST(Editor, PrintWelcomeMessagePrintsTheCorrectMessageCentred)
+TEST(EditorConfig, PrintWelcomeMessagePrintsTheCorrectMessageCentred)
 {
   constexpr int width = 50;
-  append_buffer buf {};
+  append_buffer::append_buffer buf {};
 
-  print_welcome_message(width, buf);
+  print_welcome_message(width, &buf);
 
   std::string const msg {"Kilo editor -- version 0.0.1"};
   auto const padding = (width - msg.length()) / 2;
@@ -296,12 +261,12 @@ TEST(Editor, PrintWelcomeMessagePrintsTheCorrectMessageCentred)
   ASSERT_THAT(buf.c_str(), ::testing::Eq(output));
 }
 
-TEST(Editor, PrintWelcomeMessageTruncatesTheMessageIfItsTooLong)
+TEST(EditorConfig, PrintWelcomeMessageTruncatesTheMessageIfItsTooLong)
 {
   constexpr int width = 25;
-  append_buffer buf {};
+  append_buffer::append_buffer buf {};
 
-  print_welcome_message(width, buf);
+  print_welcome_message(width, &buf);
 
   std::string const msg {"Kilo editor -- version 0.0.1"};
   std::string const truncated_msg = msg.substr(0, width);
@@ -309,39 +274,39 @@ TEST(Editor, PrintWelcomeMessageTruncatesTheMessageIfItsTooLong)
   ASSERT_THAT(buf.c_str(), ::testing::Eq(truncated_msg));
 }
 
-TEST(Editor, PrintLineOfDocumentTruncatesTheLineIfItsLongerThanWindowWidth)
+TEST(EditorConfig, PrintLineOfDocumentTruncatesTheLineIfItsLongerThanWindowWidth)
 {
   std::string const line {"The quick brown fox jumped over the lazy doggo"};
   constexpr int window_width = 20;
   constexpr int col_off = 5;
-  append_buffer buf;
+  append_buffer::append_buffer buf;
 
-  print_line_of_document(line, buf, window_width, col_off);
+  print_line_of_document(line, &buf, window_width, col_off);
 
   ASSERT_THAT(buf.size(), ::testing::Eq(window_width));
 }
 
-TEST(Editor, PrintLineOfDocumentPrintsFullLineWhenWindowIsWiderThanLine)
+TEST(EditorConfig, PrintLineOfDocumentPrintsFullLineWhenWindowIsWiderThanLine)
 {
   std::string const line {"Hello world"};
   constexpr int window_width = 20;
   constexpr int col_off = 0;
-  append_buffer buf;
+  append_buffer::append_buffer buf;
 
-  print_line_of_document(line, buf, window_width, col_off);
+  print_line_of_document(line, &buf, window_width, col_off);
 
   ASSERT_THAT(buf.size(), ::testing::Eq(static_cast<int>(std::ssize(line))));
   ASSERT_THAT(buf.c_str(), ::testing::Eq(line));
 }
 
-TEST(Editor, PrintLineOfDocumentStartsAtColumnOffset)
+TEST(EditorConfig, PrintLineOfDocumentStartsAtColumnOffset)
 {
   std::string const line {"0123456789abcdefghijklmnopqrstuvwxyz"};
   constexpr int window_width = 10;
   constexpr int col_off = 4;
-  append_buffer buf;
+  append_buffer::append_buffer buf;
 
-  print_line_of_document(line, buf, window_width, col_off);
+  print_line_of_document(line, &buf, window_width, col_off);
 
   std::string const expected = line.substr(static_cast<size_t>(col_off), static_cast<size_t>(window_width));
 
@@ -349,14 +314,14 @@ TEST(Editor, PrintLineOfDocumentStartsAtColumnOffset)
   ASSERT_THAT(buf.c_str(), ::testing::Eq(expected));
 }
 
-TEST(Editor, PrintLineOfDocumentPrintsRemainingCharsWhenShorterThanWindow)
+TEST(EditorConfig, PrintLineOfDocumentPrintsRemainingCharsWhenShorterThanWindow)
 {
   std::string const line {"abcdef"};
   constexpr int window_width = 10;
   constexpr int col_off = 2;
-  append_buffer buf;
+  append_buffer::append_buffer buf;
 
-  print_line_of_document(line, buf, window_width, col_off);
+  print_line_of_document(line, &buf, window_width, col_off);
 
   std::string const expected = line.substr(static_cast<size_t>(col_off));
 
@@ -368,4 +333,4 @@ TEST(Editor, PrintLineOfDocumentPrintsRemainingCharsWhenShorterThanWindow)
 
 // NOLINTEND(*-magic-numbers)
 
-}   // namespace kilo::editor
+}   // namespace kilo::editor::editor_config

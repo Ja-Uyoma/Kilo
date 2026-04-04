@@ -1,4 +1,4 @@
-#include "kilo/terminal/Window/Window.hpp"
+#include "kilo/terminal/window_size/window_size.hpp"
 
 #include "kilo/io/File.hpp"
 #include <sys/ioctl.h>
@@ -14,7 +14,7 @@
 #include <string>
 #include <unistd.h>
 
-namespace kilo::terminal {
+namespace kilo::terminal::window_size {
 
 // NOLINTBEGIN(modernize-use-trailing-return-type)
 
@@ -34,14 +34,14 @@ public:
 
 // NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
 
-TEST(Window, WindowAccessorsReturnExpectedValues)
+TEST(WindowSize, WindowAccessorsReturnExpectedValues)
 {
   constexpr auto win = window_size {.cols = 64, .rows = 32};
   ASSERT_THAT(win.cols, ::testing::Eq(64));
   ASSERT_THAT(win.rows, ::testing::Eq(32));
 }
 
-TEST(Window, GetWindowSizeReturnsTheWindowSizeOnSuccess)
+TEST(WindowSize, GetWindowSizeReturnsTheWindowSizeOnSuccess)
 {
   mock_file mfile;
   ::winsize winsz {};
@@ -58,7 +58,7 @@ TEST(Window, GetWindowSizeReturnsTheWindowSizeOnSuccess)
   ASSERT_EQ(winsz.ws_row, 60);
 }
 
-TEST(Window, GetWindowSizeThrowsAnExceptionWhenIoctlAndWriteFail)
+TEST(WindowSize, GetWindowSizeThrowsAnExceptionWhenIoctlAndWriteFail)
 {
   mock_file mfile;
   ::winsize winsz {};
@@ -74,7 +74,7 @@ TEST(Window, GetWindowSizeThrowsAnExceptionWhenIoctlAndWriteFail)
   ASSERT_THROW({ detail::get_window_size(mfile, winsz); }, std::system_error);
 }
 
-TEST(Window, GetWindowSizeThrowsAnExceptionWhenWindowColsIsZeroAndWriteFails)
+TEST(WindowSize, GetWindowSizeThrowsAnExceptionWhenWindowColsIsZeroAndWriteFails)
 {
   mock_file mfile;
   ::winsize winsz {};
@@ -91,7 +91,7 @@ TEST(Window, GetWindowSizeThrowsAnExceptionWhenWindowColsIsZeroAndWriteFails)
   ASSERT_THROW({ detail::get_window_size(mfile, winsz); }, std::system_error);
 }
 
-TEST(Window, GetCursorPositionThrowsAnExceptionOnFailureToGetCursorPosition)
+TEST(WindowSize, GetCursorPositionThrowsAnExceptionOnFailureToGetCursorPosition)
 {
   mock_file mfile;
   static constexpr std::string get_cursor_position("\x1b[6n");
@@ -105,4 +105,4 @@ TEST(Window, GetCursorPositionThrowsAnExceptionOnFailureToGetCursorPosition)
 
 // NOLINTEND(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
 
-}   // namespace kilo::terminal
+}   // namespace kilo::terminal::window_size
