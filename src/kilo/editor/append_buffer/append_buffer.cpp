@@ -34,12 +34,6 @@
 
 namespace kilo::editor::append_buffer {
 
-///
-/// \brief Flush the buffer by writing its contents to a file
-/// \param[in] file The file being written to
-/// \returns The number of bytes written
-/// \throws `std::system_error` if the operation failed
-///
 auto append_buffer::flush(io::file_interface& file) const& noexcept(false) -> std::size_t
 {
   std::size_t total_written = 0;

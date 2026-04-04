@@ -43,55 +43,55 @@ namespace kilo::editor::append_buffer {
 class append_buffer final
 {
 public:
-  ///
-  /// \brief Default constructor
-  ///
+  /**
+   * @brief Create a default append_buffer instance
+   */
   explicit constexpr append_buffer() noexcept = default;
 
-  ///
-  /// \brief Append the given string to the string buffer
-  /// \param[in] str The string to be appended to the string buffer
-  /// \returns A reference to the append_buffer object
-  ///
+  /**
+   * @brief Append the given string to the string buffer
+   * @param[in] str The string to be appended to the string buffer
+   * @returns A reference to the append_buffer object
+   */
   constexpr auto write(std::string_view str) & noexcept(false) -> append_buffer&
   {
     m_buffer.append(str);
     return *this;
   }
 
-  ///
-  /// \brief Get the size of the buffer
-  /// \returns The size of the buffer
-  ///
+  /**
+   * @brief Get the size of the buffer
+   * @returns The size of the buffer
+   */
   [[nodiscard]] constexpr auto size() const& noexcept -> std::size_t
   {
     return m_buffer.length();
   }
 
-  ///
-  /// \brief Get the size of the buffer
-  /// \returns The size of the buffer as a signed value
-  ///
+  /**
+   * @brief Get the size of the buffer
+   * @returns The size of the buffer as a signed value
+   */
   [[nodiscard]] constexpr auto ssize() const& noexcept -> int64_t
   {
     return std::ssize(m_buffer);
   }
 
-  ///
-  /// \brief Get a  C-string representation of the buffer
-  /// \returns A constant C-string representation of the buffer
-  ///
+  /**
+   * @brief Get a  C-string representation of the buffer
+   * @returns A constant C-string representation of the buffer
+   */
   [[nodiscard]] constexpr auto c_str() const& noexcept -> char const*
   {
     return m_buffer.c_str();
   }
 
-  ///
-  /// \brief Flush the buffer by writing its contents to a file
-  /// \param[in] file The file being written to
-  /// \returns The number of bytes written
-  /// \throws `std::system_error` if the operation failed
-  ///
+  /**
+   * @brief Flush the buffer by writing its contents to a file
+   * @param[in] file The file being written to
+   * @returns The number of bytes written
+   * @throws `std::system_error` if the operation failed
+   */
   auto flush(io::file_interface& file) const& noexcept(false) -> std::size_t;
 
 private:
