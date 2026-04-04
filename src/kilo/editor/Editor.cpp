@@ -48,11 +48,6 @@
 
 namespace kilo::editor {
 
-/**
- * \brief Move the cursor in the open document depending on the key pressed
- * \param[in] keyPressed The key pressed by the user
- * \param[in] editor The current state of the editor
- */
 void process_keypress(int key_pressed, editor_config& editor_config)
 {
   std::ignore = std::atexit([]() -> void { utilities::clear_screen_and_reposition_cursor(); });
@@ -89,10 +84,6 @@ void process_keypress(int key_pressed, editor_config& editor_config)
   }
 }
 
-/**
- * \brief Perform a screen refresh
- * \param[in] editor The current editor configuration
- */
 void refresh_screen(editor_config& editor, gsl::not_null<append_buffer::append_buffer*> abuf)
 {
   scroll(editor);
@@ -121,10 +112,6 @@ void refresh_screen(editor_config& editor, gsl::not_null<append_buffer::append_b
   abuf->write(cursor_pos).write(utilities::escape_sequences::show_the_cursor).flush(out_file);
 }
 
-/**
- * \brief Draw each row of the buffer of text being edited, plus a tilde at the beginning, or the welcome message
- * \param[in] editor The editor configuration
- */
 void draw_rows(editor_config const& editor, gsl::not_null<append_buffer::append_buffer*> abuf)
 {
   for (int32_t curr_row = 0; curr_row < editor.winsize.rows; ++curr_row) {
@@ -146,11 +133,6 @@ void draw_rows(editor_config const& editor, gsl::not_null<append_buffer::append_
   }
 }
 
-/**
- * \brief Move the cursor in the direction of the key pressed
- * \param[in] key The key pressed by the user
- * \param[in] editor The current state of the editor
- */
 void move_cursor(utilities::editor_key const key, editor_config& editor)
 {
   using enum utilities::editor_key;
@@ -207,10 +189,6 @@ void move_cursor(utilities::editor_key const key, editor_config& editor)
   editor.curs.x = std::min(editor.curs.x, row_len);
 }
 
-/**
- * \brief Fix the cursor in the visible window while scrolling
- * \param[in] editor The current state of the editor
- */
 void scroll(editor_config& editor) noexcept
 {
   // Check if the cursor has moved outside the visible window
@@ -266,11 +244,6 @@ void open(std::filesystem::path const& path, gsl::not_null<editor_config*> edito
   }
 }
 
-/**
- * \brief Copies the contents of the source string into the destination string
- * \param[in] row The source string
- * \param[in] render The destination string
- */
 void update_row(std::string_view row, std::string& render) noexcept
 {
   using utilities::kilo_tab_stop;
@@ -372,12 +345,6 @@ void draw_message_bar(editor_config const& editor, gsl::not_null<append_buffer::
 
 namespace kilo::editor::detail {
 
-/**
- * \brief Write the welcome message to the screen buffer
- *
- * \param[in] window_width The width of the window in which the message is to be displayed
- * \param[in] buffer The buffer to which the message is written before being displayed
- */
 void print_welcome_message(int32_t window_width, gsl::not_null<append_buffer::append_buffer*> buffer)
 {
   auto msg = fmt::format("Kilo editor -- version {}", utilities::kilo_version);
@@ -410,15 +377,6 @@ void print_welcome_message(int32_t window_width, gsl::not_null<append_buffer::ap
   buffer->write(msg);
 }
 
-/**
- * \brief Print a line of text from the open document to the screen
- *
- * \param[in] line The line to be printed
- * \param[in] buffer The screen buffer
- * \param[in] window_width The width of the terminal window
- * \param[in] col_off The column offset between the terminal window width and the document width
- * \pre The column offset must be non-negative
- */
 void print_line_of_document(std::string const& line, gsl::not_null<append_buffer::append_buffer*> buffer,
                             int32_t window_width, int64_t col_off)
 {
