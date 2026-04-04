@@ -26,7 +26,7 @@
 #include "kilo/editor/Editor.hpp"
 #include "kilo/io/IO.hpp"
 #include "kilo/terminal/TerminalMode/TerminalMode.hpp"
-#include "kilo/terminal/Window/Window.hpp"
+#include "kilo/terminal/window_size/window_size.hpp"
 #include "kilo/utilities/Utilities.hpp"
 #include <system_error>
 

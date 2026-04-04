@@ -3,7 +3,7 @@ add_library(Kilo_lib_terminal OBJECT)
 target_sources(Kilo_lib_terminal
     PUBLIC
         TerminalMode/TerminalMode.cpp
-        Window/Window.cpp
+        window_size/window_size.cpp
 )
 
 target_link_libraries(Kilo_lib_terminal

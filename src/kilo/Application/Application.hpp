@@ -26,7 +26,7 @@
 
 #include "kilo/editor/EditorConfig/EditorConfig.hpp"
 #include "kilo/editor/append_buffer/append_buffer.hpp"
-#include "kilo/terminal/Window/Window.hpp"
+#include "kilo/terminal/window_size/window_size.hpp"
 
 #include <filesystem>
 #include <span>

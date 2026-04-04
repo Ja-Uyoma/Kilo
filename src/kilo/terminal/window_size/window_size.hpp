@@ -21,8 +21,8 @@
  * SOFTWARE.
  */
 
-#ifndef WINDOW_HPP
-#define WINDOW_HPP
+#ifndef KILO_TERMINAL_WINDOW_SIZE_WINDOW_SIZE_HPP
+#define KILO_TERMINAL_WINDOW_SIZE_WINDOW_SIZE_HPP
 
 #include "kilo/io/File.hpp"
 #include <sys/ioctl.h>

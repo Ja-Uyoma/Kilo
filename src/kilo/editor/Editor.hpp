@@ -26,7 +26,7 @@
 
 #include "EditorConfig/EditorConfig.hpp"
 #include "append_buffer/append_buffer.hpp"
-#include "kilo/terminal/Window/Window.hpp"
+#include "kilo/terminal/window_size/window_size.hpp"
 #include "kilo/utilities/Constants.hpp"
 #include <fmt/format.h>
 #include <gsl/pointers>

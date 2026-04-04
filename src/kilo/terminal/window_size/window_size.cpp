@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-#include "Window.hpp"
+#include "window_size.hpp"
 
 #include "kilo/io/File.hpp"
 #include <asm-generic/ioctls.h>
