@@ -27,6 +27,7 @@
 #include "kilo/editor/ScreenBuffer/ScreenBuffer.hpp"
 #include "kilo/terminal/Window/Window.hpp"
 
+#include <chrono>
 #include <vector>
 
 namespace kilo::editor {
@@ -75,6 +76,8 @@ struct editor_config
   screen_buffer screen_buf;
   std::vector<erow> row;
   std::string filename;
+  std::string status_msg;
+  std::chrono::time_point<std::chrono::system_clock> status_msg_time;
 };
 
 }   // namespace kilo::editor
