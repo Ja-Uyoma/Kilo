@@ -65,6 +65,20 @@ TEST(EditorConfig, ProcessKeypressMovesCursorToStartOfLineIfHomeButtonIsPressed)
   ASSERT_THAT(editor_config.curs.x, ::testing::Eq(0));
 }
 
+TEST(EditorConfig, ProcessKeypressDoesNotMoveCursorIfEndButtonIsPressedAndDocumentIsEmpty)
+{
+  using terminal::window_size::window_size;
+  using utilities::editor_key;
+
+  constexpr auto key = editor_key::end;
+  window_size winsz {.cols = 64, .rows = 32};
+  editor_config editor_config {};
+
+  process_keypress(static_cast<int>(key), editor_config, winsz);
+
+  ASSERT_THAT(editor_config.curs.x, ::testing::Eq(0));
+}
+
 TEST(EditorConfig, ProcessKeypressMovesCursorToEndOfLineIfEndButtonIsPressed)
 {
   using terminal::window_size::window_size;
