@@ -24,7 +24,7 @@
 #ifndef EDITOR_CONFIG_HPP
 #define EDITOR_CONFIG_HPP
 
-#include "kilo/editor/ScreenBuffer/ScreenBuffer.hpp"
+#include "kilo/editor/append_buffer/append_buffer.hpp"
 #include "kilo/terminal/Window/Window.hpp"
 
 #include <chrono>

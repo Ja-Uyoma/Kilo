@@ -2,7 +2,7 @@ add_library(Kilo_lib_editor OBJECT)
 
 target_sources(Kilo_lib_editor
     PUBLIC
-        ScreenBuffer/ScreenBuffer.cpp
+        append_buffer/append_buffer.cpp
         Editor.cpp
 )
 

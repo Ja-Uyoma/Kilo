@@ -25,7 +25,7 @@
 #define EDITOR_HPP
 
 #include "EditorConfig/EditorConfig.hpp"
-#include "ScreenBuffer/ScreenBuffer.hpp"
+#include "append_buffer/append_buffer.hpp"
 #include "kilo/utilities/Constants.hpp"
 #include <fmt/format.h>
 #include <gsl/pointers>

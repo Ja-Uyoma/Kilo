@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-#include "ScreenBuffer.hpp"
+#include "append_buffer.hpp"
 
 #include "kilo/io/File.hpp"
 #include <gsl/assert>
