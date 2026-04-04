@@ -348,6 +348,8 @@ void draw_status_bar(gsl::not_null<editor_config*> editor)
   }
 
   editor->screen_buf.write(escape_sequences::switch_to_normal_formatting);
+  editor->screen_buf.write(escape_sequences::crnl);
+}
 }
 
 }   // namespace kilo::editor

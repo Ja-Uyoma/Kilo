@@ -39,7 +39,7 @@ namespace kilo::editor {
 application::application() noexcept(false)
 {
   m_editor_config.winsize = terminal::get_terminal_window_size();
-  m_editor_config.winsize.rows -= 1;
+  m_editor_config.winsize.rows -= 2;
 }
 
 void application::open(std::filesystem::path const& path)
