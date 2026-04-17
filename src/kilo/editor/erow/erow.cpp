@@ -32,29 +32,29 @@
 
 namespace kilo::editor::erow {
 
-void update_row(std::string_view row, std::string& render) noexcept
+void update_row(erow& row) noexcept
 {
   using utilities::kilo_tab_stop;
 
-  auto tabs = std::ranges::count_if(row, [](unsigned char character) -> bool { return character == '\t'; });
+  auto tabs = std::ranges::count_if(row.chars, [](unsigned char character) -> bool { return character == '\t'; });
 
-  render.clear();
-  render.resize(row.length() + static_cast<size_t>(tabs * (kilo_tab_stop - 1)) + 1);
+  row.render.clear();
+  row.render.resize(row.chars.length() + static_cast<size_t>(tabs * (kilo_tab_stop - 1)) + 1);
 
   std::size_t idx {};
 
-  for (auto const character : row) {
+  for (auto const character : row.chars) {
     if (character == '\t') {
-      render[idx] = ' ';
+      row.render[idx] = ' ';
       ++idx;
 
       while (idx % kilo_tab_stop != 0) {
-        render[idx] = ' ';
+        row.render[idx] = ' ';
         ++idx;
       }
     }
     else {
-      render[idx] = character;
+      row.render[idx] = character;
       ++idx;
     }
   }

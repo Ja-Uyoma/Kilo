@@ -243,8 +243,8 @@ void open(std::filesystem::path const& path, gsl::not_null<editor_config*> edito
 
   file.close();
 
-  for (auto& [chars, render] : editor->row) {
-    erow::update_row(chars, render);
+  for (auto& row : editor->row) {
+    erow::update_row(row);
   }
 }
 

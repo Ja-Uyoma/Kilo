@@ -48,11 +48,10 @@ public:
 };
 
 /**
- * @brief Copies the contents of the source string into the destination string
- * @param[in] row The source string
- * @param[in] render The destination string
+ * @brief Copies the contents of the erow's chars string into the erow's render string
+ * @param[in] row An erow instance
  */
-void update_row(std::string_view row, std::string& render) noexcept;
+void update_row(erow& row) noexcept;
 
 /**
  * @brief Converts a @code chars index into a @code render index

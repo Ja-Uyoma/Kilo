@@ -32,7 +32,6 @@
 #include "kilo/utilities/Constants.hpp"
 #include <fmt/format.h>
 #include <gsl/pointers>
-#include <string_view>
 
 #include <chrono>
 #include <cstdint>
