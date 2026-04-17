@@ -244,35 +244,7 @@ void open(std::filesystem::path const& path, gsl::not_null<editor_config*> edito
   file.close();
 
   for (auto& [chars, render] : editor->row) {
-    update_row(chars, render);
-  }
-}
-
-void update_row(std::string_view row, std::string& render) noexcept
-{
-  using utilities::kilo_tab_stop;
-
-  auto tabs = std::ranges::count_if(row, [](unsigned char character) -> bool { return character == '\t'; });
-
-  render.clear();
-  render.resize(row.length() + static_cast<size_t>(tabs * (kilo_tab_stop - 1)) + 1);
-
-  std::size_t idx {};
-
-  for (auto const character : row) {
-    if (character == '\t') {
-      render[idx] = ' ';
-      ++idx;
-
-      while (idx % kilo_tab_stop != 0) {
-        render[idx] = ' ';
-        ++idx;
-      }
-    }
-    else {
-      render[idx] = character;
-      ++idx;
-    }
+    erow::update_row(chars, render);
   }
 }
 

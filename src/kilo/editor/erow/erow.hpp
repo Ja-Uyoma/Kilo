@@ -48,6 +48,13 @@ public:
 };
 
 /**
+ * @brief Copies the contents of the source string into the destination string
+ * @param[in] row The source string
+ * @param[in] render The destination string
+ */
+void update_row(std::string_view row, std::string& render) noexcept;
+
+/**
  * @brief Converts a @code chars index into a @code render index
  * @param[in] row A row of text in the editor
  * @param[in] cursor_x The x-position of the cursor in the erow's @code chars field

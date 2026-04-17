@@ -104,13 +104,6 @@ void scroll(editor_config& editor, terminal::window_size::window_size const& win
 void open(std::filesystem::path const& path, gsl::not_null<editor_config*> editor);
 
 /**
- * @brief Copies the contents of the source string into the destination string
- * @param[in] row The source string
- * @param[in] render The destination string
- */
-void update_row(std::string_view row, std::string& render) noexcept;
-
-/**
  * @brief Draw a status bar with inverted colours at the bottom of the screen
  * @param[in] editor The current editor state
  * @param[in,out] abuf The buffer to which writes to the screen are done

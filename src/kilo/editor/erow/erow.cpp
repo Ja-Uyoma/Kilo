@@ -25,11 +25,40 @@
 
 #include "kilo/utilities/Constants.hpp"
 
+#include <algorithm>
 #include <cstddef>
 #include <cstdint>
 #include <utility>
 
 namespace kilo::editor::erow {
+
+void update_row(std::string_view row, std::string& render) noexcept
+{
+  using utilities::kilo_tab_stop;
+
+  auto tabs = std::ranges::count_if(row, [](unsigned char character) -> bool { return character == '\t'; });
+
+  render.clear();
+  render.resize(row.length() + static_cast<size_t>(tabs * (kilo_tab_stop - 1)) + 1);
+
+  std::size_t idx {};
+
+  for (auto const character : row) {
+    if (character == '\t') {
+      render[idx] = ' ';
+      ++idx;
+
+      while (idx % kilo_tab_stop != 0) {
+        render[idx] = ' ';
+        ++idx;
+      }
+    }
+    else {
+      render[idx] = character;
+      ++idx;
+    }
+  }
+}
 
 auto row_cx_to_rx(erow const& row, int64_t cursor_x) -> int64_t
 {
