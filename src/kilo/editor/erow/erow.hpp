@@ -61,6 +61,14 @@ void update_row(erow& row) noexcept;
  */
 auto row_cx_to_rx(erow const& row, int64_t cursor_x) -> int64_t;
 
+/**
+ * @brief Insert a character at a given position in a row
+ * @param[in] row An erow instance in which a character is to be inserted
+ * @param[in] pos The position at which the character is to be inserted
+ * @param[in] character The character to be inserted
+ */
+void insert_char(erow& row, std::size_t pos, int character);
+
 }   // namespace kilo::editor::erow
 
 #endif

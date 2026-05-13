@@ -84,4 +84,12 @@ auto row_cx_to_rx(erow const& row, int64_t cursor_x) -> int64_t
   return render_x;
 }
 
+// NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
+void insert_char(erow& row, std::size_t pos, int character)
+{
+  pos = std::min(pos, row.chars.length());
+  row.chars.insert(pos, 1, static_cast<char>(character));
+  update_row(row);
+}
+
 }   // namespace kilo::editor::erow

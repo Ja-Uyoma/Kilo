@@ -15,6 +15,7 @@ target_sources(Kilo_test
         src/kilo/editor/append_buffer/append_buffer.test.cpp
         src/kilo/terminal/terminal_mode/terminal_mode.test.cpp
         src/kilo/terminal/window_size/window_size.test.cpp
+        src/kilo/editor/erow/erow.test.cpp
 )
 
 target_link_libraries(Kilo_test
