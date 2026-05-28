@@ -37,6 +37,7 @@
 #include <algorithm>
 #include <cassert>
 #include <chrono>
+#include <cstddef>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -83,6 +84,9 @@ void process_keypress(int key_pressed, editor_config& editor_config, terminal::w
   }
   else if (key == arrow_left or key == arrow_right or key == arrow_up or key == arrow_down) {
     move_cursor(key, editor_config);
+  }
+  else {
+    insert_char(editor_config, key_pressed);
   }
 }
 
@@ -293,6 +297,17 @@ void draw_message_bar(editor_config const& editor, gsl::not_null<append_buffer::
   if (msg_len > 0 and system_clock::now() - editor.status_msg_time < std::chrono::seconds(time_limit)) {
     abuf->write({editor.status_msg.c_str(), static_cast<std::size_t>(msg_len)});
   }
+}
+
+void insert_char(editor_config& editor, int character)
+{
+  if (editor.curs.y == std::ssize(editor.row)) {
+    editor.row.emplace_back("");
+  }
+
+  erow::insert_char(editor.row[static_cast<std::size_t>(editor.curs.y)], static_cast<std::size_t>(editor.curs.x),
+                    character);
+  editor.curs.x += 1;
 }
 
 }   // namespace kilo::editor::editor_config

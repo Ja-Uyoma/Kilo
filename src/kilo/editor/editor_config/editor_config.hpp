@@ -131,6 +131,13 @@ void set_status_msg(gsl::not_null<editor_config*> editor, fmt::format_string<Arg
 void draw_message_bar(editor_config const& editor, gsl::not_null<append_buffer::append_buffer*> abuf,
                       terminal::window_size::window_size const& winsize);
 
+/**
+ * @brief Insert a single character into a row of the editor
+ * @param[in] editor The editor's state
+ * @param[in] character The character to be inserted
+ */
+void insert_char(editor_config& editor, int character);
+
 }   // namespace kilo::editor::editor_config
 
 namespace kilo::editor::editor_config::detail {
