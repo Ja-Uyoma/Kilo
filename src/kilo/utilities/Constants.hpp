@@ -53,6 +53,7 @@ inline constexpr int kilo_tab_stop = 8;
 // conflict with ordinary keypresses.
 enum class editor_key : std::uint16_t
 {
+  backspace = 127,
   arrow_left = 1000,
   arrow_right,
   arrow_up,

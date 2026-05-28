@@ -53,21 +53,29 @@ namespace kilo::editor::editor_config {
 
 void process_keypress(int key_pressed, editor_config& editor_config, terminal::window_size::window_size const& winsize)
 {
+  using enum utilities::editor_key;
+  using utilities::ctrl_key;
+
   std::ignore = std::atexit([]() -> void { utilities::clear_screen_and_reposition_cursor(); });
 
-  if (key_pressed == utilities::ctrl_key('q')) {
+  auto const key = static_cast<utilities::editor_key>(key_pressed);
+
+  if (key_pressed == '\r') {
+    // TODO
+  }
+  else if (key_pressed == ctrl_key('q')) {
     std::exit(EXIT_SUCCESS);
   }
-
-  using enum utilities::editor_key;
-
-  if (auto const key = static_cast<utilities::editor_key>(key_pressed); key == home) {
+  else if (key == home) {
     editor_config.curs.x = 0;
   }
   else if (key == end) {
     if (editor_config.curs.y < std::ssize(editor_config.row)) {
       editor_config.curs.x = std::ssize(editor_config.row[static_cast<std::size_t>(editor_config.curs.y)].chars);
     }
+  }
+  else if (key == backspace or key_pressed == ctrl_key('h') or key == del) {
+    // TODO
   }
   else if (key == page_up or key == page_down) {
     if (key == page_up) {
@@ -84,6 +92,9 @@ void process_keypress(int key_pressed, editor_config& editor_config, terminal::w
   }
   else if (key == arrow_left or key == arrow_right or key == arrow_up or key == arrow_down) {
     move_cursor(key, editor_config);
+  }
+  else if (key_pressed == ctrl_key('l') or key_pressed == '\x1b') {
+    // Do nothing
   }
   else {
     insert_char(editor_config, key_pressed);
