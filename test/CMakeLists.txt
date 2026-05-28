@@ -11,11 +11,11 @@ add_executable(Kilo_test)
 
 target_sources(Kilo_test
     PRIVATE
-        src/kilo/editor/editor_config/editor_config.test.cpp
-        src/kilo/editor/append_buffer/append_buffer.test.cpp
-        src/kilo/terminal/terminal_mode/terminal_mode.test.cpp
-        src/kilo/terminal/window_size/window_size.test.cpp
-        src/kilo/editor/erow/erow.test.cpp
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/kilo/editor/editor_config/editor_config.test.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/kilo/editor/append_buffer/append_buffer.test.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/kilo/terminal/terminal_mode/terminal_mode.test.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/kilo/terminal/window_size/window_size.test.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/kilo/editor/erow/erow.test.cpp"
 )
 
 target_link_libraries(Kilo_test
