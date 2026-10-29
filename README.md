@@ -1,7 +1,5 @@
 # Kilo
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 This is a C++ port of
 [Salvatore Sanfilippo's (antirez) kilo](http://antirez.com/news/108).
 
@@ -80,11 +78,6 @@ information.
 ## Acknowledgements
 
 - The original `kilo` editor by Salvatore Sanfilippo (antirez)
-- Inspired by its simplicity and elegance
-=======
-=======
->>>>>>> dev
-Kilo is a C++ port of [antirez's kilo](http://antirez.com/news/108), a small terminal text editor.
 
 ## Requirements
 
@@ -93,8 +86,8 @@ Kilo is a C++ port of [antirez's kilo](http://antirez.com/news/108), a small ter
 - [Conan](https://conan.io/) 2
 - Ninja when using the development CMake presets
 
-The project dependencies are declared in `conanfile.py`. They include
-Microsoft GSL and fmt; GoogleTest is installed for the test suite.
+The project dependencies are declared in `conanfile.py`. They include Microsoft
+GSL and fmt; GoogleTest is installed for the test suite.
 
 ## Install dependencies
 
@@ -112,10 +105,10 @@ dependency binaries that are not already available for your profile.
 
 ## Build with a CMake preset
 
-There are shared CI presets in `CMakePresets.json` and local development
-presets in `CMakeUserPresets.json`. The user-preset file is ignored by Git, so
-it may not be present in a fresh checkout. When available, the `dev` preset is
-the convenient Linux development workflow:
+There are shared CI presets in `CMakePresets.json` and local development presets
+in `CMakeUserPresets.json`. The user-preset file is ignored by Git, so it may
+not be present in a fresh checkout. When available, the `dev` preset is the
+convenient Linux development workflow:
 
 ```sh
 cmake --preset dev
@@ -129,8 +122,8 @@ This preset uses Ninja Multi-Config, builds Debug into `build/dev`, and enables
 documentation configuration. CMake downloads m.css when configuring.
 
 The shared presets in `CMakePresets.json` provide platform CI builds. On Linux,
-`ci-ubuntu` configures a Release build in `build/`; it also enables
-`clang-tidy` and `cppcheck`, which must be installed and available on `PATH`:
+`ci-ubuntu` configures a Release build in `build/`; it also enables `clang-tidy`
+and `cppcheck`, which must be installed and available on `PATH`:
 
 ```sh
 cmake --preset ci-ubuntu
@@ -167,7 +160,8 @@ cmake --build build/manual --parallel
 ctest --test-dir build/manual --output-on-failure --no-tests=error
 ```
 
-If you change the Conan profile or dependency requirements, run `conan install
+If you change the Conan profile or dependency requirements, run
+`conan install
 . --build=missing` again before reconfiguring CMake.
 
 ## Run
@@ -178,7 +172,3 @@ or `build/src/kilo` for the `ci-ubuntu` preset:
 ```sh
 build/manual/src/kilo [path/to/file]
 ```
-<<<<<<< HEAD
->>>>>>> 4df65bc (docs: update README.md)
-=======
->>>>>>> dev
