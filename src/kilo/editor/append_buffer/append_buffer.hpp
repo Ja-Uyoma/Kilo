@@ -25,10 +25,12 @@
 #define KILO_EDITOR_APPEND_BUFFER_HPP
 
 #include "kilo/io/File.hpp"
+#include "kilo/utilities/Error.hpp"
 #include <string_view>
 
 #include <cstddef>
 #include <cstdint>
+#include <expected>
 #include <string>
 
 namespace kilo::editor::append_buffer {
@@ -53,7 +55,7 @@ public:
    * @param[in] str The string to be appended to the string buffer
    * @returns A reference to the append_buffer object
    */
-  constexpr auto write(std::string_view str) & noexcept(false) -> append_buffer&
+  constexpr auto write(std::string_view str) & -> append_buffer&
   {
     m_buffer.append(str);
     return *this;
@@ -90,9 +92,9 @@ public:
    * @brief Flush the buffer by writing its contents to a file
    * @param[in] file The file being written to
    * @returns The number of bytes written
-   * @throws `std::system_error` if the operation failed
+   * @returns An error if writing fails
    */
-  auto flush(io::file_interface& file) const& noexcept(false) -> std::size_t;
+  auto flush(io::file_interface& file) const& -> std::expected<std::size_t, utilities::error_info>;
 
 private:
   std::string m_buffer;

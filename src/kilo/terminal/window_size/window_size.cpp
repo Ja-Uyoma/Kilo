@@ -26,20 +26,19 @@
 #include "kilo/io/File.hpp"
 #include <asm-generic/ioctls.h>
 #include <sys/ioctl.h>
-#include <system_error>
 
 #include <array>
 #include <cerrno>
 #include <charconv>
 #include <cstdlib>
+#include <expected>
 #include <span>
-#include <stdexcept>
 #include <string>
 #include <unistd.h>
 
 namespace kilo::terminal::window_size {
 
-auto get_terminal_window_size() noexcept(false) -> window_size
+auto get_terminal_window_size() -> std::expected<window_size, utilities::error_info>
 {
   io::file file;
   ::winsize winsz {};
@@ -49,13 +48,15 @@ auto get_terminal_window_size() noexcept(false) -> window_size
 
 namespace detail {
 
-auto get_window_size(io::file_interface& file, winsize& winsz) noexcept(false) -> window_size
+auto get_window_size(io::file_interface& file, winsize& winsz) -> std::expected<window_size, utilities::error_info>
 {
   if (file.ioctl(STDOUT_FILENO, TIOCGWINSZ, &winsz) == -1 or winsz.ws_col == 0) {
     static constexpr std::string move_cursor_bottom_right("\x1b[999c\x1b[999B");
 
-    if (file.write(STDOUT_FILENO, move_cursor_bottom_right) != std::ssize(move_cursor_bottom_right)) {
-      throw std::system_error(errno, std::system_category(), "Could not move cursor to bottom-right of screen");
+    auto const written = file.write(STDOUT_FILENO, move_cursor_bottom_right);
+    if (written != std::ssize(move_cursor_bottom_right)) {
+      auto const error_number = written == -1 ? errno : 0;
+      return std::unexpected(utilities::make_error(error_number, "Could not move cursor to bottom-right of screen"));
     }
 
     static constexpr unsigned buffer_size = 32;
@@ -67,31 +68,53 @@ auto get_window_size(io::file_interface& file, winsize& winsz) noexcept(false) -
   return window_size {.cols = winsz.ws_col, .rows = winsz.ws_row};
 }
 
-auto get_cursor_position(io::file_interface& file, std::span<char> buffer) noexcept(false) -> window_size
+auto get_cursor_position(io::file_interface& file, std::span<char> buffer)
+  -> std::expected<window_size, utilities::error_info>
 {
   static constexpr auto get_cursor_position = std::string("\x1b[6n");
 
-  // Get the position of the cursor
-  if (file.write(STDOUT_FILENO, get_cursor_position) != std::ssize(get_cursor_position)) {
-    throw std::system_error(errno, std::system_category(), "Could not get cursor position");
+  if (buffer.size() < 4) {
+    return std::unexpected(utilities::make_error(std::errc::invalid_argument, "Cursor position buffer is too small"));
   }
 
-  // Read the reply from stdin and store it in a buffer
-  // Do this until we encounter a 'R' character
+  // Get the position of the cursor
+  auto const written = file.write(STDOUT_FILENO, get_cursor_position);
+  if (written != std::ssize(get_cursor_position)) {
+    auto const error_number = written == -1 ? errno : 0;
+    return std::unexpected(utilities::make_error(error_number, "Could not get cursor position"));
+  }
 
-  for (std::size_t i = 0; i < buffer.size() - 1; ++i) {
-    if (file.read(STDIN_FILENO, buffer[i]) != 1 or buffer[i] == 'R') {
+  std::size_t bytes_read = 0;
+  bool received_terminator = false;
+  for (; bytes_read < buffer.size() - 1; ++bytes_read) {
+    auto const read_result = file.read(STDIN_FILENO, buffer[bytes_read]);
+    if (read_result == -1) {
+      auto const error_number = errno;
+      return std::unexpected(utilities::make_error(error_number, "Could not read cursor position"));
+    }
+    if (read_result != 1) {
+      break;
+    }
+    if (buffer[bytes_read] == 'R') {
+      received_terminator = true;
+      ++bytes_read;
       break;
     }
   }
 
-  // Assign the null-termination character to the final byte of buf
-  buffer.back() = '\0';
+  if (!received_terminator) {
+    return std::unexpected(
+      utilities::make_error(std::errc::invalid_argument, "Cursor position response was incomplete"));
+  }
+
+  auto* const end_ptr = buffer.data() + bytes_read - 1;
+  *end_ptr = '\0';
 
   // First make sure read() responded with an escape sequence
   if (buffer[0] != '\x1b' or buffer[1] != '[') {
-    throw std::runtime_error("An invalid byte sequence was encountered "
-                             "where an escape sequence was expected");
+    return std::unexpected(utilities::make_error(std::errc::invalid_argument,
+                                                 "An invalid byte sequence was encountered where an escape "
+                                                 "sequence was expected"));
   }
 
   window_size result {.cols = 0, .rows = 0};
@@ -101,19 +124,19 @@ auto get_cursor_position(io::file_interface& file, std::span<char> buffer) noexc
   // into the rows and cols variables
 
   char const* parse_ptr = &buffer[2];
-  char const* end_ptr = &buffer.back();
-
   // Parse rows
   auto [row_end_ptr, row_ec] = std::from_chars(parse_ptr, end_ptr, result.rows);
 
   // Check error if no characters consumed
   if (row_ec != std::errc() or row_end_ptr == parse_ptr) {
-    throw std::runtime_error("Failed to parse rows or row-string empty");
+    return std::unexpected(
+      utilities::make_error(std::errc::invalid_argument, "Failed to parse rows or row-string empty"));
   }
 
   // Check for semicolon
   if (row_end_ptr == end_ptr or *row_end_ptr != ';') {
-    throw std::runtime_error("Expected semi-colon not found or end of string");
+    return std::unexpected(
+      utilities::make_error(std::errc::invalid_argument, "Expected semi-colon not found or end of string"));
   }
 
   // Skip semicolon
@@ -124,8 +147,8 @@ auto get_cursor_position(io::file_interface& file, std::span<char> buffer) noexc
 
   // Check error; no characters consumed, or not ending at 'R'
   if (col_ec != std::errc() or col_end_ptr == parse_ptr or col_end_ptr != end_ptr) {
-    throw std::runtime_error(
-      "Failed to parse columns, or cols string empty, or extra characters encountered before 'R'");
+    return std::unexpected(utilities::make_error(
+      std::errc::invalid_argument, "Failed to parse columns, or cols string empty, or extra characters before 'R'"));
   }
 
   return result;

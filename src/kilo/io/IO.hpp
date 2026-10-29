@@ -24,14 +24,18 @@
 #ifndef IO_HPP
 #define IO_HPP
 
+#include "kilo/utilities/Error.hpp"
+
+#include <expected>
+
 namespace kilo::io {
 
 /**
  * \brief Read key input from stdin
  * \return The character read
- * \throws std::system_error if an error occured during read
+ * \returns An error if reading from stdin fails
  */
-auto read_key() noexcept(false) -> int;
+auto read_key() -> std::expected<int, utilities::error_info>;
 
 namespace detail {
 

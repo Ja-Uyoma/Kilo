@@ -25,9 +25,11 @@
 #define KILO_TERMINAL_WINDOW_SIZE_WINDOW_SIZE_HPP
 
 #include "kilo/io/File.hpp"
+#include "kilo/utilities/Error.hpp"
 #include <sys/ioctl.h>
 
 #include <cstdint>
+#include <expected>
 #include <span>
 
 namespace kilo::terminal::window_size {
@@ -45,13 +47,12 @@ struct window_size
 /**
  * @brief Get the size of the open terminal window
  *
- * @returns The size of the terminal window as a window_size struct
- * @throws std::system_error if either get_window_size() or get_cursor_position fail
- * @throws std::runtime_error if either get_window_size() or get_cursor_position fail
+ * @returns The size of the terminal window, or an error if it cannot be determined
+ * @returns An error if the window size cannot be determined
  * @see detail::get_window_size()
  * @see detail::get_cursor_position()
  */
-auto get_terminal_window_size() noexcept(false) -> window_size;
+auto get_terminal_window_size() -> std::expected<window_size, utilities::error_info>;
 
 namespace detail {
 
@@ -61,23 +62,21 @@ namespace detail {
  *
  * @param[in] file The "file" we're performing IO operations on; usually stdin and stdout
  * @param[in] winsz The internal data structure to which the sizes will be written
- * @returns The size of the terminal window
- * @throws std::system_error if the cursor could not be moved to the bottom-right of the terminal window
- * @throws std::system_error if the position of the cursor in the terminal window could not be determined
- * @throws std::runtime_error if the obtained cursor position was ill-formed and could not be parsed
+ * @returns The size of the terminal window, or an error if it cannot be determined
+ * @returns An error if the window size cannot be determined
  */
-auto get_window_size(io::file_interface& file, winsize& winsz) noexcept(false) -> window_size;
+auto get_window_size(io::file_interface& file, winsize& winsz) -> std::expected<window_size, utilities::error_info>;
 
 /**
  * @brief Get the position of the cursor in the terminal window
  *
  * @param[in] file The file we're performing IO operations on (usually STDIN and STDOUT)
  * @param[in] buffer The buffer to which the cursor position is written
- * @returns The position of the cursor in the terminal window
- * @throws std::system_error if the position of the cursor in the terminal window could not be determined
- * @throws std::runtime_error if the obtained cursor position was ill-formed and could not be parsed
+ * @returns The position of the cursor, or an error if it cannot be read or parsed
+ * @returns An error if the position could not be read or parsed
  */
-auto get_cursor_position(io::file_interface& file, std::span<char> buffer) noexcept(false) -> window_size;
+auto get_cursor_position(io::file_interface& file, std::span<char> buffer)
+  -> std::expected<window_size, utilities::error_info>;
 
 }   // namespace detail
 

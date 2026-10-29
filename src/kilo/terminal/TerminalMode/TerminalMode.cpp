@@ -25,70 +25,94 @@
 
 #include <fmt/core.h>
 #include <gsl/assert>
-#include <system_error>
 
 #include <cerrno>
-#include <functional>
 #include <termios.h>
 #include <unistd.h>
+#include <utility>
 
 namespace kilo::terminal::inline v1 {
 
-terminal_mode::terminal_mode() noexcept(false)
+auto terminal_mode::initialize() -> std::expected<void, utilities::error_info>
 {
-  detail::get_terminal_driver_settings(STDIN_FILENO, m_termios);
+  auto result = detail::get_terminal_driver_settings(STDIN_FILENO, m_termios);
+  if (!result) {
+    return std::unexpected(result.error());
+  }
+  m_initialized = true;
+  return {};
 }
 
 terminal_mode::~terminal_mode() noexcept
 {
-  try {
-    set_canonical_mode();
-  }
-  catch (std::system_error const& err) {
-    fmt::print(stderr, "{}: {}\n", err.code().message(), err.what());
+  if (m_initialized) {
+    auto result = set_canonical_mode();
+    if (!result) {
+      fmt::print(stderr, "{}: {}\n", result.error().code.message(), result.error().message);
+    }
   }
 }
 
-void terminal_mode::set_raw_mode() & noexcept(false)
+auto terminal_mode::set_raw_mode() & -> std::expected<void, utilities::error_info>
 {
   if (m_mode == tty_mode::raw) {
-    return;
+    return {};
   }
 
-  Expects(m_mode == tty_mode::canonical && "Terminal driver is in canonical mode");
+  if (!m_initialized) {
+    return std::unexpected(
+      utilities::make_error(std::errc::operation_not_permitted, "Terminal mode has not been initialized"));
+  }
+  if (m_mode != tty_mode::canonical) {
+    return std::unexpected(
+      utilities::make_error(std::errc::operation_not_permitted, "Terminal driver is not in canonical mode"));
+  }
 
-  detail::tty_raw(STDIN_FILENO, m_termios, m_copy);
+  auto result = detail::tty_raw(STDIN_FILENO, m_termios, m_copy);
+  if (!result) {
+    return std::unexpected(result.error());
+  }
   m_mode = tty_mode::raw;
 
   Ensures(m_mode == tty_mode::raw and "Terminal driver is in raw mode");
+  return {};
 }
 
-void terminal_mode::set_canonical_mode() & noexcept(false)
+auto terminal_mode::set_canonical_mode() & -> std::expected<void, utilities::error_info>
 {
   if (m_mode == tty_mode::canonical) {
-    return;
+    return {};
   }
 
-  Expects(m_mode == tty_mode::raw and "Terminal driver is in raw mode");
+  if (!m_initialized or m_mode != tty_mode::raw) {
+    return std::unexpected(
+      utilities::make_error(std::errc::operation_not_permitted, "Terminal driver is not in raw mode"));
+  }
 
-  detail::tty_canonical_mode(STDIN_FILENO, m_termios);
+  auto result = detail::tty_canonical_mode(STDIN_FILENO, m_termios);
+  if (!result) {
+    return std::unexpected(result.error());
+  }
   m_mode = tty_mode::canonical;
 
   Ensures(m_mode == tty_mode::canonical and "Terminal driver is in canonical mode");
+  return {};
 }
 
 namespace detail {
 
-void get_terminal_driver_settings(int file_descriptor, termios& buf) noexcept(false)
+auto get_terminal_driver_settings(int file_descriptor, termios& buf) -> std::expected<void, utilities::error_info>
 {
   errno = 0;
 
   if (::tcgetattr(file_descriptor, &buf) == -1) [[unlikely]] {
-    throw std::system_error(errno, std::system_category(), "Could not retrieve terminal driver settings");
+    auto const error_number = errno;
+    return std::unexpected(utilities::make_error(error_number, "Could not retrieve terminal driver settings"));
   }
+  return {};
 }
 
-void tty_raw(int file_descriptor, termios const& buf, termios& copy) noexcept(false)
+auto tty_raw(int file_descriptor, termios const& buf, termios& copy) -> std::expected<void, utilities::error_info>
 {
   copy = buf;
 
@@ -116,7 +140,8 @@ void tty_raw(int file_descriptor, termios const& buf, termios& copy) noexcept(fa
   errno = 0;
 
   if (::tcsetattr(file_descriptor, TCSAFLUSH, &copy) == -1) [[unlikely]] {
-    throw std::system_error(errno, std::system_category(), "Error while setting terminal driver to raw mode");
+    auto const error_number = errno;
+    return std::unexpected(utilities::make_error(error_number, "Error while setting terminal driver to raw mode"));
   }
 
   /*
@@ -126,19 +151,21 @@ void tty_raw(int file_descriptor, termios const& buf, termios& copy) noexcept(fa
   errno = 0;
 
   if (::tcgetattr(file_descriptor, &copy) == -1) [[unlikely]] {
-    throw std::system_error(errno, std::system_category(), "Error while quering terminal driver for success of initial operation");
-
+    auto const error_number = errno;
+    auto error = utilities::make_error(error_number, "Error while querying terminal driver after setting raw mode");
     if (::tcsetattr(file_descriptor, TCSAFLUSH, &buf) == -1) [[unlikely]] {
-      throw std::system_error(errno, std::system_category(), "Error while restoring original terminal driver settings");
+      auto const restore_error_number = errno;
+      return std::unexpected(
+        utilities::make_error(restore_error_number, "Could not restore original terminal driver settings"));
     }
+    return std::unexpected(std::move(error));
   }
 
-  auto const changes_did_not_stick = std::invoke([&copy]() noexcept -> bool {
-    return (copy.c_iflag & static_cast<tcflag_t>(BRKINT | ICRNL | INPCK | ISTRIP | IXON)) != 0 ||
-           (copy.c_oflag & OPOST) != 0 || ((copy.c_cflag & CS8) != CS8) ||
-           (copy.c_lflag & static_cast<tcflag_t>(ECHO | ICANON | IEXTEN | ISIG)) != 0 || (copy.c_cc[VMIN] != 0) ||
-           (copy.c_cc[VTIME] != 1);
-  });
+  auto const changes_did_not_stick =
+    (copy.c_iflag & static_cast<tcflag_t>(BRKINT | ICRNL | INPCK | ISTRIP | IXON)) != 0 ||
+    (copy.c_oflag & OPOST) != 0 || ((copy.c_cflag & CS8) != CS8) ||
+    (copy.c_lflag & static_cast<tcflag_t>(ECHO | ICANON | IEXTEN | ISIG)) != 0 || (copy.c_cc[VMIN] != 0) ||
+    (copy.c_cc[VTIME] != 1);
 
   /*
    * Only some of the changes stuck. Restore the original settings
@@ -146,20 +173,25 @@ void tty_raw(int file_descriptor, termios const& buf, termios& copy) noexcept(fa
 
   if (changes_did_not_stick) {
     if (::tcsetattr(file_descriptor, TCSAFLUSH, &buf) == -1) [[unlikely]] {
-      throw std::system_error(errno, std::system_category(), "Error while restoring original terminal driver settings");
+      auto const error_number = errno;
+      return std::unexpected(
+        utilities::make_error(error_number, "Could not restore original terminal driver settings"));
     }
 
-    throw std::system_error(EINVAL, std::system_category(), "Error while setting terminal driver to raw mode. Restoring original settings...");
+    return std::unexpected(utilities::make_error(EINVAL, "Terminal driver rejected raw mode settings"));
   }
+  return {};
 }
 
-void tty_canonical_mode(int file_descriptor, termios const& buf) noexcept(false)
+auto tty_canonical_mode(int file_descriptor, termios const& buf) -> std::expected<void, utilities::error_info>
 {
   errno = 0;
 
   if (::tcsetattr(file_descriptor, TCSAFLUSH, &buf) == -1) [[unlikely]] {
-    throw std::system_error(errno, std::system_category(), "Failed to reset terminal driver to canonical mode");
+    auto const error_number = errno;
+    return std::unexpected(utilities::make_error(error_number, "Failed to reset terminal driver to canonical mode"));
   }
+  return {};
 }
 
 }   // namespace detail

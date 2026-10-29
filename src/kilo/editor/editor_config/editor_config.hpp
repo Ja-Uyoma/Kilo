@@ -30,12 +30,14 @@
 #include "kilo/editor/offset/offset.hpp"
 #include "kilo/terminal/window_size/window_size.hpp"
 #include "kilo/utilities/Constants.hpp"
+#include "kilo/utilities/Error.hpp"
 #include <fmt/format.h>
 #include <gsl/pointers>
 
 #include <chrono>
 #include <cstdint>
 #include <filesystem>
+#include <expected>
 #include <vector>
 
 namespace kilo::editor::editor_config {
@@ -67,9 +69,10 @@ void process_keypress(int key_pressed, editor_config& editor_config, terminal::w
  * @brief Perform a screen refresh
  * @param[in] editor The current editor configuration
  * @param[in,out] abuf The buffer to which writes to the screen are done
+ * @returns An error if the screen buffer could not be flushed
  */
-void refresh_screen(editor_config& editor, gsl::not_null<append_buffer::append_buffer*> abuf,
-                    terminal::window_size::window_size const& winsize);
+auto refresh_screen(editor_config& editor, gsl::not_null<append_buffer::append_buffer*> abuf,
+                    terminal::window_size::window_size const& winsize) -> std::expected<void, utilities::error_info>;
 
 /**
  * @brief Draw each row of the buffer of text being edited, plus a tilde at the beginning, or the welcome message
@@ -97,10 +100,12 @@ void scroll(editor_config& editor, terminal::window_size::window_size const& win
  *
  * @param[in] path The path to the file
  * @param[in,out] editor The current editor state
+ * @returns An error if the file could not be opened or read
  *
- * @throws std::ios_base::failure if an error was encountered when opening or reading from the file
+ * @returns An error if the file could not be opened or read
  */
-void open(std::filesystem::path const& path, gsl::not_null<editor_config*> editor);
+auto open(std::filesystem::path const& path, gsl::not_null<editor_config*> editor)
+  -> std::expected<void, utilities::error_info>;
 
 /**
  * @brief Draw a status bar with inverted colours at the bottom of the screen

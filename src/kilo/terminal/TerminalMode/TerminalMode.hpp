@@ -24,7 +24,10 @@
 #ifndef KILO_TERMINAL_TERMINAL_MODE_HPP
 #define KILO_TERMINAL_TERMINAL_MODE_HPP
 
+#include "kilo/utilities/Error.hpp"
+
 #include <cstdint>
+#include <expected>
 #include <termios.h>
 
 namespace kilo::terminal::inline v1 {
@@ -49,17 +52,20 @@ public:
 
   /**
    * @brief Create a default terminal mode instance
-   *
-   * @details Queries the underlying terminal driver's settings and writes them to a class' member variable
    */
-  explicit terminal_mode() noexcept(false);
+  explicit terminal_mode() noexcept = default;
+
+  /**
+   * @brief Query and save the current terminal driver settings before changing modes
+   * @returns An error if the current settings could not be retrieved
+   */
+  auto initialize() -> std::expected<void, utilities::error_info>;
 
   /**
    * @brief Destructor.
    * Sets the terminal driver back in canonical mode
    *
-   * @details Attempts to set the terminal driver's mode back to canonical mode by calling set_canonical_mode
-   * If this fails, the thrown exception is caught, and std::terminate() is called
+   * @details Attempts to set the terminal driver's mode back to canonical mode and reports failures to stderr
    */
   ~terminal_mode() noexcept;
 
@@ -72,16 +78,17 @@ public:
    * @brief Set the terminal driver to raw (or non-canonical) mode
    * @pre The terminal driver should be in canonical mode
    * @post The terminal dirver will be in raw mode on success, or reset to canonical mode on failure
-   * @throws std::system_error if the operation failed
+   * @returns An error if the operation failed
    */
-  void set_raw_mode() & noexcept(false);
+  auto set_raw_mode() & -> std::expected<void, utilities::error_info>;
 
   /**
    * @brief Set the terminal driver's mode to canonical mode
    * @pre The terminal driver should be in raw mode
    * @post The terminal driver will be in canonical mode
+   * @returns An error if the terminal mode could not be restored
    */
-  void set_canonical_mode() & noexcept(false);
+  auto set_canonical_mode() & -> std::expected<void, utilities::error_info>;
 
   /**
    * @brief Get the current mode of the terminal driver
@@ -96,6 +103,7 @@ private:
   termios m_termios {};
   termios m_copy {};
   tty_mode m_mode {tty_mode::canonical};
+  bool m_initialized {};
 };
 
 namespace detail {
@@ -104,26 +112,23 @@ namespace detail {
  * @brief Query file_descriptor and write its settings to buf
  * @param[in] file_descriptor The file descriptor to be queried
  * @param[in] buf Where the settings are written to
- * @throws std::system_error on failure
  */
-void get_terminal_driver_settings(int file_descriptor, termios& buf) noexcept(false);
+auto get_terminal_driver_settings(int file_descriptor, termios& buf) -> std::expected<void, utilities::error_info>;
 
 /**
  * @brief Set the terminal driver's mode to raw mode
  * @param[in] file_descriptor The terminal driver's file descriptor
  * @param[in] buf The buffer to which the terminal driver's settings are to be written
  * @param[in] copy A copy of the settings stored in buf in case we need to roll back
- * @throws std::system_error if the operation failed
  */
-void tty_raw(int file_descriptor, termios const& buf, termios& copy) noexcept(false);
+auto tty_raw(int file_descriptor, termios const& buf, termios& copy) -> std::expected<void, utilities::error_info>;
 
 /**
  * @brief Set the terminal driver's mode to canonical mode
  * @param[in] file_descriptor The terminal driver's file descriptor
  * @param[in] buf The buffer from which the desired settings are to be read from
- * @throws std::system_error if the operation failed
  */
-void tty_canonical_mode(int file_descriptor, termios const& buf) noexcept(false);
+auto tty_canonical_mode(int file_descriptor, termios const& buf) -> std::expected<void, utilities::error_info>;
 
 }   // namespace detail
 

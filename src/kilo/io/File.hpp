@@ -61,7 +61,7 @@ public:
   /// \param[in] buffer The buffer being read to
   /// \returns The number of bytes read
   ///
-  virtual auto read(int file_descriptor, char buffer) -> int64_t = 0;
+  virtual auto read(int file_descriptor, char& buffer) -> int64_t = 0;
 
   ///
   /// \brief Write all bytes of buffer to file_descriptor
@@ -136,7 +136,7 @@ public:
   /// \param[in] buffer The buffer being read to
   /// \returns The number of bytes read
   ///
-  auto read(int file_descriptor, char buffer) noexcept -> int64_t override;
+  auto read(int file_descriptor, char& buffer) noexcept -> int64_t override;
 
   ///
   /// \brief Write all bytes of buffer to file_descriptor

@@ -25,7 +25,6 @@
 
 #include "kilo/io/File.hpp"
 #include <gsl/assert>
-#include <system_error>
 
 #include <cerrno>
 #include <cstddef>
@@ -34,7 +33,7 @@
 
 namespace kilo::editor::append_buffer {
 
-auto append_buffer::flush(io::file_interface& file) const& noexcept(false) -> std::size_t
+auto append_buffer::flush(io::file_interface& file) const& -> std::expected<std::size_t, utilities::error_info>
 {
   std::size_t total_written = 0;
 
@@ -46,7 +45,8 @@ auto append_buffer::flush(io::file_interface& file) const& noexcept(false) -> st
       if (errno == EINTR or errno == EAGAIN) {
         continue;
       }
-      throw std::system_error(errno, std::system_category());
+      auto const error_number = errno;
+      return std::unexpected(utilities::make_error(error_number, "Could not write screen buffer"));
     }
 
     if (result == 0) {

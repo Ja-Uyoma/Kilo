@@ -23,7 +23,6 @@
 
 #include "kilo/editor/append_buffer/append_buffer.hpp"
 #include "kilo/io/File.hpp"
-#include <system_error>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -61,7 +60,7 @@ public:
   MOCK_METHOD(int64_t, write, (int, char), (noexcept, override));
   MOCK_METHOD(int64_t, read, (int, std::string&), (noexcept, override));
   MOCK_METHOD(int64_t, read, (int, std::string&, std::size_t), (noexcept, override));
-  MOCK_METHOD(int64_t, read, (int, char), (noexcept, override));
+  MOCK_METHOD(int64_t, read, (int, char&), (noexcept, override));
   MOCK_METHOD(int64_t, ioctl, (int, std::uint64_t, void*), (noexcept, override));
 };
 
@@ -80,10 +79,11 @@ TEST(AppendBuffer, flushReturnsTheNumberOfBytesWrittenOnSuccess)
   EXPECT_CALL(file, write(STDOUT_FILENO, str)).WillOnce(Return(std::ssize(str)));
   auto result = buffer.flush(file);
 
-  ASSERT_THAT(result, Eq(13));
+  ASSERT_TRUE(result);
+  ASSERT_THAT(*result, Eq(13));
 }
 
-TEST(AppendBuffer, flushThrowsAnExceptionOnFailure)
+TEST(AppendBuffer, flushReturnsAnErrorOnFailure)
 {
   mock_file_interface file;
   append_buffer buffer;
@@ -96,7 +96,9 @@ TEST(AppendBuffer, flushThrowsAnExceptionOnFailure)
       return -1;
     });
 
-  ASSERT_THROW(buffer.flush(file), std::system_error);
+  auto result = buffer.flush(file);
+  ASSERT_FALSE(result);
+  EXPECT_EQ(result.error().code.value(), EBADF);
 }
 
 TEST(AppendBuffer, FlushHandlesEINTR)
@@ -117,7 +119,8 @@ TEST(AppendBuffer, FlushHandlesEINTR)
 
   auto result = buffer.flush(mock_file);
 
-  ASSERT_THAT(result, testing::Eq(23));
+  ASSERT_TRUE(result);
+  ASSERT_THAT(*result, testing::Eq(23));
 }
 
 TEST(AppendBuffer, FlushStopsOnZeroBytesWritten)
@@ -132,7 +135,8 @@ TEST(AppendBuffer, FlushStopsOnZeroBytesWritten)
 
   auto result = buffer.flush(mock_file);
 
-  ASSERT_THAT(result, testing::Eq(0));
+  ASSERT_TRUE(result);
+  ASSERT_THAT(*result, testing::Eq(0));
 }
 
 }   // namespace kilo::editor::append_buffer

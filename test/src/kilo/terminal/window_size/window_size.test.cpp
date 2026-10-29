@@ -2,7 +2,6 @@
 
 #include "kilo/io/File.hpp"
 #include <sys/ioctl.h>
-#include <system_error>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -26,7 +25,7 @@ public:
   MOCK_METHOD(int64_t, write, (int, char), (noexcept, override));
   MOCK_METHOD(int64_t, read, (int, std::string&), (noexcept, override));
   MOCK_METHOD(int64_t, read, (int, std::string&, std::size_t), (noexcept, override));
-  MOCK_METHOD(int64_t, read, (int, char), (noexcept, override));
+  MOCK_METHOD(int64_t, read, (int, char&), (noexcept, override));
   MOCK_METHOD(int64_t, ioctl, (int, std::uint64_t, void*), (noexcept, override));
 };
 
@@ -53,12 +52,15 @@ TEST(WindowSize, GetWindowSizeReturnsTheWindowSizeOnSuccess)
       return 0;
     });
 
-  ASSERT_NO_THROW({ detail::get_window_size(mfile, winsz); });
+  auto result = detail::get_window_size(mfile, winsz);
+  ASSERT_TRUE(result);
+  ASSERT_EQ(result->cols, 80);
+  ASSERT_EQ(result->rows, 60);
   ASSERT_EQ(winsz.ws_col, 80);
   ASSERT_EQ(winsz.ws_row, 60);
 }
 
-TEST(WindowSize, GetWindowSizeThrowsAnExceptionWhenIoctlAndWriteFail)
+TEST(WindowSize, GetWindowSizeReturnsAnErrorWhenIoctlAndWriteFail)
 {
   mock_file mfile;
   ::winsize winsz {};
@@ -71,10 +73,12 @@ TEST(WindowSize, GetWindowSizeThrowsAnExceptionWhenIoctlAndWriteFail)
 
   EXPECT_CALL(mfile, write(STDOUT_FILENO, move_cursor_bottom_right)).WillOnce(::testing::Return(0));
 
-  ASSERT_THROW({ detail::get_window_size(mfile, winsz); }, std::system_error);
+  auto result = detail::get_window_size(mfile, winsz);
+  ASSERT_FALSE(result);
+  EXPECT_EQ(result.error().code.value(), EIO);
 }
 
-TEST(WindowSize, GetWindowSizeThrowsAnExceptionWhenWindowColsIsZeroAndWriteFails)
+TEST(WindowSize, GetWindowSizeReturnsAnErrorWhenWindowColsIsZeroAndWriteFails)
 {
   mock_file mfile;
   ::winsize winsz {};
@@ -88,10 +92,12 @@ TEST(WindowSize, GetWindowSizeThrowsAnExceptionWhenWindowColsIsZeroAndWriteFails
 
   EXPECT_CALL(mfile, write(STDOUT_FILENO, move_cursor_bottom_right)).WillOnce(::testing::Return(0));
 
-  ASSERT_THROW({ detail::get_window_size(mfile, winsz); }, std::system_error);
+  auto result = detail::get_window_size(mfile, winsz);
+  ASSERT_FALSE(result);
+  EXPECT_EQ(result.error().code.value(), EIO);
 }
 
-TEST(WindowSize, GetCursorPositionThrowsAnExceptionOnFailureToGetCursorPosition)
+TEST(WindowSize, GetCursorPositionReturnsAnErrorOnFailureToGetCursorPosition)
 {
   mock_file mfile;
   static constexpr std::string get_cursor_position("\x1b[6n");
@@ -100,7 +106,31 @@ TEST(WindowSize, GetCursorPositionThrowsAnExceptionOnFailureToGetCursorPosition)
 
   EXPECT_CALL(mfile, write(STDOUT_FILENO, get_cursor_position)).WillOnce(::testing::Return(0));
 
-  ASSERT_THROW(detail::get_cursor_position(mfile, buffer), std::system_error);
+  auto result = detail::get_cursor_position(mfile, buffer);
+  ASSERT_FALSE(result);
+  EXPECT_EQ(result.error().code.value(), EIO);
+}
+
+TEST(WindowSize, GetCursorPositionParsesTheResponse)
+{
+  mock_file mfile;
+  static constexpr std::string get_cursor_position("\x1b[6n");
+  static constexpr std::string response("\x1b[24;80R");
+  static constexpr unsigned buffer_size = 32;
+  std::array<char, buffer_size> buffer {};
+  std::size_t next_character = 0;
+
+  EXPECT_CALL(mfile, write(STDOUT_FILENO, get_cursor_position))
+    .WillOnce(::testing::Return(std::ssize(get_cursor_position)));
+  EXPECT_CALL(mfile, read(STDIN_FILENO, ::testing::A<char&>())).WillRepeatedly([&](int, char& character) -> int64_t {
+    character = response[next_character++];
+    return 1;
+  });
+
+  auto result = detail::get_cursor_position(mfile, buffer);
+  ASSERT_TRUE(result);
+  EXPECT_EQ(result->rows, 24);
+  EXPECT_EQ(result->cols, 80);
 }
 
 // NOLINTEND(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)

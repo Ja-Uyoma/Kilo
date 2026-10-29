@@ -27,7 +27,9 @@
 #include "kilo/editor/append_buffer/append_buffer.hpp"
 #include "kilo/editor/editor_config/editor_config.hpp"
 #include "kilo/terminal/window_size/window_size.hpp"
+#include "kilo/utilities/Error.hpp"
 
+#include <expected>
 #include <filesystem>
 #include <span>
 
@@ -39,7 +41,13 @@ public:
   /**
    * @brief Default constructor
    */
-  explicit application() noexcept(false);
+  explicit application() noexcept = default;
+
+  /**
+   * @brief Determine the terminal dimensions before starting the editor
+   * @returns An error if the terminal dimensions cannot be determined
+   */
+  auto initialize() -> std::expected<void, utilities::error_info>;
 
   /**
    * @brief Run the application with the given command-line arguments
@@ -56,14 +64,15 @@ private:
   /**
    * @brief Open a file and write its contents to memory
    * @param[in] path The path to the file
-   * @throws std::ios_base::failure if the file could not be opened or if there was an error while reading from it
+   * @returns An error if the file could not be opened or read
    */
-  void open(std::filesystem::path const& path);
+  auto open(std::filesystem::path const& path) -> std::expected<void, utilities::error_info>;
 
   /**
    * @brief Run the application
+   * @returns An error if reading input or refreshing the screen fails
    */
-  void run();
+  auto run() -> std::expected<void, utilities::error_info>;
 };
 
 }   // namespace kilo::application

@@ -43,7 +43,7 @@ auto file::read(int file_descriptor, std::string& buffer, std::size_t nbytes) no
   return ::read(file_descriptor, buffer.data(), nbytes);
 }
 
-auto file::read(int file_descriptor, char buffer) noexcept -> int64_t
+auto file::read(int file_descriptor, char& buffer) noexcept -> int64_t
 {
   return ::read(file_descriptor, &buffer, 1);
 }

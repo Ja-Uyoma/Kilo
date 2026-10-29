@@ -37,6 +37,7 @@
 #include <algorithm>
 #include <cassert>
 #include <chrono>
+#include <cerrno>
 #include <cstddef>
 #include <cstdio>
 #include <cstdlib>
@@ -44,6 +45,7 @@
 #include <filesystem>
 #include <fstream>
 #include <ios>
+#include <expected>
 #include <string>
 #include <unistd.h>
 #include <utility>
@@ -101,8 +103,8 @@ void process_keypress(int key_pressed, editor_config& editor_config, terminal::w
   }
 }
 
-void refresh_screen(editor_config& editor, gsl::not_null<append_buffer::append_buffer*> abuf,
-                    terminal::window_size::window_size const& winsize)
+auto refresh_screen(editor_config& editor, gsl::not_null<append_buffer::append_buffer*> abuf,
+                    terminal::window_size::window_size const& winsize) -> std::expected<void, utilities::error_info>
 {
   scroll(editor, winsize);
 
@@ -127,7 +129,11 @@ void refresh_screen(editor_config& editor, gsl::not_null<append_buffer::append_b
   // The file to which the screen buffer writes its contents when flushed (typically STDOUT)
   io::file out_file {};
 
-  abuf->write(cursor_pos).write(utilities::escape_sequences::show_the_cursor).flush(out_file);
+  auto result = abuf->write(cursor_pos).write(utilities::escape_sequences::show_the_cursor).flush(out_file);
+  if (!result) {
+    return std::unexpected(result.error());
+  }
+  return {};
 }
 
 void draw_rows(editor_config const& editor, gsl::not_null<append_buffer::append_buffer*> abuf,
@@ -233,13 +239,16 @@ void scroll(editor_config& editor, terminal::window_size::window_size const& win
   }
 }
 
-void open(std::filesystem::path const& path, gsl::not_null<editor_config*> editor)
+auto open(std::filesystem::path const& path, gsl::not_null<editor_config*> editor)
+  -> std::expected<void, utilities::error_info>
 {
   editor->filename = path.filename();
+  errno = 0;
   auto file = std::ifstream(path);
 
   if (!file.is_open()) {
-    throw std::ios_base::failure("Could not open file");
+    auto const error_number = errno;
+    return std::unexpected(utilities::make_error(error_number, "Could not open file"));
   }
 
   auto line = std::string();
@@ -253,7 +262,8 @@ void open(std::filesystem::path const& path, gsl::not_null<editor_config*> edito
   }
 
   if ((file.bad() or file.fail()) and !file.eof()) {
-    throw std::ios_base::failure("Error while reading from file");
+    auto const error_number = errno;
+    return std::unexpected(utilities::make_error(error_number, "Error while reading from file"));
   }
 
   file.close();
@@ -261,6 +271,7 @@ void open(std::filesystem::path const& path, gsl::not_null<editor_config*> edito
   for (auto& row : editor->row) {
     erow::update_row(row);
   }
+  return {};
 }
 
 void draw_status_bar(editor_config const& editor, gsl::not_null<append_buffer::append_buffer*> abuf,

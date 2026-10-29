@@ -28,7 +28,6 @@
 #include "kilo/terminal/TerminalMode/TerminalMode.hpp"
 #include "kilo/terminal/window_size/window_size.hpp"
 #include "kilo/utilities/Utilities.hpp"
-#include <system_error>
 
 #include <cstdlib>
 #include <filesystem>
@@ -37,59 +36,77 @@
 
 namespace kilo::application {
 
-application::application() noexcept(false)
+auto application::initialize() -> std::expected<void, utilities::error_info>
 {
-  m_winsize = terminal::window_size::get_terminal_window_size();
+  auto result = terminal::window_size::get_terminal_window_size();
+  if (!result) {
+    return std::unexpected(result.error());
+  }
+  m_winsize = *result;
   m_winsize.rows -= 2;
+  return {};
 }
 
-void application::open(std::filesystem::path const& path)
+auto application::open(std::filesystem::path const& path) -> std::expected<void, utilities::error_info>
 {
-  kilo::editor::editor_config::open(path, &m_editor_config);
+  return kilo::editor::editor_config::open(path, &m_editor_config);
 }
 
-void application::run()
+auto application::run() -> std::expected<void, utilities::error_info>
 {
   kilo::editor::editor_config::set_status_msg(&m_editor_config, "HELP: Ctrl-Q = quit");
 
-  try {
-    while (true) {
-      kilo::editor::editor_config::refresh_screen(m_editor_config, &m_abuf, m_winsize);
-
-      auto const key_pressed = io::read_key();
-      kilo::editor::editor_config::process_keypress(key_pressed, m_editor_config, m_winsize);
+  while (true) {
+    auto refresh_result = kilo::editor::editor_config::refresh_screen(m_editor_config, &m_abuf, m_winsize);
+    if (!refresh_result) {
+      return std::unexpected(refresh_result.error());
     }
-  }
-  catch (std::system_error const& err) {
-    kilo::utilities::clear_screen_and_reposition_cursor();
-    std::cerr << err.code() << ": " << err.what() << '\n';
+
+    auto key_pressed = io::read_key();
+    if (!key_pressed) {
+      return std::unexpected(key_pressed.error());
+    }
+
+    kilo::editor::editor_config::process_keypress(*key_pressed, m_editor_config, m_winsize);
   }
 }
 
 auto application::main(std::span<char const*> args) -> int
 {
-  try {
-    static kilo::terminal::terminal_mode term_mode;
-    term_mode.set_raw_mode();
+  static kilo::terminal::terminal_mode term_mode;
+  auto terminal_init = term_mode.initialize();
+  if (!terminal_init) {
+    std::cerr << terminal_init.error().message << ": " << terminal_init.error().code.message() << '\n';
+    return EXIT_FAILURE;
   }
-  catch (std::system_error const& err) {
-    std::cerr << err.code().message() << ": " << err.what() << '\n';
+  auto raw_mode_result = term_mode.set_raw_mode();
+  if (!raw_mode_result) {
+    std::cerr << raw_mode_result.error().message << ": " << raw_mode_result.error().code.message() << '\n';
     return EXIT_FAILURE;
   }
 
   application app;
+  auto app_init = app.initialize();
+  if (!app_init) {
+    kilo::utilities::clear_screen_and_reposition_cursor();
+    std::cerr << app_init.error().message << ": " << app_init.error().code.message() << '\n';
+    return EXIT_FAILURE;
+  }
 
   if (args.size() >= 2) {
-    try {
-      app.open(args[1]);
-    }
-    catch (std::ios_base::failure const& err) {
-      std::cerr << err.what() << '\n' << err.code() << ": " << err.code().message() << '\n';
+    auto open_result = app.open(args[1]);
+    if (!open_result) {
+      std::cerr << open_result.error().message << ": " << open_result.error().code.message() << '\n';
       return EXIT_FAILURE;
     }
   }
 
-  app.run();
+  auto run_result = app.run();
+  if (!run_result) {
+    kilo::utilities::clear_screen_and_reposition_cursor();
+    std::cerr << run_result.error().message << ": " << run_result.error().code.message() << '\n';
+    return EXIT_FAILURE;
+  }
 
   return EXIT_SUCCESS;
 }
