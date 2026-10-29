@@ -25,5 +25,5 @@ target_include_directories(Kilo_lib_editor
 
 target_compile_features(Kilo_lib_editor
     PUBLIC
-        cxx_std_20
+        cxx_std_23
 )

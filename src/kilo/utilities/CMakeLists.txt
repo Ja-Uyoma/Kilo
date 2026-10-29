@@ -15,5 +15,5 @@ target_include_directories(Kilo_lib_utilities
 
 target_compile_features(Kilo_lib_utilities
     PUBLIC
-        cxx_std_20
+        cxx_std_23
 )

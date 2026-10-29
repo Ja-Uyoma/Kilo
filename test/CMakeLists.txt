@@ -27,7 +27,7 @@ target_link_libraries(Kilo_test
 
 target_compile_features(Kilo_test
     PRIVATE
-        cxx_std_20
+        cxx_std_23
 )
 
 add_test(NAME Kilo_test COMMAND Kilo_test)
@@ -37,4 +37,3 @@ gtest_discover_tests(Kilo_test)
 # --------------- End-of-file commands ---------------
 
 add_folders(Test)
-

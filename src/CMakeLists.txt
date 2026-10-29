@@ -19,9 +19,10 @@ target_include_directories(Kilo_lib
 )
 
 target_link_libraries(Kilo_lib
-    PRIVATE
+    PUBLIC
         Microsoft.GSL::GSL
         fmt::fmt
+    PRIVATE
         Kilo_lib_utilities
         Kilo_lib_io
         Kilo_lib_terminal
@@ -29,7 +30,7 @@ target_link_libraries(Kilo_lib
 )
 
 target_compile_features(Kilo_lib PUBLIC
-    cxx_std_20
+    cxx_std_23
 )
 
 add_executable(Kilo_exe)
@@ -47,5 +48,5 @@ target_link_libraries(Kilo_exe PRIVATE
 )
 
 target_compile_features(Kilo_exe PRIVATE
-    cxx_std_20
+    cxx_std_23
 )
