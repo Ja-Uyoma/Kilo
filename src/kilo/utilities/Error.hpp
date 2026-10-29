@@ -21,19 +21,34 @@
  * SOFTWARE.
  */
 
-#ifndef OFFSET_HPP
-#define OFFSET_HPP
+#ifndef KILO_UTILITIES_ERROR_HPP
+#define KILO_UTILITIES_ERROR_HPP
 
-#include <cstdint>
+#include <system_error>
 
-namespace kilo::editor {
+#include <string>
+#include <utility>
 
-struct offset
+namespace kilo::utilities {
+
+struct error_info
 {
-  std::int64_t row {};
-  std::int64_t col {};
+  std::error_code code;
+  std::string message;
 };
 
-}   // namespace kilo::editor
+inline auto make_error(int error_number, std::string message) -> error_info
+{
+  auto const code = error_number == 0 ? std::make_error_code(std::errc::io_error)
+                                      : std::error_code(error_number, std::system_category());
+  return {.code = code, .message = std::move(message)};
+}
+
+inline auto make_error(std::errc error, std::string message) -> error_info
+{
+  return {.code = std::make_error_code(error), .message = std::move(message)};
+}
+
+}   // namespace kilo::utilities
 
 #endif

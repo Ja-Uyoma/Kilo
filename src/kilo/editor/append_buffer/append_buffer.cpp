@@ -21,19 +21,44 @@
  * SOFTWARE.
  */
 
-#ifndef CURSOR_HPP
-#define CURSOR_HPP
+#include "append_buffer.hpp"
 
+#include "kilo/io/File.hpp"
+#include <gsl/assert>
+
+#include <cerrno>
+#include <cstddef>
 #include <cstdint>
+#include <unistd.h>
 
-namespace kilo::editor {
+namespace kilo::editor::append_buffer {
 
-struct cursor
+auto append_buffer::flush(io::file_interface& file) const& -> std::expected<std::size_t, utilities::error_info>
 {
-  std::int64_t x {};
-  std::int64_t y {};
-};
+  std::size_t total_written = 0;
 
-}   // namespace kilo::editor
+  while (total_written < m_buffer.length()) {
+    int64_t const result =
+      file.write(STDOUT_FILENO, m_buffer.substr(0 + total_written, m_buffer.length() - total_written));
 
-#endif
+    if (result == -1) {
+      if (errno == EINTR or errno == EAGAIN) {
+        continue;
+      }
+      auto const error_number = errno;
+      return std::unexpected(utilities::make_error(error_number, "Could not write screen buffer"));
+    }
+
+    if (result == 0) {
+      break;
+    }
+
+    total_written += static_cast<std::size_t>(result);
+  }
+
+  Ensures((total_written == m_buffer.length() or total_written == 0) and
+          "The total number of bytes written is unequal to the size of the buffer");
+  return total_written;
+}
+
+}   // namespace kilo::editor::append_buffer

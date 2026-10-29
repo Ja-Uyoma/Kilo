@@ -24,6 +24,7 @@
 #ifndef FILE_HPP
 #define FILE_HPP
 
+#include <cstddef>
 #include <cstdint>
 #include <string>
 
@@ -55,6 +56,14 @@ public:
   virtual auto read(int file_descriptor, std::string& buffer, std::size_t nbytes) -> int64_t = 0;
 
   ///
+  /// \brief Read from file_descriptor into buffer
+  /// \param[in] file_descriptor The file being read from
+  /// \param[in] buffer The buffer being read to
+  /// \returns The number of bytes read
+  ///
+  virtual auto read(int file_descriptor, char& buffer) -> int64_t = 0;
+
+  ///
   /// \brief Write all bytes of buffer to file_descriptor
   /// \param[in] file_descriptor The file descriptor being written to
   /// \param[in] buffer The buffer being written from
@@ -72,32 +81,31 @@ public:
   virtual auto write(int file_descriptor, std::string const& buffer, std::size_t nbytes) -> int64_t = 0;
 
   ///
-  /// \brief Virtual destructor
+  /// \brief Write buffer to file_descriptor
+  /// \param[in] file_descriptor The file descriptor being written to
+  /// \param[in] buffer The buffer being written from
+  /// \returns The number of bytes written
   ///
+  virtual auto write(int file_descriptor, char buffer) -> int64_t = 0;
+
+  ///
+  /// \brief Manipulates the underlying device parameters of special files
+  /// Essentially just a C++ wrapper for the system's ioctl() function
+  /// \param[in] file_descriptor An open file descriptor
+  /// \param[in] request A device-dependent request code
+  /// \param[in] args A pointer to memory
+  /// \returns 0 on success or -1 on failure, with errno set appropriately
+  ///
+  virtual auto ioctl(int file_descriptor, uint64_t request, void* args) noexcept -> int64_t = 0;
+
   virtual ~file_interface() = default;
-
-  ///
-  /// \brief Copy constructor
-  ///
   file_interface(file_interface const&) = default;
-
-  ///
-  /// \brief Copy-assignment operator
-  ///
   auto operator=(file_interface const&) -> file_interface& = default;
-
-  ///
-  /// \brief Move constructor
-  ///
-  file_interface(file_interface&&) = default;
-
-  ///
-  /// \brief Move-assignment operator
-  ///
-  auto operator=(file_interface&&) -> file_interface& = default;
+  file_interface(file_interface&&) noexcept = default;
+  auto operator=(file_interface&&) noexcept -> file_interface& = default;
 };
 
-class file : public file_interface
+class file final : public file_interface
 {
 public:
   ///
@@ -123,6 +131,14 @@ public:
   auto read(int file_descriptor, std::string& buffer, std::size_t nbytes) noexcept -> int64_t override;
 
   ///
+  /// \brief Read from file_descriptor into buffer
+  /// \param[in] file_descriptor The file being read from
+  /// \param[in] buffer The buffer being read to
+  /// \returns The number of bytes read
+  ///
+  auto read(int file_descriptor, char& buffer) noexcept -> int64_t override;
+
+  ///
   /// \brief Write all bytes of buffer to file_descriptor
   /// \param[in] file_descriptor The file descriptor being written to
   /// \param[in] buffer The buffer being written from
@@ -138,6 +154,24 @@ public:
   /// \returns The number of bytes written
   ///
   auto write(int file_descriptor, std::string const& buffer, std::size_t nbytes) noexcept -> int64_t override;
+
+  ///
+  /// \brief Write buffer to file_descriptor
+  /// \param[in] file_descriptor The file descriptor being written to
+  /// \param[in] buffer The buffer being written from
+  /// \returns The number of bytes written
+  ///
+  auto write(int file_descriptor, char buffer) noexcept -> int64_t override;
+
+  ///
+  /// \brief Manipulates the underlying device parameters of special files
+  /// Essentially just a C++ wrapper for the system's ioctl() function
+  /// \param[in] file_descriptor An open file descriptor
+  /// \param[in] request A device-dependent request code
+  /// \param[in] args A pointer to memory
+  /// \returns 0 on success or -1 on failure, with errno set appropriately
+  ///
+  auto ioctl(int file_descriptor, uint64_t request, void* args) noexcept -> int64_t override;
 };
 
 }   // namespace kilo::io

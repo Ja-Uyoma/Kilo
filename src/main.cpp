@@ -21,11 +21,14 @@
  * SOFTWARE.
  */
 
-#include "kilo/Application/Application.hpp"
+#include "kilo/application/application.hpp"
 
-using kilo::editor::application;
+#include <cstddef>
+#include <span>
+
+using kilo::application::application;
 
 auto main(int argc, char const* argv[]) -> int
 {
-  return application::main(std::span {argv, static_cast<size_t>(argc)});
+  return application::main(std::span {argv, static_cast<std::size_t>(argc)});
 }

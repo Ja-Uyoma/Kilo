@@ -1,0 +1,159 @@
+/**
+ * MIT License
+ * Copyright (c) 2023 Jimmy Givans
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+#include "window_size.hpp"
+
+#include "kilo/io/File.hpp"
+#include <asm-generic/ioctls.h>
+#include <sys/ioctl.h>
+
+#include <array>
+#include <cerrno>
+#include <charconv>
+#include <cstdlib>
+#include <expected>
+#include <span>
+#include <string>
+#include <unistd.h>
+
+namespace kilo::terminal::window_size {
+
+auto get_terminal_window_size() -> std::expected<window_size, utilities::error_info>
+{
+  io::file file;
+  ::winsize winsz {};
+
+  return detail::get_window_size(file, winsz);
+}
+
+namespace detail {
+
+auto get_window_size(io::file_interface& file, winsize& winsz) -> std::expected<window_size, utilities::error_info>
+{
+  if (file.ioctl(STDOUT_FILENO, TIOCGWINSZ, &winsz) == -1 or winsz.ws_col == 0) {
+    static constexpr std::string move_cursor_bottom_right("\x1b[999c\x1b[999B");
+
+    auto const written = file.write(STDOUT_FILENO, move_cursor_bottom_right);
+    if (written != std::ssize(move_cursor_bottom_right)) {
+      auto const error_number = written == -1 ? errno : 0;
+      return std::unexpected(utilities::make_error(error_number, "Could not move cursor to bottom-right of screen"));
+    }
+
+    static constexpr unsigned buffer_size = 32;
+    std::array<char, buffer_size> buf = {};
+
+    return detail::get_cursor_position(file, buf);
+  }
+
+  return window_size {.cols = winsz.ws_col, .rows = winsz.ws_row};
+}
+
+auto get_cursor_position(io::file_interface& file, std::span<char> buffer)
+  -> std::expected<window_size, utilities::error_info>
+{
+  static constexpr auto get_cursor_position = std::string("\x1b[6n");
+
+  if (buffer.size() < 4) {
+    return std::unexpected(utilities::make_error(std::errc::invalid_argument, "Cursor position buffer is too small"));
+  }
+
+  // Get the position of the cursor
+  auto const written = file.write(STDOUT_FILENO, get_cursor_position);
+  if (written != std::ssize(get_cursor_position)) {
+    auto const error_number = written == -1 ? errno : 0;
+    return std::unexpected(utilities::make_error(error_number, "Could not get cursor position"));
+  }
+
+  std::size_t bytes_read = 0;
+  bool received_terminator = false;
+  for (; bytes_read < buffer.size() - 1; ++bytes_read) {
+    auto const read_result = file.read(STDIN_FILENO, buffer[bytes_read]);
+    if (read_result == -1) {
+      auto const error_number = errno;
+      return std::unexpected(utilities::make_error(error_number, "Could not read cursor position"));
+    }
+    if (read_result != 1) {
+      break;
+    }
+    if (buffer[bytes_read] == 'R') {
+      received_terminator = true;
+      ++bytes_read;
+      break;
+    }
+  }
+
+  if (!received_terminator) {
+    return std::unexpected(
+      utilities::make_error(std::errc::invalid_argument, "Cursor position response was incomplete"));
+  }
+
+  auto* const end_ptr = buffer.data() + bytes_read - 1;
+  *end_ptr = '\0';
+
+  // First make sure read() responded with an escape sequence
+  if (buffer[0] != '\x1b' or buffer[1] != '[') {
+    return std::unexpected(utilities::make_error(std::errc::invalid_argument,
+                                                 "An invalid byte sequence was encountered where an escape "
+                                                 "sequence was expected"));
+  }
+
+  window_size result {.cols = 0, .rows = 0};
+
+  // At this point, we are passing a string of the form "35;76" to std::from_chars
+  // We tell it to parse the 2 integers separated by a ';' and write the value
+  // into the rows and cols variables
+
+  char const* parse_ptr = &buffer[2];
+  // Parse rows
+  auto [row_end_ptr, row_ec] = std::from_chars(parse_ptr, end_ptr, result.rows);
+
+  // Check error if no characters consumed
+  if (row_ec != std::errc() or row_end_ptr == parse_ptr) {
+    return std::unexpected(
+      utilities::make_error(std::errc::invalid_argument, "Failed to parse rows or row-string empty"));
+  }
+
+  // Check for semicolon
+  if (row_end_ptr == end_ptr or *row_end_ptr != ';') {
+    return std::unexpected(
+      utilities::make_error(std::errc::invalid_argument, "Expected semi-colon not found or end of string"));
+  }
+
+  // Skip semicolon
+  parse_ptr = row_end_ptr + 1;   // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+
+  // Parse columns
+  auto [col_end_ptr, col_ec] = std::from_chars(parse_ptr, end_ptr, result.cols);
+
+  // Check error; no characters consumed, or not ending at 'R'
+  if (col_ec != std::errc() or col_end_ptr == parse_ptr or col_end_ptr != end_ptr) {
+    return std::unexpected(utilities::make_error(
+      std::errc::invalid_argument, "Failed to parse columns, or cols string empty, or extra characters before 'R'"));
+  }
+
+  return result;
+}
+
+}   // namespace detail
+
+}   // namespace kilo::terminal::window_size

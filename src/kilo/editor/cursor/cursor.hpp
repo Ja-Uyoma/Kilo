@@ -21,48 +21,23 @@
  * SOFTWARE.
  */
 
-#ifndef APPLICATION_HPP
-#define APPLICATION_HPP
+#ifndef KILO_EDITOR_CURSOR_CURSOR_HPP
+#define KILO_EDITOR_CURSOR_CURSOR_HPP
 
-#include "kilo/editor/EditorConfig/EditorConfig.hpp"
+#include <cstdint>
 
-#include <filesystem>
-#include <span>
+namespace kilo::editor::cursor {
 
-namespace kilo::editor {
-
-class application
+/**
+ * @struct cursor
+ * @brief This represents the position of the cursor in the open document
+ */
+struct cursor
 {
-public:
-  ///
-  /// \brief Default constructor
-  ///
-  explicit application() noexcept = default;
-
-  ///
-  /// \brief Run the application with the given command-line arguments
-  /// \param[in] args The command-line arguments passed to the application
-  /// \returns EXIT_SUCCESS on success, and EXIT_FAILURE otherwise
-  ///
-  static auto main(std::span<char const*> args) -> int;
-
-private:
-  editor::editor_config m_editor_config;
-
-  ///
-  /// \brief Open a file and write its contents to memory
-  ///
-  /// \param[in] path The path to the file
-  /// \return true If the operation was successful, and false otherwise
-  ///
-  auto open(std::filesystem::path const& path) -> bool;
-
-  ///
-  /// \brief Run the application
-  ///
-  void run();
+  int64_t x {};
+  int64_t y {};
 };
 
-}   // namespace kilo::editor
+}   // namespace kilo::editor::cursor
 
 #endif

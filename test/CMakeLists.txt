@@ -11,9 +11,11 @@ add_executable(Kilo_test)
 
 target_sources(Kilo_test
     PRIVATE
-        Editor/Editor.test.cpp
-        ScreenBuffer/ScreenBuffer.test.cpp
-        TerminalMode/TerminalMode.test.cpp       
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/kilo/editor/editor_config/editor_config.test.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/kilo/editor/append_buffer/append_buffer.test.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/kilo/terminal/terminal_mode/terminal_mode.test.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/kilo/terminal/window_size/window_size.test.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/kilo/editor/erow/erow.test.cpp"
 )
 
 target_link_libraries(Kilo_test
@@ -25,7 +27,7 @@ target_link_libraries(Kilo_test
 
 target_compile_features(Kilo_test
     PRIVATE
-        cxx_std_20
+        cxx_std_23
 )
 
 add_test(NAME Kilo_test COMMAND Kilo_test)
@@ -35,4 +37,3 @@ gtest_discover_tests(Kilo_test)
 # --------------- End-of-file commands ---------------
 
 add_folders(Test)
-

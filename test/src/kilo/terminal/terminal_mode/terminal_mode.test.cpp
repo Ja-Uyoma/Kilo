@@ -31,74 +31,87 @@
 #include <termios.h>
 #include <unistd.h>
 
-namespace kilo::terminal {
+namespace kilo::terminal::inline v1 {
 
-TEST(TerminalMode, SetRawModePutsTheTerminalDriverInRawMode)
+TEST(TerminalMode, SetRawModeSetsTerminalModeToRawMode)
 {
   terminal_mode state {};
+  ASSERT_TRUE(state.initialize());
 
-  auto cleanup = gsl::finally([&state] { state.set_canonical_mode(); });
+  auto cleanup = gsl::finally([&state]() -> void {
+    auto result = state.set_canonical_mode();
+    (void)result;
+  });
 
-  ASSERT_NO_THROW(state.set_raw_mode());
+  ASSERT_TRUE(state.set_raw_mode());
   ASSERT_THAT(state.get_mode(), testing::Eq(terminal_mode::tty_mode::raw));
 }
 
-TEST(TerminalMode, ResetRestoresTerminalSettingsToCanonicalMode)
+TEST(TerminalMode, SetCanonicalModeSetsTerminalModeToCanonicalMode)
 {
   terminal_mode tstate {};
-  tstate.set_raw_mode();
+  ASSERT_TRUE(tstate.initialize());
+  ASSERT_TRUE(tstate.set_raw_mode());
 
-  ASSERT_NO_THROW(tstate.set_canonical_mode());
+  ASSERT_TRUE(tstate.set_canonical_mode());
   ASSERT_THAT(tstate.get_mode(), testing::Eq(terminal_mode::tty_mode::canonical));
 }
 
 namespace detail {
 
-TEST(getTerminalDriverSettings, TerminatesWhenPassedAnInvalidFileDescriptor)
+TEST(TerminalMode, GetTerminalDriverSettingsReturnsAnErrorWhenGivenABadFileDescriptor)
 {
   termios buf {};
-  ASSERT_DEATH(get_terminal_driver_settings(STDOUT_FILENO, buf), "File descriptor must be STDIN_FILENO");
+  auto result = get_terminal_driver_settings(-1, buf);
+  ASSERT_FALSE(result);
+  EXPECT_EQ(result.error().code.value(), EBADF);
 }
 
-TEST(getTerminalDriverSettings, RunsSuccessfullyWhenPassedAValidFileDescriptor)
+TEST(TerminalMode, GetTerminalDriverSettingsRunsSuccessfullyWhenPassedAValidFileDescriptor)
 {
   termios buf {};
-  ASSERT_NO_THROW(get_terminal_driver_settings(STDIN_FILENO, buf));
+  ASSERT_TRUE(get_terminal_driver_settings(STDIN_FILENO, buf));
 }
 
-TEST(ttyRaw, TerminatesWhenPassedAnInvalidFileDescriptor)
+TEST(TerminalMode, TtyRawReturnsAnErrorWhenGivenABadFileDescriptor)
 {
   termios const buf {};
   termios copy {};
-
-  ASSERT_DEATH(tty_raw(STDOUT_FILENO, buf, copy), "File descriptor must be STDIN_FILENO");
+  auto result = tty_raw(-1, buf, copy);
+  ASSERT_FALSE(result);
+  EXPECT_EQ(result.error().code.value(), EBADF);
 }
 
-TEST(ttyRaw, SucceedsWhenPassedAValidFileDescriptor)
+TEST(TerminalMode, TtyRawSucceedsWhenPassedAValidFileDescriptor)
 {
   termios buf {};
   termios copy {};
 
-  auto cleanup = gsl::finally([&buf] { tty_canonical_mode(STDIN_FILENO, buf); });
-  get_terminal_driver_settings(STDIN_FILENO, buf);
+  ASSERT_TRUE(get_terminal_driver_settings(STDIN_FILENO, buf));
+  auto cleanup = gsl::finally([&buf]() -> void {
+    auto result = tty_canonical_mode(STDIN_FILENO, buf);
+    (void)result;
+  });
 
-  ASSERT_NO_THROW(tty_raw(STDIN_FILENO, buf, copy));
+  ASSERT_TRUE(tty_raw(STDIN_FILENO, buf, copy));
 }
 
-TEST(ttyCanonicalMode, TerminatesWhenPassedAnInvalidFileDescriptor)
+TEST(TerminalMode, TtyCanonicalModeReturnsAnErrorWhenGivenABadFileDescriptor)
 {
   termios const buf {};
-  ASSERT_DEATH(tty_canonical_mode(STDOUT_FILENO, buf), "File descriptor must be STDIN_FILENO");
+  auto result = tty_canonical_mode(-1, buf);
+  ASSERT_FALSE(result);
+  EXPECT_EQ(result.error().code.value(), EBADF);
 }
 
-TEST(ttyCanonicalMode, SucceedsWhenPassedAValidFileDescriptor)
+TEST(TerminalMode, TtyCanonicalModeSucceedsWhenPassedAValidFileDescriptor)
 {
   termios buf {};
-  get_terminal_driver_settings(STDIN_FILENO, buf);
+  ASSERT_TRUE(get_terminal_driver_settings(STDIN_FILENO, buf));
 
-  ASSERT_NO_THROW(tty_canonical_mode(STDIN_FILENO, buf));
+  ASSERT_TRUE(tty_canonical_mode(STDIN_FILENO, buf));
 }
 
 }   // namespace detail
 
-}   // namespace kilo::terminal
+}  // namespace kilo::terminal::inline v1

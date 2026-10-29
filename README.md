@@ -1,6 +1,7 @@
 # Kilo
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 This is a C++ port of
 [Salvatore Sanfilippo's (antirez) kilo](http://antirez.com/news/108).
 
@@ -81,6 +82,8 @@ information.
 - The original `kilo` editor by Salvatore Sanfilippo (antirez)
 - Inspired by its simplicity and elegance
 =======
+=======
+>>>>>>> dev
 Kilo is a C++ port of [antirez's kilo](http://antirez.com/news/108), a small terminal text editor.
 
 ## Requirements
@@ -175,4 +178,7 @@ or `build/src/kilo` for the `ci-ubuntu` preset:
 ```sh
 build/manual/src/kilo [path/to/file]
 ```
+<<<<<<< HEAD
 >>>>>>> 4df65bc (docs: update README.md)
+=======
+>>>>>>> dev

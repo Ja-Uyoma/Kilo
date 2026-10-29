@@ -1,0 +1,138 @@
+#include "kilo/terminal/window_size/window_size.hpp"
+
+#include "kilo/io/File.hpp"
+#include <sys/ioctl.h>
+
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
+
+#include <array>
+#include <cerrno>
+#include <cstddef>
+#include <cstdint>
+#include <string>
+#include <unistd.h>
+
+namespace kilo::terminal::window_size {
+
+// NOLINTBEGIN(modernize-use-trailing-return-type)
+
+class mock_file : public io::file_interface
+{
+public:
+  MOCK_METHOD(int64_t, write, (int, std::string const&), (noexcept, override));
+  MOCK_METHOD(int64_t, write, (int, std::string const&, std::size_t), (noexcept, override));
+  MOCK_METHOD(int64_t, write, (int, char), (noexcept, override));
+  MOCK_METHOD(int64_t, read, (int, std::string&), (noexcept, override));
+  MOCK_METHOD(int64_t, read, (int, std::string&, std::size_t), (noexcept, override));
+  MOCK_METHOD(int64_t, read, (int, char&), (noexcept, override));
+  MOCK_METHOD(int64_t, ioctl, (int, std::uint64_t, void*), (noexcept, override));
+};
+
+// NOLINTEND(modernize-use-trailing-return-type)
+
+// NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
+
+TEST(WindowSize, WindowAccessorsReturnExpectedValues)
+{
+  constexpr auto win = window_size {.cols = 64, .rows = 32};
+  ASSERT_THAT(win.cols, ::testing::Eq(64));
+  ASSERT_THAT(win.rows, ::testing::Eq(32));
+}
+
+TEST(WindowSize, GetWindowSizeReturnsTheWindowSizeOnSuccess)
+{
+  mock_file mfile;
+  ::winsize winsz {};
+
+  EXPECT_CALL(mfile, ioctl(STDOUT_FILENO, TIOCGWINSZ, &winsz))
+    .WillOnce([&winsz](int, std::uint64_t, void*) -> std::int64_t {
+      winsz.ws_col = 80;
+      winsz.ws_row = 60;
+      return 0;
+    });
+
+  auto result = detail::get_window_size(mfile, winsz);
+  ASSERT_TRUE(result);
+  ASSERT_EQ(result->cols, 80);
+  ASSERT_EQ(result->rows, 60);
+  ASSERT_EQ(winsz.ws_col, 80);
+  ASSERT_EQ(winsz.ws_row, 60);
+}
+
+TEST(WindowSize, GetWindowSizeReturnsAnErrorWhenIoctlAndWriteFail)
+{
+  mock_file mfile;
+  ::winsize winsz {};
+  static constexpr std::string move_cursor_bottom_right("\x1b[999c\x1b[999B");
+
+  EXPECT_CALL(mfile, ioctl(STDOUT_FILENO, TIOCGWINSZ, &winsz)).WillOnce([](int, std::uint64_t, void*) -> std::int64_t {
+    errno = EBADF;
+    return -1;
+  });
+
+  EXPECT_CALL(mfile, write(STDOUT_FILENO, move_cursor_bottom_right)).WillOnce(::testing::Return(0));
+
+  auto result = detail::get_window_size(mfile, winsz);
+  ASSERT_FALSE(result);
+  EXPECT_EQ(result.error().code.value(), EIO);
+}
+
+TEST(WindowSize, GetWindowSizeReturnsAnErrorWhenWindowColsIsZeroAndWriteFails)
+{
+  mock_file mfile;
+  ::winsize winsz {};
+  static constexpr std::string move_cursor_bottom_right("\x1b[999c\x1b[999B");
+
+  EXPECT_CALL(mfile, ioctl(STDOUT_FILENO, TIOCGWINSZ, &winsz))
+    .WillOnce([&winsz](int, std::uint64_t, void*) -> std::int64_t {
+      winsz.ws_col = 0;
+      return 0;
+    });
+
+  EXPECT_CALL(mfile, write(STDOUT_FILENO, move_cursor_bottom_right)).WillOnce(::testing::Return(0));
+
+  auto result = detail::get_window_size(mfile, winsz);
+  ASSERT_FALSE(result);
+  EXPECT_EQ(result.error().code.value(), EIO);
+}
+
+TEST(WindowSize, GetCursorPositionReturnsAnErrorOnFailureToGetCursorPosition)
+{
+  mock_file mfile;
+  static constexpr std::string get_cursor_position("\x1b[6n");
+  static constexpr unsigned buffer_size = 32;
+  std::array<char, buffer_size> buffer {};
+
+  EXPECT_CALL(mfile, write(STDOUT_FILENO, get_cursor_position)).WillOnce(::testing::Return(0));
+
+  auto result = detail::get_cursor_position(mfile, buffer);
+  ASSERT_FALSE(result);
+  EXPECT_EQ(result.error().code.value(), EIO);
+}
+
+TEST(WindowSize, GetCursorPositionParsesTheResponse)
+{
+  mock_file mfile;
+  static constexpr std::string get_cursor_position("\x1b[6n");
+  static constexpr std::string response("\x1b[24;80R");
+  static constexpr unsigned buffer_size = 32;
+  std::array<char, buffer_size> buffer {};
+  std::size_t next_character = 0;
+
+  EXPECT_CALL(mfile, write(STDOUT_FILENO, get_cursor_position))
+    .WillOnce(::testing::Return(std::ssize(get_cursor_position)));
+  EXPECT_CALL(mfile, read(STDIN_FILENO, ::testing::A<char&>())).WillRepeatedly([&](int, char& character) -> int64_t {
+    character = response[next_character++];
+    return 1;
+  });
+
+  auto result = detail::get_cursor_position(mfile, buffer);
+  ASSERT_TRUE(result);
+  EXPECT_EQ(result->rows, 24);
+  EXPECT_EQ(result->cols, 80);
+}
+
+// NOLINTEND(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
+
+}   // namespace kilo::terminal::window_size

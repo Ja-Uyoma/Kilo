@@ -24,7 +24,6 @@
 #include "IO.hpp"
 
 #include "kilo/utilities/Constants.hpp"
-#include <system_error>
 
 #include <array>
 #include <cerrno>
@@ -35,15 +34,16 @@ namespace kilo::io {
 /**
  * \brief Read key input from stdin
  * \return The character read
- * \throws std::system_error if an error occured during read
+ * \returns An error if reading from stdin fails
  */
-auto read_key() -> int
+auto read_key() -> std::expected<int, utilities::error_info>
 {
   char result {};
 
   for (int64_t nread = 0; nread != 1; nread = ::read(STDIN_FILENO, &result, 1)) {
     if (nread == -1 && errno != EAGAIN) {
-      throw std::system_error(errno, std::system_category(), "Could not read key input from stdin");
+      auto const error_number = errno;
+      return std::unexpected(utilities::make_error(error_number, "Could not read key input from stdin"));
     }
 
     errno = 0;

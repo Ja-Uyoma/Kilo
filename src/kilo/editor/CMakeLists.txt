@@ -2,12 +2,9 @@ add_library(Kilo_lib_editor OBJECT)
 
 target_sources(Kilo_lib_editor
     PUBLIC
-        Cursor/Cursor.hpp
-        Offset/Offset.hpp
-        ScreenBuffer/ScreenBuffer.hpp
-        ScreenBuffer/ScreenBuffer.cpp
-        EditorConfig/EditorConfig.hpp
-        EditorConfig/EditorConfig.cpp
+        append_buffer/append_buffer.cpp
+        erow/erow.cpp
+        editor_config/editor_config.cpp
 )
 
 target_link_libraries(Kilo_lib_editor
@@ -28,5 +25,5 @@ target_include_directories(Kilo_lib_editor
 
 target_compile_features(Kilo_lib_editor
     PUBLIC
-        cxx_std_20
+        cxx_std_23
 )

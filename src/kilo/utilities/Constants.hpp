@@ -36,6 +36,9 @@ struct escape_sequences
   static constexpr std::string_view move_cursor_to_home_position {"\x1b[H"};
   static constexpr std::string_view show_the_cursor {"\x1b[?25h"};
   static constexpr std::string_view erase_part_of_line_to_the_right_of_cursor {"\x1b[K"};
+  static constexpr std::string_view crnl {"\r\n"};
+  static constexpr std::string_view switch_to_inverted_colours {"\x1b[7m"};
+  static constexpr std::string_view switch_to_normal_formatting {"\x1b[m"};
 };
 
 // The current version of the application
@@ -50,6 +53,7 @@ inline constexpr int kilo_tab_stop = 8;
 // conflict with ordinary keypresses.
 enum class editor_key : std::uint16_t
 {
+  backspace = 127,
   arrow_left = 1000,
   arrow_right,
   arrow_up,
