@@ -35,7 +35,7 @@ TEST(erow, InsertCharInsertsAGivenCharacterToTheErow)
   insert_char(row, 4, 'e');
 
   ASSERT_THAT(row.chars, testing::Eq(result));
-  ASSERT_THAT(row.render, testing::Eq(result));
+  ASSERT_THAT(row.render, testing::Eq(result + '\0'));
 }
 
 }   // namespace kilo::editor::erow
